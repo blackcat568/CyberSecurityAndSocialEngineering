@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Rigidity of Expectations in Threat Analysis</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body { font-family: "Segoe UI", Tahoma, Verdana, Arial, sans-serif; line-height:1.45; color:#111; max-width:980px; margin:26px auto; padding:0 18px; background:#fff; }
+    h1 { font-size:2rem; margin-bottom:0.3rem; }
+    h2, h3 { font-size:1.3rem; margin-top:1.2rem; font-weight:800; }
+    hr { border:0; border-top:1px solid #ddd; margin:1.2rem 0; }
+    p { margin:0.6rem 0; white-space:pre-wrap; }
+    ul, ol { padding-left:1.2rem; margin:0.6rem 0; }
+    li { margin:0.35rem 0; }
+    strong em { font-weight:700; font-style:italic; }
+    header { background:#f6f8fa;border-bottom:1px solid #e1e4e8;padding:12px 18px;margin-bottom:18px; }
+    footer { border-top:1px solid #ddd; margin-top:1.8rem; padding-top:1rem; font-size:0.85rem; color:#555; }
+    footer .ref { font-size:0.8rem; color:#666; margin-top:0.3rem; }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div style="max-width:980px;margin:0 auto;display:flex;align-items:center;gap:12px;">
+    <a href="/CyberSecurityAndSocialEngineering/index.html" style="font-weight:700;color:#0366d6;text-decoration:none;font-size:1rem;">
+      ← Home
+    </a>
+    <div style="color:#444;font-size:0.95rem;">
+      CyberSecurity &amp; Social Engineering — main page
+    </div>
+  </div>
+</header>
+
+<main>
+
+<article>
+
+<h2>Rigidity of Expectations in Threat Analysis</h2>
+
+<h3>or why, while the “cat is sleeping,” the “mice” are already feasting inside the system</h3>
+
+<p>In recent years, the world has become significantly more unstable, and the overall level of risk—both physical and digital—has noticeably increased. This is especially true for the field of cybersecurity: cyberspace provides an attacker with unique advantages—distance, anonymity, a low barrier to entry, and the ability to inflict significant damage with minimal resource expenditure, often completely evading legal responsibility.</p>
+
+<p>Against this backdrop, a systemic problem is increasingly evident, one that is characteristic of both ordinary users and professionals alike: <strong>rigidity of expectations in threat analysis</strong>.</p>
+
+<hr>
+
+<h2>What rigidity of expectations is</h2>
+
+<p>The essence of the problem is simple and therefore especially dangerous. A person tends to expect that an attacker will act in <strong>clear, familiar, and visually obvious ways</strong>. In everyday imagination, it looks roughly like this: at night someone saws through a lock with a hacksaw, squeezes out a window, climbs inside—in short, behaves as loudly, crudely, and conspicuously as possible.</p>
+
+<p>However, this very approach <strong>directly contradicts the logic of an experienced adversary’s actions</strong>—whether that adversary is a professional cybercriminal, an organized group, or a structure abusing its authority.</p>
+
+<p>A rational attacker does not choose obvious and expected scenarios, because they are deprived of effectiveness in advance.</p>
+
+<hr>
+
+<h2>Why “standard” attacks are a sign of amateurism</h2>
+
+<p>Expecting template-based attacks works only against:</p>
+
+<ul>
+  <li>amateurs,</li>
+  <li>petty hooligans,</li>
+  <li>impulsive and inadequate subjects,</li>
+  <li>people acting emotionally and without strategy.</li>
+</ul>
+
+<p>Against an experienced adversary, this approach does not work in principle.</p>
+
+<p>A professional strives to:</p>
+
+<ul>
+  <li>leave no obvious traces,</li>
+  <li>act indirectly,</li>
+  <li>use third parties,</li>
+  <li>apply complex and non-standard schemes,</li>
+  <li>avoid direct attacks that are easy to detect and document.</li>
+</ul>
+
+<p>That is precisely why the most dangerous attacks often look <strong>like “nothing is happening”</strong>.</p>
+
+<hr>
+
+<h2>An analogy from the offline world (for clarity)</h2>
+
+<p>An experienced thief does not saw through a lock or squeeze out a window. He invites you to dinner. There, he treats you to food laced with a sleeping agent, while beforehand taking a substance that blocks its effect on himself, and demonstratively tasting the food, convincing you that it is safe.</p>
+
+<p>When you fall asleep, he calmly takes your keys, wallet, credit cards—and leaves.</p>
+
+<p>In the morning you wake up. Everything is in place. And it may take you quite a long time to realize that you have already become a victim of a crime.</p>
+
+<p>In cybersecurity, this scenario occurs far more often than “broken windows.”</p>
+
+<hr>
+
+<h2>How this looks in infrastructure</h2>
+
+<p>A provider may be under an attacker’s control for <strong>years</strong>. At the same time, its system administrators may not even suspect the fact of compromise, expecting that a “real hack” must necessarily manifest itself through server crashes, service failures, and red warning lights.</p>
+
+<p>They fail to take into account that modern attack tools are designed for:</p>
+
+<ul>
+  <li>maximum stealth,</li>
+  <li>minimal interference with system operation,</li>
+  <li>disguise as background noise.</li>
+</ul>
+
+<p>Anomalies are written off as:</p>
+
+<ul>
+  <li>bots,</li>
+  <li>spikes in user load,</li>
+  <li>“hardware glitches,”</li>
+  <li>software imperfections.</li>
+</ul>
+
+<p>Meanwhile, the on-duty administrator is playing a computer game, and the attacker has long since bypassed the defenses and is methodically expanding control over users’ systems. Grotesque? Yes. Rare? Not at all.</p>
+
+<hr>
+
+<h2>The user as a “well-fed cat”</h2>
+
+<p>With users, the situation is even more illustrative. A classic tragicomedy:</p>
+
+<ul>
+  <li>pirated Windows from dubious sources,</li>
+  <li>a router without a password,</li>
+  <li>passwords of the <code>qwerty123456</code> variety (fortunately, modern services already try to protect users from them),</li>
+  <li>a complete absence of a threat model.</li>
+</ul>
+
+<p>And at the same time, a firm conviction:<br>
+“Nothing will happen to me. And if something does happen, I’ll notice it immediately and quickly block everything.”</p>
+
+<p>In practice, such a user resembles a well-fed cat on whose body the mice are already carrying on their personal lives, while it enjoys a deep sleep.</p>
+
+<hr>
+
+<h2>What to do about it</h2>
+
+<p>The conclusion is extremely simple:</p>
+
+<p><strong>Avoid rigidity of thinking.</strong><br>
+Do not expect attackers to act according to standard and familiar patterns.</p>
+
+<p>There is a saying for a reason:<br>
+<em>He who makes doors too strong often forgets to reinforce the walls.</em></p>
+
+<p>And one more old threat-modeling formula:<br>
+<em>Fear the goat from the front, the donkey from behind, and a vile person—from all sides.</em></p>
+
+<p>Be prepared to:</p>
+
+<ul>
+  <li>assume non-standard scenarios,</li>
+  <li>take complex and combined attacks into account,</li>
+  <li>analyze weak signals and indirect indicators of compromise.</li>
+</ul>
+
+<hr>
+
+<h2>The true sign of mature thinking</h2>
+
+<p>The ability to see and analyze <strong>non-standard, complex threats</strong> is a sign of genuinely flexible, creative, and analytical thinking. In cybersecurity, this is not an abstract virtue, but a practical condition for survival.</p>
+
+<p>The key task is to create an environment in which an attacker simply cannot deploy activity. Wherever they try to act, they will encounter:</p>
+
+<ul>
+  <li>preventive defense mechanisms,</li>
+  <li>people who think non-standardly,</li>
+  <li>the absence of “sleeping cats.”</li>
+</ul>
+
+<p>This does not make a system absolutely invulnerable—but it significantly complicates the attacker’s life and noticeably simplifies the life of law-abiding users.</p>
+
+<p>And in the world of cybersecurity, this is precisely what is considered a good result.</p>
+
+</article>
+
+<hr />
+
+<p>Related pages:</p>
+  <ul>
+    <li>
+      <a href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/targeted-attack-analysis.html">
+        Targeted Attack Analysis
+      </a>
+    </li>
+  </ul>
+
+  <ul>
+    <li>
+      <a href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/psychological-suppression-by-security-forces.html">
+        Psychological Suppression via the Disbelief Effect
+      </a>
+    </li>
+  </ul>
+  
+  <ul>
+    <li>
+      <a href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/manipulative-false-friend-strategy.html">
+        The False-Friend Strategy: anatomy of a hidden strike
+      </a>
+    </li>
+  </ul>
+
+  <ul>
+    <li>
+      <a href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/trust-the-manipulators-main-weapon.html">
+        Trust — The Main Weapon of a Manipulator
+      </a>
+    </li>
+  </ul>
+  
+<footer>
+  <p>Author: (blackcat568). Date of writing: (13.12.2025).</p>
+  <p class="ref">This article helps to understand how rigidity of expectations interferes with detecting danger and why it is important to follow the logic of creating flexible, resilient defense systems, where the attacker is deprived of obvious paths for attack, and users and administrators act consciously and effectively. The article is based on the author’s sad experience of communicating with certain system administrators and ordinary users.</p>
+</footer>
+
+</article>
+
+</main>
+
+</body>
+</html>

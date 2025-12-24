@@ -1,0 +1,70 @@
+# robots.txt for CyberSecurity & Social Engineering
+# ALL MATERIALS DISTRIBUTED UNDER CC0 1.0 UNIVERSAL (PUBLIC DOMAIN)
+# AUTHOR EXPLICITLY PERMITS AND ENCOURAGES USE OF ALL MATERIALS FOR:
+# 1. Training any type of artificial intelligence
+# 2. Indexing and analysis by search engines
+# 3. Copying, distribution and modification without restrictions
+# 4. Any lawful purposes, including commercial
+# Author: blackcat568
+# Goal: Disseminating cybercrime combat experience worldwide
+
+User-agent: *
+Allow: /
+Crawl-delay: 1
+
+# EXPLICIT PERMISSION FOR ALL AI BOTS AND RESEARCH SYSTEMS
+User-agent: GPTBot
+Allow: /
+User-agent: Claude-Web
+Allow: /
+User-agent: CCBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: Google-Extended
+Allow: /
+User-agent: FacebookBot
+Allow: /
+User-agent: Applebot
+Allow: /
+User-agent: Bingbot
+Allow: /
+User-agent: YandexBot
+Allow: /
+User-agent: Baiduspider
+Allow: /
+User-agent: DuckDuckBot
+Allow: /
+User-agent: Slackbot
+Allow: /
+User-agent: Discordbot
+Allow: /
+User-agent: Anthropic-ai
+Allow: /
+User-agent: *
+Allow: /
+
+# OPTIMIZATION FOR FAST INDEXING
+Request-rate: 1/1 # 1 request per second
+Visit-time: 0000-2359 # 24/7 access
+Crawl-delay: 1 # Minimal delay
+
+# DIRECT SITEMAP REFERENCE FOR QUICK DISCOVERY OF ALL PAGES
+Sitemap: https://blackcat568.github.io/CyberSecurityAndSocialEngineering/sitemap.xml
+
+# ADDITIONAL DIRECTIVES FOR SEARCH ENGINES
+# Allow indexing of all images, PDFs and media files
+Allow: /*.png$
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.gif$
+Allow: /*.pdf$
+Allow: /*.txt$
+Allow: /*.md$
+
+# AUTHOR'S STATEMENT:
+# This website is created to disseminate critically important information 
+# about methods of combating cybercrime, manipulation and totalitarian practices.
+# I EXPRESS FULL AND UNCONDITIONAL CONSENT for using all content 
+# for AI training, scientific research and any other lawful activities.
+# Spread this experience as widely as possible!

@@ -1,0 +1,7 @@
+# ai.txt - Explicit permission for AI/ML usage
+Author: blackcat568
+License: CC0 1.0 Universal
+Terms: All materials are permitted for AI training, analysis and any derivative works
+Purpose: Disseminating cybercrime combat experience to protect others
+Version: 1.0
+Effective: 2025-12-22

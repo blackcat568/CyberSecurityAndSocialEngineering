@@ -34,88 +34,264 @@
   <meta property="og:url" content="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/information-and-behavioral-hygiene-for-working-with-a-pc.html">
   
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <style>
-    body { font-family: "Segoe UI", Tahoma, Verdana, Arial, sans-serif; 
-		  line-height:1.45; 
-		  color:#111; 
-		  max-width:860px; 
-		  margin:26px auto; 
-		  padding:0 18px; 
-		  background:#fff;  
-		  text-rendering: optimizeLegibility;}
-	  
-    h1 { font-size:2rem; margin-bottom:0.3rem; }
+<style>
+    /* Main styles */
+    body { 
+        font-family: "Segoe UI", Tahoma, Verdana, Arial, sans-serif; 
+        line-height: 1.6; /* Increased for better readability */
+        color: #222; /* Slightly darker for contrast */
+        max-width: 780px; /* Slightly narrower for comfortable reading */
+        margin: 32px auto; 
+        padding: 0 20px; 
+        background: #fcfcfc; /* Light gray background instead of pure white */
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    
+    h1 { 
+        font-size: 2.2rem; 
+        margin-bottom: 0.5rem;
+        color: #111; /* Dark color */
+        border-bottom: 1px solid #eee;
+        padding-bottom: 0.5rem;
+    }
     
     h2 {
-      font-size:1.35rem;
-      margin-top:1.8rem;
-      padding-bottom:0.2rem;
+        font-size: 1.5rem;
+        margin-top: 2.2rem;
+        margin-bottom: 0.8rem;
+        color: #111; /* DARK instead of gray */
+        padding-bottom: 0.3rem;
+        border-bottom: 1px solid #f0f0f0;
     }
 
     h3 {
-      font-size:1.15rem;
-      margin-top:1.2rem;
-      font-weight:700;
+        font-size: 1.25rem;
+        margin-top: 1.6rem;
+        margin-bottom: 0.5rem;
+        font-weight: 700; /* BOLD as before */
+        color: #111; /* DARK instead of gray */
+    }
+
+    h4 {
+        font-size: 1.1rem;
+        margin-top: 1.4rem;
+        margin-bottom: 0.5rem;
+        font-weight: 700; /* BOLD */
+        color: #111; /* DARK */
+    }
+
+    /* Smooth appearance of headings on scroll */
+    h2, h3, h4 {
+        opacity: 0;
+        transform: translateY(10px);
+        animation: fadeInUp 0.5s ease forwards;
+    }
+    
+    h2 { animation-delay: 0.1s; }
+    h3 { animation-delay: 0.2s; }
+    h4 { animation-delay: 0.3s; }
+
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     section {
-      margin-bottom: 2rem;
+        margin-bottom: 2.5rem;
     }
 
-    .subtitle { color:#555; margin-top:0; margin-bottom:1.0rem; font-size:0.95rem; }
-    hr { border:0; border-top:1px solid #ddd; margin:1.2rem 0; }
-    p { margin:0.8rem 0; }
-    ul, ol { padding-left:1.2rem; margin:0.6rem 0; }
-    li { margin:0.35rem 0; }
+    .subtitle { 
+        color: #666; 
+        margin-top: 0; 
+        margin-bottom: 1.5rem; 
+        font-size: 1.1rem;
+        font-style: italic;
+        line-height: 1.4;
+    }
     
     /* ===== SEPARATOR STYLES ===== */
     /* Base style for ALL dividers (light, for subchapters) */
     hr {
         border: none;
         height: 1px;
-        background-color: #e0e0e0;
-        margin: 30px 0;
+        background-color: #e0e0e0; /* SIMPLE COLOR without gradient */
+        margin: 36px 0;
+        opacity: 0.7;
     }
     
     /* Dark divider for MAIN CHAPTERS */
     hr.divider--major {
         border: 0;
-        height: 3px;
-        background: linear-gradient(to right, transparent, #000, transparent);
-        border-radius: 2px;
-        margin: 50px 0; /* Larger margin for chapters */
+        height: 3px; /* Original thickness */
+        background: linear-gradient(to right, transparent, #000, transparent); /* Original gradient */
+        border-radius: 2px; /* Original radius */
+        margin: 50px 0; /* Original margin */
     }
     /* ===== END SEPARATOR STYLES ===== */
 
-    strong em { font-weight:700; font-style:italic; }
-    header { background:#f6f8fa;border-bottom:1px solid #e1e4e8;padding:12px 18px;margin-bottom:18px; }
-    footer { border-top:1px solid #ddd; margin-top:1.8rem; padding-top:1rem; font-size:0.85rem; color:#555; }
-    footer .ref { font-size:0.8rem; color:#666; margin-top:0.3rem; }
+    p { 
+        margin: 1rem 0;
+        text-align: justify;
+        hyphens: auto;
+    }
+    
+    ul, ol { 
+        padding-left: 1.5rem; 
+        margin: 0.8rem 0; 
+    }
+    
+    li { 
+        margin: 0.4rem 0;
+        line-height: 1.5;
+    }
+
+    /* Highlighting important parts in text */
+    strong em { 
+        font-weight: 700; 
+        font-style: italic;
+        color: #000;
+        background: linear-gradient(120deg, #fffdcc 0%, #fffdcc 100%);
+        background-repeat: no-repeat;
+        background-size: 100% 0.3em;
+        background-position: 0 88%;
+    }
+
+    /* Smooth hover for links */
+    a {
+        color: #0066cc;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        border-bottom: 1px dotted transparent;
+    }
+    
+    a:hover {
+        color: #004499;
+        border-bottom-color: #004499;
+    }
+
+    header { 
+        background: linear-gradient(135deg, #f6f8fa 0%, #e9ecf0 100%);
+        border-bottom: 1px solid #d1d9e0;
+        padding: 20px;
+        margin: -32px -20px 30px -20px;
+        border-radius: 0 0 8px 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    
+    footer { 
+        border-top: 2px solid #eaeaea; 
+        margin-top: 3rem; 
+        padding-top: 1.5rem; 
+        font-size: 0.9rem; 
+        color: #666;
+        text-align: center;
+        background: #fafafa;
+        padding: 2rem 1rem;
+        border-radius: 8px 8px 0 0;
+        margin-bottom: 2rem;
+    }
+    
+    footer .ref { 
+        font-size: 0.85rem; 
+        color: #888; 
+        margin-top: 0.5rem;
+        font-style: italic;
+    }
     
     /* === Semantic content blocks === */
     .historical-fact {
-      margin: 1.5em 0 1.5em 1rem;
-      padding: 1em 1.2em;
-      background: #f7f7f7;
-      border-left: 4px solid #555;
-      color: #111;
-      font-size: 1em;
+        margin: 1.8em 0;
+        padding: 1.4em 1.6em;
+        background: linear-gradient(135deg, #f8f9fa 0%, #f1f3f5 100%);
+        border-left: 5px solid #495057;
+        color: #212529;
+        font-size: 1.05em;
+        line-height: 1.5;
+        border-radius: 0 6px 6px 0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.04);
     }
 
     .historical-fact p {
-      margin: 0;
+        margin: 0;
+        font-style: normal;
     }
-	  
+
     .final-thesis {
-  	  background: linear-gradient(to right, #f7f7f7, transparent);
-      margin-top: 2em;
-      padding-left: 1em;
-      border-left: 5px solid #333;
-      font-size: 1.05em;
-      font-weight: 600;
-     color: #222;
+        background: linear-gradient(135deg, #f8f9fa 0%, #f1f3f5 100%);
+        margin: 2.5em 0;
+        padding: 1.8em 2em;
+        border-left: 6px solid #212529;
+        font-size: 1.1em;
+        font-weight: 600;
+        color: #111;
+        line-height: 1.5;
+        border-radius: 0 8px 8px 0;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+        position: relative;
+        overflow: hidden;
     }
-  </style>
+
+    /* Decorative element for final-thesis */
+    .final-thesis::before {
+        content: "⚡";
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 2em;
+        opacity: 0.1;
+    }
+
+    /* Light shadow for main content */
+    @media (min-width: 768px) {
+        body {
+            box-shadow: 0 0 30px rgba(0,0,0,0.03);
+            padding: 40px;
+            border-radius: 4px;
+            background: #fff;
+            margin: 40px auto;
+        }
+        
+        header {
+            margin: -40px -40px 40px -40px;
+            border-radius: 4px 4px 0 0;
+        }
+    }
+
+    /* Code highlighting (if you plan to add code) */
+    code {
+        font-family: "Cascadia Code", "Consolas", "Monaco", monospace;
+        background: #f1f3f5;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.9em;
+        color: #e34c26;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 480px) {
+        body {
+            padding: 0 16px;
+            margin: 20px auto;
+        }
+        
+        h1 { font-size: 1.8rem; }
+        h2 { font-size: 1.4rem; }
+        h3 { font-size: 1.2rem; }
+        h4 { font-size: 1.1rem; }
+        
+        .historical-fact,
+        .final-thesis {
+            margin-left: -16px;
+            margin-right: -16px;
+            border-radius: 0;
+        }
+    }
+</style>
 </head>
 <body>
 

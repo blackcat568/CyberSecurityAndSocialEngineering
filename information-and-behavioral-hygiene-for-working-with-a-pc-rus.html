@@ -68,6 +68,25 @@
     ul, ol { padding-left:1.2rem; margin:0.6rem 0; }
     li { margin:0.35rem 0; }
 
+    /* ===== СТИЛИ ДЛЯ РАЗДЕЛИТЕЛЕЙ ===== */
+    /* Базовый стиль для ВСЕХ разделителей (светлый, для подглав) */
+    hr {
+        border: none;
+        height: 1px;
+        background-color: #e0e0e0;
+        margin: 30px 0;
+    }
+    
+    /* Темный разделитель для ГЛАВ */
+    hr.divider--major {
+        border: 0;
+        height: 3px;
+        background: linear-gradient(to right, transparent, #000, transparent);
+        border-radius: 2px;
+        margin: 50px 0; /* Больше отступ для глав */
+    }
+    /* ===== КОНЕЦ СТИЛЕЙ ДЛЯ РАЗДЕЛИТЕЛЕЙ ===== */
+
     strong em { font-weight:700; font-style:italic; }
     header { background:#f6f8fa;border-bottom:1px solid #e1e4e8;padding:12px 18px;margin-bottom:18px; }
     footer { border-top:1px solid #ddd; margin-top:1.8rem; padding-top:1rem; font-size:0.85rem; color:#555; }
@@ -263,7 +282,7 @@
 
     <p>Эта статья — научно-популярное эссе о цифровой, поведенческой и информационной гигиене. Без избыточной технической сложности, но с ясными примерами, ироничными наблюдениями и практическими выводами. Рассчитана на широкую аудиторию и будет полезна всем, кто хочет использовать ПК осознанно и безопасно.</p>
 
-    <hr>
+<hr class="divider--major">
   
     <h2 id="section1">1. Отказ от нелицензионного программного обеспечения</h2>
 
@@ -307,7 +326,7 @@
 
 <a href="#section1" style="text-decoration: none;"> ↑ К началу главы </a>
 
-    <hr>
+<hr class="divider--major">
   
     <h2 id="section2">2. Компьютерные игры как фактор деградации внимания</h2>
 
@@ -483,7 +502,7 @@
 
 <a href="#section2" style="text-decoration: none;"> ↑ К началу главы </a>
   
-<hr>
+<hr class="divider--major">
   
 <h2 id="section3">3. Минимизация информационного следа</h2>
 
@@ -786,7 +805,7 @@
 
 <a href="#section3-3" style="text-decoration: none;">↑ К началу подраздела</a>
 
-<hr>
+<hr class="divider--major">
   
 <h2 id="section4">4. Дискуссии и блоги</h2>
 
@@ -978,7 +997,7 @@
 
 <a href="#section4" style="text-decoration: none;"> ↑ К началу главы </a>
 
-<hr>
+<hr class="divider--major">
   
 <h2 id="section5">5. Доверие интернет-источникам и неоднозначные интернет-проекты.</h2>
 
@@ -1190,7 +1209,7 @@
 
 <a href="#section5" style="text-decoration: none;"> ↑ К началу главы </a>
   
-<hr>
+<hr class="divider--major">
   
 <h2 id="section6">6. Автоматизация и умная организация данных</h2>
 
@@ -1316,7 +1335,7 @@
 
 <a href="#section6" style="text-decoration: none;"> ↑ К началу главы </a>
 
-<hr>
+<hr class="divider--major">
 
 <h2 id="section7">7. Формирование контента</h2>
 
@@ -1348,7 +1367,7 @@
 
 <a href="#section7" style="text-decoration: none;"> ↑ К началу главы </a>
 
-<hr>
+<hr class="divider--major">
 
 <h2 id="section8"> 8. Доверие к людям и сновы социально-инженерной безопасности</h2>
 
@@ -2011,7 +2030,7 @@
 
 <a href="#section8" style="text-decoration: none;"> ↑ К началу главы </a>
 
-<hr>
+<hr class="divider--major">
 
 <h2 id="section9">9. Ригидность ожиданий в анализе угроз</h2>
 
@@ -2155,7 +2174,7 @@
 
 <a href="#section9" style="text-decoration: none;"> ↑ К началу главы </a>
 
-<hr>
+<hr class="divider--major">
 
 <h2 id="section10">10. Участие пользователей в разработке свободного ПО</h2>
 
@@ -2191,7 +2210,7 @@
 
 <a href="#section10" style="text-decoration: none;"> ↑ К началу главы </a>
 
-<hr>
+<hr class="divider--major">
 
 <h2 id="section11">11. Адекватное применение ИИ и опасность злоупотребления его возможностями</h2>
 
@@ -2215,7 +2234,7 @@
 
 <a href="#section11" style="text-decoration: none;"> ↑ К началу главы </a>
 
-<hr>
+<hr class="divider--major">
 
 <h2 id="section12">12. Безопасное поведение при работе с мобильными устройствами</h2>
 
@@ -2480,7 +2499,7 @@
 
 <a href="#section12" style="text-decoration: none;"> ↑ К началу главы </a>
 
-<hr>
+<hr class="divider--major">
   
 <h2 id="section13">13. Физическая оптимизация труда при работе с ПК</h2>
 
@@ -2754,7 +2773,7 @@
 
 <a href="#section13" style="text-decoration: none;"> ↑ К началу главы </a>
 
-<hr>
+<hr class="divider--major">
   
 <h2 id="section14">14. Итоги</h2>
 
@@ -2800,7 +2819,7 @@
 
 <a href="#section14" style="text-decoration: none;"> ↑ К началу главы </a>
   
-<hr>
+<hr class="divider--major">
 
 <h2 id="section15">15. Благодарности</h2>
 

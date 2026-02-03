@@ -409,6 +409,10 @@
         </li>
         <li style="margin: 0.5rem 0;">
             <a href="#section11">11. Adequate Use of AI and the Danger of Abusing Its Capabilities</a>
+            <ul style="list-style: none; padding-left: 1.5rem; margin: 0.3rem 0;">
+                <li style="margin: 0.4rem 0;"><a href="#section11-1">11.1. The Danger of Abusing AI Capabilities</a></li>
+                <li style="margin: 0.4rem 0;"><a href="#section11-2">11.2. Using AI for Linux Programming</a></li>
+            </ul>
         </li>
         <li style="margin: 0.5rem 0;">
             <a href="#section12">12. Safe Behavior When Working with Mobile Devices</a>
@@ -2427,6 +2431,8 @@ A false friend fears light, direct questions, and specifics.</p>
 
 <h2 id="section11">11. Adequate Use of AI and the Danger of Abusing Its Capabilities</h2>
 
+<h3 id="section11">11. The Danger of Abusing AI Capabilities</h3>
+
 <p>Modern AI is already capable of writing very high-quality, substantive articles on any topic, even based on a minimal user request of 100–200 characters. Many people take advantage of this, passing off AI's creations as their own and boasting to others about the depth of their own wisdom. At the same time, they often don't even attempt to write a competent short prompt for the AI to create the article they need.</p>
 
 <p>It's worth delving into philosophy here and stating that <strong>the tools created by civilization should enhance and develop human creative abilities, making them more skilled and intelligent, not replace genuine labor, making humans lazier and dumber.</strong> Don't use an electric scooter where you can walk or ride a mechanical bicycle; don't order microwaveable semi-finished meals if you have the time and energy to cook healthy homemade food yourself. The same goes for AI: don't use auto-generation if you don't need to make a publication urgently, under extreme conditions, and you have time to write a detailed draft.</p>
@@ -2442,6 +2448,69 @@ A false friend fears light, direct questions, and specifics.</p>
 <p>Don't give obscurantists such arguments. Show that AI is the honed steel tip of an arrow, thanks to which the arrow shot by an archer pierces the target even better, not a genie fulfilling all your wishes just because you rubbed a lamp.</p>
 
 <p><strong>Progress has two sides — enormous development and the deepest degradation of humanity. And what happens to us depends only on ourselves.</strong></p>
+
+<a href="#section0" style="text-decoration: none;"> ↑ To Table of Contents </a> |
+
+<a href="#section11" style="text-decoration: none;"> ↑ To Chapter Start </a>
+
+<hr>
+
+<h3 id="section11">11. Using AI for Linux Programming</h3>
+
+<p>General Principles of Interaction</p>
+
+<p>For performing tasks in a Linux environment, I did not have knowledge of the Bash language or specific Linux commands. The main approach was as follows:</p>
+
+<ul>
+  <li>I described to AI what needed to be done in the system.</li>
+  <li>I requested Bash commands to implement these actions.</li>
+  <li>AI provided one or more options for accomplishing the task — system configuration, software installation, or configuration changes.</li>
+  <li>I selected the optimal option, copied the command into the terminal, and executed it.</li>
+</ul>
+
+<p>Error Handling</p>
+
+<ul>
+  <li>If a command executed correctly and the system changed without issues, I proceeded to the next task.</li>
+  <li>If an error occurred, I copied the terminal logs into AI and sent them for analysis, specifying that it was necessary to identify the cause of the failure and suggest solutions.</li>
+</ul>
+
+<p>My own log analysis skills were minimal, and I could not efficiently process large volumes of error messages that occurred during complex system configurations. Even with higher expertise, such analysis would require significant time.</p>
+
+<p>AI analyzed the logs quickly, identified one or more possible causes of the error, and suggested potential solutions.</p>
+
+<p>Step-by-Step Error Resolution</p>
+
+<ul>
+  <li>AI provided commands to address the first suspected cause of an error.</li>
+  <li>I executed the commands in the terminal and verified the result.</li>
+  <li>If the error was resolved, I moved on to the next task.</li>
+  <li>If the error persisted, I tried the next suggested solution, again copying terminal logs back into AI.</li>
+  <li>AI analyzed the new data and adjusted the error resolution steps.</li>
+</ul>
+
+<p>Often, resolving a first-order error revealed a second-order error, which in turn could be caused by a third-order error, and so on.</p>
+
+<p>This sequential error analysis and resolution scheme enabled a multi-level, “tree-like” problem-solving process with AI.</p>
+
+<p>Effectiveness and Reliability</p>
+
+<p>Despite occasional failures in log analysis and sometimes incorrect suggestions, in 85–90% of cases, AI worked correctly, and the results were satisfactory.</p>
+
+<p>Nevertheless, it is essential to remain vigilant and attentive, as errors on the part of AI cannot be completely ruled out. AI can make mistakes as well; however, practical experience shows that it does so no more often than a human — and possibly even less frequently.</p>
+
+<p>Role of the Human Operator</p>
+
+<p>In this setup, the human acts as an intermediary between AI and the Linux terminal:</p>
+
+<ul>
+  <li>copying commands suggested by AI into the terminal,</li>
+  <li>sending error logs back to AI for analysis,</li>
+  <li>receiving new commands to correct problems and executing them again.</li>
+</ul>
+
+<p>Thus, the human becomes a creatively thinking operator, facilitating interactive communication between AI and the system. This significantly increases Bash programming efficiency and accelerates complex system configurations, even for users without deep Linux knowledge. The primary required skills are logical and creative thinking.</p>
+
 
 <a href="#section0" style="text-decoration: none;"> ↑ To Table of Contents </a> |
 

@@ -2589,9 +2589,10 @@ Cybersecurity, countering social engineering, countering psychological manipulat
 
 <p>The script automatically inserts the date and time, clears the clipboard, and then terminates itself correctly. It is sufficient to configure a keyboard shortcut once to launch the script. For example, I use the <strong>Ctrl + Alt + Y</strong> combination, but you can choose any other convenient shortcut. The main thing is to make sure that it does not conflict with system shortcuts or key combinations already used by other installed applications.</p>
 
+<a id="appendix-1-back"></a>
 <p>The script has been tested on Debian 12. I have been using it since June 2025, and no malfunctions have been detected during this time.</p>
 
-<p>The script code is provided in the <strong>“Additions”</strong> section at the end of the article.</p>
+<p>The script code is provided in the <strong>“Additions”</strong> section at the <a href="#appendix-1">Appendix&nbsp;1</a> chapter end of the article.</p>
 
 
 <a href="#section0" style="text-decoration: none;"> ↑ To Table of Contents </a> |
@@ -3211,6 +3212,7 @@ Cybersecurity, countering social engineering, countering psychological manipulat
 
 <h2 id="section16">16. Additions”</h2>
 
+<a id="appendix-1"></a>
 <h3>Script for Inserting Date and Time</h3>
 
 <p><strong>Tested environment:</strong> Debian 12, MATE desktop</p>
@@ -3268,6 +3270,8 @@ xdotool keyup ctrl shift alt
 # Clear the clipboard after insertion (to avoid repeated pasting on the next trigger)
 echo -n "" | xclip -selection clipboard
 </code></pre>
+
+<a href="#appendix-1-back">To related section</a> |
 
 <a href="#section0" style="text-decoration: none;"> ↑ To Table of Contents </a> |
 

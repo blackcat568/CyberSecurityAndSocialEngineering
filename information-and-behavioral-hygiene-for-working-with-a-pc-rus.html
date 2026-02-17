@@ -3288,6 +3288,44 @@ xdotool keyup ctrl shift alt
 echo -n "" | xclip -selection clipboard
 </code></pre>
 
+<p><i>Установка зависимостей для корректной работы скрипта вставки даты-времени</i></p>
+
+<ul>
+    <li>
+        <strong>Пакет:</strong> <code>xclip</code><br>
+        <strong>Назначение:</strong> Работа с буфером обмена (копирование/вставка)<br>
+        <strong>В дистрибутиве:</strong> Обычно отсутствует
+    </li>
+    <li>
+        <strong>Пакет:</strong> <code>xdotool</code><br>
+        <strong>Назначение:</strong> Эмуляция нажатий клавиш (Ctrl+V)<br>
+        <strong>В дистрибутиве:</strong> Обычно отсутствует
+    </li>
+    <li>
+        <strong>Пакет:</strong> <code>x11-utils</code><br>
+        <strong>Назначение:</strong> Утилита xset для проверки доступа к X-серверу<br>
+        <strong>В дистрибутиве:</strong> Часто предустановлен
+    </li>
+    <li>
+        <strong>Пакет:</strong> <code>procps</code><br>
+        <strong>Назначение:</strong> Утилиты pgrep, pidof для поиска процессов<br>
+        <strong>В дистрибутиве:</strong> Предустановлен
+    </li>
+</ul>
+
+<p><strong>Установка в Debian/Ubuntu/Linux Mint и производных:</strong></p>
+
+<pre><code>sudo apt update
+sudo apt install xclip xdotool x11-utils procps</code></pre>
+
+<p><strong>Проверка установки:</strong></p>
+
+<pre><code># Проверка наличия всех компонентов
+which xclip xdotool xset pgrep
+
+# Проверка доступа к X-серверу
+xset q</code></pre>
+
 <a href="#appendix-1-back">К связанной главе</a> | 
 
 <a href="#section0" style="text-decoration: none;"> ↑ К содержанию </a> | 

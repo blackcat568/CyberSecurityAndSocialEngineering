@@ -3314,6 +3314,44 @@ xdotool keyup ctrl shift alt
 echo -n "" | xclip -selection clipboard
 </code></pre>
 
+<p><i>Installing dependencies for the correct operation of the date-time insertion script</i></p>
+
+<ul>
+    <li>
+        <strong>Package:</strong> <code>xclip</code><br>
+        <strong>Purpose:</strong> Working with the clipboard (copy/paste)<br>
+        <strong>In the distribution:</strong> Usually not present
+    </li>
+    <li>
+        <strong>Package:</strong> <code>xdotool</code><br>
+        <strong>Purpose:</strong> Simulating key presses (Ctrl+V)<br>
+        <strong>In the distribution:</strong> Usually not present
+    </li>
+    <li>
+        <strong>Package:</strong> <code>x11-utils</code><br>
+        <strong>Purpose:</strong> The xset utility for checking access to the X server<br>
+        <strong>In the distribution:</strong> Often preinstalled
+    </li>
+    <li>
+        <strong>Package:</strong> <code>procps</code><br>
+        <strong>Purpose:</strong> pgrep, pidof utilities for finding processes<br>
+        <strong>In the distribution:</strong> Preinstalled
+    </li>
+</ul>
+
+<p><strong>Installation on Debian/Ubuntu/Linux Mint and derivatives:</strong></p>
+
+<pre><code>sudo apt update
+sudo apt install xclip xdotool x11-utils procps</code></pre>
+
+<p><strong>Verifying the installation:</strong></p>
+
+<pre><code># Checking the presence of all components
+which xclip xdotool xset pgrep
+
+# Checking access to the X server
+xset q</code></pre>
+
 <a href="#appendix-1-back">To related section</a> |
 
 <a href="#section0" style="text-decoration: none;"> ↑ To Table of Contents </a> |

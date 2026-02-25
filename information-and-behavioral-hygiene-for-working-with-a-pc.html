@@ -382,6 +382,7 @@
                 <li style="margin: 0.4rem 0;"><a href="#section6-2">6.2. Don't Keep Everything in Your Head</a></li>
                 <li style="margin: 0.4rem 0;"><a href="#section6-3">6.3. Git Utility and Website Work Automation</a></li>
                 <li style="margin: 0.4rem 0;"><a href="#section6-4">6.4. Switching Between Workspaces</a></li>
+                <li style="margin: 0.4rem 0;"><a href="#section6-5">6.5. Terminal Logging</a></li>
             </ul>
         </li>
         <li style="margin: 0.5rem 0;">
@@ -1560,6 +1561,100 @@
 
 <p><strong>Use multiple workspaces.</strong> Do not ignore this function. It noticeably simplifies the workflow, saves time and energy, and significantly reduces the number of errors and misclicks.</p>
 
+
+<a href="#section0" style="text-decoration: none;"> ↑ To Table of Contents </a> |
+
+<a href="#section6" style="text-decoration: none;"> ↑ To Chapter Start </a>
+
+<hr>
+
+<h3 id="section6-5">6.5. Terminal Logging</h3>
+
+<p>When working on Linux systems, where the bulk of configuration is done via the terminal, it is critically important to organize proper logging of all actions.</p>
+
+<p><strong>Any, even the most insignificant, action to configure the system or applications must be recorded in a log.</strong></p>
+
+<p>If it later turns out that you made an error somewhere, the saved logs will allow you to pinpoint exactly when and under what circumstances it was made. This will save you from having to spend hours or days sifting through all possible causes of the failure.</p>
+
+<p>It will be enough to compare the modification times of the problematic application's files or system component with the terminal logs from the same period.</p>
+
+<p><em>Using the <code>script</code> utility</em></p>
+
+<p>In Debian and other Linux distributions, the <code>script</code> utility is installed by default. It must be launched at the start of working in the terminal, specifying:</p>
+
+<ul>
+<li>the name of the log file with the current date and time;</li>
+<li>immediate write mode for output to the file (to prevent data loss during a power failure or an abnormal session termination);</li>
+<li>a separate directory for storing logs.</li>
+</ul>
+
+<p>Create the directory in advance:</p>
+
+<pre><code>/home/user/terminallogs</code></pre>
+
+<p>(Use your actual username instead of <code>user</code>.)</p>
+
+<p><em>Separating root and user sessions</em></p>
+
+<p>Be careful: it is recommended to work in two separate terminal tabs:</p>
+
+<ul>
+<li>one — for a regular user session;</li>
+<li>the second — for a superuser (root) session.</li>
+</ul>
+
+<p>If, in the same session launched via <code>script</code>, you execute <code>exit</code> to leave the root session, the <code>script</code> utility will also terminate and stop logging.</p>
+
+<p>Separating tabs is also convenient because you can clearly see which actions were performed as a regular user and which as a superuser.</p>
+
+<p>Most harm to the system is usually caused by erroneous commands executed with root privileges. Therefore, it is recommended to strictly separate user and superuser privileges and not add the regular user to the <code>sudo</code> group unnecessarily.</p>
+
+<p><em>Configuring logging quality</em></p>
+
+<p>Configure the utility so that it records entered commands and terminal output, but does not clutter the log with excessive system noise. An overloaded log loses its practical value.</p>
+
+<p>If desired, other logging tools can be used — the main thing is that they are reliable and convenient for you personally.</p>
+
+<p><em>Verification before starting work</em></p>
+
+<p>Before proceeding with serious system configuration, ensure that logging is working correctly:</p>
+
+<ol>
+<li>Execute test commands that do not affect system stability:
+    <ul>
+        <li>update the package list (<code>apt update</code>);</li>
+        <li>display system characteristics;</li>
+        <li>view information about the CPU, disk, RAM;</li>
+        <li>check the network connection.</li>
+    </ul>
+</li>
+<li>Close the terminal.</li>
+<li>Ensure the log is correctly saved and contains all the executed output.</li>
+</ol>
+
+<p>Only after such verification proceed to the actual configuration of the system and applications.</p>
+
+<p><em>Why this is important</em></p>
+
+<p>The worst-case scenario is to detect system damage not immediately, but after days, weeks, or even months, when you no longer remember which commands you entered and what the system's response was.</p>
+
+<p>For example, in October 2025, I successfully used Audacity for working with audio files. Then I temporarily stopped working.</p>
+
+<p>In January 2026, launching the program again, I found that instead of a working interface, a fragment of a desktop screenshot was displayed.</p>
+
+<p>Rebooting the system and reinstalling the application did not help. The system and the application itself showed no obvious errors, but the interface either displayed a static "snapshot" of the screen or froze without updating.</p>
+
+<p>If I had terminal logs, I could search by keywords (for example, related to the display manager or X11) and find commands that might have damaged the graphical subsystem.</p>
+
+<p>But there were no logs. And remembering what exactly I had entered three months ago was impossible — terminal work was done almost daily.</p>
+
+<p><strong>Therefore, no command that introduces even minimal changes to the system should be executed without logging.</strong></p>
+
+<p>Immediately after installing the system, first of all, configure terminal logging.</p>
+
+<p>And only then — everything else.</p>
+
+<p>This is more reliable. This is safer.</p>
 
 <a href="#section0" style="text-decoration: none;"> ↑ To Table of Contents </a> |
 

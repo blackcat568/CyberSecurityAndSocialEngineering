@@ -316,6 +316,8 @@
     <p>Моя конфигурация nftables доступна <a href="https://wiki.debian.org/Security/ProtectingAgainstTargetedAttacks/SecurityConfigsAndLogs">здесь</a>.</p>
     
     <p>Дополнительно к iptables/nftables настоятельно рекомендуется использовать <strong>OpenSnitch</strong><a href="https://www.tecmint.com/opensnitch-linux-application-firewall/"><strong>OpenSnitch</strong></a> — интерактивный межсетевой экран, показывающий в реальном времени IP, процесс, PID и порт для каждого соединения. OpenSnitch позволяет гибко блокировать подозрительную активность, что вместе с nftables даёт значительно более надёжную защиту.</p>
+    
+    <p>OpenSnitch работает поверх nftables/iptables. Он показывает не просто «трафик на порт», а какой именно процесс и куда пытается соединиться. Проект малоизвестен, но крайне полезен, активно развивается и заслуживает внимания и поддержки сообщества.</p>
   </li>
 </ol>
 

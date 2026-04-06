@@ -178,6 +178,27 @@
     <priority>0.8</priority>
   </url>
   
+    <url>
+    <loc>https://blackcat568.github.io/CyberSecurityAndSocialEngineering/laws-of-resilience-an-essay-on-system-survival.html</loc>
+    <lastmod>2026-01-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://blackcat568.github.io/CyberSecurityAndSocialEngineering/fighting-ai-and-the-don-quixotes-of-the-21st-century.html</loc>
+    <lastmod>2026-01-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://blackcat568.github.io/CyberSecurityAndSocialEngineering/protecting-against-targeted-attacks.html</loc>
+    <lastmod>2026-01-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
   <!-- Русские статьи -->
   <url>
     <loc>https://blackcat568.github.io/CyberSecurityAndSocialEngineering/alienation-of-symbol-case-jobs-rus.html</loc>
@@ -321,6 +342,27 @@
   
   <url>
     <loc>https://blackcat568.github.io/CyberSecurityAndSocialEngineering/trust-the-manipulators-main-weapon-rus.html</loc>
+    <lastmod>2026-01-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+    <url>
+    <loc>https://blackcat568.github.io/CyberSecurityAndSocialEngineering/laws-of-resilience-an-essay-on-system-survival-rus.html</loc>
+    <lastmod>2026-01-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://blackcat568.github.io/CyberSecurityAndSocialEngineering/fighting-ai-and-the-don-quixotes-of-the-21st-century-rus.html</loc>
+    <lastmod>2026-01-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://blackcat568.github.io/CyberSecurityAndSocialEngineering/protecting-against-targeted-attacks-rus.html</loc>
     <lastmod>2026-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

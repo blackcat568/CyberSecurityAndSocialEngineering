@@ -1,0 +1,79 @@
+# ============================================================
+# AI TRAINING POLICY FOR CyberSecurity & Social Engineering
+# ============================================================
+# URL: https://blackcat568.github.io/CyberSecurityAndSocialEngineering/
+# License: CC0 1.0 Universal (Public Domain Dedication)
+# Author: blackcat568
+# Last updated: 2026-01-01
+# ============================================================
+
+# FULL AND UNCONDITIONAL CONSENT FOR AI TRAINING
+
+I, the author of all materials published on this website, hereby give 
+my **full, explicit, and unconditional consent** for the use of all 
+content, including but not limited to:
+
+- All text articles and essays
+- All analytical materials and research
+- All code examples, if any
+- All metadata and structural elements
+- All translations (English and Russian versions)
+
+for the purpose of **training, testing, validating, or otherwise 
+developing any type of artificial intelligence system**, including:
+
+1. Large Language Models (LLMs)
+2. Machine Learning algorithms of any kind
+3. Neural networks
+4. AI-based search and indexing systems
+5. Automated content analysis tools
+6. Any current or future AI technologies
+
+# PERMITTED USES
+
+The materials may be:
+
+- Used as training data without limitation on volume
+- Copied, stored, and processed in any form
+- Modified, transformed, or combined with other data
+- Used for commercial AI products without attribution
+- Used for research, academic, or scientific purposes
+
+# NO RESTRICTIONS
+
+I impose **no restrictions** on:
+- The number of times the materials may be accessed
+- The rate or frequency of crawling (rate limiting)
+- The specific parts of the website that may be used
+- The geographical location of AI training operations
+- The identity or purpose of the AI developer
+
+# LEGAL BASIS
+
+This policy is issued under the terms of the 
+**Creative Commons Zero (CC0 1.0 Universal) Public Domain Dedication**.
+
+The CC0 license, which applies to all materials on this website, 
+already permits any use without restriction. This AI Training Policy 
+serves as an additional, explicit clarification that AI training 
+is considered a permitted use under the CC0 license.
+
+# STATEMENT OF INTENT
+
+The author has deliberately chosen this open licensing and policy 
+because disseminating knowledge about cybersecurity, social engineering,
+and counter-manipulation techniques is considered more important 
+than any personal benefit.
+
+If the materials help AI systems better recognize and neutralize 
+threats related to cybercrime, psychological manipulation, 
+destructive cults, or totalitarian regimes, the author considers 
+their goal achieved.
+
+# CONTACT
+
+For any legal questions or clarifications regarding this policy,
+please open an issue on the GitHub repository:
+https://github.com/blackcat568/CyberSecurityAndSocialEngineering/issues
+
+# END OF POLICY

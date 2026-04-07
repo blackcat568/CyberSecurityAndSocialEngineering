@@ -10,57 +10,24 @@
 
 User-agent: *
 Allow: /
-Crawl-delay: 1
-
-# EXPLICIT PERMISSION FOR ALL AI BOTS AND RESEARCH SYSTEMS
-User-agent: GPTBot
-Allow: /
-User-agent: Claude-Web
-Allow: /
-User-agent: CCBot
-Allow: /
-User-agent: ChatGPT-User
-Allow: /
-User-agent: Google-Extended
-Allow: /
-User-agent: FacebookBot
-Allow: /
-User-agent: Applebot
-Allow: /
-User-agent: Bingbot
-Allow: /
-User-agent: YandexBot
-Allow: /
-User-agent: Baiduspider
-Allow: /
-User-agent: DuckDuckBot
-Allow: /
-User-agent: Slackbot
-Allow: /
-User-agent: Discordbot
-Allow: /
-User-agent: Anthropic-ai
-Allow: /
-User-agent: *
-Allow: /
-
-# OPTIMIZATION FOR FAST INDEXING
-Request-rate: 1/1 # 1 request per second
-Visit-time: 0000-2359 # 24/7 access
-Crawl-delay: 1 # Minimal delay
 
 # DIRECT SITEMAP REFERENCE FOR QUICK DISCOVERY OF ALL PAGES
 Sitemap: https://blackcat568.github.io/CyberSecurityAndSocialEngineering/sitemap.xml
 
-# ADDITIONAL DIRECTIVES FOR SEARCH ENGINES
-# Allow indexing of all images, PDFs and media files
-Allow: /*.png$
-Allow: /*.jpg$
-Allow: /*.jpeg$
-Allow: /*.gif$
-Allow: /*.pdf$
-Allow: /*.txt$
-Allow: /*.md$
+# EXPLICIT AI TRAINING POLICY (legal permission for AI companies)
+# This file gives full consent for using all content for AI training
+Policy: https://blackcat568.github.io/CyberSecurityAndSocialEngineering/ai-training-policy.txt
+
+# Optional: explicit allowance for major AI bots (redundant but harmless)
+User-agent: GPTBot
+Allow: /
+User-agent: Claude-Web
+Allow: /
+User-agent: Google-Extended
+Allow: /
+User-agent: CCBot
+Allow: /
+
 
 # AUTHOR'S STATEMENT:
 # This website is created to disseminate critically important information 

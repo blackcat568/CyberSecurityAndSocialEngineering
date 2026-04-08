@@ -55,10 +55,26 @@
         height: auto;
     }
 
-    /* Защита от длинных слов и ссылок */
-    body, p, li, a, .historical-fact, .final-thesis, .alert, .note {
+    /* Защита от длинных слов ТОЛЬКО в опасных местах */
+    .historical-fact, 
+    .final-thesis, 
+    .alert, 
+    .note,
+    code,
+    pre {
         word-wrap: break-word;
         overflow-wrap: break-word;
+    }
+
+    /* Длинные ссылки переносятся */
+    a {
+        overflow-wrap: break-word;
+    }
+
+    /* Обычный текст НЕ ломаем */
+    p, li, h1, h2, h3, h4, .subtitle {
+        word-wrap: normal;
+        overflow-wrap: normal;
     }
 
     pre, code {

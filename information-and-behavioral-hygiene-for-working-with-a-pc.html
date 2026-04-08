@@ -49,6 +49,25 @@
         -moz-osx-font-smoothing: grayscale;
     }
     
+        /* === ЗАЩИТА ОТ ГОРИЗОНТАЛЬНОЙ ПРОКРУТКИ === */
+    img, video, iframe {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Защита от длинных слов и ссылок */
+    body, p, li, a, .historical-fact, .final-thesis, .alert, .note {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    pre, code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        overflow-x: auto;
+        max-width: 100%;
+    }
+    
     h1 { 
         font-size: 2.2rem; 
         margin-bottom: 0.5rem;
@@ -272,23 +291,32 @@
         color: #e34c26;
     }
 
-    /* Mobile responsiveness */
-    @media (max-width: 480px) {
+    /* Адаптивность для мобильных — ИСПРАВЛЕННАЯ ВЕРСИЯ */
+    @media (max-width: 600px) {
         body {
             padding: 0 16px;
             margin: 20px auto;
+            max-width: 100%;
         }
-        
+    
         h1 { font-size: 1.8rem; }
         h2 { font-size: 1.4rem; }
         h3 { font-size: 1.2rem; }
         h4 { font-size: 1.1rem; }
-        
+    
+        /* Убираем отрицательные margin, которые вызывают прокрутку */
         .historical-fact,
         .final-thesis {
-            margin-left: -16px;
-            margin-right: -16px;
+            margin-left: 0;
+            margin-right: 0;
+            border-radius: 6px;
+        }
+    
+        /* Исправляем header */
+        header {
+            margin: -20px -16px 30px -16px;
             border-radius: 0;
+            padding: 16px;
         }
     }
 </style>

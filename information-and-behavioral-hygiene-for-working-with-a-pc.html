@@ -35,59 +35,24 @@
   
   <meta name="viewport" content="width=device-width,initial-scale=1" />
 <style>
-    /* Main styles */
+    /* Основные стили */
     body { 
         font-family: "Segoe UI", Tahoma, Verdana, Arial, sans-serif; 
-        line-height: 1.6; /* Increased for better readability */
-        color: #222; /* Slightly darker for contrast */
-        max-width: 780px; /* Slightly narrower for comfortable reading */
+        line-height: 1.6; /* Увеличил для лучшей читаемости */
+        color: #222; /* Чуть темнее для контраста */
+        max-width: 780px; /* Чуть уже для комфортного чтения */
         margin: 32px auto; 
         padding: 0 20px; 
-        background: #fcfcfc; /* Light gray background instead of pure white */
+        background: #fcfcfc; /* Легкий серый фон вместо чисто белого */
         text-rendering: optimizeLegibility;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
     }
     
-        /* === ЗАЩИТА ОТ ГОРИЗОНТАЛЬНОЙ ПРОКРУТКИ === */
-    img, video, iframe {
-        max-width: 100%;
-        height: auto;
-    }
-
-    /* Защита от длинных слов ТОЛЬКО в опасных местах */
-    .historical-fact, 
-    .final-thesis, 
-    .alert, 
-    .note,
-    code,
-    pre {
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-    }
-
-    /* Длинные ссылки переносятся */
-    a {
-        overflow-wrap: break-word;
-    }
-
-    /* Обычный текст НЕ ломаем */
-    p, li, h1, h2, h3, h4, .subtitle {
-        word-wrap: normal;
-        overflow-wrap: normal;
-    }
-
-    pre, code {
-        white-space: pre-wrap;
-        word-wrap: break-word;
-        overflow-x: auto;
-        max-width: 100%;
-    }
-    
     h1 { 
         font-size: 2.2rem; 
         margin-bottom: 0.5rem;
-        color: #111; /* Dark color */
+        color: #111; /* Темный цвет */
         border-bottom: 1px solid #eee;
         padding-bottom: 0.5rem;
     }
@@ -96,7 +61,7 @@
         font-size: 1.5rem;
         margin-top: 2.2rem;
         margin-bottom: 0.8rem;
-        color: #111; /* DARK instead of gray */
+        color: #111; /* ТЕМНЫЙ вместо серого */
         padding-bottom: 0.3rem;
         border-bottom: 1px solid #f0f0f0;
     }
@@ -105,19 +70,19 @@
         font-size: 1.25rem;
         margin-top: 1.6rem;
         margin-bottom: 0.5rem;
-        font-weight: 700; /* BOLD as before */
-        color: #111; /* DARK instead of gray */
+        font-weight: 700; /* ЖИРНЫЙ как было */
+        color: #111; /* ТЕМНЫЙ вместо серого */
     }
 
     h4 {
         font-size: 1.1rem;
         margin-top: 1.4rem;
         margin-bottom: 0.5rem;
-        font-weight: 700; /* BOLD */
-        color: #111; /* DARK */
+        font-weight: 700; /* ЖИРНЫЙ */
+        color: #111; /* ТЕМНЫЙ */
     }
 
-    /* Smooth appearance of headings on scroll */
+    /* Плавное появление заголовков при прокрутке */
     h2, h3, h4 {
         opacity: 0;
         transform: translateY(10px);
@@ -153,7 +118,7 @@
     hr {
         border: none;
         height: 1px;
-        background-color: #e0e0e0; /* SIMPLE COLOR without gradient */
+        background-color: #e0e0e0; /* ПРОСТОЙ ЦВЕТ без градиента */
         margin: 36px 0;
         opacity: 0.7;
     }
@@ -161,10 +126,10 @@
     /* Dark divider for MAIN CHAPTERS */
     hr.divider--major {
         border: 0;
-        height: 3px; /* Original thickness */
-        background: linear-gradient(to right, transparent, #000, transparent); /* Original gradient */
-        border-radius: 2px; /* Original radius */
-        margin: 50px 0; /* Original margin */
+        height: 3px; /* Исходная толщина */
+        background: linear-gradient(to right, transparent, #000, transparent); /* Исходный градиент */
+        border-radius: 2px; /* Исходный радиус */
+        margin: 50px 0; /* Исходный отступ */
     }
     /* ===== END SEPARATOR STYLES ===== */
 
@@ -184,7 +149,7 @@
         line-height: 1.5;
     }
 
-    /* Highlighting important parts in text */
+    /* Выделение важных мест в тексте */
     strong em { 
         font-weight: 700; 
         font-style: italic;
@@ -195,7 +160,7 @@
         background-position: 0 88%;
     }
 
-    /* Smooth hover for links */
+    /* Плавный hover для ссылок */
     a {
         color: #0066cc;
         text-decoration: none;
@@ -270,7 +235,7 @@
         overflow: hidden;
     }
 
-    /* Decorative element for final-thesis */
+    /* Декоративный элемент для final-thesis */
     .final-thesis::before {
         content: "⚡";
         position: absolute;
@@ -281,7 +246,7 @@
         opacity: 0.1;
     }
 
-    /* Light shadow for main content */
+    /* Легкая тень для основного контента */
     @media (min-width: 768px) {
         body {
             box-shadow: 0 0 30px rgba(0,0,0,0.03);
@@ -297,7 +262,7 @@
         }
     }
 
-    /* Code highlighting (if you plan to add code) */
+    /* Подсветка кода (если будете добавлять) */
     code {
         font-family: "Cascadia Code", "Consolas", "Monaco", monospace;
         background: #f1f3f5;
@@ -307,32 +272,23 @@
         color: #e34c26;
     }
 
-    /* Адаптивность для мобильных — ИСПРАВЛЕННАЯ ВЕРСИЯ */
-    @media (max-width: 600px) {
+    /* Адаптивность для мобильных */
+    @media (max-width: 480px) {
         body {
             padding: 0 16px;
             margin: 20px auto;
-            max-width: 100%;
         }
-    
+        
         h1 { font-size: 1.8rem; }
         h2 { font-size: 1.4rem; }
         h3 { font-size: 1.2rem; }
         h4 { font-size: 1.1rem; }
-    
-        /* Убираем отрицательные margin, которые вызывают прокрутку */
+        
         .historical-fact,
         .final-thesis {
-            margin-left: 0;
-            margin-right: 0;
-            border-radius: 6px;
-        }
-    
-        /* Исправляем header */
-        header {
-            margin: -20px -16px 30px -16px;
+            margin-left: -16px;
+            margin-right: -16px;
             border-radius: 0;
-            padding: 16px;
         }
     }
 </style>

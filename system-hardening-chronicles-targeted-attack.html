@@ -21,9 +21,9 @@
   }
   </script>
 
-<!-- Meta tags for this specific page -->
-  <meta name="description" content="add description">
-  <meta name="keywords" content="add keywords">
+  <!-- Meta tags for: System Hardening Chronicles: In Search of a Configuration Resilient to Targeted Attacks -->
+  <meta name="description" content="A real-world chronicle of defending against a targeted attack: documenting vulnerabilities, configurations, responses, and system hardening. From zero security to the search for resilient configurations. A technical report covering hardware, OS, AppArmor, nftables, OpenSnitch, Flatpak, USBGuard. For cybersecurity and InfoSec professionals.">
+  <meta name="keywords" content="system hardening, targeted attack, Linux configuration, Debian, AppArmor, nftables, OpenSnitch, Flatpak, USBGuard, Wayland, GNOME, KeePassXC, LibreWolf, vulnerabilities, cybersecurity, technical report, BIOS, motherboard, AMD Athlon, BIOSTAR">
   <meta name="author" content="blackcat568">
   <meta name="license" content="CC0 1.0 Universal (Public Domain Dedication)">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
@@ -155,13 +155,275 @@
 	
 <article>
 
+<h1>System Hardening Chronicles: In Search of a Configuration Resilient to Targeted Attacks</h1>
 
- 
+<div class="alert" style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 2rem 0;">
+  <strong style="color: #856404;">⚠️ Notice!</strong>
+  <span style="color: #856404;"> This is a draft. The article is under development and requires refinement.</span>
+</div>
+
+<h2>1. Introduction: Analysis of the Initial Configuration and Prerequisites for Hardening</h2>
+
+<h3>1.1 Context and Assumptions</h3>
+
+<p><strong>Adversary Profile:</strong><br>
+Presumably, a group with at least 20 years of experience in targeted attacks. This experience has been honed on thousands of real-world targets. Their methods include technological, socio-technical, and psychological vectors.</p>
+
+<p><strong>My Initial Position:</strong><br>
+— Since August 2022, working in a security agency (physical security, not cyber).<br>
+— Since March 2025, systematically studying cybersecurity.<br>
+— Hardware and configurations at the time the attack began (February–March 2011) were not prepared for targeted defense.<br>
+— In June 2011, an opportunity existed to receive free configuration and basic training from an acquaintance (a lawyer) — this opportunity was not taken.</p>
+
+<p><strong>Conclusion on the Initial Configuration:</strong><br>
+In the initial phase, the system lacked resilience against a targeted attack. I accept full responsibility for this.</p>
+
+<h3>1.2 Nature of the Attack (Observed Model)</h3>
+
+<p>The attack combines:</p>
+<ul>
+<li>Philosophical-occult rhetoric (active engagement in discussions about intuition, various forms of art, abstract concepts)</li>
+<li>Technological and socio-technical methods (actual OS vulnerabilities, social engineering, psychological pressure)</li>
+</ul>
+
+<p>This model fully corresponds to the classic scenario described in science fiction literature:<br>
+<em>Distracting a person (or group) with metaphysics detached from reality + striking through technical and human vulnerabilities by leveraging superiority in scientific-technical and psychological knowledge.</em></p>
+
+<h3>1.3 Effectiveness of the Scientific Approach as a Countermeasure</h3>
+
+<p>The analysis established:</p>
+<ul>
+<li>When fully rejecting adversary-imposed discussions in the field of metaphysics, as well as metaphysical and intuitive thinking models, in favor of scientific-technical analysis (logic, causality, verifiable data) — the intensity of attacking actions increases many times over.</li>
+<li>The increase in pressure from the attacking group is a diagnostic indicator of the correctness of the chosen defense strategy.</li>
+</ul>
+
+<p><strong>Fact:</strong><br>
+Attempts at moral and psychological suppression intensify in direct proportion to progress in studying AI, cybersecurity, social engineering, and forensic psychology. The more the victim's smokescreen of metaphysics and abstract concepts dissipates, the more the adversary displays their concern.</p>
+
+<h3>1.4 Current Strategy</h3>
+
+<p>No emotions. No resentment. No surprise.</p>
+
+<p>The following course has been adopted:</p>
+<ul>
+<li>Systematic study of security, cybersecurity, socio-technical systems, and forensic psychology.</li>
+<li>Documentation of all attacks, vulnerabilities, responses, and configuration changes.</li>
+<li>Continuous system hardening with results recording.</li>
+</ul>
+
+<p><strong>Objective:</strong><br>
+Achieve a configuration resilient to targeted attacks, followed by publication of all developed materials under the CC0 license.</p>
+
+<h2>2. Executive Summary (Technical Report)</h2>
+
+<table border="0" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%; margin: 1rem 0;">
+  <tr style="background-color: #f2f2f2;">
+    <th style="text-align: left; padding: 8px; border: 1px solid #ddd;">Parameter</th>
+    <th style="text-align: left; padding: 8px; border: 1px solid #ddd;">Value</th>
+   \</tr>
+   <tr>
+    <td style="padding: 8px; border: 1px solid #ddd;">Initial Security Posture</td>
+    <td style="padding: 8px; border: 1px solid #ddd;">Low</td>
+   \</tr>
+   <tr>
+    <td style="padding: 8px; border: 1px solid #ddd;">Attack Commencement</td>
+    <td style="padding: 8px; border: 1px solid #ddd;">February–March 2011</td>
+   \</tr>
+   <tr>
+    <td style="padding: 8px; border: 1px solid #ddd;">Adversary Experience (Estimate)</td>
+    <td style="padding: 8px; border: 1px solid #ddd;">≥ 20 years</td>
+   \</tr>
+   <tr>
+    <td style="padding: 8px; border: 1px solid #ddd;">Countermeasure</td>
+    <td style="padding: 8px; border: 1px solid #ddd;">Scientific-technical analysis, hardening, documentation</td>
+   \</tr>
+   <tr>
+    <td style="padding: 8px; border: 1px solid #ddd;">Indicator of Effectiveness</td>
+    <td style="padding: 8px; border: 1px solid #ddd;">Noticeable or even abrupt increase in attacking action intensity</td>
+   \</tr>
+   <tr>
+    <td style="padding: 8px; border: 1px solid #ddd;">Long-term Goal</td>
+    <td style="padding: 8px; border: 1px solid #ddd;">Publish a resilient configuration under CC0</td>
+   \</tr>
+\</table>
+
+<h2>3. Chronicle of Hardening and Attacks</h2>
+
+<h3>3.1 Description of the Previous System Configuration: CONFIGURATION 1</h3>
+
+<h4>Hardware</h4>
+
+<p><strong>Processor and Architecture:</strong><br>
+Architecture: x86_64<br>
+Model name: AMD Athlon(tm) II X2 220 Processor</p>
+
+<p><strong>RAM (at time of capture):</strong><br>
+<code>
+               total        used        free      shared  buff/cache   available<br>
+Mem:           5.8Gi       2.9Gi       809Mi        64Mi       2.5Gi       2.9Gi<br>
+Swap:          5.6Gi       256Ki       5.6Gi
+</code></p>
+
+<p><strong>Motherboard:</strong><br>
+SMBIOS 2.6 present.<br>
+Manufacturer: BIOSTAR Group<br>
+Product Name: N68S3B<br>
+Version: (not specified)<br>
+Serial Number: None<br>
+Type: Motherboard</p>
+
+<p><strong>Network Interface:</strong><br>
+00:07.0 Bridge: NVIDIA Corporation MCP61 Ethernet (rev a2)<br>
+Subsystem: Biostar Microtech Int'l Corp Device 3407<br>
+Interrupt: pin A routed to IRQ 26<br>
+Capabilities: Power Management version 2, MSI (enabled)</p>
+
+<h4>Software</h4>
+
+<p><strong>Operating System:</strong> Debian 12<br>
+<strong>Desktop Environment:</strong> MATE<br>
+<strong>Kernel:</strong> 6.1.0-34-amd64</p>
+
+<p><strong>Network and System Settings:</strong></p>
+<ul>
+<li>Internet access: ProtonVPN GUI in KillSwitch mode</li>
+<li>Incoming ports in nftables: fully blocked</li>
+<li>Outgoing ports in nftables: partially blocked (only ports required for the system and user applications allowed)</li>
+<li>AppArmor: partially enforced profiles provided by default with the system. Additional profile collections not downloaded, custom profiles not created</li>
+</ul>
+
+<p><strong>Configuration 1 finalization date:</strong> 2025-08-01</p>
+
+<h3>3.2 Attack on Configuration 1</h3>
+
+<p><strong>Date of attack:</strong> 2026-12-26</p>
+
+<p><strong>Confirmed adversary capabilities (post-factum):</strong></p>
+<ul>
+<li>Reading correspondence with ChatGPT and DeepSeek in authorized browser-based web versions of personal accounts</li>
+<li>Viewing search queries on DuckDuckGo and Google (browser installed system-wide, browser fingerprint was masked)</li>
+<li>Visual monitoring of icons on the MATE desktop environment taskbar</li>
+<li>Viewing folder names in the KeePassXC root and icons of individual password entries (KeePassXC installed system-wide)</li>
+<li>Access to images generated within ChatGPT</li>
+<li>Reading text typed in the Pluma editor</li>
+</ul>
+
+<p><strong>Post-attack action:</strong> Old system wiped, clean installation of new configuration performed.</p>
+
+<h3>3.3 Hardened Configuration Post-Attack: CONFIGURATION 2</h3>
+
+<h4>Hardware</h4>
+
+<p>Same system unit (no changes).</p>
+
+<h4>Software</h4>
+
+<p><strong>Operating System:</strong><br>
+Distributor ID: Debian<br>
+Description: Debian GNU/Linux 13 (trixie)<br>
+Release: 13 (13.4)<br>
+Codename: trixie</p>
+
+<p><strong>Kernel:</strong><br>
+Linux home 6.12.74+deb13+1-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.12.74-2 (2026-03-08) x86_64 GNU/Linux</p>
+
+<p><strong>Graphics Subsystem:</strong><br>
+Environment: GNOME / Wayland<br>
+GNOME Shell 48.7<br>
+tty (fallback access)</p>
+
+<p><strong>AppArmor:</strong><br>
+Parser version: 4.1.0</p>
+
+<p><strong>Flatpak:</strong><br>
+Version: 1.16.3</p>
+
+<p><strong>Installed Flatpak Applications:</strong></p>
+<ul>
+<li>Flatseal (com.github.tchx84.Flatseal) — 2.4.0</li>
+<li>Viber (com.viber.Viber) — 24.9.0.3 (messenger, installed via Flatpak, system version removed)</li>
+<li>LibreWolf (io.gitlab.librewolf-community) — 149.0-1 (browser, installed via Flatpak, system version removed)</li>
+<li>Geany (org.geany.Geany) — 2.1.0 (code editor, installed via Flatpak, system version removed)</li>
+<li>KeePassXC (org.keepassxc.KeePassXC) — 2.7.12 (password manager, installed via Flatpak, system version removed)</li>
+</ul>
+
+<p><strong>OpenSnitch:</strong><br>
+GUI version: 1.6.9<br>
+protobuf: 4.21.12<br>
+grpc: 1.51.1</p>
+
+<p><strong>USBGuard:</strong><br>
+Version: 1.1.3<br>
+Compiled with support for: Linux audit, Libcapng, Seccomp, Systemd, Umockdev</p>
+
+<p><strong>Key changes in Configuration 2 compared to Configuration 1:</strong></p>
+<ul>
+<li>Migration from MATE (Xorg) to GNOME (Wayland)</li>
+<li>All critical applications (browser, password manager, code editor, messenger) installed via Flatpak, system versions removed</li>
+<li>Interaction of Flatpak applications with the system restricted using Flatseal (minimum necessary permissions)</li>
+<li>Strict AppArmor profiles configured and set to enforce mode for Nautilus, Pluma, CherryTree, Atril (D-Bus, /proc, /sys, Unix sockets, filesystem, temporary files restricted)</li>
+<li>Incoming ports in nftables: fully blocked</li>
+<li>Outgoing ports in nftables: partially blocked (only necessary ranges allowed)</li>
+<li>OpenSnitch installed on top of nftables; user rules allow outgoing connections only for trusted applications</li>
+<li>Internet access: ProtonVPN GUI in KillSwitch mode</li>
+<li>USBGuard installed and configured to prevent USB device emulation</li>
+<li>Browser fingerprint masking removed (deemed ineffective against this type of attack)</li>
+<li>rkhunter scan performed (however, it is assumed the adversary does not use known rootkits present in anti-rootkit databases)</li>
+<li>Analysis performed using lunis; system changes applied based on recommendations received</li>
+</ul>
+
+<p><strong>Configuration 2 finalization date:</strong> 2026-04-07</p>
+
+<p><strong>Current status of Configuration 2 (as of 2026-04-10):</strong><br>
+— Under testing.<br>
+— Preliminary data: not all vulnerabilities have been closed.<br>
+— Data requires additional confirmation.<br>
+— Configuration 3 will be built based on the attack data gathered against Configuration 2.</p>
 
 <!-- Start of cross-reference block for "System Hardening Chronicles: In Search of a Configuration Resilient to Targeted Attacks" -->
 <hr>
 <p>Related pages:</p>
 
+<li>
+    <a href="targeted-attack-analysis.html">
+        Analysis of the Presumed Targeted Complex Attack
+    </a> — Description of the presumed complex targeted attack.
+</li>
+<li>
+    <a href="psychological-suppression-by-security-forces.html">
+        Psychological Suppression via the Disbelief Effect
+    </a> — analysis of manipulation tactics and protective strategies.
+</li>
+<li>
+    <a href="rigidity-of-expectations-in-threat-analysis.html">
+        Rigidity of Expectations in Threat Analysis
+    </a> — The problem of rigidity of expectations in cybersecurity threat analysis: why an experienced attacker acts in non-standard (non-obvious) ways.
+</li>
+<li>
+    <a href="from-science-to-worldview.html">
+        From Science to Worldview: Logic as a Foundation Against Delusion
+    </a> — an essay on rationality, awareness, and the dangers of intuition without critical grounding.
+</li>
+<li>
+    <a href="three-types-of-intellect.html">
+        Three Types of Intellect and Their Role in Personal Stability
+    </a> — an analytical essay on cognitive, ethical, and emotional intelligence as components of psychological resilience.
+</li>
+<li>
+    <a href="information-and-behavioral-hygiene-for-working-with-a-pc.html">
+        Information and Behavioral Hygiene for Working with a PC
+    </a> — a foundational practical guide to digital, behavioral, and informational hygiene for personal computer users.
+</li>
+<li>
+    <a href="dialectical-law-and-intuitive-insight.html">
+        The Dialectical Law and the Myth of “Intuitive Insight”
+    </a> — philosophical analysis of the nature of inspiration and critical thinking.
+</li>
+<li>
+    <a href="laws-of-resilience-an-essay-on-system-survival.html">
+        Laws of Resilience: An Essay on System Survival
+    </a> — This essay formulates the laws of system survival: the priority of technology and logistics over ideology, competence over cultural barriers, and management and efficiency over resources and showiness. A text about moving from illusions to the harsh discipline of results.
+</li>
 
 
 <!-- End of block -->

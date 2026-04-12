@@ -207,6 +207,13 @@
     <priority>0.8</priority>
   </url>
   
+  <url>
+    <loc>https://blackcat568.github.io/CyberSecurityAndSocialEngineering/fraudulent-manipulations-romanticized-ancient-china.html</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
   <!-- Русские статьи -->
   <url>
     <loc>https://blackcat568.github.io/CyberSecurityAndSocialEngineering/alienation-of-symbol-case-jobs-rus.html</loc>
@@ -385,6 +392,13 @@
   
   <url>
     <loc>https://blackcat568.github.io/CyberSecurityAndSocialEngineering/system-hardening-chronicles-targeted-attack-rus.html</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://blackcat568.github.io/CyberSecurityAndSocialEngineering/fraudulent-manipulations-romanticized-ancient-china-rus.html</loc>
     <lastmod>2026-04-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

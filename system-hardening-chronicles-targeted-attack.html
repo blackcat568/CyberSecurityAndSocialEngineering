@@ -70,6 +70,26 @@
     p { margin:0.8rem 0; }
     ul, ol { padding-left:1.2rem; margin:0.6rem 0; }
     li { margin:0.35rem 0; }
+    
+    /* ===== SEPARATOR STYLES ===== */
+    /* Base style for ALL dividers (light, for subchapters) */
+    hr {
+        border: none;
+        height: 1px;
+        background-color: #e0e0e0; /* ПРОСТОЙ ЦВЕТ без градиента */
+        margin: 36px 0;
+        opacity: 0.7;
+    }
+    
+    /* Dark divider for MAIN CHAPTERS */
+    hr.divider--major {
+        border: 0;
+        height: 3px; /* Исходная толщина */
+        background: linear-gradient(to right, transparent, #000, transparent); /* Исходный градиент */
+        border-radius: 2px; /* Исходный радиус */
+        margin: 50px 0; /* Исходный отступ */
+    }
+    /* ===== END SEPARATOR STYLES ===== */
 
     strong em { font-weight:700; font-style:italic; }
     header { background:#f6f8fa;border-bottom:1px solid #e1e4e8;padding:12px 18px;margin-bottom:18px; }
@@ -220,32 +240,34 @@ Achieve a configuration resilient to targeted attacks, followed by publication o
   <tr style="background-color: #f2f2f2;">
     <th style="text-align: left; padding: 8px; border: 1px solid #ddd;">Parameter</th>
     <th style="text-align: left; padding: 8px; border: 1px solid #ddd;">Value</th>
-   \</tr>
+   </tr>
    <tr>
     <td style="padding: 8px; border: 1px solid #ddd;">Initial Security Posture</td>
     <td style="padding: 8px; border: 1px solid #ddd;">Low</td>
-   \</tr>
+   </tr>
    <tr>
     <td style="padding: 8px; border: 1px solid #ddd;">Attack Commencement</td>
     <td style="padding: 8px; border: 1px solid #ddd;">February–March 2011</td>
-   \</tr>
+   </tr>
    <tr>
     <td style="padding: 8px; border: 1px solid #ddd;">Adversary Experience (Estimate)</td>
     <td style="padding: 8px; border: 1px solid #ddd;">≥ 20 years</td>
-   \</tr>
+   </tr>
    <tr>
     <td style="padding: 8px; border: 1px solid #ddd;">Countermeasure</td>
     <td style="padding: 8px; border: 1px solid #ddd;">Scientific-technical analysis, hardening, documentation</td>
-   \</tr>
+   </tr>
    <tr>
     <td style="padding: 8px; border: 1px solid #ddd;">Indicator of Effectiveness</td>
     <td style="padding: 8px; border: 1px solid #ddd;">Noticeable or even abrupt increase in attacking action intensity</td>
-   \</tr>
+   </tr>
    <tr>
     <td style="padding: 8px; border: 1px solid #ddd;">Long-term Goal</td>
     <td style="padding: 8px; border: 1px solid #ddd;">Publish a resilient configuration under CC0</td>
-   \</tr>
-\</table>
+   </tr>
+</table>
+
+<hr class="divider--major">
 
 <h2>3. Chronicle of Hardening and Attacks</h2>
 
@@ -309,6 +331,8 @@ Capabilities: Power Management version 2, MSI (enabled)</p>
 </ul>
 
 <p><strong>Post-attack action:</strong> Old system wiped, clean installation of new configuration performed.</p>
+
+<hr class="divider--major">
 
 <h3>3.3 Hardened Configuration Post-Attack: CONFIGURATION 2</h3>
 

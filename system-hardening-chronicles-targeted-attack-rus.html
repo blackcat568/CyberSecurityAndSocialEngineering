@@ -70,6 +70,26 @@
     p { margin:0.8rem 0; }
     ul, ol { padding-left:1.2rem; margin:0.6rem 0; }
     li { margin:0.35rem 0; }
+    
+    /* ===== SEPARATOR STYLES ===== */
+    /* Base style for ALL dividers (light, for subchapters) */
+    hr {
+        border: none;
+        height: 1px;
+        background-color: #e0e0e0; /* ПРОСТОЙ ЦВЕТ без градиента */
+        margin: 36px 0;
+        opacity: 0.7;
+    }
+    
+    /* Dark divider for MAIN CHAPTERS */
+    hr.divider--major {
+        border: 0;
+        height: 3px; /* Исходная толщина */
+        background: linear-gradient(to right, transparent, #000, transparent); /* Исходный градиент */
+        border-radius: 2px; /* Исходный радиус */
+        margin: 50px 0; /* Исходный отступ */
+    }
+    /* ===== END SEPARATOR STYLES ===== */
 
     strong em { font-weight:700; font-style:italic; }
     header { background:#f6f8fa;border-bottom:1px solid #e1e4e8;padding:12px 18px;margin-bottom:18px; }
@@ -245,6 +265,8 @@
    </tr>
 </table>
 
+<hr class="divider--major">
+
 <h2>2. Непосредственно хроника хардеринга и атак</h2>
 
 <h3>2.1 Описание прошлой конфигурации системы: КОНФИГУРАЦИЯ 1</h3>
@@ -307,6 +329,8 @@ Capabilities: Power Management version 2, MSI (включено)</p>
 </ul>
 
 <p><strong>Действие после атаки:</strong> старая система удалена, выполнена чистая установка новой конфигурации.</p>
+
+<hr class="divider--major">
 
 <h3>2.3 Конфигурация системы после атаки с усилением защиты: КОНФИГУРАЦИЯ 2</h3>
 

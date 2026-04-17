@@ -136,14 +136,94 @@
       }
     }
     
-    <!-- ========================================== -->
-    <!-- Карусель для иллюстраций (CSS и JavaScript) -->
-    <!-- ========================================== -->
-    <link rel="stylesheet" href="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/main/css/carousel.css">
-    <script src="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/main/js/carousel.js" defer></script>
+    /* ========== КАРУСЕЛЬ С ИЗОБРАЖЕНИЯМИ ========== */
+    /* === Стили карусели === */
+    .carousel-container { margin: 2rem 0; background: #f5f5f0; border-radius: 8px; border: 1px solid #d0d0c0; padding: 1rem; font-family: 'Georgia', 'Times New Roman', Times, serif; }
+    .carousel-viewport { position: relative; overflow: hidden; }
+    .carousel-slides { display: flex; transition: transform 0.3s ease-in-out; }
+    .carousel-slide { min-width: 100%; flex-shrink: 0; text-align: center; }
+    .carousel-slide img { max-width: 100%; height: auto; border-radius: 4px; border: 1px solid #d0d0c0; }
+    .carousel-caption { margin-top: 0.8rem; font-size: 0.85rem; color: #4a4a40; }
+    .carousel-prev, .carousel-next { position: absolute; top: 40%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; border: none; cursor: pointer; padding: 8px 12px; border-radius: 50%; font-size: 18px; z-index: 10; }
+    .carousel-prev { left: 5px; }
+    .carousel-next { right: 5px; }
+    .carousel-prev:hover, .carousel-next:hover { background: rgba(0,0,0,0.8); }
+    .carousel-dots { display: flex; justify-content: center; gap: 8px; margin-top: 1rem; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; background: #aaa; cursor: pointer; transition: all 0.2s; }
+    .dot.active { background: #8b0000; opacity: 1; }
     
   </style>
 </head>
+
+    /* === Скрипт для работы карусели === */
+<script>
+  (function() {
+    const container = document.querySelector('.carousel-container');
+    if (!container) {
+      console.error('Carousel container not found!');
+      return;
+    }
+    const slidesContainer = container.querySelector('.carousel-slides');
+    const slides = container.querySelectorAll('.carousel-slide');
+    const prevBtn = container.querySelector('.carousel-prev');
+    const nextBtn = container.querySelector('.carousel-next');
+    const dotsContainer = container.querySelector('.carousel-dots');
+    let currentIndex = 0;
+    let autoTimer = null;
+
+    function updateHeight() {
+      const activeSlide = slides[currentIndex];
+      const caption = activeSlide.querySelector('.carousel-caption');
+      if (caption) {
+        container.style.height = 'auto';
+        const newHeight = caption.scrollHeight + 200;
+        container.style.height = newHeight + 'px';
+      }
+    }
+
+    function updateCarousel() {
+      slidesContainer.style.transform = 'translateX(-' + (currentIndex * 100) + '%)';
+      updateHeight();
+      const dots = dotsContainer.querySelectorAll('.dot');
+      dots.forEach((dot, idx) => {
+        dot.classList.toggle('active', idx === currentIndex);
+      });
+    }
+
+    function goToSlide(index) {
+      if (index < 0) index = slides.length - 1;
+      if (index >= slides.length) index = 0;
+      currentIndex = index;
+      updateCarousel();
+    }
+
+    // Создаём точки
+    for (let i = 0; i < slides.length; i++) {
+      const dot = document.createElement('div');
+      dot.classList.add('dot');
+      dot.addEventListener('click', (function(idx) { 
+        return function() { goToSlide(idx); }; 
+      })(i));
+      dotsContainer.appendChild(dot);
+    }
+
+    prevBtn.addEventListener('click', () => goToSlide(currentIndex - 1));
+    nextBtn.addEventListener('click', () => goToSlide(currentIndex + 1));
+    
+    // Автопрокрутка
+    autoTimer = setInterval(() => goToSlide(currentIndex + 1), 10000);
+    container.addEventListener('mouseenter', () => { 
+      if (autoTimer) clearInterval(autoTimer); 
+    });
+    container.addEventListener('mouseleave', () => { 
+      autoTimer = setInterval(() => goToSlide(currentIndex + 1), 10000); 
+    });
+    
+    updateCarousel();
+    window.addEventListener('resize', updateHeight);
+  })();
+</script>
+
 <body>
 
 <header>
@@ -720,7 +800,7 @@
           Восстание секты «Тайпин дао» («Великого Равенства»), последователей искажённой эсхатологической версии даосизма, привело к свержению законной власти, всеобщей разрухе и изнурительной гражданской войне эпохи Троецарствия. По оценкам историков, население Китая сократилось с 50–56 миллионов до восстания до менее чем 8 миллионов после конца гражданской войны.
         </div>
       </div>
-      <!-- Слайд 2: Карта экспедиций -->
+      <!-- Слайд 2: Карта экспедиций Чжэн Хэ -->
       <div class="carousel-slide">
         <img src="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/pictures/zheng-he-expeditions.jpg" 
              alt="Карта семи морских экспедиций адмирала Чжэн Хэ (1405–1433 гг.) из Китая в Индийский океан и к берегам Восточной Африки">

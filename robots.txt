@@ -8,6 +8,11 @@
 # Author: blackcat568
 # Goal: Disseminating cybercrime combat experience worldwide
 
+# ============================================
+# INDEXNOW PROTOCOL SUPPORT
+# ============================================
+IndexNow: 668a434877694baeacc7d90bf1f5a8d6
+
 User-agent: *
 Allow: /
 

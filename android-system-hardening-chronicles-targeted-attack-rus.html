@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <title>Хроники хардеринга системы андроид: поиск конфигурации, устойчивой к целевой атаке</title>
+
+  <!-- JSON-LD структурированные данные -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "name": "Хроники хардеринга системы андроид: поиск конфигурации, устойчивой к целевой атаке",
+    "url": "https://blackcat568.github.io/CyberSecurityAndSocialEngineering/android-system-hardening-chronicles-targeted-attack-rus.html",
+    "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "isAccessibleForFree": true,
+    "description": "описание статьи, заменить",
+    "creator": {
+      "@type": "Person",
+      "name": "blackcat568"
+    }
+  }
+  </script>
+
+  <!-- Мета-теги для страницы: Хроники хардеринга системы андроид: поиск конфигурации, устойчивой к целевой атаке -->
+  <meta name="description" content="добавить текст">
+  <meta name="keywords" content="добавить текст">
+  <meta name="author" content="blackcat568">
+  <meta name="license" content="CC0 1.0 Universal (Public Domain Dedication)">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta property="og:title" content="Хроники хардеринга системы: поиск конфигурации, устойчивой к целевой атаке - CyberSecurity & Social Engineering">
+  <meta property="og:description" content="Материалы по кибербезопасности и социальной инженерии под свободной лицензией CC0">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://blackcat568.github.io/assets/images/og/tux-at-cyber-warfare.png">
+  <meta property="og:url" content="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/android-system-hardening-chronicles-targeted-attack-rus.html">
+  
+  <!-- ✅ CANONICAL ССЫЛКА (ставим сюда) -->
+  <link rel="canonical" href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/android-system-hardening-chronicles-targeted-attack-rus.html" />
+  
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body { font-family: "Segoe UI", Tahoma, Verdana, Arial, sans-serif; 
+		  line-height:1.45; 
+		  color:#111; 
+		  max-width:860px; 
+		  margin:26px auto; 
+		  padding:0 18px; 
+		  background:#fff;  
+		  text-rendering: optimizeLegibility;}
+	  
+    h1 { font-size:2rem; margin-bottom:0.3rem; }
+    
+    h2 {
+      font-size:1.35rem;
+      margin-top:1.8rem;
+      padding-bottom:0.2rem;
+    }
+
+    h3 {
+      font-size:1.15rem;
+      margin-top:1.2rem;
+      font-weight:700;
+    }
+
+    section {
+      margin-bottom: 2rem;
+    }
+
+    .subtitle { color:#555; margin-top:0; margin-bottom:1.0rem; font-size:0.95rem; }
+    hr { border:0; border-top:1px solid #ddd; margin:1.2rem 0; }
+    p { margin:0.8rem 0; }
+    ul, ol { padding-left:1.2rem; margin:0.6rem 0; }
+    li { margin:0.35rem 0; }
+    
+    /* ===== SEPARATOR STYLES ===== */
+    /* Base style for ALL dividers (light, for subchapters) */
+    hr {
+        border: none;
+        height: 1px;
+        background-color: #e0e0e0; /* ПРОСТОЙ ЦВЕТ без градиента */
+        margin: 36px 0;
+        opacity: 0.7;
+    }
+    
+    /* Dark divider for MAIN CHAPTERS */
+    hr.divider--major {
+        border: 0;
+        height: 3px; /* Исходная толщина */
+        background: linear-gradient(to right, transparent, #000, transparent); /* Исходный градиент */
+        border-radius: 2px; /* Исходный радиус */
+        margin: 50px 0; /* Исходный отступ */
+    }
+    /* ===== END SEPARATOR STYLES ===== */
+
+    strong em { font-weight:700; font-style:italic; }
+    header { background:#f6f8fa;border-bottom:1px solid #e1e4e8;padding:12px 18px;margin-bottom:18px; }
+    footer { border-top:1px solid #ddd; margin-top:1.8rem; padding-top:1rem; font-size:0.85rem; color:#555; }
+    footer .ref { font-size:0.8rem; color:#666; margin-top:0.3rem; }
+    
+    /* === Semantic content blocks === */
+    .historical-fact {
+      margin: 1.5em 0 1.5em 1rem;
+      padding: 1em 1.2em;
+      background: #f7f7f7;
+      border-left: 4px solid #555;
+      color: #111;
+      font-size: 1em;
+    }
+
+    /* === Стили для исторических справок === */
+    .historical-fact {
+      overflow-x: auto;
+      word-wrap: break-word;
+    }
+    
+    .historical-fact p {
+      margin: 0;
+    }
+	  
+    .final-thesis {
+  	  background: linear-gradient(to right, #f7f7f7, transparent);
+      margin-top: 2em;
+      padding-left: 1em;
+      border-left: 5px solid #333;
+      font-size: 1.05em;
+      font-weight: 600;
+     color: #222;
+    }
+    
+    /* ========== МОБИЛЬНАЯ АДАПТАЦИЯ ========== */
+    /* Базовый размер шрифта */
+    html {
+      font-size: 16px;
+    }
+
+    /* Настройки для телефонов (ширина до 600px) */
+    @media (max-width: 600px) {
+      html {
+        font-size: 18px;
+      }
+      body {
+        padding: 0 16px;
+      }
+      h1 {
+        font-size: 1.8rem;
+      }
+      h2 {
+        font-size: 1.3rem;
+      }
+      p {
+        margin: 1rem 0;
+      }
+      a {
+        padding: 6px 0;
+        display: inline-block;
+      }
+    }
+    
+  </style>
+</head>
+<body>
+
+<header>
+  <div style="max-width:860px;margin:0 auto;display:flex;align-items:center;gap:12px;">
+    <a href="/CyberSecurityAndSocialEngineering/index-rus.html" style="font-weight:700;color:#0366d6;text-decoration:none;font-size:1rem;">
+      ← Вернуться на главную
+    </a>
+    <div style="color:#444;font-size:0.95rem;">
+      CyberSecurity &amp; Social Engineering — главная страница
+    </div>
+  </div>
+</header>
+
+<main>
+<article>
+
+<h1>Хроники хардеринга системы андроид: поиск конфигурации, устойчивой к целевой атаке</h1>
+
+<div class="alert" style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 2rem 0;">
+  <strong style="color: #856404;">⚠️ Внимание!</strong>
+  <span style="color: #856404;"> Статья находится в разработке. Уточнения и дополнения вносятся по мере получения новых данных об устойчивости новых конфигураций безопасности и активности хакера.<br>Последнее обновление контента: 11.04.2026</span>
+</div>
+
+
+
+<!-- Начало блока перекрестных ссылок для статьи "Хроники хардеринга системы андроид и поиск конфигурации, устойчивой к целевой атаке" -->
+<hr>
+<p>Связанные страницы:</p>
+
+<li>
+    <a href="protecting-against-targeted-attacks-rus.html">
+        Целевые кибератаки на пользователей — как защитить свою Linux-систему
+    </a> — Меры кибербезопасности против целевых атак, основанные на опыте автора. Русская версия английской статьи на DebianWiki.
+</li>
+<li>
+    <a href="targeted-attack-analysis-rus.html">
+        Анализ предполагаемой целевой комплексной атаки
+    </a> — Описание предполагаемой сложной таргетированной атаки.
+</li>
+<li>
+    <a href="psychological-suppression-by-security-forces-rus.html">
+        Психологическое подавление человека силовыми структурами при помощи эффекта неверия
+    </a> — разбор природы эффекта неверия, механизмов давления, последствий и практических рекомендаций.
+</li>
+<li>
+    <a href="rigidity-of-expectations-in-threat-analysis-rus.html">
+        Ригидность ожиданий в анализе угроз
+    </a> — Проблема ригидности ожиданий при анализе угроз в кибербезопасности: почему опытный злоумышленник действует нестандартно (неочевидно).
+</li>
+<li>
+    <a href="from-science-to-worldview-rus.html">
+        От науки к мироосознанию: логика как опора против заблуждений
+    </a> — эссе о рациональности, осознанности и опасности «интуиции без критики».
+</li>
+<li>
+    <a href="three-types-of-intellect-rus.html">
+        Три вида интеллекта и их роль в устойчивости личности
+    </a> — аналитическое эссе о когнитивном, этическом и эмоциональном интеллекте как основе для целостного и устойчивого сознания.
+</li>
+<li>
+    <a href="information-and-behavioral-hygiene-for-working-with-a-pc-rus.html">
+        Информационная и поведенческая гигиена работы с ПК
+    </a> — Базовое практическое руководство по цифровой, поведенческой и информационной гигиене для пользователей персональных компьютеров.
+</li>
+<li>
+    <a href="dialectical-law-and-intuitive-insight-rus.html">
+        Диалектический закон и миф об «интуитивном прозрении»
+    </a> — философский анализ природы вдохновения и критического мышления.
+</li>
+<li>
+    <a href="laws-of-resilience-an-essay-on-system-survival-rus.html">
+        Законы устойчивости: эссе о выживании систем
+    </a> — Это эссе формулирует законы выживания систем: приоритет технологии и логистики над идеологией, компетентности над культурными барьерами, а управления и эффективности — над ресурсами и эффектностью. Текст о переходе от иллюзий к жесткой дисциплине результата.
+</li>
+
+
+<!-- Конец блока -->
+
+</article>
+
+  <footer>
+    <p class="ref">Материалы сайта посвящены анализу проблем кибернетической, социальной и психологической безопасности, противодействию тоталитарным режимам, деструктивным сектам и псевдонаучным культам, а также противодействию механизмам индивидуальных манипуляций. Отдельное внимание уделяется вопросам психологии, философии и устойчивого развития личности, способной осознанно и эффективно противостоять данным угрозам.
+
+Контент распространяется свободно и предназначен для обучения, исследований и осмысленного практического использования. Автор придерживается принципов научной добросовестности и критического мышления.</p>
+
+    <p>Автор: (blackcat568). Дата составления: (21.04.2026).</p>
+    <p>Лицензия: <a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank">CC0 1.0 Universal</a></p>
+  </footer>
+
+</main>
+
+</body>
+</html>

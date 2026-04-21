@@ -434,20 +434,6 @@
     <priority>0.3</priority>
   </url>
   
-  <url>
-    <loc>https://blackcat568.github.io/CyberSecurityAndSocialEngineering/robots.txt</loc>
-    <lastmod>2026-04-15</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  
-  <url>
-    <loc>https://blackcat568.github.io/CyberSecurityAndSocialEngineering/ai-training-policy.txt</loc>
-    <lastmod>2026-04-15</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  
 
 
 </urlset>

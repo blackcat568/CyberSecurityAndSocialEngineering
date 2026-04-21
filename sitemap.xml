@@ -419,13 +419,7 @@
   </url>
   
   <!-- Лицензии и служебные файлы -->
-  <url>
-    <loc>https://blackcat568.github.io/CyberSecurityAndSocialEngineering/LICENSE</loc>
-    <lastmod>2026-04-15</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  
+
   <url>
     <loc>https://blackcat568.github.io/CyberSecurityAndSocialEngineering/license.html</loc>
     <lastmod>2026-04-15</lastmod>
@@ -435,13 +429,6 @@
   
   <url>
     <loc>https://blackcat568.github.io/CyberSecurityAndSocialEngineering/license-rus.html</loc>
-    <lastmod>2026-04-15</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  
-  <url>
-    <loc>https://blackcat568.github.io/CyberSecurityAndSocialEngineering/README.md</loc>
     <lastmod>2026-04-15</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
@@ -461,11 +448,6 @@
     <priority>0.3</priority>
   </url>
   
-  <url>
-    <loc>https://blackcat568.github.io/CyberSecurityAndSocialEngineering/sitemap.xml</loc>
-    <lastmod>2026-04-15</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
+
 
 </urlset>

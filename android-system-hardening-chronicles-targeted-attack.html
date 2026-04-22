@@ -182,7 +182,127 @@
   <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: 2026-04-11</span>
 </div>
 
+<p>This material is a direct supplement to the main article:<br />
+<a href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/system-hardening-chronicles-targeted-attack.html">"System Hardening Chronicles: Seeking a Configuration Resilient to Targeted Attacks"</a>.<br />
+It describes the experience with Android mobile devices, which confirms and expands upon the conclusions drawn for desktop systems.</p>
 
+<h2>1. Introduction: Android as a Target of Targeted Attacks</h2>
+
+<h3>1.1 Context</h3>
+
+<p>The attacking party is the same as in the main article: presumably a group with at least 20 years of experience in targeted attacks, possessing both technological and socio-technical methods.</p>
+
+<p>This section documents an incident involving a mobile device that occurred <strong>before the start of systematic hardening</strong> of the desktop system. Nevertheless, the nature of the breach and the level of access gained by the attacker fully correspond to the attack model described in the main document.</p>
+
+<h3>1.2 The Role of Mobile Devices in the Attack</h3>
+
+<p>The analysis suggests that a compromised Android smartphone can be used by the attacker as:</p>
+
+<ul>
+<li>a means of persistent audio and video surveillance;</li>
+<li>a channel for traffic leakage (including encrypted data before transmission);</li>
+<li>a data collection point from Google accounts and other services.</li>
+</ul>
+
+<p>At the same time, the <strong>standard factory configuration of Android</strong> (even with up-to-date security patches) does not provide resilience against a targeted adversary.</p>
+
+<h2>2. Description of Device 1 (Initial Configuration)</h2>
+
+<h3>2.1 Device Specifications</h3>
+
+</table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Model</td>
+<td>ZTE Blade A522</td>
+</tr>
+<tr>
+<td>Purchase Date</td>
+<td>April 2019</td>
+</tr>
+<tr>
+<td>Condition at Purchase</td>
+<td>New device, receiving security updates</td>
+</tr>
+<tr>
+<td>Android Version</td>
+<td>7.1.1</td>
+</tr>
+<tr>
+<td>Kernel Version</td>
+<td>3.18.31-perf</td>
+</tr>
+<tr>
+<td>Baseband Version</td>
+<td>P817E53B01</td>
+</tr>
+<tr>
+<td>Build Number</td>
+<td>GEN_CIS_A511_V1.0</td>
+</tr>
+</tbody>
+</table>
+
+<h3>2.2 Software Environment and Network Settings</h3>
+
+<ul>
+<li><strong>Security Software</strong>: None installed.</li>
+<li><strong>Application Sources</strong>: Official Google Play only.</li>
+<li><strong>Google Account</strong>: Connected.</li>
+<li><strong>SIM Card</strong>: Installed.</li>
+<li><strong>Internet Access</strong>: Mobile network + Wi-Fi (router under user's control).</li>
+</ul>
+
+<h3>2.3 User Actions</h3>
+
+<p>The device was used as a primary smartphone without any additional security measures (bootloader lock, custom firmware, firewall, system-level permission control, etc.).</p>
+
+<h2>3. Detected Compromise</h2>
+
+<h3>3.1 Date of Detection</h3>
+
+<p>April 2020 (approximately 12 months after initial use).</p>
+
+<h3>3.2 Capabilities Gained by the Attacker</h3>
+
+<p>As a result of remote access (without physical contact with the device), the attacker gained the following capabilities:</p>
+
+<ul>
+<li><strong>Audio Espionage</strong>
+<ul>
+<li>Real-time interception of all phone calls.</li>
+<li>Persistent background activation of the microphone, even when no active call is in progress or the system dialer app is not running.</li>
+<li>Recording of ambient sound near the smartphone at any time.</li>
+</ul>
+</li>
+<li><strong>Video Espionage</strong><br />
+Full remote access to both front and rear cameras — the ability to view the video stream from any camera at any moment.</li>
+<li><strong>Network Traffic Interception</strong><br />
+Complete capability to read all internet traffic from the device (including traffic from applications using HTTPS, either before application-level encryption or after decryption).</li>
+</ul>
+
+<h3>3.3 Commentary</h3>
+
+<p>The achieved level of access indicates the exploitation of one or more <strong>zero-day</strong> vulnerabilities in the kernel (3.18.31-perf), baseband firmware, or Android 7.1.1 components that were not closed by security updates. The level of control gained is equivalent to a full remote rootkit.</p>
+
+<h2>4. Status and Limitations of Further Investigation</h2>
+
+<div class="warning">
+<p>⚠️ <strong>Physical Damage to the Device</strong><br />
+Subsequently, the smartphone suffered physical damage, making further forensic investigation (firmware dumping, log analysis, identification of the attack vector and traces of the attacker's presence) impossible.</p>
+</div>
+
+<p>Thus, the exact method of intrusion and the exploited vulnerabilities remain unidentified. However, <strong>the very fact of gaining such extensive capabilities</strong> in the absence of any protective measures fully confirms the thesis of the main article:</p>
+
+<blockquote>
+<p>The standard (factory) configuration of any device, whether desktop Linux or Android, is not resilient against a targeted attack by a professional group.</p>
+</blockquote>
 
 <!-- Start of cross-reference block for "Android System Hardening Chronicles: In Search of a Configuration Resilient to Targeted Attacks" -->
 <hr>

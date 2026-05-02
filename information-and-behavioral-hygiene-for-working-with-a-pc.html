@@ -1734,6 +1734,8 @@ Let me know if you need any adjustments to the translation.
 
 <p>Important changes, system settings, notes, ideas, logins, passwords — <strong>all of this should be recorded in reliable, unified, and, if possible, encrypted diaries, journals, notebooks, or databases</strong>.</p>
 
+<p>Even if the data doesn't seem sensitive to you, an attacker can still use it for social engineering or to identify psychological weaknesses.</p>
+
 <p>Do not store information in a heap across hundreds of files in a single "Documents" folder.</p>
 
 <p>Create a <strong>rational tree-like folder structure</strong> and use systems that support encryption and convenient import/export, for example <strong>CherryTree</strong>. Login-password pairs and related account data are best stored in encrypted databases like <strong>KeePassXC</strong>. Set up automatic backup of these databases at system startup or shutdown — this minimizes the risk of data loss and saves you from extra routine.</p>
@@ -1752,9 +1754,9 @@ Let me know if you need any adjustments to the translation.
 
 <h3 id="section6-2">6.2. Don't Keep Everything in Your Head</h3>
 
-<p>As mentioned above — record all important information in encrypted diaries, journals, notebooks, and databases. Be sure to provide entries with comments and explanations. <strong>Do not try to keep in your head what can be kept in a reliable database</strong>.</p>
+<p>As mentioned above — record all important information in encrypted diaries, journals, notebooks, and databases. Be sure to provide entries with comments and explanations.</p>
 
-<p>Our brain is already overloaded: life in the modern world is often cruel and unfair. Adding to this the task of remembering dozens of logins, tips, ideas, and important notes is an extra burden.</p>
+<p>Our brain is already overloaded: life in the modern world is often cruel and unfair. Adding to this the task of remembering dozens of logins, tips, ideas, and important notes is an extra burden. <strong>Do not try to keep in your head what can be kept in a reliable database</strong>.</p>
 
 <p>Before you is a computer and modern 2026 databases — a toolkit of almost fantastic possibilities, <strong>which allows freeing the consciousness for creativity, analysis, and truly important matters</strong>.</p>
 
@@ -1779,11 +1781,11 @@ Let me know if you need any adjustments to the translation.
   <li><strong>a working copy of the repository</strong>, fully replicating its structure and intended for editing.</li>
 </ul>
 
-<p>To make changes to a repository, it is recommended to set up <strong>SSH access</strong> (specifically the client, not the server). After configuring SSH, you can securely send changes made in the local working copy back to the repository.</p>
+<p>To push changes to the repository, you can use the Git utility directly with token-based access, or set up <strong>SSH access</strong> (client-side, not server) using an SSH key. After configuring the Git utility, you will be able to safely push changes made in your local working copy back to the repository.</p>
 
-<p>Working with a local copy provides an important advantage:<br>you can <strong>edit the site offline</strong> and immediately check the result in a browser by simply opening HTML files from the working directory on your PC. This significantly speeds up development and reduces errors.</p>
+<p>Working with a local copy provides an important advantage:<br>you can <strong>edit the site offline</strong> and immediately preview the results in your browser by simply opening the HTML files from your working directory on your PC. This significantly speeds up development and reduces the number of errors.</p>
 
-<p>After the initial SSH connection setup, interaction with GitHub boils down to a few short and simple terminal commands. Yes, the setup stage may seem complex, but once completed, you save a significant amount of time and effort when developing websites or publishing materials on GitHub.</p>
+<p>After the initial setup of the Git utility via SSH connection or token, interacting with GitHub comes down to a few short and simple terminal commands. Yes, the setup phase may seem complicated, but once it's complete, you save a significant amount of time and effort when developing websites or publishing materials to GitHub.</p>
 
 <p>In some cases, the SSH client can be configured to work via port <strong>TCP 443</strong> instead of the standard port 22 — for example, due to network or provider restrictions, or for increased security.</p>
 

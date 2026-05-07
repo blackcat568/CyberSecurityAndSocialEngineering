@@ -96,13 +96,6 @@
   </url>
   
   <url>
-    <loc>https://blackcat568.github.io/CyberSecurityAndSocialEngineering/protecting-against-targeted-attacks-rus.html</loc>
-    <lastmod>2026-04-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
     <loc>https://blackcat568.github.io/CyberSecurityAndSocialEngineering/psychological-defense-against-manipulation.html</loc>
     <lastmod>2026-04-25</lastmod>
     <changefreq>monthly</changefreq>
@@ -188,13 +181,6 @@
   
   <url>
     <loc>https://blackcat568.github.io/CyberSecurityAndSocialEngineering/fighting-ai-and-the-don-quixotes-of-the-21st-century-2.html</loc>
-    <lastmod>2026-04-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>https://blackcat568.github.io/CyberSecurityAndSocialEngineering/protecting-against-targeted-attacks.html</loc>
     <lastmod>2026-04-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -434,6 +420,4 @@
     <priority>0.3</priority>
   </url>
   
-
-
 </urlset>

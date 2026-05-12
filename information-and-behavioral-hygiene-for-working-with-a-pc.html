@@ -406,6 +406,7 @@
                 <li style="margin: 0.4rem 0;"><a href="#section6-4">6.4. Switching Between Workspaces</a></li>
                 <li style="margin: 0.4rem 0;"><a href="#section6-5">6.5. Terminal Logging</a></li>
                 <li style="margin: 0.4rem 0;"><a href="#section6-6">6.6. System Monitor Applet</a></li>
+                <li style="margin: 0.4rem 0;"><a href="#section6-7">6.7. Backup Using the Simple rsync Utility</a></li>
             </ul>
         </li>
         <li style="margin: 0.5rem 0;">
@@ -2048,6 +2049,144 @@ Let me know if you need any adjustments to the translation.
 <a href="#section0" style="text-decoration: none;"> ↑ To Table of Contents </a> |
 
 <a href="#section6" style="text-decoration: none;"> ↑ To Chapter Start </a>
+
+<hr>
+
+<h3 id="section6-7">6.7. Backup Using the Simple rsync Utility</h3>
+
+<p>Backup is a very important step in system maintenance. It is a critical action — without regular backups, you risk losing all your hard work (potentially years of it).</p>
+
+<p>For copying, I use a simple console utility <strong>rsync</strong>, which is available for installation from the repositories in all Linux distributions.</p>
+
+<p>I perform backups manually because I work with important data and want to personally verify the success of each backup. Automation is good, but when it comes to years of work, an extra check never hurts.</p>
+
+<hr>
+
+<p><strong><i>📦 Backup Storage Strategy</i></strong></p>
+
+<p>I recommend storing <strong>at least three recent system backups</strong> (in archived form):</p>
+
+<ul>
+  <li><strong>1 most recent archive</strong> — on the hard drive where the system is installed (for quick access).</li>
+  <li><strong>3 most recent archives</strong> — on a flash drive (for protection if the main drive fails).</li>
+  <li><strong>The latest backup archive</strong> — encrypt if possible and send it to the cloud for storage. For the scenario where both the hard drive and the flash drive fail simultaneously. You must be prepared for any unforeseen circumstances and guarantee the safety of your work.</li>
+</ul>
+
+<p>Yes, this sounds like paranoia. But an experienced user knows: hard drives die, flash drives get corrupted or lost, and clouds fall (figuratively speaking, of course). Insurance is never redundant.</p>
+
+<hr>
+
+<p><strong><i>⚙️ Directory Preparation and Cleanup</i></strong></p>
+
+<p><strong><em>Note:</em></strong> Tested on Debian 13 (Trixie). If necessary, replace the paths and names in the commands to match your system (for example, change <code>debian13backup</code> to <code>ubuntubackup</code> or <code>fedora-backup</code>).</p>
+
+<p>Create the following folders:</p>
+
+<ul>
+  <li>as root: <code>/backup</code></li>
+  <li>as user: <code>/home/user/Documents/userlogs</code></li>
+  <li>as user: <code>/home/user/Documents/Debianarchives/</code></li>
+</ul>
+
+<p>Before creating a new backup, it is recommended to clean the <code>/backup</code> folder (in case you are making a new copy and forgot to delete the old one):</p>
+
+<pre><code>sudo rm -rf /backup/*</code></pre>
+
+<p>If necessary, clear the cache of browsers and other programs — this will reduce the archive size and save storage space.</p>
+
+<hr>
+
+<p><strong><i>🔄 PC Backup with Logging</i></strong></p>
+
+<p><em>Note:</em> The following commands <strong>do not back up Docker containers</strong> — those need to be saved separately.</p>
+
+<pre><code># PC backup with end-of-report logging
+sudo rsync -aAXv / /backup/ \
+--exclude=/backup \
+--exclude="/home/user/VirtualBox VMs" \
+--exclude=/dev \
+--exclude=/proc \
+--exclude=/sys \
+--exclude=/run \
+--exclude=/mnt \
+--exclude=/media \
+--exclude=/swap \
+--exclude=/tmp \
+--info=stats2 2>&1 | tail -100 | tee -a "/home/user/Documents/userlogs/rsync-backup-console.log"</code></pre>
+
+<hr>
+
+<p><strong><i>📦 Archiving the Backup</i></strong></p>
+
+<p>To store backups and save space, they need to be archived. The <code>tar</code> command is used for this purpose.</p>
+
+<p>The commands below create an archive of the contents of the <code>/backup</code> folder (without including the folder itself in the archive path) and save it with a name containing the current date.</p>
+
+<hr>
+
+<p><strong><i>🔒 Basic Archiving Option</i></strong></p>
+
+<pre><code># Creating an archive with success verification
+LOG_FILE=/home/user/Documents/userlogs/backup-archive.log
+ARCHIVE="/home/user/Documents/Debianarchives/debian13backup-$(date +%d-%m-%Y).tar.gz"
+
+echo "=== Start: $(date) ===" > "$LOG_FILE"
+cd /backup && tar -czpvf "$ARCHIVE" ./ 2>&1 | tail -50 >> "$LOG_FILE"
+
+STATUS=$?
+echo "--- Result ---" >> "$LOG_FILE"
+if [ $STATUS -eq 0 ]; then
+    echo "✅ SUCCESS" >> "$LOG_FILE"
+    echo "Size: $(du -h "$ARCHIVE" | cut -f1)" >> "$LOG_FILE"
+else
+    echo "❌ ERROR: $STATUS" >> "$LOG_FILE"
+fi</code></pre>
+
+<hr>
+
+<p><strong><i>🛡️ Advanced Archiving Option (with Integrity Checking)</i></strong></p>
+
+<p>This option additionally saves MD5 and SHA256 hashes, permissions, owner, and modification time — everything that might be useful to verify that the copy hasn't been damaged.</p>
+
+<pre><code># Creating an archive with success verification and integrity control attributes
+LOG_FILE=/home/user/Documents/userlogs/backup-archive.log
+ARCHIVE="/home/user/Documents/Debianarchives/debian13backup-$(date +%d-%m-%Y).tar.gz"
+
+echo "=== Start: $(date) ===" > "$LOG_FILE"
+cd /backup && tar -czpvf "$ARCHIVE" ./ 2>&1 | tail -50 >> "$LOG_FILE"
+
+STATUS=$?
+echo "--- Result ---" >> "$LOG_FILE"
+if [ $STATUS -eq 0 ]; then
+    echo "✅ SUCCESS" >> "$LOG_FILE"
+    echo "Size: $(du -h "$ARCHIVE" | cut -f1) ($(stat -c %s "$ARCHIVE") bytes)" >> "$LOG_FILE"
+    echo "Checksum (md5): $(md5sum "$ARCHIVE" | cut -d' ' -f1)" >> "$LOG_FILE"
+    echo "Checksum (sha256): $(sha256sum "$ARCHIVE" | cut -d' ' -f1)" >> "$LOG_FILE"
+    echo "Permissions: $(stat -c %A/%a "$ARCHIVE")" >> "$LOG_FILE"
+    echo "Owner: $(stat -c %U:%G "$ARCHIVE")" >> "$LOG_FILE"
+    echo "Modification time: $(stat -c %y "$ARCHIVE")" >> "$LOG_FILE"
+else
+    echo "❌ ERROR: $STATUS" >> "$LOG_FILE"
+fi</code></pre>
+
+<hr>
+
+<p><strong><i>🧹 Cleanup After Successful Archiving</i></strong></p>
+
+<p>Once the archive has been created and verified, the unarchived backup folder can be cleaned — this will free up disk space.</p>
+
+<pre><code>sudo rm -rf /backup/*</code></pre>
+
+<hr>
+
+<p><strong><i>💡 The Bottom Line</i></strong></p>
+
+<p>Regular backups are not a whim — they are the only thing standing between you and disaster in the event of a disk failure or fatal error. <strong>Store at least three copies: locally, on a flash drive, and (ideally) in the cloud.</strong> Use <code>rsync</code> for synchronization, <code>tar</code> for archiving, and checksums to ensure archive integrity.</p>
+
+<p>And remember: failing or forgetting to make a timely system backup is one of the most dangerous mistakes you can make when working with a PC.</p>
+
+<a href="#section0" style="text-decoration: none;">↑ Back to contents</a> | 
+<a href="#section6" style="text-decoration: none;">↑ Back to chapter top</a>
 
 <hr>
 

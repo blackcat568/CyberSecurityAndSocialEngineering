@@ -4063,6 +4063,78 @@ ERR = (Reactions + Comments + Reposts) / Views × 100%
   <li>receiving new commands to correct problems and executing them again.</li>
 </ul>
 
+<div style="margin: 2rem 0; text-align: center;">
+  
+  <!-- Block 1: AI (top) -->
+  <div style="max-width: 300px; margin: 0 auto 0.5rem auto; background: #e8e8e0; border: 1px solid #c0c0b0; border-radius: 8px; padding: 1rem;">
+    <div style="font-size: 2rem;">🤖</div>
+    <div style="font-weight: bold;">AI Assistant</div>
+    <div style="font-size: 0.8rem; color: #2c5f2d;">(browser-based web version)</div>
+    <hr style="margin: 0.5rem 0;">
+    <div style="text-align: left; font-size: 0.85rem;">
+      <div>📝 Suggests commands</div>
+      <div>🔍 Analyzes error logs</div>
+      <div>🔄 Suggests solutions</div>
+      <div>📄 Generates reports</div>
+    </div>
+  </div>
+  
+  <!-- Two-way arrow between AI and operator -->
+  <div style="font-size: 1.3rem; color: #8b0000; margin: 0.25rem 0;">
+    ↕️
+  </div>
+  <div style="font-size: 0.7rem; color: #8b0000; margin-top: -0.5rem; margin-bottom: 0.25rem;">
+    commands → ← error logs
+  </div>
+  
+  <!-- Block 2: Human operator (center) -->
+  <div style="max-width: 300px; margin: 0 auto; background: #fff0f0; border: 2px solid #8b0000; border-radius: 8px; padding: 1rem;">
+    <div style="font-size: 2rem;">🧑‍💻</div>
+    <div style="font-weight: bold;">Operator</div>
+    <div style="font-size: 0.8rem; color: #8b0000;">(creatively thinking mediator)</div>
+    <hr style="margin: 0.5rem 0;">
+    <div style="text-align: left; font-size: 0.85rem;">
+      <div>📋 Copies AI commands → terminal</div>
+      <div>📤 Sends error logs → AI</div>
+      <div>⚙️ Executes commands</div>
+      <div>🧠 Analyzes results</div>
+      <div>🔄 Restarts the cycle</div>
+    </div>
+  </div>
+  
+  <!-- Two-way arrow between operator and terminal -->
+  <div style="font-size: 1.3rem; color: #8b0000; margin: 0.25rem 0;">
+    ↕️
+  </div>
+  <div style="font-size: 0.7rem; color: #8b0000; margin-top: -0.5rem; margin-bottom: 0.25rem;">
+    commands → ← execution logs
+  </div>
+  
+  <!-- Block 3: Linux terminal (bottom) -->
+  <div style="max-width: 300px; margin: 0 auto 0.5rem auto; background: #1a1a1a; border: 1px solid #c0c0b0; border-radius: 8px; padding: 1rem;">
+    <div style="font-size: 2rem;">🐧</div>
+    <div style="font-weight: bold; color: #f5f5f0;">Linux Terminal</div>
+    <div style="font-size: 0.8rem; color: #8bc34a;">(execution environment)</div>
+    <hr style="margin: 0.5rem 0;">
+    <div style="text-align: left; font-size: 0.85rem; color: #f5f5f0;">
+      <div style="color: #8bc34a;">$ ./setup.sh</div>
+      <div style="color: #ffb74d;">> error: port already in use</div>
+      <div style="color: #8bc34a;">$ sudo iptables -A ...</div>
+      <div style="color: #ffb74d;">> OK: rule added</div>
+      <div style="color: #8bc34a;">$ journalctl -u sshd</div>
+      <div style="color: #ffb74d;">> log: connection established</div>
+      <div style="font-size: 0.75rem; color: #888; margin-top: 0.5rem;">📋 generating logs about command success/failure and system state</div>
+    </div>
+  </div>
+  
+</div>
+
+<!-- Caption below the diagram -->
+<p style="text-align: center; font-size: 0.85rem; color: #4a4a40; margin-top: 1rem;">
+  <strong>Diagram 1.</strong> The role of the human operator as a mediator between the AI and the Linux terminal.<br>
+  <span style="font-size: 0.75rem;">(two-way arrows show information circulation: commands — down, logs and results — up)</span>
+</p>
+
 <p>Thus, the human becomes a creatively thinking operator, facilitating interactive communication between AI and the system. This significantly increases Bash programming efficiency and accelerates complex system configurations, even for users without deep Linux knowledge. The primary required skills are logical and creative thinking.</p>
 
 <a href="#section0" style="text-decoration: none;"> ↑ To Table of Contents </a> |

@@ -588,6 +588,105 @@ Projects of this level never lack funding. The state-customer, striving for cogn
 
 <p>The manipulator entrusted with applying the system very intensively abused its capabilities to settle personal scores with the target. The thirst for revenge blinded him, and he forgot about caution. As a result, excessively harsh boundary testing led to the target (the author) switching to maximum self-defense mode, identifying the manipulator and everything associated with him as an unequivocally hostile structure.</p>
 
+<div style="margin: 2rem 0; padding: 1rem; background: #f5f5f0; border-radius: 8px; text-align: center; font-family: 'Georgia', 'Times New Roman', Times, serif;">
+  
+  <!-- Graph title -->
+  <div style="margin-bottom: 1rem; font-weight: bold;">📈 "Pressure → Reaction Value" Curve</div>
+  
+  <!-- Main SVG diagram -->
+  <svg width="100%" max-width="650" height="350" viewBox="0 0 550 320" style="background: #fff; border-radius: 8px; border: 1px solid #d0d0c0; margin: 0 auto; display: block;">
+    
+    <!-- Y-axis (Reaction) -->
+    <line x1="60" y1="20" x2="60" y2="280" stroke="#333" stroke-width="2" marker-end="url(#arrowY)"/>
+    <text x="-75" y="170" transform="rotate(-90, 20, 150)" fill="#333" font-size="14" font-weight="bold">Data value (reaction)</text>
+    
+    <!-- X-axis (Pressure) — extended to 520 -->
+    <line x1="60" y1="280" x2="520" y2="280" stroke="#333" stroke-width="2" marker-end="url(#arrowX)"/>
+    <text x="290" y="310" fill="#333" font-size="14" font-weight="bold" text-anchor="middle">Pressure level →</text>
+    
+    <!-- Arrows -->
+    <defs>
+      <marker id="arrowY" markerWidth="10" markerHeight="10" refX="5" refY="10" orient="auto">
+        <path d="M0,10 L5,0 L10,10" fill="#333"/>
+      </marker>
+      <marker id="arrowX" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+        <path d="M0,0 L10,5 L0,10" fill="#333"/>
+      </marker>
+    </defs>
+    
+    <!-- Optimal pressure curve (green, hyperbolic type) -->
+    <path d="M 80,260 
+             Q 120,240 160,200 
+             Q 200,150 240,120 
+             Q 280,90 320,75 
+             Q 360,60 400,55
+             L 430,54" 
+          stroke="#2c5f2d" stroke-width="3" fill="none" stroke-linecap="round"/>
+    
+    <!-- Optimum point (maximum slope before flattening) -->
+    <circle cx="320" cy="75" r="5" fill="#d4a017" stroke="#8b0000" stroke-width="2"/>
+    
+    <!-- Optimum zone (vertical band) -->
+    <rect x="280" y="20" width="80" height="260" fill="rgba(212, 160, 23, 0.15)" rx="4"/>
+    <text x="320" y="95" fill="#8b0000" font-size="11" text-anchor="middle" font-weight="bold">← OPTIMUM</text>
+    <text x="320" y="110" fill="#8b0000" font-size="11" text-anchor="middle" font-weight="bold">ZONE →</text>
+    
+    <!-- Critical threshold (vertical line) — shifted to 450 -->
+    <line x1="450" y1="20" x2="450" y2="280" stroke="#8b0000" stroke-width="2" stroke-dasharray="8,4"/>
+    <text x="460" y="55" fill="#8b0000" font-size="11" font-weight="bold">Critical</text>
+    <text x="460" y="70" fill="#8b0000" font-size="11" font-weight="bold">threshold</text>
+    <text x="465" y="85" fill="#8b0000" font-size="10">(breakdown/defense)</text>
+    
+    <!-- Manipulator's error zone — gradual decline (elongated curve) -->
+    <!-- Transition point: x=450, y=54 → gradual drop to x=510, y=260 -->
+    <path d="M 450,54 
+             Q 465,90 480,140 
+             Q 495,200 510,260" 
+          stroke="#8b0000" stroke-width="3" fill="none" stroke-linecap="round"/>
+    
+    <!-- Point where the manipulator crossed the threshold -->
+    <circle cx="450" cy="54" r="5" fill="#8b0000" stroke="#fff" stroke-width="1.5"/>
+    
+    <!-- Manipulator's error marker — placed above the decline zone -->
+    <text x="490" y="170" fill="#8b0000" font-size="10" font-weight="bold" transform="rotate(-15, 490, 170)">❌ ERROR</text>
+    <text x="485" y="185" fill="#8b0000" font-size="10" font-weight="bold" transform="rotate(-15, 485, 140)">MANIPULATOR</text>
+    
+    <!-- Label: irreversible transition (shifted right) -->
+    <text x="485" y="240" fill="#8b0000" font-size="9" font-style="italic">irreversible transition</text>
+    <text x="485" y="253" fill="#8b0000" font-size="9" font-style="italic">to maximum</text>
+    <text x="485" y="266" fill="#8b0000" font-size="9" font-style="italic">self-defense</text>
+    
+    <!-- Area of efficiency decline (expanded fill) -->
+    <rect x="445" y="100" width="65" height="180" fill="rgba(139, 0, 0, 0.1)" rx="4"/>
+    
+    <!-- X-axis labels at the bottom -->
+    <text x="60" y="295" fill="#666" font-size="10">minimal</text>
+    <text x="500" y="295" fill="#666" font-size="10">maximal</text>
+    
+  </svg>
+  
+  <!-- Legend -->
+  <div style="margin-top: 1rem; font-size: 0.85rem; color: #4a4a40; border-top: 1px solid #d0d0c0; padding-top: 0.75rem;">
+    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
+      <span style="display: inline-block; width: 12px; height: 12px; background: #2c5f2d; border-radius: 2px;"></span>
+      <span>Optimal pressure curve</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
+      <span style="display: inline-block; width: 12px; height: 12px; background: #d4a017; border-radius: 10px;"></span>
+      <span>Optimal calibration point</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
+      <span style="display: inline-block; width: 12px; height: 12px; background: none; border-left: 2px dashed #8b0000;"></span>
+      <span>Breakdown threshold</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <span style="display: inline-block; width: 12px; height: 12px; background: #8b0000; border-radius: 2px;"></span>
+      <span>Error → transition to self-defense</span>
+    </div>
+  </div>
+  
+</div>
+
 <p>This failure is related to the personnel error of the employers, who hired a person who places personal ambitions above substantive contract fulfillment to test the system.</p>
 
 <p>As the author suggests, the employer made this decision because they have no other people, and their system is already experiencing a personnel shortage of military AI operators. That is, the system suffers from a shortage of specialists and is forced to take risks, hiring even very questionable individuals.</p>

@@ -553,6 +553,105 @@
 
 <p>Манипулятор, которому поручили применение системы, очень интенсивно злоупотреблял возможностями для сведения личных счетов с целевым субъектом. Жажда мести ослепила его, и он забыл про осторожность. В итоге чрезмерно жёсткое тестирование границ привело к тому, что целевой субъект (автор) перешёл в режим максимальной самозащиты, определив манипулятора и всё, что с ним связано, как однозначно враждебную структуру.</p>
 
+<div style="margin: 2rem 0; padding: 1rem; background: #f5f5f0; border-radius: 8px; text-align: center; font-family: 'Georgia', 'Times New Roman', Times, serif;">
+  
+  <!-- Заголовок графика -->
+  <div style="margin-bottom: 1rem; font-weight: bold;">📈 Кривая «Давление → Ценность реакции»</div>
+  
+  <!-- Основная SVG схема -->
+  <svg width="100%" max-width="650" height="350" viewBox="0 0 550 320" style="background: #fff; border-radius: 8px; border: 1px solid #d0d0c0; margin: 0 auto; display: block;">
+    
+    <!-- Ось Y (Реакция) -->
+    <line x1="60" y1="20" x2="60" y2="280" stroke="#333" stroke-width="2" marker-end="url(#arrowY)"/>
+    <text x="-75" y="170" transform="rotate(-90, 20, 150)" fill="#333" font-size="14" font-weight="bold">Ценность данных (реакция)</text>
+    
+    <!-- Ось X (Давление) — удлинена до 520 -->
+    <line x1="60" y1="280" x2="520" y2="280" stroke="#333" stroke-width="2" marker-end="url(#arrowX)"/>
+    <text x="290" y="310" fill="#333" font-size="14" font-weight="bold" text-anchor="middle">Уровень давления →</text>
+    
+    <!-- Стрелки -->
+    <defs>
+      <marker id="arrowY" markerWidth="10" markerHeight="10" refX="5" refY="10" orient="auto">
+        <path d="M0,10 L5,0 L10,10" fill="#333"/>
+      </marker>
+      <marker id="arrowX" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+        <path d="M0,0 L10,5 L0,10" fill="#333"/>
+      </marker>
+    </defs>
+    
+    <!-- Оптимальная кривая давления (зелёная, гиперболического типа) -->
+    <path d="M 80,260 
+             Q 120,240 160,200 
+             Q 200,150 240,120 
+             Q 280,90 320,75 
+             Q 360,60 400,55
+             L 430,54" 
+          stroke="#2c5f2d" stroke-width="3" fill="none" stroke-linecap="round"/>
+    
+    <!-- Точка оптимума (максимальный наклон перед сглаживанием) -->
+    <circle cx="320" cy="75" r="5" fill="#d4a017" stroke="#8b0000" stroke-width="2"/>
+    
+    <!-- Зона оптимума (вертикальная полоса) -->
+    <rect x="280" y="20" width="80" height="260" fill="rgba(212, 160, 23, 0.15)" rx="4"/>
+    <text x="320" y="95" fill="#8b0000" font-size="11" text-anchor="middle" font-weight="bold">← ЗОНА</text>
+    <text x="320" y="110" fill="#8b0000" font-size="11" text-anchor="middle" font-weight="bold">ОПТИМУМА →</text>
+    
+    <!-- Критический порог (вертикальная линия) — сдвинут на 450 -->
+    <line x1="450" y1="20" x2="450" y2="280" stroke="#8b0000" stroke-width="2" stroke-dasharray="8,4"/>
+    <text x="460" y="55" fill="#8b0000" font-size="11" font-weight="bold">Критический</text>
+    <text x="460" y="70" fill="#8b0000" font-size="11" font-weight="bold">порог</text>
+    <text x="465" y="85" fill="#8b0000" font-size="10">(срыв/защита)</text>
+    
+    <!-- Зона ошибки манипулятора — плавный спад (удлинённая кривая) -->
+    <!-- Точка перехода: x=450, y=54 → плавное падение до x=510, y=260 -->
+    <path d="M 450,54 
+             Q 465,90 480,140 
+             Q 495,200 510,260" 
+          stroke="#8b0000" stroke-width="3" fill="none" stroke-linecap="round"/>
+    
+    <!-- Точка, где манипулятор пересёк порог -->
+    <circle cx="450" cy="54" r="5" fill="#8b0000" stroke="#fff" stroke-width="1.5"/>
+    
+    <!-- Маркер ошибки манипулятора — размещён над зоной падения -->
+    <text x="490" y="170" fill="#8b0000" font-size="10" font-weight="bold" transform="rotate(-15, 490, 170)">❌ ОШИБКА</text>
+    <text x="485" y="185" fill="#8b0000" font-size="10" font-weight="bold" transform="rotate(-15, 485, 140)">МАНИПУЛЯТОРА</text>
+    
+    <!-- Подпись: необратимый переход (сдвинута вправо) -->
+    <text x="485" y="240" fill="#8b0000" font-size="9" font-style="italic">необратимый переход</text>
+    <text x="485" y="253" fill="#8b0000" font-size="9" font-style="italic">к максимальной</text>
+    <text x="485" y="266" fill="#8b0000" font-size="9" font-style="italic">самозащите</text>
+    
+    <!-- Область падения эффективности (расширенная заливка) -->
+    <rect x="445" y="100" width="65" height="180" fill="rgba(139, 0, 0, 0.1)" rx="4"/>
+    
+    <!-- Подпись оси X внизу -->
+    <text x="60" y="295" fill="#666" font-size="10">минимальное</text>
+    <text x="500" y="295" fill="#666" font-size="10">максимальное</text>
+    
+  </svg>
+  
+  <!-- Пояснение -->
+  <div style="margin-top: 1rem; font-size: 0.85rem; color: #4a4a40; border-top: 1px solid #d0d0c0; padding-top: 0.75rem;">
+    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
+      <span style="display: inline-block; width: 12px; height: 12px; background: #2c5f2d; border-radius: 2px;"></span>
+      <span>Оптимальная кривая давления</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
+      <span style="display: inline-block; width: 12px; height: 12px; background: #d4a017; border-radius: 10px;"></span>
+      <span>Точка оптимальной калибровки</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
+      <span style="display: inline-block; width: 12px; height: 12px; background: none; border-left: 2px dashed #8b0000;"></span>
+      <span>Порог срыва</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <span style="display: inline-block; width: 12px; height: 12px; background: #8b0000; border-radius: 2px;"></span>
+      <span>Ошибка → переход к самозащите</span>
+    </div>
+  </div>
+  
+</div>
+
 <p>Этот провал связан с кадровой ошибкой нанимателей, нанявших для тестирования системы человека, ставящего личные амбиции выше исполнения контракта по существу.</p>
 
 <p>Как предполагает автор, наниматель принял такое решение, потому что других людей у него нет, и его система и без того испытывает кадровый голод в операторах военных ИИ. То есть система испытывает дефицит специалистов и вынуждена идти на риск, нанимая даже очень сомнительных личностей.</p>

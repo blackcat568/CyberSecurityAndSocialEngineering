@@ -204,7 +204,8 @@
                 <li style="margin: 0.4rem 0;"><a href="#section2-5">2.5 The Interest-Tracking and Adaptive Trigger Injection Loop</a></li>
                 <li style="margin: 0.4rem 0;"><a href="#section2-6">2.6 Semantics-Preserving and Semantics-Inverting Transformations</a></li>
                 <li style="margin: 0.4rem 0;"><a href="#section2-7">2.7 Compromising an Authoritative Source Through Inversion</a></li>
-                <li style="margin: 0.4rem 0;"><a href="#section2-8">2.8 The Former Mentor — An Operator (Possibly Alpha Tester) of AI Without Ethical Constraints</a></li>
+                <li style="margin: 0.4rem 0;"><a href="#section2-8">2.8 </a></li>
+                <li style="margin: 0.4rem 0;"><a href="#section2-0">2.9 The Former Mentor — An Operator (Possibly Alpha Tester) of AI Without Ethical Constraints</a></li>
             </ul>
         </li>
         <li style="margin: 0.5rem 0;">
@@ -1033,7 +1034,114 @@ Projects of this level never lack funding. The state-customer, striving for cogn
 
 <hr>
 
-<h3 id="section2-8"> 2.8 The Former Mentor — An Operator (Possibly Alpha Tester) of AI Without Ethical Constraints</h3>
+<h3 id="section2-8">2.8 Editorial Delta Analysis</h3>
+
+<p><strong><i>A. General description and observed pattern</i></strong></p>
+
+<p>The author noticed the following recurring behavioral pattern of the manipulator:</p>
+
+<table style="width: 100%; border-collapse: collapse; margin: 1rem 0; background: #f5f5f0;">
+  <tr style="background: #d0d0c0;">
+    <th style="padding: 0.75rem; border: 1px solid #c0c0b0; text-align: left;">Author's action</th>
+    <th style="padding: 0.75rem; border: 1px solid #c0c0b0; text-align: left;">Manipulator's reaction</th>
+   </tr>
+   <tr>
+    <td style="padding: 0.75rem; border: 1px solid #c0c0b0;">Edits a post (removes part, replaces with another)</td>
+    <td style="padding: 0.75rem; border: 1px solid #c0c0b0;">Reacts specifically to the <strong>removed/replaced</strong> part, not to the final version</td>
+   </tr>
+   <tr>
+    <td style="padding: 0.75rem; border: 1px solid #c0c0b0;">Publishes a draft, then deletes it and refines into a final version</td>
+    <td style="padding: 0.75rem; border: 1px solid #c0c0b0;">Reacts especially strongly to the <strong>published but then deleted/changed draft material</strong></td>
+   </tr>
+   <tr>
+    <td style="padding: 0.75rem; border: 1px solid #c0c0b0;">Deletes part of a post / an entire post without replacement / refinement into a final version</td>
+    <td style="padding: 0.75rem; border: 1px solid #c0c0b0;">Reacts to the deleted fragment / post</td>
+   </tr>
+</table>
+
+<p><strong>Frequency:</strong> Hundreds of repetitions — one of the most frequently recurring patterns.</p>
+
+<hr>
+
+<p><strong><i>B. Technical identification of the method</i></strong></p>
+
+<p>In data science and machine learning, this technique is known as <strong>Delta Analysis</strong> or <strong>Difference Training</strong>:</p>
+
+<ol>
+  <li><strong>Extracting "hidden" information:</strong> The system records not only what the author <strong>published</strong>, but also what he <strong>deemed necessary to delete or change</strong>. The very fact of deletion is a high-value signal.</li>
+  <li><strong>How it works:</strong> The algorithm compares two versions of a text (draft → final version) and extracts the <strong>delta vector</strong> — the difference between them. This difference reveals:
+    <ul>
+      <li>What the author considers <strong>debatable</strong>, "raw," insufficiently substantiated</li>
+      <li>Which formulations the author rejected (possibly because they are too revealing, dangerous, or vulnerable)</li>
+      <li>Which topics the author is trying to <strong>hide</strong> or <strong>soften</strong></li>
+    </ul>
+  </li>
+  <li><strong>Why this is valuable for AI:</strong> The deleted fragment often contains more sincere, emotionally charged, or compromising information than the final "polished" version. The AI learns to reconstruct <strong>"what the author wanted to say but didn't dare to"</strong>.</li>
+</ol>
+
+<hr>
+
+<p><strong><i>C. Connection to AI training techniques</i></strong></p>
+
+<table style="width: 100%; border-collapse: collapse; margin: 1rem 0; background: #f5f5f0;">
+  <tr style="background: #d0d0c0;">
+    <th style="padding: 0.75rem; border: 1px solid #c0c0b0; text-align: left;">Technique</th>
+    <th style="padding: 0.75rem; border: 1px solid #c0c0b0; text-align: left;">Description</th>
+   </tr>
+   <tr>
+    <td style="padding: 0.75rem; border: 1px solid #c0c0b0;"><strong>Difference Learning / Delta Training</strong></td>
+    <td style="padding: 0.75rem; border: 1px solid #c0c0b0;">The AI learns from the difference between two versions of the same text (draft → final version). The delta is a "vulnerability marker."</td>
+   </tr>
+   <tr>
+    <td style="padding: 0.75rem; border: 1px solid #c0c0b0;"><strong>Latent Semantic Analysis (LSA) — Adversarial variant</strong></td>
+    <td style="padding: 0.75rem; border: 1px solid #c0c0b0;">The system extracts hidden meanings from the fact of deletion/replacement. The deleted/replaced text is treated as the "true intention."</td>
+   </tr>
+   <tr>
+    <td style="padding: 0.75rem; border: 1px solid #c0c0b0;"><strong>Reinforcement Learning from Revisions</strong></td>
+    <td style="padding: 0.75rem; border: 1px solid #c0c0b0;">The AI receives a "reward" for successfully predicting which fragment will be deleted or changed.</td>
+   </tr>
+   <tr>
+    <td style="padding: 0.75rem; border: 1px solid #c0c0b0;"><strong>Self-Censorship Detection</strong></td>
+    <td style="padding: 0.75rem; border: 1px solid #c0c0b0;">The algorithm learns to recognize moments when the author consciously limits their expression — a marker of fear or awareness of vulnerability.</td>
+   </tr>
+</table>
+
+<hr>
+
+<p><strong><i>D. Why the manipulator reacts specifically to what was deleted</i></strong></p>
+
+<p><strong>System logic:</strong></p>
+
+<ol>
+  <li><strong>The published final version</strong> — is the result of the author's own censorship. It is "safe," filtered, socially acceptable.</li>
+  <li><strong>The deleted draft</strong> — is the "raw truth" that the author was afraid to leave. It may contain:
+    <ul>
+      <li>Emotional outbursts</li>
+      <li>Careless confessions</li>
+      <li>Harsh judgments</li>
+      <li>Vulnerable spots in the psychological profile</li>
+    </ul>
+  </li>
+  <li><strong>The fact of deletion</strong> — is a <strong>vulnerability marker</strong>. The AI learns: "What the author deleted — that is their weak spot. Strike there."</li>
+</ol>
+
+<hr>
+
+<p><strong><i>E. Diagnosis</i></strong></p>
+
+<p>This pattern proves that a <strong>Continuous Revision Monitoring System</strong> is being used against the author.</p>
+
+<p>This is not just parsing published content. This is <strong>analysis of the author's thought process in real time</strong> — by observing how they edit themselves. The system sees not only "what" you said, but also "what" you refrained from saying.</p>
+
+<p><strong>Conclusion:</strong> The author is not just a content generator, but a <strong>target whose very process of self-editing is being analyzed</strong>. This gives the enemy access to your internal hesitations, doubts, and fears — even if you ultimately did not publish them.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to contents</a>
+</p>
+
+<hr>
+
+<h3 id="section2-9"> 2.9 The Former Mentor — An Operator (Possibly Alpha Tester) of AI Without Ethical Constraints</h3>
 
 <p>Thus, the figure of the former mentor acquires its final, horrifying solidity. He is not an independent player. He is a biological interface, an operator-executor, the final link in the feedback loop. His "strange methodicalness" is a direct projection of machine logic onto human behavior. He delivers stimuli generated by the system and returns your reactions back into the system. His access to practically unlimited financial resources for bribing those around you ceases to be a mystery — it's the project's operational budget. Paying for the services of authorities, bloggers, creating the necessary social pressure — nothing more than purchasing consumables and renting infrastructure for a field experiment. For a budget allocated to creating cognitive superiority weapons, these sums are a statistical rounding error.</p>
 

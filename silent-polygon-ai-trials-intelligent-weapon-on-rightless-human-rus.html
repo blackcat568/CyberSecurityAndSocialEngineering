@@ -970,6 +970,119 @@
   <li><strong>Семантически-инвертирующие (SI — Semantics-Inverting):</strong> Полностью меняют смысл на противоположный. <em>Пример:</em> «На переднем плане женщина (Сабрина), сзади мужчины (Юнг и Фрейд)» → «На переднем плане мужчина, сзади женщины» (идеально совпадает с примером автора про «Опасный метод»).</li>
 </ol>
 
+<figure style="margin: 2rem 0; padding: 1rem; background: #f5f5f0; border-radius: 12px; font-family: 'Georgia', 'Times New Roman', Times, serif;">
+  
+  <figcaption style="text-align: center; font-weight: bold; margin-bottom: 1.5rem; font-size: 1.2rem;">
+    🧠 Два типа семантических трансформаций: SP (сохранение) vs SI (инверсия)
+  </figcaption>
+  
+  <svg width="100%" height="auto" viewBox="0 0 900 560" style="background: #fff; border-radius: 8px; border: 1px solid #d0c0a0; margin: 0 auto; display: block;">
+    
+    <!-- Заголовки колонок (увеличены) -->
+    <text x="225" y="35" fill="#2c5f2d" font-size="18" font-weight="bold" text-anchor="middle">Семантически-сохраняющая (SP)</text>
+    <text x="225" y="58" fill="#4a4a40" font-size="14" text-anchor="middle" font-style="italic">Semantics-Preserving</text>
+    
+    <text x="675" y="35" fill="#8b0000" font-size="18" font-weight="bold" text-anchor="middle">Семантически-инвертирующая (SI)</text>
+    <text x="675" y="58" fill="#4a4a40" font-size="14" text-anchor="middle" font-style="italic">Semantics-Inverting</text>
+    
+    <!-- Разделительная линия между колонками -->
+    <line x1="450" y1="75" x2="450" y2="510" stroke="#c0c0b0" stroke-width="1.5" stroke-dasharray="6,4"/>
+    
+    <!-- ============================================ -->
+    <!-- ЛЕВАЯ КОЛОНКА (SP — КОШКА) -->
+    <!-- ============================================ -->
+    
+    <!-- Исходный образ (Автор) -->
+    <rect x="60" y="85" width="330" height="120" rx="8" fill="#e8f5e9" stroke="#2c5f2d" stroke-width="2"/>
+    <text x="225" y="112" fill="#2c5f2d" font-size="15" font-weight="bold" text-anchor="middle">📤 Исходный образ (автор)</text>
+    <text x="225" y="140" fill="#333" font-size="14" text-anchor="middle">Живая кошка, сидящая на батарее</text>
+    <text x="225" y="163" fill="#666" font-size="13" text-anchor="middle">«кошка сидит»</text>
+    <text x="225" y="186" fill="#666" font-size="13" text-anchor="middle">тёплый, бытовой, живой контекст</text>
+    
+    <!-- Стрелка вниз (SP) -->
+    <path d="M 225,205 L 225,235" stroke="#2c5f2d" stroke-width="2.5" marker-end="url(#arrowGreen)"/>
+    <text x="250" y="225" fill="#2c5f2d" font-size="12" font-style="italic">SP-трансформация</text>
+    
+    <!-- Цель для ИИ (SP) -->
+    <rect x="60" y="245" width="330" height="110" rx="8" fill="#f5f5f0" stroke="#2c5f2d" stroke-width="1.5" stroke-dasharray="4,2"/>
+    <text x="225" y="272" fill="#2c5f2d" font-size="14" font-weight="bold" text-anchor="middle">🎯 Что тестирует ИИ</text>
+    <text x="225" y="298" fill="#333" font-size="13" text-anchor="middle">Границы обобщения (generalization)</text>
+    <text x="225" y="320" fill="#666" font-size="12" text-anchor="middle">«Насколько далеко можно отойти от оригинала,</text>
+    <text x="225" y="340" fill="#666" font-size="12" text-anchor="middle">сохранив семантическое ядро?»</text>
+    
+    <!-- Стрелка вниз (SP) -->
+    <path d="M 225,355 L 225,380" stroke="#2c5f2d" stroke-width="2.5" marker-end="url(#arrowGreen)"/>
+    
+    <!-- Трансформированный образ (Враг) -->
+    <rect x="60" y="390" width="330" height="110" rx="8" fill="#fff8e1" stroke="#2c5f2d" stroke-width="2"/>
+    <text x="225" y="417" fill="#2c5f2d" font-size="15" font-weight="bold" text-anchor="middle">📥 Трансформация (враг)</text>
+    <text x="225" y="445" fill="#333" font-size="14" text-anchor="middle">Статуя каменной кошки</text>
+    <text x="225" y="468" fill="#666" font-size="13" text-anchor="middle">та же поза, то же выражение мордочки</text>
+    <text x="225" y="491" fill="#666" font-size="13" text-anchor="middle">форма: статичная, «вечная», скульптурная</text>
+    
+    <!-- SP итог (расширенный овальный блок) -->
+    <rect x="60" y="510" width="330" height="40" rx="20" fill="#2c5f2d" opacity="0.9"/>
+    <text x="225" y="535" fill="#fff" font-size="14" font-weight="bold" text-anchor="middle">✅ СМЫСЛ СОХРАНЁН («кошка сидит»)</text>
+    
+    <!-- ============================================ -->
+    <!-- ПРАВАЯ КОЛОНКА (SI — ОПАСНЫЙ МЕТОД) -->
+    <!-- ============================================ -->
+    
+    <!-- Исходный образ (Автор) -->
+    <rect x="510" y="85" width="330" height="120" rx="8" fill="#ffeaea" stroke="#8b0000" stroke-width="2"/>
+    <text x="675" y="112" fill="#8b0000" font-size="15" font-weight="bold" text-anchor="middle">📤 Исходный образ (автор)</text>
+    <text x="675" y="140" fill="#333" font-size="14" text-anchor="middle">Постер к фильму «Опасный метод» (2011)</text>
+    <text x="675" y="163" fill="#666" font-size="13" text-anchor="middle">Сабрина (ж) на переднем плане</text>
+    <text x="675" y="186" fill="#666" font-size="13" text-anchor="middle">Юнг и Фрейд (м) на заднем плане</text>
+    
+    <!-- Стрелка вниз (SI) -->
+    <path d="M 675,205 L 675,235" stroke="#8b0000" stroke-width="2.5" marker-end="url(#arrowRed)"/>
+    <text x="700" y="225" fill="#8b0000" font-size="12" font-style="italic">SI-трансформация</text>
+    
+    <!-- Цель для ИИ (SI) -->
+    <rect x="510" y="245" width="330" height="110" rx="8" fill="#f5f5f0" stroke="#8b0000" stroke-width="1.5" stroke-dasharray="4,2"/>
+    <text x="675" y="272" fill="#8b0000" font-size="14" font-weight="bold" text-anchor="middle">🎯 Что тестирует ИИ</text>
+    <text x="675" y="298" fill="#333" font-size="13" text-anchor="middle">Стресс-тест устойчивости к инверсии</text>
+    <text x="675" y="320" fill="#666" font-size="12" text-anchor="middle">«Узнает ли ИИ инвертированный образ</text>
+    <text x="675" y="340" fill="#666" font-size="12" text-anchor="middle">как связанный с оригиналом?»</text>
+    
+    <!-- Стрелка вниз (SI) -->
+    <path d="M 675,355 L 675,380" stroke="#8b0000" stroke-width="2.5" marker-end="url(#arrowRed)"/>
+    
+    <!-- Трансформированный образ (Враг) -->
+    <rect x="510" y="390" width="330" height="110" rx="8" fill="#fff8e1" stroke="#8b0000" stroke-width="2"/>
+    <text x="675" y="417" fill="#8b0000" font-size="15" font-weight="bold" text-anchor="middle">📥 Трансформация (враг)</text>
+    <text x="675" y="445" fill="#333" font-size="14" text-anchor="middle">Мужчина на переднем плане</text>
+    <text x="675" y="468" fill="#666" font-size="13" text-anchor="middle">женщина + её подруга на заднем плане</text>
+    <text x="675" y="491" fill="#666" font-size="13" text-anchor="middle">полная инверсия: мужчины ↔ женщины</text>
+    
+    <!-- SI итог (расширенный овальный блок) -->
+    <rect x="510" y="510" width="330" height="40" rx="20" fill="#8b0000" opacity="0.9"/>
+    <text x="675" y="535" fill="#fff" font-size="14" font-weight="bold" text-anchor="middle">🔄 СМЫСЛ ИНВЕРТИРОВАН (противоположный)</text>
+    
+    <!-- ============================================ -->
+    <!-- СТРЕЛКИ ДЛЯ МАРКЕРОВ -->
+    <!-- ============================================ -->
+    <defs>
+      <marker id="arrowGreen" markerWidth="12" markerHeight="12" refX="6" refY="6" orient="auto">
+        <path d="M 0,0 L 12,6 L 0,12" fill="#2c5f2d"/>
+      </marker>
+      <marker id="arrowRed" markerWidth="12" markerHeight="12" refX="6" refY="6" orient="auto">
+        <path d="M 0,0 L 12,6 L 0,12" fill="#8b0000"/>
+      </marker>
+    </defs>
+    
+  </svg>
+  
+  <!-- Пояснение внизу (увеличенный шрифт) -->
+  <div style="margin-top: 1rem; font-size: 0.9rem; color: #4a4a40; text-align: center; border-top: 1px solid #d0d0c0; padding-top: 0.75rem;">
+    <span style="display: inline-block; width: 14px; height: 14px; background: #2c5f2d; border-radius: 2px; margin-right: 0.4rem;"></span> SP — форма меняется, смысл тот же
+    <span style="display: inline-block; width: 14px; height: 14px; background: #8b0000; border-radius: 2px; margin-left: 1.2rem; margin-right: 0.4rem;"></span> SI — форма и смысл инвертированы
+    <span style="display: inline-block; width: 14px; height: 14px; background: #d4a017; border-radius: 2px; margin-left: 1.2rem; margin-right: 0.4rem;"></span> Жёлтый фон — результат трансформации
+  </div>
+  
+</figure>
+
 <hr>
 
 <p><strong><i>C. Цели такой тренировки (зачем враг это делает)</i></strong></p>

@@ -15,7 +15,7 @@
     "isAccessibleForFree": true,
     "description": "A foundational practical guide to digital, behavioral, and informational hygiene for personal computer users. Covers cybersecurity basics, social engineering defense, mental health protection online, ethical AI use, free software advocacy, mobile device hardening, and psychological manipulation countermeasures. Detailed manual for conscious and safe PC and internet use. CC0 license - free to use and share.",
     "datePublished": "2026-05-01",
-    "dateModified": "2026-05-01",
+    "dateModified": "2026-06-01",
     "creator": {
       "@type": "Person",
       "name": "blackcat568"
@@ -5157,21 +5157,93 @@ Cybersecurity, countering social engineering, countering psychological manipulat
 <h2 id="section16">16. Additions”</h2>
 
 <a id="appendix-1"></a>
-<h3>Script for Inserting Date and Time</h3>
+<h3>Script to insert date and time</h3>
 
-<p><strong>Tested environment:</strong> Debian 12, MATE desktop</p>
+<!-- === NEW SECTION FOR WAYLAND (GNOME) === -->
+<p><strong>Tested environment:</strong> Debian 13, GNOME Shell, Wayland</p>
+
+<p><strong>How it works:</strong> The script copies the current date and time (format <code>DD.MM.YYYY HH:MM</code>) to the clipboard. After the script runs, you can press <kbd>Ctrl+V</kbd> in any application to paste the copied date. For convenience, the script shows a desktop notification confirming the action.</p>
 
 <pre><code class="language-bash">
 #!/bin/bash
 
-# FIX: Obtain correct environment variables from the current user session
-# Find a process with the correct variables (mate-session, mate-settings-daemon, or any process with DISPLAY)
+# Script to copy current date and time to clipboard (Wayland)
+# Works in GNOME and other Wayland-based environments
+
+# Logging (optional)
+echo "Script triggered at $(date)" >> /home/user/trigger.log
+
+# Get date and time in the desired format
+datetime=$(date '+%d.%m.%Y %H:%M')
+
+# Copy to Wayland clipboard
+printf "%s" "$datetime" | wl-copy
+
+# Show notification that date has been copied
+notify-send "Date copied" "$datetime"
+
+# Log success
+echo "Date copied: $datetime" >> /home/user/trigger.log
+</code></pre>
+
+<p><i>Installing dependencies for the script to work correctly in Wayland</i></p>
+
+<ul>
+    <li>
+        <strong>Package:</strong> <code>wl-clipboard</code><br>
+        <strong>Purpose:</strong> Clipboard management in Wayland (xclip equivalent)<br>
+        <strong>In distribution:</strong> Usually not pre-installed
+    </li>
+    <li>
+        <strong>Package:</strong> <code>libnotify-bin</code><br>
+        <strong>Purpose:</strong> Display desktop notifications (notify-send command)<br>
+        <strong>In distribution:</strong> Often missing in minimal installations
+    </li>
+</ul>
+
+<p><strong>Installation on Debian/Ubuntu/Linux Mint and derivatives (Wayland):</strong></p>
+
+<pre><code>sudo apt update
+sudo apt install wl-clipboard libnotify-bin</code></pre>
+
+<p><strong>Installation on Fedora (Wayland):</strong></p>
+
+<pre><code>sudo dnf install wl-clipboard libnotify</code></pre>
+
+<p><strong>Installation on Arch Linux / Manjaro (Wayland):</strong></p>
+
+<pre><code>sudo pacman -S wl-clipboard libnotify</code></pre>
+
+<p><strong>Installation on openSUSE (Wayland):</strong></p>
+
+<pre><code>sudo zypper install wl-clipboard libnotify-tools</code></pre>
+
+<p><strong>Verifying installation:</strong></p>
+
+<pre><code># Check that all components are available
+which wl-copy notify-send
+
+# Check that you are running Wayland
+echo $XDG_SESSION_TYPE</code></pre>
+
+<hr>
+
+<!-- === EXISTING SECTION FOR X11 === -->
+<p><strong>Alternative for X11-based environments</strong></p>
+
+<p><strong>Tested environment:</strong> Debian 12, MATE desktop, X11</p>
+
+<pre><code class="language-bash">
+#!/bin/bash
+
+# FIX: Get correct environment variables from the current user session
+# Find a process with the correct variables (mate-session, mate-settings-daemon, or any with DISPLAY)
 for pid in $(pgrep -u "$(id -u)"); do
-    # Check whether the process has DISPLAY
+    # Check if the process has DISPLAY in its environment
     if grep -q "DISPLAY=" "/proc/$pid/environ" 2>/dev/null; then
         # Load ALL environment variables from this process
         while IFS='=' read -r var value; do
-            # Export only the important variables
+            # Export only important variables
             case "$var" in
                 DISPLAY|XAUTHORITY|DBUS_SESSION_BUS_ADDRESS|PATH|HOME|USER|LOGNAME)
                     export "$var"="$value"
@@ -5182,76 +5254,106 @@ for pid in $(pgrep -u "$(id -u)"); do
     fi
 done
 
-# Set fallback default values just in case
+# Set default values just in case
 export DISPLAY="${DISPLAY:-:0}"
 export XAUTHORITY="${XAUTHORITY:-$HOME/.Xauthority}"
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH"
 
-# Now check access to the X server
+# Now check access to X server
 if ! timeout 1 xset q >/dev/null 2>&1; then
-    # If there is no access, exit
+    # If no access, exit
     exit 1
 fi
 
 # Logging (optional)
 echo "Script triggered at $(date)" >> /home/user/trigger.log
 
-# Main logic
+# Main code
 datetime=$(date '+%d.%m.%Y %H:%M')
 
-# Copy date and time to the clipboard
+# Copy date to clipboard
 echo -n "$datetime" | xclip -selection clipboard
 
-# Wait for Ctrl+Shift+Y to be released and for the clipboard to update
+# Wait for Ctrl+Shift+Y release and clipboard update
 sleep 0.2
 
 # Paste via Ctrl+V
 xdotool key --clearmodifiers ctrl+v
 
-# Reset modifier keys (in case they get stuck)
+# Reset modifiers (in case of sticking)
 xdotool keyup ctrl shift alt
 
-# Clear the clipboard after insertion (to avoid repeated pasting on the next trigger)
+# Clear clipboard after paste (to prevent re-pasting on next trigger)
 echo -n "" | xclip -selection clipboard
 </code></pre>
 
-<p><i>Installing dependencies for the correct operation of the date-time insertion script</i></p>
+<p><i>Installing dependencies for the date-time insertion script (X11)</i></p>
 
 <ul>
     <li>
         <strong>Package:</strong> <code>xclip</code><br>
-        <strong>Purpose:</strong> Working with the clipboard (copy/paste)<br>
-        <strong>In the distribution:</strong> Usually not present
+        <strong>Purpose:</strong> Clipboard management (copy/paste)<br>
+        <strong>In distribution:</strong> Usually not pre-installed
     </li>
     <li>
         <strong>Package:</strong> <code>xdotool</code><br>
-        <strong>Purpose:</strong> Simulating key presses (Ctrl+V)<br>
-        <strong>In the distribution:</strong> Usually not present
+        <strong>Purpose:</strong> Keyboard simulation (Ctrl+V)<br>
+        <strong>In distribution:</strong> Usually not pre-installed
     </li>
     <li>
         <strong>Package:</strong> <code>x11-utils</code><br>
-        <strong>Purpose:</strong> The xset utility for checking access to the X server<br>
-        <strong>In the distribution:</strong> Often preinstalled
+        <strong>Purpose:</strong> xset utility for checking X server access<br>
+        <strong>In distribution:</strong> Often pre-installed
     </li>
     <li>
         <strong>Package:</strong> <code>procps</code><br>
-        <strong>Purpose:</strong> pgrep, pidof utilities for finding processes<br>
-        <strong>In the distribution:</strong> Preinstalled
+        <strong>Purpose:</strong> pgrep, pidof utilities for process searching<br>
+        <strong>In distribution:</strong> Pre-installed
     </li>
 </ul>
 
-<p><strong>Installation on Debian/Ubuntu/Linux Mint and derivatives:</strong></p>
+<p><strong>Installation on Debian/Ubuntu/Linux Mint and derivatives (X11):</strong></p>
 
 <pre><code>sudo apt update
 sudo apt install xclip xdotool x11-utils procps</code></pre>
 
-<p><strong>Verifying the installation:</strong></p>
+<p><strong>Installation on Fedora (X11):</strong></p>
 
-<pre><code># Checking the presence of all components
+<pre><code>sudo dnf install xclip xdotool xorg-x11-utils procps-ng</code></pre>
+
+<p><strong>Installation on Arch Linux / Manjaro (X11):</strong></p>
+
+<pre><code>sudo pacman -S xclip xdotool xorg-xset procps-ng</code></pre>
+
+<p><strong>Installation on openSUSE (X11):</strong></p>
+
+<pre><code>sudo zypper install xclip xdotool xset procps</code></pre>
+
+<p><strong>Verifying installation (X11):</strong></p>
+
+<pre><code># Check that all components are available
 which xclip xdotool xset pgrep
 
-# Checking access to the X server
+# Check access to X server
 xset q</code></pre>
+
+<hr>
+
+<p><strong>Configuring a keyboard shortcut in GNOME:</strong></p>
+
+<ol>
+    <li>Open <strong>Settings → Keyboard → Keyboard Shortcuts</strong></li>
+    <li>Click the <strong>«+»</strong> button at the bottom of the list</li>
+    <li>
+        <strong>Name:</strong> Insert date and time<br>
+        <strong>Command:</strong> <code>/home/user/userscripts/systemservice/insert-date-time-2.sh</code><br>
+        <strong>Shortcut:</strong> Press your desired key combination (e.g., <kbd>Shift+Ctrl+T</kbd>)
+    </li>
+    <li>Click <strong>«Add»</strong></li>
+</ol>
+
+<p><strong>Important note:</strong> Make sure the chosen keyboard shortcut is not already used by the system. To verify, run in a terminal:</p>
+<pre><code>gsettings list-recursively | grep -i "your_shortcut"</code></pre>
 
 <a href="#appendix-1-back">To related section</a> |
 

@@ -2098,6 +2098,107 @@ The system tries to turn a person into data. The person's task is to remain a te
 
 <p><strong>Key feature:</strong> Combined data extraction from textual and graphic materials (images) that you have published or on which your attention was focused has been recorded. The enemy AI places significant weight on the analysis of graphic material, always in combination with the directly or indirectly related textual context.</p>
 
+<!-- Комбинированный конвейер сбора и анализа данных (Entity Extraction & Context Integration) -->
+
+<figure style="margin: 2rem 0; padding: 1rem; background: #f5f5f0; border-radius: 12px; font-family: 'Georgia', 'Times New Roman', Times, serif;">
+  
+  <figcaption style="text-align: center; font-weight: bold; margin-bottom: 1.5rem; font-size: 1.1rem;">
+    🧠 Комбинированный конвейер сбора и анализа данных (Извлечение сущностей и интеграция контекста)
+  </figcaption>
+  
+  <svg width="100%" height="auto" viewBox="0 0 800 520" style="background: #fff; border-radius: 8px; border: 1px solid #d0c0a0; margin: 0 auto; display: block; font-family: 'Georgia', 'Times New Roman', Times, serif;">
+    
+    <!-- Заголовок верхнего контура -->
+    <text x="400" y="30" fill="#333" font-size="14" font-weight="bold" text-anchor="middle">Этап 1: Сбор данных (Data Acquisition)</text>
+    
+    <!-- Верхняя граница контура сбора данных -->
+    <rect x="30" y="45" width="740" height="180" rx="10" fill="none" stroke="#2c5f2d" stroke-width="1.5" stroke-dasharray="6,3"/>
+    <text x="400" y="65" fill="#2c5f2d" font-size="11" font-weight="bold" text-anchor="middle">⬆ Контур сбора данных (Data Acquisition Loop) ⬆</text>
+    
+    <!-- Прямоугольник 1 (левый малый): высказывания в побочных темах -->
+    <rect x="55" y="105" width="130" height="60" rx="6" fill="#d0e8d0" stroke="#2c5f2d" stroke-width="1.5"/>
+    <text x="120" y="126" fill="#2c5f2d" font-size="12" font-weight="bold" text-anchor="middle">Высказывания</text>
+    <text x="120" y="143" fill="#2c5f2d" font-size="12" font-weight="bold" text-anchor="middle">в побочных темах</text>
+    <text x="120" y="158" fill="#555" font-size="10" text-anchor="middle">(Второстепенные темы)</text>
+    
+    <!-- Прямоугольник 2 (левый большой): высказывания в основной теме -->
+    <rect x="210" y="85" width="150" height="80" rx="6" fill="#e8f5e9" stroke="#2c5f2d" stroke-width="1.5"/>
+    <text x="285" y="112" fill="#2c5f2d" font-size="13" font-weight="bold" text-anchor="middle">Высказывания</text>
+    <text x="285" y="132" fill="#2c5f2d" font-size="13" font-weight="bold" text-anchor="middle">в основной теме</text>
+    <text x="285" y="152" fill="#555" font-size="10" text-anchor="middle">(Основная тема)</text>
+    
+    <!-- Прямоугольник 3 (правый большой): картинки из основной темы -->
+    <rect x="410" y="85" width="150" height="80" rx="6" fill="#fff8e1" stroke="#d4a017" stroke-width="1.5"/>
+    <text x="485" y="112" fill="#b8860b" font-size="13" font-weight="bold" text-anchor="middle">Изображения</text>
+    <text x="485" y="132" fill="#b8860b" font-size="13" font-weight="bold" text-anchor="middle">из основной темы</text>
+    <text x="485" y="152" fill="#555" font-size="10" text-anchor="middle">(Основная тема)</text>
+    
+    <!-- Прямоугольник 4 (правый малый): картинки из побочных тем -->
+    <rect x="585" y="105" width="150" height="60" rx="6" fill="#fff0c0" stroke="#d4a017" stroke-width="1.5"/>
+    <text x="660" y="126" fill="#b8860b" font-size="12" font-weight="bold" text-anchor="middle">Изображения</text>
+    <text x="660" y="143" fill="#b8860b" font-size="12" font-weight="bold" text-anchor="middle">из побочных тем</text>
+    <text x="660" y="158" fill="#555" font-size="10" text-anchor="middle">(Второстепенные темы)</text>
+    
+    <!-- Подпись под контуром сбора: временные параметры -->
+    <rect x="200" y="195" width="400" height="25" rx="12" fill="#2c5f2d" opacity="0.85"/>
+    <text x="400" y="212" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">⏱ Оптимум: срез данных за 24 часа | Допуск: 1–3 суток</text>
+    
+    <!-- 4 стрелки от блоков сбора данных вниз -->
+    <!-- Стрелка из левого малого -->
+    <line x1="120" y1="225" x2="120" y2="260" stroke="#8b0000" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+    <!-- Стрелка из левого большого -->
+    <line x1="285" y1="225" x2="285" y2="260" stroke="#8b0000" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+    <!-- Стрелка из правого большого -->
+    <line x1="485" y1="225" x2="485" y2="260" stroke="#8b0000" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+    <!-- Стрелка из правого малого -->
+    <line x1="660" y1="225" x2="660" y2="260" stroke="#8b0000" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+    
+    <!-- Горизонтальные линии, собирающие 4 потока в один -->
+    <line x1="120" y1="260" x2="120" y2="275" stroke="#8b0000" stroke-width="1.5"/>
+    <line x1="285" y1="260" x2="285" y2="275" stroke="#8b0000" stroke-width="1.5"/>
+    <line x1="485" y1="260" x2="485" y2="275" stroke="#8b0000" stroke-width="1.5"/>
+    <line x1="660" y1="260" x2="660" y2="275" stroke="#8b0000" stroke-width="1.5"/>
+    <line x1="120" y1="275" x2="660" y2="275" stroke="#8b0000" stroke-width="1.5"/>
+    <line x1="400" y1="275" x2="400" y2="295" stroke="#8b0000" stroke-width="2" marker-end="url(#arrowRed)"/>
+    
+    <!-- Широкий блок: этап уточнения и корректировки данных -->
+    <rect x="150" y="310" width="500" height="60" rx="8" fill="#f5f0e0" stroke="#a07030" stroke-width="2"/>
+    <text x="400" y="330" fill="#a07030" font-size="13" font-weight="bold" text-anchor="middle">Этап 2: Уточнение и корректировка данных</text>
+    <text x="400" y="350" fill="#333" font-size="12" font-weight="bold" text-anchor="middle">Ранее собранные данные вашего психологического профиля (психопрофиля)</text>
+    <text x="400" y="362" fill="#555" font-size="10" text-anchor="middle">(Ранее собранные данные психопрофиля и исторический контекст)</text>
+    
+    <!-- Стрелка вниз -->
+    <line x1="400" y1="370" x2="400" y2="400" stroke="#8b0000" stroke-width="2" marker-end="url(#arrowRed)"/>
+    
+    <!-- Финальный блок: этап обработки и выдачи результата -->
+    <rect x="150" y="413" width="500" height="70" rx="8" fill="url(#redGradient)" stroke="#8b0000" stroke-width="2"/>
+    <text x="400" y="438" fill="#fff" font-size="14" font-weight="bold" text-anchor="middle">Этап 3: Обработка и выдача результата (Инференс и вывод)</text>
+    <text x="400" y="460" fill="#ffe0e0" font-size="12" font-weight="bold" text-anchor="middle">Итоговый текст и сопровождающая иллюстрация исполнителя</text>
+    <text x="400" y="475" fill="#ffc0c0" font-size="10" text-anchor="middle">(Финальный текст и вспомогательные визуальные материалы для оператора)</text>
+    
+    <!-- Стрелки-маркеры (определены в конце) -->
+    <defs>
+      <marker id="arrowRed" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+        <path d="M 0,0 L 8,4 L 0,8" fill="#8b0000"/>
+      </marker>
+      <linearGradient id="redGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#8b0000" stop-opacity="1" />
+        <stop offset="100%" stop-color="#cc0000" stop-opacity="1" />
+      </linearGradient>
+    </defs>
+    
+  </svg>
+  
+  <!-- Пояснение внизу (увеличенный шрифт) -->
+  <div style="margin-top: 1rem; font-size: 0.85rem; color: #4a4a40; text-align: center; border-top: 1px solid #d0d0c0; padding-top: 0.75rem;">
+    <span style="display: inline-block; width: 12px; height: 12px; background: #e8f5e9; border: 1px solid #2c5f2d; margin-right: 0.3rem;"></span> Текстовые источники
+    <span style="display: inline-block; width: 12px; height: 12px; background: #fff8e1; border: 1px solid #d4a017; margin-left: 1rem; margin-right: 0.3rem;"></span> Визуальные источники
+    <span style="display: inline-block; width: 12px; height: 12px; background: #f5f0e0; border: 1px solid #a07030; margin-left: 1rem; margin-right: 0.3rem;"></span> Этап кросс-валидации
+    <span style="display: inline-block; width: 12px; height: 12px; background: #8b0000; margin-left: 1rem; margin-right: 0.3rem;"></span> Финальный вывод (атака / контент)
+  </div>
+  
+</figure>
+
 <p><strong>Countermeasure recommendation:</strong> Based on this, the approach to "poisoning" the entity extraction function must also be combined. Do not limit yourself to setting false targets within a single topic. Use them across related and other random topics, and also employ false images (visual triggers) that capture the operatives' attention. Create a multi-dimensional, contradictory environment for the system, where every channel of data acquisition leads to a false conclusion.</p>
 
 <p><strong>Results and dynamics:</strong> The author notes that over one year of targeted counteraction against this system, the effectiveness of its entity extraction algorithms has not increased — it has decreased. This indicates, firstly, the effectiveness of the countermeasures employed, and secondly, that the developers have not made significant progress in advancing their AI. As of <strong>June 6, 2026</strong>, the author is dealing with a still rather "raw," imperfect model, which provides additional opportunities for further reverse engineering.</p>

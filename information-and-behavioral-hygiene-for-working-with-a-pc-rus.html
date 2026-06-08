@@ -5303,7 +5303,7 @@ for pid in $(pgrep -u "$(id -u)"); do
                     export "$var"="$value"
                     ;;
             esac
-        done &lt; &lt;(tr '\0' '\n' < "/proc/$pid/environ" 2>/dev/null)
+        done &lt; &lt;(tr '\0' '\n' &lt; "/proc/$pid/environ" 2>/dev/null)
         break
     fi
 done

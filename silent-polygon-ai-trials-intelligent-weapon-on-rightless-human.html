@@ -116,6 +116,26 @@
      color: #222;
     }
     
+    /* ===== SEPARATOR STYLES ===== */
+    /* Base style for ALL dividers (light, for subchapters) */
+    hr {
+        border: none;
+        height: 1px;
+        background-color: #e0e0e0; /* ПРОСТОЙ ЦВЕТ без градиента */
+        margin: 36px 0;
+        opacity: 0.7;
+    }
+    
+    /* Dark divider for MAIN CHAPTERS */
+    hr.divider--major {
+        border: 0;
+        height: 3px; /* Исходная толщина */
+        background: linear-gradient(to right, transparent, #000, transparent); /* Исходный градиент */
+        border-radius: 2px; /* Исходный радиус */
+        margin: 50px 0; /* Исходный отступ */
+    }
+    /* ===== END SEPARATOR STYLES ===== */
+    
     /* ========== МОБИЛЬНАЯ АДАПТАЦИЯ ========== */
     /* Базовый размер шрифта */
     html {
@@ -238,6 +258,11 @@
                 <li style="margin: 0.4rem 0;"><a href="#section6-2">6.2. Transition to Engineering Thinking and Breaking the Learning Loop</a></li>
                 <li style="margin: 0.4rem 0;"><a href="#section6-3">6.3. Jamming. More on the Transition to Engineering Thinking</a></li>
                 <li style="margin: 0.4rem 0;"><a href="#section6-4">6.4. Setting False Targets (Honeypot Deception)</a></li>
+                <ul style="list-style: none; padding-left: 1.5rem; margin: 0.2rem 0;">
+                   <li style="margin: 0.3rem 0;"><a href="#section6-4-1">6.4.1. The essence of the false target method</a></li>
+                   <li style="margin: 0.3rem 0;"><a href="#section6-4-2">6.4.2. Examples of successful application of the method</a></li>
+                   <li style="margin: 0.3rem 0;"><a href="#section6-4-3">6.4.3. Conclusions</a></li>
+                </ul>
                 <li style="margin: 0.4rem 0;"><a href="#section6-5">6.5. Countering Undermining of Self-Confidence</a></li>
                 <li style="margin: 0.4rem 0;"><a href="#section6-6">6.6. Reconnaissance by Fire (Taking Fire). Managed Attack Absorption for Signature Collection</a></li>
             </ul>
@@ -309,7 +334,7 @@
   </ul>
 </details>
 
-<hr>
+<hr class="divider--major">
 
 <h2 id="section2">2. Algorithmic Obsession. The Imprint of Machine Intelligence in Field Tests</h2>
 
@@ -1546,7 +1571,7 @@
   </ul>
 </details>
 
-<hr>
+<hr class="divider--major">
 
 <h2 id="section3">3. Networked Proving Ground. Collective Intelligence as a Product of Distributed Suffering</h2>
 
@@ -1586,7 +1611,7 @@
   </ul>
 </details>
 
-<hr>
+<hr class="divider--major">
 
 <h2 id="section4">Architecture of the Hybrid System (Humint + AI) (Full Tactical Breakdown)</h2>
 
@@ -1720,7 +1745,7 @@
   </ul>
 </details>
 
-<hr>
+<hr class="divider--major">
 
 <h2 id="section5">5. The Economics of PsyOps: KPI, ERR — The Financial Mechanics of the Hybrid System (Humint + AI)</h2>
 
@@ -1839,7 +1864,7 @@ ERR = (Reactions + Comments + Reposts) / Views × 100%
   </ul>
 </details>
 
-<hr>
+<hr class="divider--major">
 
 <h2 id="section6">6. Countermeasures</h2>
 
@@ -2158,6 +2183,8 @@ The system tries to turn a person into data. The person's task is to remain a te
 
 <h3 id="section6-4">6.4 Setting False Targets (Honeypot Deception)</h3>
 
+<h4 id="section6-4-1">6.4.1 The essence of the false target method</h4>
+
 <p><strong><i>A. General principle</i></strong></p>
 
 <p>Just as in traditional warfare, false targets are a terrible headache for the enemy, forcing them to waste strength, time, and resources. In cyber warfare, false targets play the same important role: they reduce the effectiveness of the enemy's attacking system and give you a good mood when you see an attack against a decoy.</p>
@@ -2361,9 +2388,13 @@ The system tries to turn a person into data. The person's task is to remain a te
 
 <p>Your task is not just to feed the enemy a couple of false facts, but to create the image of another person — whose psychological profile will be both convincing and useless to the enemy's AI, and all the energy spent on its analysis will turn out to be a false trail.</p>
 
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to contents</a>
+</p>
+
 <hr>
 
-<p><strong><i>I. Examples of successful application</i></strong></p>
+<h4 id="section6-4-2">6.4.2 Examples of successful application of the method</h4>
 
 <p><strong>Example 1 (Marxism):</strong> The author pretended to be a Marxist for a long time, publishing many posts of appropriate content. As a result, one of the bloggers began actively supporting the author's Marxist views with the goal of gaining trust and obtaining a quality reaction to his posts. At the same time, he pompously mentioned various political figures of this orientation and their ideas. This continued for more than two weeks, until the author wrote a post in which he simply laughed at the blogger.</p>
 
@@ -2445,9 +2476,13 @@ The system tries to turn a person into data. The person's task is to remain a te
 
 <p><strong>Conclusion from the example:</strong> This case is a classic illustration of the effectiveness of a meta-false target. The enemy was so blinded by the illusion of their own perceptiveness ("we are professionals, we see through your fakery") that, in their eagerness to publicly humiliate the author, they revealed their own tactics and signatures.</p>
 
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to contents</a>
+</p>
+
 <hr>
 
-<p><strong><i>J. Conclusions</i></strong></p>
+<h4 id="section6-4-3">6.4.3 Conclusions</h4>
 
 <p>The expensive high technology deployed against you (PsyOps Humint + AI) can be seriously damaged or even destroyed by cheap low technology — <strong>if that low technology is applied massively, comprehensively, and in combination</strong>. In this case, that low technology has been simple lying.</p>
 

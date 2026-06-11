@@ -1,1 +1,43 @@
+name: Auto Update Modified Dates
 
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  update-dates:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository with full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Inject last modified dates between HTML comments
+        run: |
+          find . -name "*.html" | while read -r file; do
+            # Проверяем, есть ли в файле маркеры начала и конца даты
+            if grep -q "<!-- DATE_START -->" "$file" && grep -q "<!-- DATE_END -->" "$file"; then
+              # Получаем дату последнего коммита для файла из Git
+              git_date=$(git log -1 --format="%cd" --date=format:"%Y-%m-%d" -- "$file")
+              
+              if [ -z "$git_date" ]; then
+                git_date=$(date +%Y-%m-%d)
+              fi
+              
+              # Мощная регулярная замена: меняет любой текст между комментариями на свежую дату,
+              # сохраняя сами комментарии для следующих запусков
+              sed -i "s/<!-- DATE_START -->.*<!-- DATE_END -->/<!-- DATE_START -->$git_date<!-- DATE_END -->/g" "$file"
+              echo "Синхронизирована дата в $file: $git_date"
+            fi
+          done
+
+      - name: Commit and Push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: auto-update last modified dates [skip ci]"
+          file_pattern: "*.html"

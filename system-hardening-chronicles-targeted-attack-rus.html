@@ -15,7 +15,7 @@
     "isAccessibleForFree": true,
     "description": "Реальная хроника противостояния целевой атаке: документирование уязвимостей, конфигураций, реакций и хардеринга системы. От нулевой защиты к поиску устойчивых конфигураций. Технический отчет с анализом аппаратной части, ОС, AppArmor, nftables, OpenSnitch, Flatpak, USBGuard. Для специалистов по кибербезопасности и ИБ.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-06-12<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-06-14<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -167,8 +167,6 @@
 </head>
 <body>
 
-<a id="top"></a>
-
 <header>
   <!-- Главная навигация сайта -->
   <nav aria-label="Main navigation" style="max-width:860px;margin:0 auto;display:flex;align-items:center;gap:12px;margin-bottom:8px;">
@@ -189,6 +187,7 @@
 </header>
 
 <main>
+	
 <article>
 
 <h1>Хроники хардеринга системы: поиск конфигурации, устойчивой к целевой атаке</h1>
@@ -198,9 +197,51 @@
   <span style="color: #856404;"> Статья находится в разработке. Уточнения и дополнения вносятся по мере получения новых данных об устойчивости новых конфигураций безопасности и активности хакера.<br>Последнее обновление контента: 11.04.2026</span>
 </div>
 
-<h2>1. Вводная часть: анализ исходной конфигурации и предпосылки к хардерингу</h2>
+<!-- КРУПНАЯ ГЛАВА (H2) - Оглавление -->
+<section id="table-of-contents" aria-label="Table of Contents">
+<h2 id="section0">Содержание</h2>
 
-<h3>1.1 Контекст и допущения</h3>
+<ul>
+<li><a href="#section1">1. Вводная часть: анализ исходной конфигурации и предпосылки к хардерингу</a>
+<ul>
+<li><a href="#section1-1">1.1 Контекст и допущения</a></li>
+<li><a href="#section1-2">1.2 Природа атаки (наблюдаемая модель)</a></li>
+<li><a href="#section1-3">1.3 Эффективность научного подхода как контрмеры</a></li>
+<li><a href="#section1-4">1.4 Текущая стратегия</a></li>
+</ul>
+</li>
+<li><a href="#section2">2. Резюме (для технического отчета)</a></li>
+<li><a href="#section3">2. Непосредственно хроника хардеринга и атак</a>
+<ul>
+<li><a href="#section3-1">2.1 Описание прошлой конфигурации системы: КОНФИГУРАЦИЯ 1</a></li>
+<li><a href="#section3-2">2.2 Факт атаки на конфигурацию 1</a></li>
+<li><a href="#section3-3">2.3 Конфигурация системы после атаки с усилением защиты: КОНФИГУРАЦИЯ 2</a></li>
+</ul>
+</li>
+</ul>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Содержание статьи</summary>
+  <ul>
+    <li><strong>О чём статья:</strong> Хроника хардеринга системы в ответ на целевую атаку. Описание исходной конфигурации, факта атаки и усиленной конфигурации 2 с детальными настройками nftables, sysctl, AppArmor, OpenSnitch, Flatpak и USBGuard. Статус тестирования конфигурации 2.</li>
+  </ul>
+</details>
+
+</section> <!-- /Конец основной главы H2 -->
+
+<hr>
+
+<!-- КРУПНАЯ ГЛАВА (H2) -->
+<section id="introduction" aria-label="1. Вводная часть: анализ исходной конфигурации и предпосылки к хардерингу">
+<h2 id="section1">1. Вводная часть: анализ исходной конфигурации и предпосылки к хардерингу</h2>
+
+<!-- Подсекция 1.1 -->
+<section id="context-assumptions" aria-label="1.1 Контекст и допущения">
+<h3 id="section1-1">1.1 Контекст и допущения</h3>
 
 <p><strong>Атакующая сторона:</strong><br>
 Предположительно, группа, обладающая опытом целевых атак не менее 20 лет. Опыт наработан на тысячах реальных объектов. Методы включают технологические, социотехнические и психологические векторы.</p>
@@ -214,7 +255,11 @@
 <p><strong>Вывод по исходной конфигурации:</strong><br>
 На начальном этапе система не обладала устойчивостью к целевой атаке. Ответственность за это принимаю на себя.</p>
 
-<h3>1.2 Природа атаки (наблюдаемая модель)</h3>
+</section>
+
+<!-- Подсекция 1.2 -->
+<section id="nature-of-attack" aria-label="1.2 Природа атаки (наблюдаемая модель)">
+<h3 id="section1-2">1.2 Природа атаки (наблюдаемая модель)</h3>
 
 <p>Атака сочетает:</p>
 <ul>
@@ -225,7 +270,11 @@
 <p>Данная модель полностью соответствует классическому сценарию, описанному в sci-fi литературе:<br>
 <em>отвлечение человека (группы людей) через оторванную от реальности метафизику + удар через технические и человеческие уязвимости за счет превосходства в научно-технических и психологических знаниях.</em></p>
 
-<h3>1.3 Эффективность научного подхода как контрмеры</h3>
+</section>
+
+<!-- Подсекция 1.3 -->
+<section id="scientific-approach-effectiveness" aria-label="1.3 Эффективность научного подхода как контрмеры">
+<h3 id="section1-3">1.3 Эффективность научного подхода как контрмеры</h3>
 
 <p>В ходе анализа установлено:</p>
 <ul>
@@ -236,7 +285,11 @@
 <p><strong>Факт:</strong><br>
 Попытки морального и психологического подавления усиливаются прямо пропорционально прогрессу в изучении ИИ, кибербезопасности, социальной инженерии и криминалистической психологии. Чем больше у жертвы спадает дымовая завеса метафизики и абстрактных концепций, тем больше враг проявляет свою обеспокоенность.</p>
 
-<h3>1.4 Текущая стратегия</h3>
+</section>
+
+<!-- Подсекция 1.4 -->
+<section id="current-strategy" aria-label="1.4 Текущая стратегия">
+<h3 id="section1-4">1.4 Текущая стратегия</h3>
 
 <p>Без эмоций. Без обиды. Без удивления.</p>
 
@@ -250,44 +303,80 @@
 <p><strong>Цель:</strong><br>
 Достижение конфигурации, устойчивой к целевой атаке, с последующей публикацией всего наработанного материала под лицензией CC0.</p>
 
-<h2>2. Резюме (для технического отчета)</h2>
+</section>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Вводная часть</summary>
+  <ul>
+    <li><strong>Ключевые тезисы:</strong> Атакующая сторона имеет ≥20 лет опыта. Исходная конфигурация не была защищена. Атака сочетает метафизическую риторику с технологическими методами. Научно-технический анализ — эффективная контрмера. Стратегия: документирование и хардеринг.</li>
+  </ul>
+</details>
+
+</section> <!-- /Конец основной главы H2 -->
+
+<hr>
+
+<!-- КРУПНАЯ ГЛАВА (H2) -->
+<section id="technical-summary" aria-label="2. Резюме (для технического отчета)">
+<h2 id="section2">2. Резюме (для технического отчета)</h2>
 
 <table style="border-collapse: collapse; width: 100%; margin: 1rem 0;">
   <tr style="background-color: #f2f2f2;">
     <th style="text-align: left; padding: 8px; border: 1px solid #ddd;">Параметр</th>
     <th style="text-align: left; padding: 8px; border: 1px solid #ddd;">Значение</th>
-   </tr>
-   <tr>
+  </tr>
+  <tr>
     <td style="padding: 8px; border: 1px solid #ddd;">Исходная защищенность</td>
     <td style="padding: 8px; border: 1px solid #ddd;">Низкая</td>
-   </tr>
-   <tr>
+  </tr>
+  <tr>
     <td style="padding: 8px; border: 1px solid #ddd;">Начало атаки</td>
     <td style="padding: 8px; border: 1px solid #ddd;">Февраль–март 2011</td>
-   </tr>
-   <tr>
+  </tr>
+  <tr>
     <td style="padding: 8px; border: 1px solid #ddd;">Опыт атакующей стороны (оценка)</td>
     <td style="padding: 8px; border: 1px solid #ddd;">≥ 20 лет</td>
-   </tr>
-   <tr>
+  </tr>
+  <tr>
     <td style="padding: 8px; border: 1px solid #ddd;">Контрмера</td>
     <td style="padding: 8px; border: 1px solid #ddd;">Научно-технический анализ, хардеринг, документирование</td>
-   </tr>
-   <tr>
+  </tr>
+  <tr>
     <td style="padding: 8px; border: 1px solid #ddd;">Признак эффективности</td>
     <td style="padding: 8px; border: 1px solid #ddd;">Заметный или даже скачкообразный рост интенсивности атакующих воздействий</td>
-   </tr>
-   <tr>
+  </tr>
+  <tr>
     <td style="padding: 8px; border: 1px solid #ddd;">Долгосрочная цель</td>
     <td style="padding: 8px; border: 1px solid #ddd;">Публикация устойчивой конфигурации под CC0</td>
-   </tr>
+  </tr>
 </table>
 
-<hr class="divider--major">
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
 
-<h2>2. Непосредственно хроника хардеринга и атак</h2>
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Резюме (для технического отчета)</summary>
+  <ul>
+    <li><strong>Сводка:</strong> Исходная защищенность низкая. Начало атаки — февраль–март 2011. Опыт атакующей стороны ≥20 лет. Контрмера — научно-технический анализ, хардеринг. Признак эффективности — рост интенсивности атак.</li>
+  </ul>
+</details>
 
-<h3>2.1 Описание прошлой конфигурации системы: КОНФИГУРАЦИЯ 1</h3>
+</section> <!-- /Конец основной главы H2 -->
+
+<hr>
+
+<!-- КРУПНАЯ ГЛАВА (H2) -->
+<section id="hardening-chronicle" aria-label="2. Непосредственно хроника хардеринга и атак">
+<h2 id="section3">2. Непосредственно хроника хардеринга и атак</h2>
+
+<!-- Подсекция 2.1 -->
+<section id="config1" aria-label="2.1 Описание прошлой конфигурации системы: КОНФИГУРАЦИЯ 1">
+<h3 id="section3-1">2.1 Описание прошлой конфигурации системы: КОНФИГУРАЦИЯ 1</h3>
 
 <h4>Hardware</h4>
 
@@ -332,7 +421,11 @@ Capabilities: Power Management version 2, MSI (включено)</p>
 
 <p><strong>Дата завершения формирования конфигурации 1:</strong> 01.08.2025</p>
 
-<h3>2.2 Факт атаки на конфигурацию 1</h3>
+</section>
+
+<!-- Подсекция 2.2 -->
+<section id="attack-on-config1" aria-label="2.2 Факт атаки на конфигурацию 1">
+<h3 id="section3-2">2.2 Факт атаки на конфигурацию 1</h3>
 
 <p><strong>Дата атаки:</strong> 26.12.2026</p>
 
@@ -348,9 +441,11 @@ Capabilities: Power Management version 2, MSI (включено)</p>
 
 <p><strong>Действие после атаки:</strong> старая система удалена, выполнена чистая установка новой конфигурации.</p>
 
-<hr class="divider--major">
+</section>
 
-<h3>2.3 Конфигурация системы после атаки с усилением защиты: КОНФИГУРАЦИЯ 2</h3>
+<!-- Подсекция 2.3 -->
+<section id="config2" aria-label="2.3 Конфигурация системы после атаки с усилением защиты: КОНФИГУРАЦИЯ 2">
+<h3 id="section3-3">2.3 Конфигурация системы после атаки с усилением защиты: КОНФИГУРАЦИЯ 2</h3>
 
 <h4>Hardware</h4>
 
@@ -548,8 +643,6 @@ table ip filter {
 </pre>
 </div>
 
-
-
 <div class="historical-fact">
   <strong>Конфигурация усиления защиты sysctl (2026-03-03):</strong>
   <pre style="max-height: 350px; overflow-y: auto; margin-top: 0.8rem; background: #1e1e1e; color: #d4d4d4; padding: 0.8rem; border-radius: 4px; overflow-x: auto;">
@@ -641,7 +734,6 @@ grpc: 1.51.1</p>
 # ============================================
 
 # ========== БРАУЗЕРЫ (разрешены) ==========
-
 
 # LibreWolf
 {
@@ -865,9 +957,21 @@ grpc: 1.51.1</p>
 — Данные требуют дополнительного подтверждения.<br>
 — На основе полученных данных об атаке на конфигурацию 2 будет формироваться конфигурация 3.</p>
 
-<a href="#top" style="display: inline-block; padding: 8px 16px; background: #f5f5f0; border: 1px solid #d0d0c0; border-radius: 4px; text-decoration: none; color: #1a1a1a;">
-  ↑ Вернуться в начало страницы
-</a>
+</section>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Хроника хардеринга и атак</summary>
+  <ul>
+    <li><strong>КОНФИГУРАЦИЯ 1 (Debian 12/MATE):</strong> Атака 26.12.2026 — взлом подтверждён (чтение переписки, KeePassXC, доступ к изображениям). Система удалена.</li>
+    <li><strong>КОНФИГУРАЦИЯ 2 (Debian 13/GNOME/Wayland):</strong> Усиление: Flatpak-изоляция, строгие nftables, OpenSnitch с правилами, AppArmor, USBGuard. Статус: тестируется, не все уязвимости перекрыты.</li>
+  </ul>
+</details>
+
+</section> <!-- /Конец основной главы H2 -->
 
 <!-- Начало блока перекрестных ссылок для статьи "Хроники хардеринга системы и поиск конфигурации, устойчивой к целевой атаке" -->
 <hr>

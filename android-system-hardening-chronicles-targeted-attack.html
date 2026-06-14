@@ -15,7 +15,7 @@
     "isAccessibleForFree": true,
     "description": "Analysis of targeted attacks on Android devices (ZTE Blade A522, Android 7.1.1 and Lenovo TB-8504X, Android 8.1.0). Attacker gains full remote access to microphone, camera, and network traffic. Partial tablet protection via NetGuard. Supplement to 'System Hardening Chronicles'.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-06-12<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-06-14<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -168,8 +168,6 @@
 
 <body>
 
-<a id="top"></a>
-
 <header>
   <!-- Главная навигация сайта -->
   <nav aria-label="Main navigation" style="max-width:860px;margin:0 auto;display:flex;align-items:center;gap:12px;margin-bottom:8px;">
@@ -204,15 +202,62 @@
 <a href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/system-hardening-chronicles-targeted-attack.html">"System Hardening Chronicles: Seeking a Configuration Resilient to Targeted Attacks"</a>.<br>
 It describes the experience with Android mobile devices, which confirms and expands upon the conclusions drawn for desktop systems.</p>
 
-<h2>1. Introduction: Android as a Target of Targeted Attacks</h2>
+<!-- КРУПНАЯ ГЛАВА (H2) - Оглавление -->
+<section id="table-of-contents" aria-label="Table of Contents">
+<h2 id="section0">Table of Contents</h2>
 
-<h3>1.1 Context</h3>
+<ul>
+<li><a href="#section1">1. Introduction: Android as a Target of Targeted Attacks</a>
+<ul>
+<li><a href="#section1-1">1.1 Context</a></li>
+<li><a href="#section1-2">1.2 The Role of Mobile Devices in the Attack</a></li>
+</ul>
+</li>
+<li><a href="#section2">2. Description of Device 1 (Smartphone)</a>
+<ul>
+<li><a href="#section2-1">2.1. Description of Device 1 (Initial Configuration)</a></li>
+<li><a href="#section2-2">2.2. Detected Compromise</a></li>
+<li><a href="#section2-3">2.3. Status and Limitations of Further Investigation</a></li>
+</ul>
+</li>
+<li><a href="#section3">3. Device 2 (Tablet)</a>
+<ul>
+<li><a href="#section3-1">3.1. Description of Device 2 (Tablet)</a></li>
+<li><a href="#section3-2">3.2. Current Attacker Capabilities (With NetGuard Configuration)</a></li>
+<li><a href="#section3-3">3.3. Changes After Installing NetGuard</a></li>
+<li><a href="#section3-4">3.4. Research Status and Priorities</a></li>
+</ul>
+</li>
+</ul>
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Table of Contents</summary>
+  <ul>
+    <li><strong>What this article is about:</strong> A supplement to the main system hardening article. Describes targeted attacks on Android devices (ZTE Blade A522 and Lenovo TB-8504X), confirming that the standard factory configuration of Android does not provide resilience against professional targeted attacks.</li>
+  </ul>
+</details>
+
+</section> <!-- /Конец основной главы H2 -->
+
+<hr>
+
+<!-- КРУПНАЯ ГЛАВА (H2) -->
+<section id="introduction" aria-label="1. Introduction: Android as a Target of Targeted Attacks">
+<h2 id="section1">1. Introduction: Android as a Target of Targeted Attacks</h2>
+
+<!-- Подсекция 1.1 -->
+<section id="context" aria-label="1.1 Context">
+<h3 id="section1-1">1.1 Context</h3>
 
 <p>The attacking party is the same as in the main article: presumably a group with at least 20 years of experience in targeted attacks, possessing both technological and socio-technical methods.</p>
 
 <p>This section documents an incident involving a mobile device that occurred <strong>before the start of systematic hardening</strong> of the desktop system. Nevertheless, the nature of the breach and the level of access gained by the attacker fully correspond to the attack model described in the main document.</p>
 
-<h3>1.2 The Role of Mobile Devices in the Attack</h3>
+</section>
+
+<!-- Подсекция 1.2 -->
+<section id="role-of-mobile" aria-label="1.2 The Role of Mobile Devices in the Attack">
+<h3 id="section1-2">1.2 The Role of Mobile Devices in the Attack</h3>
 
 <p>The analysis suggests that a compromised Android smartphone (tablet) can be used by the attacker as:</p>
 
@@ -224,9 +269,30 @@ It describes the experience with Android mobile devices, which confirms and expa
 
 <p>At the same time, the <strong>standard factory configuration of Android</strong> (even with up-to-date security patches) does not provide resilience against a targeted adversary.</p>
 
-<h2>2. Description of Device 1 (Smartphone)</h2>
+</section>
 
-<h3>2.1. Description of Device 1 (Initial Configuration)</h3>
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to top</a>
+</p>
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Introduction</summary>
+  <ul>
+    <li><strong>Key points:</strong> The attacking group has ≥20 years of experience. A compromised Android device can be used for audio/video surveillance, traffic leakage, and data collection. The standard factory configuration of Android does not provide resilience against targeted attacks.</li>
+  </ul>
+</details>
+
+</section> <!-- /Конец основной главы H2 -->
+
+<hr>
+
+<!-- КРУПНАЯ ГЛАВА (H2) -->
+<section id="device1" aria-label="2. Description of Device 1 (Smartphone)">
+<h2 id="section2">2. Description of Device 1 (Smartphone)</h2>
+
+<!-- Подсекция 2.1 -->
+<section id="device1-config" aria-label="2.1. Description of Device 1 (Initial Configuration)">
+<h3 id="section2-1">2.1. Description of Device 1 (Initial Configuration)</h3>
 
 <figure style="margin: 1.5rem 0; text-align: center;">
   <img src="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/pictures/ZTE-Blade-A522.jpg"
@@ -241,44 +307,15 @@ It describes the experience with Android mobile devices, which confirms and expa
 
 <h4>2.1.1 Device Specifications</h4>
 
-<table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Model</td>
-<td>ZTE Blade A522</td>
-</tr>
-<tr>
-<td>Purchase Date</td>
-<td>April 2019</td>
-</tr>
-<tr>
-<td>Condition at Purchase</td>
-<td>New device, receiving security updates</td>
-</tr>
-<tr>
-<td>Android Version</td>
-<td>7.1.1</td>
-</tr>
-<tr>
-<td>Kernel Version</td>
-<td>3.18.31-perf</td>
-</tr>
-<tr>
-<td>Baseband Version</td>
-<td>P817E53B01</td>
-</tr>
-<tr>
-<td>Build Number</td>
-<td>GEN_CIS_A511_V1.0</td>
-</tr>
-</tbody>
-</table>
+| Parameter | Value |
+|-----------|-------|
+| Model | ZTE Blade A522 |
+| Purchase Date | April 2019 |
+| Condition at Purchase | New device, receiving security updates |
+| Android Version | 7.1.1 |
+| Kernel Version | 3.18.31-perf |
+| Baseband Version | P817E53B01 |
+| Build Number | GEN_CIS_A511_V1.0 |
 
 <h4>2.1.2. Software Environment and Network Settings</h4>
 
@@ -294,7 +331,11 @@ It describes the experience with Android mobile devices, which confirms and expa
 
 <p>The device was used as a primary smartphone without any additional security measures (bootloader lock, custom firmware, firewall, system-level permission control, etc.).</p>
 
-<h3>2.2. Detected Compromise</h3>
+</section>
+
+<!-- Подсекция 2.2 -->
+<section id="device1-hack" aria-label="2.2. Detected Compromise">
+<h3 id="section2-2">2.2. Detected Compromise</h3>
 
 <h4>2.2.1. Date of Detection</h4>
 
@@ -322,7 +363,11 @@ Complete capability to read all internet traffic from the device (including traf
 
 <p>The achieved level of access indicates the exploitation of one or more <strong>zero-day</strong> vulnerabilities in the kernel (3.18.31-perf), baseband firmware, or Android 7.1.1 components that were not closed by security updates. The level of control gained is equivalent to a full remote rootkit.</p>
 
-<h3>2.3. Status and Limitations of Further Investigation</h3>
+</section>
+
+<!-- Подсекция 2.3 -->
+<section id="device1-status" aria-label="2.3. Status and Limitations of Further Investigation">
+<h3 id="section2-3">2.3. Status and Limitations of Further Investigation</h3>
 
 <div class="warning">
 <p>⚠️ <strong>Physical Damage to the Device</strong><br>
@@ -335,9 +380,30 @@ Subsequently, the smartphone suffered physical damage, making further forensic i
 <p>The standard (factory) configuration of any device, whether desktop Linux or Android, is not resilient against a targeted attack by a professional group.</p>
 </blockquote>
 
-<h2>3. Device 2 (Tablet)</h2>
+</section>
 
-<h3>3.1. Description of Device 2 (Tablet)</h3>
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to top</a>
+</p>
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Device 1 (Smartphone)</summary>
+  <ul>
+    <li><strong>ZTE Blade A522 (Android 7.1.1):</strong> Attack detected in April 2020. Full remote control gained: audio/video espionage, traffic interception. Zero-day vulnerabilities. Device damaged, exact attack method unidentified.</li>
+  </ul>
+</details>
+
+</section> <!-- /Конец основной главы H2 -->
+
+<hr>
+
+<!-- КРУПНАЯ ГЛАВА (H2) -->
+<section id="device2" aria-label="3. Device 2 (Tablet)">
+<h2 id="section3">3. Device 2 (Tablet)</h2>
+
+<!-- Подсекция 3.1 -->
+<section id="device2-config" aria-label="3.1. Description of Device 2 (Tablet)">
+<h3 id="section3-1">3.1. Description of Device 2 (Tablet)</h3>
 
 <figure style="margin: 1.5rem 0; text-align: center;">
   <img src="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/pictures/Lenovo-TB-8504X.jpg"
@@ -352,48 +418,16 @@ Subsequently, the smartphone suffered physical damage, making further forensic i
 
 <h4>3.1.1. Device Specifications</h4>
 
-<table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Model</td>
-<td>Lenovo TB-8504X</td>
-</tr>
-<tr>
-<td>Purchase Date</td>
-<td>April 2019 (simultaneously with ZTE Blade A522 smartphone)</td>
-</tr>
-<tr>
-<td>Android Version</td>
-<td>8.1.0</td>
-</tr>
-<tr>
-<td>Software Version</td>
-<td>TB-8504X_RF01_170520</td>
-</tr>
-<tr>
-<td>Build Number</td>
-<td>TB-8504X_S001031_191204_ROW</td>
-</tr>
-<tr>
-<td>Kernel Version</td>
-<td>3.18.71</td>
-</tr>
-<tr>
-<td>Baseband Version</td>
-<td>S.JO.3.0-00448-8937_GENNS_PACK-1</td>
-</tr>
-<tr>
-<td>Last Security Update</td>
-<td>November 5, 2019</td>
-</tr>
-</tbody>
-</table>
+| Parameter | Value |
+|-----------|-------|
+| Model | Lenovo TB-8504X |
+| Purchase Date | April 2019 (simultaneously with ZTE Blade A522 smartphone) |
+| Android Version | 8.1.0 |
+| Software Version | TB-8504X_RF01_170520 |
+| Build Number | TB-8504X_S001031_191204_ROW |
+| Kernel Version | 3.18.71 |
+| Baseband Version | S.JO.3.0-00448-8937_GENNS_PACK-1 |
+| Last Security Update | November 5, 2019 |
 
 <h4>3.1.2. Initial State and Attack Detection</h4>
 
@@ -433,7 +467,11 @@ Subsequently, the smartphone suffered physical damage, making further forensic i
 <li><strong>Network Environment</strong>: The device does not leave the home premises (within Wi-Fi router range), connecting only through a trusted home network.</li>
 </ul>
 
-<h3>3.2. Current Attacker Capabilities (With NetGuard Configuration)</h3>
+</section>
+
+<!-- Подсекция 3.2 -->
+<section id="device2-capabilities" aria-label="3.2. Current Attacker Capabilities (With NetGuard Configuration)">
+<h3 id="section3-2">3.2. Current Attacker Capabilities (With NetGuard Configuration)</h3>
 
 <p>Despite the applied measures, the hacker retains the following capabilities:</p>
 
@@ -443,7 +481,11 @@ Subsequently, the smartphone suffered physical damage, making further forensic i
 <li><strong>Reading messages</strong> in Lumia application chats.</li>
 </ul>
 
-<h3>3.3. Changes After Installing NetGuard</h3>
+</section>
+
+<!-- Подсекция 3.3 -->
+<section id="device2-changes" aria-label="3.3. Changes After Installing NetGuard">
+<h3 id="section3-3">3.3. Changes After Installing NetGuard</h3>
 
 <ul>
 <li><strong>Before installing NetGuard</strong>, the attacker had the ability to remotely access the microphone and camera.</li>
@@ -452,7 +494,11 @@ Subsequently, the smartphone suffered physical damage, making further forensic i
 
 <p>Presumably, NetGuard blocked the network ports or services used for capturing multimedia streams; however, vulnerabilities that allow reading files and intercepting chat text remain unaddressed.</p>
 
-<h3>3.4. Research Status and Priorities</h3>
+</section>
+
+<!-- Подсекция 3.4 -->
+<section id="device2-status" aria-label="3.4. Research Status and Priorities">
+<h3 id="section3-4">3.4. Research Status and Priorities</h3>
 
 <div class="warning">
 <p>⚠️ <strong>Time Constraints and Priorities</strong><br>
@@ -463,9 +509,21 @@ Due to limited available time, the priority remains the investigation of the att
 
 <p><em>Last data update: April 23, 2026</em></p>
 
-<a href="#top" style="display: inline-block; padding: 8px 16px; background: #f5f5f0; border: 1px solid #d0d0c0; border-radius: 4px; text-decoration: none; color: #1a1a1a;">
-  ↑ Back to top
-</a>
+</section>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to top</a>
+</p>
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Device 2 (Tablet)</summary>
+  <ul>
+    <li><strong>Lenovo TB-8504X (Android 8.1):</strong> Attack detected in April 2020. NetGuard blocked camera and microphone access but did not prevent reading files, AI conversations, or chat messages. Priority remains PC attack investigation.</li>
+  </ul>
+</details>
+
+</section> <!-- /Конец основной главы H2 -->
+
 
 <!-- Start of cross-reference block for "Android System Hardening Chronicles: In Search of a Configuration Resilient to Targeted Attacks" -->
 <hr>

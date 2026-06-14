@@ -199,9 +199,47 @@
   <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: 2026-04-11</span>
 </div>
 
-<h2>1. Introduction: Analysis of the Initial Configuration and Prerequisites for Hardening</h2>
+<!-- КРУПНАЯ ГЛАВА (H2) - Оглавление -->
+<section id="table-of-contents" aria-label="Table of Contents">
+<h2 id="section0">Table of Contents</h2>
 
-<h3>1.1 Context and Assumptions</h3>
+<ul>
+<li><a href="#section1">1. Introduction: Analysis of the Initial Configuration and Prerequisites for Hardening</a>
+<ul>
+<li><a href="#section1-1">1.1 Context and Assumptions</a></li>
+<li><a href="#section1-2">1.2 Nature of the Attack (Observed Model)</a></li>
+<li><a href="#section1-3">1.3 Effectiveness of the Scientific Approach as a Countermeasure</a></li>
+<li><a href="#section1-4">1.4 Current Strategy</a></li>
+</ul>
+</li>
+<li><a href="#section2">2. Executive Summary (Technical Report)</a></li>
+<li><a href="#section3">3. Chronicle of Hardening and Attacks</a>
+<ul>
+<li><a href="#section3-1">3.1 Description of the Previous System Configuration: CONFIGURATION 1</a></li>
+<li><a href="#section3-2">3.2 Attack on Configuration 1</a></li>
+<li><a href="#section3-3">3.3 Hardened Configuration Post-Attack: CONFIGURATION 2</a></li>
+</ul>
+</li>
+</ul>
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Table of Contents</summary>
+  <ul>
+    <li><strong>What this article is about:</strong> Chronicles of system hardening in response to a targeted attack. Description of the initial configuration, the confirmed attack, and the hardened Configuration 2 with detailed settings for nftables, sysctl, AppArmor, OpenSnitch, Flatpak, and USBGuard. Status of Configuration 2 testing.</li>
+  </ul>
+</details>
+
+</section> <!-- /Конец основной главы H2 -->
+
+<hr>
+
+<!-- КРУПНАЯ ГЛАВА (H2) -->
+<section id="introduction" aria-label="1. Introduction: Analysis of the Initial Configuration and Prerequisites for Hardening">
+<h2 id="section1">1. Introduction: Analysis of the Initial Configuration and Prerequisites for Hardening</h2>
+
+<!-- Подсекция 1.1 -->
+<section id="context-assumptions" aria-label="1.1 Context and Assumptions">
+<h3 id="section1-1">1.1 Context and Assumptions</h3>
 
 <p><strong>Adversary Profile:</strong><br>
 Presumably, a group with at least 20 years of experience in targeted attacks. This experience has been honed on thousands of real-world targets. Their methods include technological, socio-technical, and psychological vectors.</p>
@@ -215,7 +253,11 @@ Presumably, a group with at least 20 years of experience in targeted attacks. Th
 <p><strong>Conclusion on the Initial Configuration:</strong><br>
 In the initial phase, the system lacked resilience against a targeted attack. I accept full responsibility for this.</p>
 
-<h3>1.2 Nature of the Attack (Observed Model)</h3>
+</section>
+
+<!-- Подсекция 1.2 -->
+<section id="nature-of-attack" aria-label="1.2 Nature of the Attack (Observed Model)">
+<h3 id="section1-2">1.2 Nature of the Attack (Observed Model)</h3>
 
 <p>The attack combines:</p>
 <ul>
@@ -226,7 +268,11 @@ In the initial phase, the system lacked resilience against a targeted attack. I 
 <p>This model fully corresponds to the classic scenario described in science fiction literature:<br>
 <em>Distracting a person (or group) with metaphysics detached from reality + striking through technical and human vulnerabilities by leveraging superiority in scientific-technical and psychological knowledge.</em></p>
 
-<h3>1.3 Effectiveness of the Scientific Approach as a Countermeasure</h3>
+</section>
+
+<!-- Подсекция 1.3 -->
+<section id="scientific-approach-effectiveness" aria-label="1.3 Effectiveness of the Scientific Approach as a Countermeasure">
+<h3 id="section1-3">1.3 Effectiveness of the Scientific Approach as a Countermeasure</h3>
 
 <p>The analysis established:</p>
 <ul>
@@ -237,7 +283,11 @@ In the initial phase, the system lacked resilience against a targeted attack. I 
 <p><strong>Fact:</strong><br>
 Attempts at moral and psychological suppression intensify in direct proportion to progress in studying AI, cybersecurity, social engineering, and forensic psychology. The more the victim's smokescreen of metaphysics and abstract concepts dissipates, the more the adversary displays their concern.</p>
 
-<h3>1.4 Current Strategy</h3>
+</section>
+
+<!-- Подсекция 1.4 -->
+<section id="current-strategy" aria-label="1.4 Current Strategy">
+<h3 id="section1-4">1.4 Current Strategy</h3>
 
 <p>No emotions. No resentment. No surprise.</p>
 
@@ -251,44 +301,80 @@ Attempts at moral and psychological suppression intensify in direct proportion t
 <p><strong>Objective:</strong><br>
 Achieve a configuration resilient to targeted attacks, followed by publication of all developed materials under the CC0 license.</p>
 
-<h2>2. Executive Summary (Technical Report)</h2>
+</section>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to top</a>
+</p>
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Introduction</summary>
+  <ul>
+    <li><strong>Key points:</strong> Adversary has ≥20 years of experience. Initial configuration was not secure. Attack combines metaphysical rhetoric with technical methods. Scientific-technical analysis is an effective countermeasure. Strategy: documentation and hardening.</li>
+  </ul>
+</details>
+
+</section> <!-- /Конец основной главы H2 -->
+
+<hr>
+
+<!-- КРУПНАЯ ГЛАВА (H2) -->
+<section id="executive-summary" aria-label="2. Executive Summary (Technical Report)">
+<h2 id="section2">2. Executive Summary (Technical Report)</h2>
 
 <table style="border-collapse: collapse; width: 100%; margin: 1rem 0;">
   <tr style="background-color: #f2f2f2;">
     <th style="text-align: left; padding: 8px; border: 1px solid #ddd;">Parameter</th>
     <th style="text-align: left; padding: 8px; border: 1px solid #ddd;">Value</th>
-   </tr>
-   <tr>
+  </tr>
+  <tr>
     <td style="padding: 8px; border: 1px solid #ddd;">Initial Security Posture</td>
     <td style="padding: 8px; border: 1px solid #ddd;">Low</td>
-   </tr>
-   <tr>
+  </tr>
+  <tr>
     <td style="padding: 8px; border: 1px solid #ddd;">Attack Commencement</td>
     <td style="padding: 8px; border: 1px solid #ddd;">February–March 2011</td>
-   </tr>
-   <tr>
+  </tr>
+  <tr>
     <td style="padding: 8px; border: 1px solid #ddd;">Adversary Experience (Estimate)</td>
     <td style="padding: 8px; border: 1px solid #ddd;">≥ 20 years</td>
-   </tr>
-   <tr>
+  </tr>
+  <tr>
     <td style="padding: 8px; border: 1px solid #ddd;">Countermeasure</td>
     <td style="padding: 8px; border: 1px solid #ddd;">Scientific-technical analysis, hardening, documentation</td>
-   </tr>
-   <tr>
+  </tr>
+  <tr>
     <td style="padding: 8px; border: 1px solid #ddd;">Indicator of Effectiveness</td>
     <td style="padding: 8px; border: 1px solid #ddd;">Noticeable or even abrupt increase in attacking action intensity</td>
-   </tr>
-   <tr>
+  </tr>
+  <tr>
     <td style="padding: 8px; border: 1px solid #ddd;">Long-term Goal</td>
     <td style="padding: 8px; border: 1px solid #ddd;">Publish a resilient configuration under CC0</td>
-   </tr>
+  </tr>
 </table>
 
-<hr class="divider--major">
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to top</a>
+</p>
 
-<h2>3. Chronicle of Hardening and Attacks</h2>
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Executive Summary</summary>
+  <ul>
+    <li><strong>Summary:</strong> Initial security posture is low. Attack began February–March 2011. Adversary experience ≥20 years. Countermeasure: scientific-technical analysis and hardening. Indicator of effectiveness: increase in attack intensity.</li>
+  </ul>
+</details>
 
-<h3>3.1 Description of the Previous System Configuration: CONFIGURATION 1</h3>
+</section> <!-- /Конец основной главы H2 -->
+
+<hr>
+
+<!-- КРУПНАЯ ГЛАВА (H2) -->
+<section id="hardening-chronicle" aria-label="3. Chronicle of Hardening and Attacks">
+<h2 id="section3">3. Chronicle of Hardening and Attacks</h2>
+
+<!-- Подсекция 3.1 -->
+<section id="config1" aria-label="3.1 Description of the Previous System Configuration: CONFIGURATION 1">
+<h3 id="section3-1">3.1 Description of the Previous System Configuration: CONFIGURATION 1</h3>
 
 <h4>Hardware</h4>
 
@@ -333,7 +419,11 @@ Capabilities: Power Management version 2, MSI (enabled)</p>
 
 <p><strong>Configuration 1 finalization date:</strong> 2025-08-01</p>
 
-<h3>3.2 Attack on Configuration 1</h3>
+</section>
+
+<!-- Подсекция 3.2 -->
+<section id="attack-on-config1" aria-label="3.2 Attack on Configuration 1">
+<h3 id="section3-2">3.2 Attack on Configuration 1</h3>
 
 <p><strong>Date of attack:</strong> 2026-12-26</p>
 
@@ -349,9 +439,11 @@ Capabilities: Power Management version 2, MSI (enabled)</p>
 
 <p><strong>Post-attack action:</strong> Old system wiped, clean installation of new configuration performed.</p>
 
-<hr class="divider--major">
+</section>
 
-<h3>3.3 Hardened Configuration Post-Attack: CONFIGURATION 2</h3>
+<!-- Подсекция 3.3 -->
+<section id="config2" aria-label="3.3 Hardened Configuration Post-Attack: CONFIGURATION 2">
+<h3 id="section3-3">3.3 Hardened Configuration Post-Attack: CONFIGURATION 2</h3>
 
 <h4>Hardware</h4>
 
@@ -548,8 +640,6 @@ table ip filter {
 </code>
 </pre>
 </div>
-
-
 
 <div class="historical-fact">
   <strong>sysctl hardening configuration (2026-03-03):</strong>
@@ -865,9 +955,21 @@ Compiled with support for: Linux audit, Libcapng, Seccomp, Systemd, Umockdev</p>
 — Data requires additional confirmation.<br>
 — Configuration 3 will be built based on the attack data gathered against Configuration 2.</p>
 
-<a href="#top" style="display: inline-block; padding: 8px 16px; background: #f5f5f0; border: 1px solid #d0d0c0; border-radius: 4px; text-decoration: none; color: #1a1a1a;">
-  ↑ Back to top
-</a>
+</section>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to top</a>
+</p>
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Hardening Chronicle and Attacks</summary>
+  <ul>
+    <li><strong>CONFIGURATION 1 (Debian 12/MATE):</strong> Attack confirmed on 2026-12-26 — compromise included reading correspondence, KeePassXC, and image access. System wiped.</li>
+    <li><strong>CONFIGURATION 2 (Debian 13/GNOME/Wayland):</strong> Hardening implemented: Flatpak isolation, strict nftables, OpenSnitch with rules, AppArmor, USBGuard. Status: under testing; not all vulnerabilities have been closed.</li>
+  </ul>
+</details>
+
+</section> <!-- /Конец основной главы H2 -->
 
 <!-- Start of cross-reference block for "System Hardening Chronicles: In Search of a Configuration Resilient to Targeted Attacks" -->
 <hr>

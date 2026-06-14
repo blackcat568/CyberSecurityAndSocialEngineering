@@ -15,7 +15,7 @@
     "isAccessibleForFree": true,
     "description": "Практическое руководство по защите Linux-систем от целевых кибератак и продвинутых устойчивых угроз (APT). Описываются реальные сценарии атак, риски для частных пользователей и методы усиления безопасности Debian и других дистрибутивов Linux.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-06-12<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-06-14<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -223,7 +223,37 @@
   </ul>
 </div>
 
-<h2>Описание угрозы</h2>
+<!-- КРУПНАЯ ГЛАВА (H2) - Оглавление -->
+<section id="table-of-contents" aria-label="Table of Contents">
+<h2 id="section0">Содержание</h2>
+
+<ul>
+<li><a href="#section1">Описание угрозы</a></li>
+<li><a href="#section2">Контрмеры</a></li>
+<li><a href="#section3">Практическое руководство</a></li>
+<li><a href="#section4">Связанные аспекты интернет-безопасности</a></li>
+<li><a href="#section5">Примеры глубокой индивидуальной настройки безопасности</a></li>
+<li><a href="#section6">Полезные программы</a></li>
+</ul>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Содержание статьи</summary>
+  <ul>
+    <li><strong>О чём статья:</strong> Практическое руководство по усилению безопасности Linux-систем против целевых кибератак. Полное шифрование диска, удаление ненужных служб, длинные пароли, AppArmor, nftables, OpenSnitch, IDS/IPS, Wayland, сегментация системы и другие меры.</li>
+  </ul>
+</details>
+
+</section> <!-- /Конец основной главы H2 -->
+
+<hr>
+
+<!-- КРУПНАЯ ГЛАВА (H2) -->
+<section id="threat-description" aria-label="Описание угрозы">
+<h2 id="section1">Описание угрозы</h2>
 
 <p>С 2011 года (более 14 лет) автор подвергается сложному комплексу атак, включающих несанкционированные проникновения в системы, слежку, психологическое давление и шантаж на основе персональных данных, полученных в результате такой слежки.</p>
 
@@ -239,7 +269,24 @@
 
 <p>Повышение осведомлённости о киберугрозах и углубление понимания современных методов атак являются важнейшими шагами на пути к укреплению цифровой безопасности, защите персональных данных и сохранению доверия к ПО с открытым исходным кодом.</p>
 
-<h2>Контрмеры</h2>
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Описание угрозы</summary>
+  <ul>
+    <li><strong>Суть угрозы:</strong> Целевые кибератаки на частных лиц — реальная и нарастающая угроза. Злоумышленники могут получать полный контроль над ПК, похищать данные и осуществлять слежку. Уровень угроз часто недооценивается.</li>
+  </ul>
+</details>
+
+</section> <!-- /Конец основной главы H2 -->
+
+<hr>
+
+<!-- КРУПНАЯ ГЛАВА (H2) -->
+<section id="countermeasures" aria-label="Контрмеры">
+<h2 id="section2">Контрмеры</h2>
 
 <div class="note">
   <p><strong>Тестовая среда:</strong> Debian 12 (Bookworm), ядро 6.1.0-34-amd64 (сборка апреля 2025 года).</p>
@@ -273,7 +320,24 @@
 
 <p>Если у вас есть предложения по усилению существующих конфигураций или дополнительные рекомендации по кибербезопасности, которые могли быть не учтены в этом материале, автор будет крайне признателен за ваш опыт и обратную связь.</p>
 
-<h2>Практическое руководство</h2>
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Контрмеры</summary>
+  <ul>
+    <li><strong>Ключевой принцип:</strong> Не оставляйте систему с настройками по умолчанию. Применяйте глубокие индивидуализированные конфигурации (минимальные привилегии, AppArmor/SELinux, строгие правила файервола). Это повышает стоимость атаки для злоумышленника.</li>
+  </ul>
+</details>
+
+</section> <!-- /Конец основной главы H2 -->
+
+<hr>
+
+<!-- КРУПНАЯ ГЛАВА (H2) -->
+<section id="practical-guide" aria-label="Практическое руководство">
+<h2 id="section3">Практическое руководство</h2>
 
 <h3>Рекомендации по усилению защиты Linux-системы:</h3>
 
@@ -561,7 +625,24 @@
   </li>
 </ol>
 
-<h3>Связанные аспекты интернет-безопасности</h3>
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Практическое руководство</summary>
+  <ul>
+    <li><strong>16 ключевых мер:</strong> Полное шифрование диска, удаление ненужных служб, длинные пароли, только официальные репозитории, осторожность с sudo, AppArmor, nftables + OpenSnitch, настройка sysctl, IDS/IPS, сканеры уязвимостей, снижение поверхности атаки, документирование изменений, Wayland, сегментация системы.</li>
+  </ul>
+</details>
+
+</section> <!-- /Конец основной главы H2 -->
+
+<hr>
+
+<!-- КРУПНАЯ ГЛАВА (H2) -->
+<section id="internet-security-aspects" aria-label="Связанные аспекты интернет-безопасности">
+<h2 id="section4">Связанные аспекты интернет-безопасности</h2>
 
 <p>Существуют аспекты интернет-безопасности, которые при игнорировании могут значительно снизить или полностью свести на нет все ваши усилия по настройке и защите операционной системы, либо, напротив, при грамотном применении — существенно усилить конфигурацию безопасности при минимальных затратах времени и ресурсов.</p>
 
@@ -725,19 +806,66 @@
 
     <p><strong>И самое главное — откажитесь от иллюзии полной безопасности. Мы живём в условиях жёсткой информационной войны, и каждый должен прилагать усилия, чтобы злоумышленники не могли свободно осуществлять слежку за рабочими станциями и серверами.</strong></p>
 
-<h2>Примеры глубокой индивидуальной настройки безопасности</h2>
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Связанные аспекты интернет-безопасности</summary>
+  <ul>
+    <li><strong>8 дополнительных мер:</strong> Менеджер паролей (KeePassXC), двухфакторная аутентификация (аппаратные ключи), VPN, использование ИИ для безопасности, сокращение зависимости от Google, защита роутера (nftables), аппаратный межсетевой экран (для высокого риска), аудит аппаратного уровня.</li>
+  </ul>
+</details>
+
+</section> <!-- /Конец основной главы H2 -->
+
+<hr>
+
+<!-- КРУПНАЯ ГЛАВА (H2) -->
+<section id="security-config-examples" aria-label="Примеры глубокой индивидуальной настройки безопасности">
+<h2 id="section5">Примеры глубокой индивидуальной настройки безопасности</h2>
 
 <p>На данной странице приведены примеры сильных, индивидуализированных конфигураций для <strong>nftables</strong>, <strong>sysctl</strong> и <strong>auditd</strong>.</p>
 
 <p><a href="https://wiki.debian.org/Security/ProtectingAgainstTargetedAttacks/SecurityConfigsAndLogs">Примеры глубокой индивидуальной настройки безопасности</a>.</p>
 
-<h2>Полезные программы</h2>
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Примеры конфигураций</summary>
+  <ul>
+    <li><strong>Где взять примеры:</strong> На странице Debian Wiki приведены сильные индивидуализированные конфигурации для nftables, sysctl и auditd.</li>
+  </ul>
+</details>
+
+</section> <!-- /Конец основной главы H2 -->
+
+<hr>
+
+<!-- КРУПНАЯ ГЛАВА (H2) -->
+<section id="useful-programs" aria-label="Полезные программы">
+<h2 id="section6">Полезные программы</h2>
 
 <p>На этой странице приведён список программ, полезных и напрямую связанных с настройкой и поддержанием безопасности Linux-систем.</p>
 
 <p>Включённые в список программы либо являются open-source (большинство), либо коммерческими с бесплатно доступным ограниченным функционалом, достаточным для выполнения базовых задач безопасности (меньшая часть).</p>
 
 <p><a href="https://wiki.debian.org/Security/ProtectingAgainstTargetedAttacks/UsefulPrograms">Полезные программы</a>.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Полезные программы</summary>
+  <ul>
+    <li><strong>Где искать:</strong> На странице Debian Wiki приведён список полезных open-source и коммерческих программ для настройки и поддержания безопасности Linux-систем.</li>
+  </ul>
+</details>
+
+</section> <!-- /Конец основной главы H2 -->
 
 <!-- Начало блока перекрестных ссылок для статьи "Целевые кибератаки на пользователей — как защитить свою Linux-систему" -->
 

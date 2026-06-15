@@ -207,6 +207,13 @@
     <priority>0.8</priority>
   </url>
   
+  <url>
+    <loc>https://blackcat568.github.io/CyberSecurityAndSocialEngineering/operator-deconstruction.html</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
   <!-- Русские статьи -->
   <url>
     <loc>https://blackcat568.github.io/CyberSecurityAndSocialEngineering/alienation-of-symbol-case-jobs-rus.html</loc>
@@ -399,6 +406,13 @@
   
   <url>
     <loc>https://blackcat568.github.io/CyberSecurityAndSocialEngineering/fraudulent-manipulations-romanticized-ancient-china-rus.html</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://blackcat568.github.io/CyberSecurityAndSocialEngineering/operator-deconstruction-rus.html</loc>
     <lastmod>2026-06-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

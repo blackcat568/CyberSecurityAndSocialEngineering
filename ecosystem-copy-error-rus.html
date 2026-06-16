@@ -116,6 +116,24 @@
      color: #222;
     }
     
+    /* ===== Image Zoom Effect: BEGIN ===== */
+
+    .zoomed {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 95vw !important;
+      max-height: 95vh;
+      z-index: 9999;
+      cursor: zoom-out;
+      box-shadow: 0 0 30px rgba(0,0,0,.6);
+      background: white;
+    }
+
+    /* ===== Image Zoom Effect: END ===== */
+
+    
     /* ========== МОБИЛЬНАЯ АДАПТАЦИЯ ========== */
     /* Базовый размер шрифта */
     html {
@@ -239,6 +257,7 @@
        alt="Сравнение развитой и ограниченной экосистем вокруг самолётов ДРЛО AWACS и А-50"
        width="700"
        loading="lazy"
+       onclick="this.classList.toggle('zoomed')"
        style="max-width: 100%; height: auto; border-radius: 4px; border: 1px solid #d0d0c0;">
   <figcaption style="margin-top: 0.5rem; font-size: 0.85rem; color: #4a4a40;">
         <strong>Скопировать объект проще, чем воспроизвести экосистему вокруг него.</strong> Самолёт ДРЛО представляет собой лишь наиболее заметный элемент системы. Реальные возможности возникают благодаря сети взаимодействий между радарами, командными пунктами, средствами связи, авиацией, организационными процедурами и людьми. При копировании сложной системы часто воспроизводится центральный объект, но не вся экосистема, которая делает его по-настоящему эффективным.

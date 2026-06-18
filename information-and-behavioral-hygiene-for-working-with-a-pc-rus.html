@@ -282,6 +282,30 @@
         font-size: 0.9em;
         color: #e34c26;
     }
+    
+    /* ===== Click-to-Zoom Images: BEGIN ===== */
+
+    .zoomed {
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+
+        width: auto !important;
+        height: auto !important;
+
+        max-width: 95vw !important;
+        max-height: 95vh !important;
+
+        z-index: 9999 !important;
+
+        cursor: zoom-out !important;
+
+        box-shadow: 0 0 30px rgba(0,0,0,.6);
+        background: white;
+    }
+
+    /* ===== Click-to-Zoom Images: END ===== */
 
     /* Адаптивность для мобильных */
     @media (max-width: 480px) {
@@ -2080,6 +2104,7 @@
        alt="Пример базы знаний CherryTree с древовидной структурой разделов по настройке и усилению безопасности Debian 13"
        width="650"
        loading="lazy"
+       onclick="this.classList.toggle('zoomed')"
        style="max-width: 100%; height: auto; border-radius: 4px; border: 1px solid #d0d0d0;">
   <figcaption style="margin-top: 0.5rem; font-size: 0.85rem; color: #4a4a40;">
     <strong>Пример организации базы знаний в CherryTree.</strong> Древовидная структура позволяет систематизировать материалы по настройке, защите, аудиту и сопровождению Debian&nbsp;13, обеспечивая быстрый доступ к командам, конфигурациям и справочной информации.

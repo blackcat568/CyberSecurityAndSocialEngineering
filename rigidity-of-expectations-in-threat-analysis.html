@@ -325,6 +325,28 @@ Do not expect attackers to act according to standard and familiar patterns.</p>
 
 <p>And in the world of cybersecurity, this is precisely what is considered a good result.</p>
 
+<p>Even among advanced IT professionals, one can often encounter the belief that blocking all incoming ports makes a system invulnerable. This is a classic example of rigidity of expectations: the defender extrapolates a particular case (a closed port = no attack vector) to the entire threat model, <strong>ignoring other penetration vectors.</strong></p>
+
+<p>As practice shows — described in the article <a href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/system-hardening-chronicles-targeted-attack-en.html#hardening-chronicle">"System Hardening Chronicles"</a> — such a strategy does not guarantee security when facing a serious, experienced adversary. An attacker with sufficient resources and time is not limited to network vectors — they will attack the user session, the application layer, and the user interface.</p>
+
+<p>Proper system hardening should be built as a multi-layered, defence-in-depth architecture, where each layer, where possible, contains several complementary and synchronized mechanisms:</p>
+
+<ul>
+  <li><strong>Network perimeter:</strong> a firewall, including hardware-based, on a router or dedicated appliance.</li>
+  <li><strong>Host-based protection:</strong> MAC systems (AppArmor, SELinux), intrusion detection systems (AIDS/HIDS), process isolation (Sandbox, containerization).</li>
+  <li><strong>Detection and deception:</strong> Honeypot traps for early detection of attacker activity.</li>
+  <li><strong>Cryptographic protection:</strong> full-disk encryption, communication channel encryption, hardware tokens (HSM, TPM, smart cards) for two-factor authentication and key storage.</li>
+  <li><strong>Monitoring and auditing:</strong> centralized logging, event correlation, behavioral analysis.</li>
+</ul>
+
+<p>Attacks on the user session are particularly dangerous. In this scenario, the attacker gains visibility into the victim's desktop activity or, at a minimum, their browser window activity — including keystrokes, navigation, form contents, and correspondence.</p>
+
+<p>The key problem is that the victim may be confident in their security because all incoming ports are closed and the browser encrypts traffic via HTTPS. However, the user session attack occurs <strong>before</strong> the data is encrypted by the browser and sent over the network. The interception happens at the input, rendering, or DOM manipulation level, rendering classical network defense useless.</p>
+
+<p>In other words, you may suspect traffic interception and take measures to protect against it, unaware that the entire user session — or at least the browser interface — has been compromised. This is a classic example of how rigidity of expectations — focusing on a single threat vector at the expense of others — can lead to a false sense of security and serious consequences.</p>
+
+<p><strong>Conclusion:</strong> security should not be built around a single "magic" solution. Only a combined, multi-layered approach with continuous reassessment of the threat model can effectively counter a targeted adversary.</p>
+
 <a href="#top" style="display: inline-block; padding: 8px 16px; background: #f5f5f0; border: 1px solid #d0d0c0; border-radius: 4px; text-decoration: none; color: #1a1a1a;">
   ↑ Back to top
 </a>

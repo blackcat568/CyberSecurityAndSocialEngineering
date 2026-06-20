@@ -1,0 +1,592 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>"Oculus" and "Boar" — Neural Network Monitoring Systems of Russian Security Forces</title>
+
+  <!-- JSON-LD structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "name": "Oculus and Boar — Neural Network Monitoring Systems of Russian Security Forces",
+    "url": "https://blackcat568.github.io/CyberSecurityAndSocialEngineering/oculus-boar-monitoring-systems.html",
+    "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "isAccessibleForFree": true,
+    "description": "Analysis of the neural network monitoring systems Oculus (image analysis) and Boar (text monitoring and prediction) used by Russian security forces for automated detection of undesirable content. Examines the structure of Center E, covert surveillance methods, tailored expert assessments, and the system of total self-censorship.",
+    "datePublished": "2026-06-20",
+    "dateModified": "2026-06-20",
+    "author": {
+      "@type": "Person",
+      "name": "blackcat568",
+      "url": "https://github.com/blackcat568"
+    }
+  }
+  </script>
+
+  <!-- Meta tags for this page -->
+  <meta name="description" content="Analysis of the neural network monitoring systems Oculus (image analysis) and Boar (text monitoring and prediction) used by Russian security forces for automated detection of undesirable content. Examines the structure of Center E, covert surveillance methods, tailored expert assessments, and the system of total self-censorship.">
+  <meta name="keywords" content="Oculus, Boar, neural network systems, monitoring, Center E, security forces, facial recognition, digital surveillance, tailored expert assessments, total self-censorship, Roskomnadzor, GRCHTS, computer vision, text monitoring, protest prediction, information security, political police, dystopia">
+  <meta name="author" content="blackcat568">
+  <meta name="license" content="CC0 1.0 Universal (Public Domain Dedication)">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta property="og:title" content="Oculus and Boar — Neural Network Monitoring Systems of Russian Security Forces - CyberSecurity & Social Engineering">
+  <meta property="og:description" content="Analysis of the neural network monitoring systems Oculus (image analysis) and Boar (text monitoring and prediction) used by Russian security forces for automated detection of undesirable content.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://blackcat568.github.io/assets/images/og/tux-at-cyber-warfare.png">
+  <meta property="og:url" content="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/oculus-boar-monitoring-systems.html">
+
+  <!-- ✅ CANONICAL LINK -->
+  <link rel="canonical" href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/oculus-boar-monitoring-systems.html">
+
+  <!-- ✅ Hreflang (link between language versions) -->
+  <link rel="alternate" hreflang="en" href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/oculus-boar-monitoring-systems.html">
+  <link rel="alternate" hreflang="ru" href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/oculus-boar-monitoring-systems-rus.html">
+  <link rel="alternate" hreflang="x-default" href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/oculus-boar-monitoring-systems.html">
+  
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    body { font-family: "Segoe UI", Tahoma, Verdana, Arial, sans-serif; 
+          line-height:1.45; 
+          color:#111; 
+          max-width:860px; 
+          margin:26px auto; 
+          padding:0 18px; 
+          background:#fff;  
+          text-rendering: optimizeLegibility;}
+      
+    h1 { font-size:2rem; margin-bottom:0.3rem; }
+    
+    h2 {
+      font-size:1.35rem;
+      margin-top:1.8rem;
+      padding-bottom:0.2rem;
+    }
+
+    h3 {
+      font-size:1.15rem;
+      margin-top:1.2rem;
+      font-weight:700;
+    }
+
+    section {
+      margin-bottom: 2rem;
+    }
+
+    .subtitle { color:#555; margin-top:0; margin-bottom:1.0rem; font-size:0.95rem; }
+    hr { border:0; border-top:1px solid #ddd; margin:1.2rem 0; }
+    p { margin:0.8rem 0; }
+    ul, ol { padding-left:1.2rem; margin:0.6rem 0; }
+    li { margin:0.35rem 0; }
+
+    strong em { font-weight:700; font-style:italic; }
+    header { background:#f6f8fa;border-bottom:1px solid #e1e4e8;padding:12px 18px;margin-bottom:18px; }
+    footer { border-top:1px solid #ddd; margin-top:1.8rem; padding-top:1rem; font-size:0.85rem; color:#555; }
+    footer .ref { font-size:0.8rem; color:#666; margin-top:0.3rem; }
+    
+    /* === Semantic content blocks === */
+    .historical-fact {
+      margin: 1.5em 0 1.5em 1rem;
+      padding: 1em 1.2em;
+      background: #f7f7f7;
+      border-left: 4px solid #555;
+      color: #111;
+      font-size: 1em;
+    }
+
+    /* === Styles for historical notes === */
+    .historical-fact {
+      overflow-x: auto;
+      word-wrap: break-word;
+    }
+    
+    .historical-fact p {
+      margin: 0;
+    }
+      
+    .final-thesis {
+      background: linear-gradient(to right, #f7f7f7, transparent);
+      margin-top: 2em;
+      padding-left: 1em;
+      border-left: 5px solid #333;
+      font-size: 1.05em;
+      font-weight: 600;
+     color: #222;
+    }
+    
+    /* ========== MOBILE ADAPTATION ========== */
+    /* Base font size */
+    html {
+      font-size: 16px;
+    }
+
+    /* Settings for phones (width up to 600px) */
+    @media (max-width: 600px) {
+      html {
+        font-size: 18px;
+      }
+      body {
+        padding: 0 16px;
+      }
+      h1 {
+        font-size: 1.8rem;
+      }
+      h2 {
+        font-size: 1.3rem;
+      }
+      p {
+        margin: 1rem 0;
+      }
+      a {
+        padding: 6px 0;
+        display: inline-block;
+      }
+    }
+    
+  </style>
+</head>
+<body>
+
+<header>
+  <!-- Main site navigation -->
+  <nav aria-label="Main navigation" style="max-width:860px;margin:0 auto;display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+    <a href="/CyberSecurityAndSocialEngineering/index.html" rel="prev" style="font-weight:700;color:#0366d6;text-decoration:none;font-size:1rem;">
+      ← Back to main page
+    </a>
+    <div style="color:#444;font-size:0.95rem;">
+      CyberSecurity &amp; Social Engineering — main page
+    </div>
+  </nav>
+  
+  <!-- Language navigation -->
+  <nav aria-label="Language alternation" style="max-width:860px;margin:0 auto;display:flex;align-items:center;gap:12px;">
+    <a href="/CyberSecurityAndSocialEngineering/oculus-boar-monitoring-systems-rus.html" hreflang="ru" rel="alternate" style="font-weight:700;color:#0366d6;text-decoration:none;font-size:1rem;">
+      ← Русская версия
+    </a>
+  </nav>
+</header>
+
+<main>
+    
+<article>
+
+<p><strong>Disclaimer:</strong> The subject of this article is the technical characteristics of the "Oculus" and "Boar" systems, as well as the tactics and strategies of their application. The political situation in a specific country is described solely for understanding the context in which these systems are used, and for a more accurate and illustrative understanding of the systems themselves. The author does not aim to engage in political criticism, adhering strictly to a scientific approach and unbiased conclusions. This is an example of systems whose analogues exist and are also used in other countries.</p>
+
+<h1>"Oculus" and "Boar" — Neural Network Monitoring Systems of Russian Security Forces</h1>
+
+<figure style="margin: 1.5rem 0; text-align: center;">
+  <img src="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/pictures/Oculus-and-Boar-caricature.png"
+       alt="Cartoon: Timon the meerkat wearing glasses and Pumbaa the warthog holding handcuffs as evil police officers detaining a 'criminal' — an allusion to the Oculus and Boar systems"
+       width="500"
+       loading="lazy"
+       style="max-width: 100%; height: auto; border-radius: 4px; border: 1px solid #d0d0c0;">
+  <figcaption style="margin-top: 0.5rem; font-size: 0.85rem; color: #4a4a40;">
+    <strong>"Oculus" and "Boar" in action.</strong> Timon ("the eyes" of the system) scans for "sedition," while Pumbaa ("the brain" and enforcer) is ready to put handcuffs on anyone for a careless post. An illustration for the article on neural network monitoring systems of Russian security forces.
+  </figcaption>
+</figure>
+
+<!-- MAIN CHAPTER (H2) - Table of Contents -->
+<section id="table-of-contents" aria-label="Table of Contents">
+<h2 id="section0">Contents</h2>
+
+<ul>
+<li><a href="#section1">1. History of Creation</a></li>
+<li><a href="#section2">2. What Exactly Does Center "E" Do?</a></li>
+<li><a href="#section3">3. What Is Their Main Specificity?</a></li>
+<li><a href="#section4">4. Total Automated Social Media Monitoring</a></li>
+<li><a href="#section5">5. Covert Filming and Digital Surveillance ("Plainclothes Officers")</a></li>
+<li><a href="#section6">6. Summons for "Preventive Conversations"</a></li>
+<li><a href="#section7">7. "Pocket" Linguistic Expert Assessments</a></li>
+<li><a href="#section8">8. Why This Works</a></li>
+<li><a href="#section9">9. "Oculus": Automatic Image and Video Analyzer</a></li>
+<li><a href="#section10">10. "Boar": Predictor of "Information Bombs"</a></li>
+<li><a href="#section11">11. Conclusion</a></li>
+</ul>
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Contents</summary>
+  <ul>
+    <li><strong>What this article is about:</strong> An analysis of the neural network monitoring systems "Oculus" (image analysis) and "Boar" (text monitoring and prediction) used by Russian security forces for the automated detection of "undesirable" content.</li>
+  </ul>
+</details>
+
+</section> <!-- /End of main chapter H2 -->
+
+<hr>
+
+<!-- MAIN CHAPTER (H2) -->
+<section id="history" aria-label="1. History of Creation">
+<h2 id="section1">1. History of Creation</h2>
+
+<p>Center "E" (officially: the Main Directorate for Combating Extremism of the Ministry of Internal Affairs of the Russian Federation) is an independent and one of the most influential law enforcement units within the structure of the Russian Ministry of Internal Affairs. Simply put, it is the political police, tasked with searching for, controlling, and suppressing any dissent, opposition activity, and civil protests within the country.</p>
+
+<p>The agency was established by presidential decree in September 2008. It was formed on the basis of the liquidated UBOP (Directorate for Combating Organized Crime). Personnel and harsh methods of working with criminals were redirected to the political sphere.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to contents</a>
+</p>
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — History of Creation</summary>
+  <ul>
+    <li><strong>Center "E":</strong> Established in 2008 on the basis of UBOP as a political police force to suppress dissent and civil protests.</li>
+  </ul>
+</details>
+
+</section> <!-- /End of main chapter H2 -->
+
+<hr>
+
+<!-- MAIN CHAPTER (H2) -->
+<section id="center-e-functions" aria-label="2. What Exactly Does Center E Do?">
+<h2 id="section2">2. What Exactly Does Center "E" Do?</h2>
+
+<ul>
+  <li><strong>Internet monitoring.</strong> Operatives from the center continuously scour social media, Telegram channels, blogs, and forums. They are the ones who find "sedition": anti-war posts, criticism of the authorities, "likes" and "reposts" of materials from independent media or foreign agents.</li>
+  <li><strong>Compiling dossiers and maintaining lists.</strong> The agency maintains databases on all opposition figures, human rights activists, civil activists, independent journalists, and writers. Their internal reports and references often form the basis for the Ministry of Justice's decisions to label people as "foreign agents."</li>
+  <li><strong>Working at rallies and protests.</strong> Employees of Center "E" are always present at any public gatherings. They are usually dressed in civilian clothes ("plainclothes"), conduct covert video surveillance of protesters, identify leaders, and coordinate the harsh detentions carried out by security forces.</li>
+  <li><strong>Initiating criminal and administrative cases.</strong> It is Center "E" that acts as the main complainant under articles concerning "discrediting the army," "fake news," "insulting the feelings of believers," "inciting hatred or enmity," and "extremism." They order "pocket" expert assessments from loyal linguists to "prove" the author's "guilt."</li>
+</ul>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to contents</a>
+</p>
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Functions of Center "E"</summary>
+  <ul>
+    <li><strong>4 main functions:</strong> Internet monitoring, compiling dossiers and lists, working at rallies (covert filming, identifying leaders), initiating criminal and administrative cases through "pocket" expert assessments.</li>
+  </ul>
+</details>
+
+</section> <!-- /End of main chapter H2 -->
+
+<hr>
+
+<!-- MAIN CHAPTER (H2) -->
+<section id="specifics" aria-label="3. What Is Their Main Specificity?">
+<h2 id="section3">3. What Is Their Main Specificity?</h2>
+
+<ol>
+  <li><strong>Working without a uniform.</strong> You will never see a Center "E" operative in a police uniform on the street. They wear regular civilian clothes to blend in with the crowd.</li>
+  <li><strong>The "stick" system.</strong> The effectiveness of employees is measured by the number of cases initiated and "crimes" found. Since there are few real terrorists and extremists in everyday life, the agency artificially fabricates cases from internet posts, comments, and petition signatures.</li>
+</ol>
+
+<p>Taking a vivid example from the dystopian comic-book universe of the film "V for Vendetta," Center "E" plays the role of the "Thought Police." They do not monitor public safety, but rather ensure that citizens do not think or speak out contrary to the official state line.</p>
+
+<p>Russian independent authors face automated social media monitoring by AI systems ("Oculus," "Boar"), tracking through facial recognition systems, "preventive conversations" with operatives, and accusations based on state-loyal "pocket expert assessments." This system creates an atmosphere of total insecurity, where legal norms are replaced by political expediency. Such practices, including the use of covert filming at events, have been documented by human rights organizations such as "OVD-Info" and "Setevye Svobody."</p>
+
+<p>This reality indeed resembles a dystopia, but it is documented in thousands of court cases. The Russian repressive machine operates at the intersection of Soviet KGB practices and 21st-century digital technologies.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to contents</a>
+</p>
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Specificity of Center "E"</summary>
+  <ul>
+    <li><strong>2 features:</strong> Working without a uniform (civilian clothes) and the "stick" system (evaluation by the number of cases initiated, fabrication of cases from internet publications).</li>
+  </ul>
+</details>
+
+</section> <!-- /End of main chapter H2 -->
+
+<hr>
+
+<!-- MAIN CHAPTER (H2) -->
+<section id="automated-monitoring" aria-label="4. Total Automated Social Media Monitoring">
+<h2 id="section4">4. Total Automated Social Media Monitoring</h2>
+
+<p>Security forces no longer search for "sedition" manually — neural networks and algorithms, developed by order of Roskomnadzor (RKN) and the Main Radio Frequency Center (GRChTs), do it for them.</p>
+
+<ul>
+  <li><strong>The "Boar" system:</strong> An artificial intelligence that continuously scans Telegram, VKontakte, Facebook, and other platforms. It searches not just for forbidden words, but for "points of tension" and "potential threats." The system can analyze context, identify authors of anonymous channels through indirect digital traces, and predict the spread of protest sentiments.</li>
+  <li><strong>The "Oculus" system:</strong> A neural network that analyzes graphic content — images, memes, photographs, and video frames. It automatically recognizes politicians' faces, caricatures of the country's leadership, anti-war symbols, and inscriptions on posters.</li>
+  <li><strong>Digital footprint:</strong> It is enough to like a post or leave a comment for the algorithm to add the account to an automatic report. This report is then forwarded to Center "E" or the FSB for manual processing.</li>
+</ul>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to contents</a>
+</p>
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Automated Monitoring</summary>
+  <ul>
+    <li><strong>Two AI systems:</strong> "Boar" — text monitoring and prediction of protest sentiments. "Oculus" — analysis of graphic content (memes, caricatures, symbols, faces).</li>
+  </ul>
+</details>
+
+</section> <!-- /End of main chapter H2 -->
+
+<hr>
+
+<!-- MAIN CHAPTER (H2) -->
+<section id="surveillance" aria-label="5. Covert Filming and Digital Surveillance Plainclothes Officers">
+<h2 id="section5">5. Covert Filming and Digital Surveillance ("Plainclothes Officers")</h2>
+
+<p>For those engaged in public activities within the country, leaving the house is accompanied by constant visual monitoring.</p>
+
+<ul>
+  <li><strong>Operatives at events:</strong> At any independent lectures, poetry evenings, trials of political prisoners, or simply meetings of like-minded people, Center "E" employees in civilian clothes appear. They do not hide small video cameras or film events directly on their phones. This is needed to record faces, create a database of connections ("who communicates with whom"), and find grounds for accusations of an "unsanctioned mass event."</li>
+  <li><strong>Facial recognition system (e.g., "Sfera" in Moscow):</strong> The network of city cameras is connected to the databases of security forces. If an activist or blogger is on a "preventive list," then when they pass through a metro turnstile or past a street camera, a signal is sent to the dispatcher's console. People are regularly detained in the metro preemptively — for example, on days of public holidays or suspected rallies, simply "for document checks."</li>
+</ul>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to contents</a>
+</p>
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Covert Filming and Facial Recognition</summary>
+  <ul>
+    <li><strong>2 methods of control:</strong> Operatives in civilian clothes with video surveillance at events. Facial recognition systems (e.g., "Sfera") with automatic alerts about the appearance of "targets" in public places.</li>
+  </ul>
+</details>
+
+</section> <!-- /End of main chapter H2 -->
+
+<hr>
+
+<!-- MAIN CHAPTER (H2) -->
+<section id="preventive-talks" aria-label="6. Summons for Preventive Conversations">
+<h2 id="section6">6. Summons for "Preventive Conversations"</h2>
+
+<p>This is a method of psychological pressure that is often not legally formalized but is intended to intimidate the person.</p>
+
+<ul>
+  <li><strong>Phone call or visit home:</strong> An operative calls the personal number or comes to the author's home early in the morning. The person is "invited" to come to the department or have a conversation on the spot. There is no official summons — security forces use psychological pressure ("it's better for you if we just talk").</li>
+  <li><strong>The essence of the conversation:</strong> In the office, the person is shown a folder with printouts of their posts or poems. The operative explains directly: "We see everything, we are watching you (using the 'Oculus' and 'Boar' systems, which continuously monitor your posts). The next step is a criminal case. You have a choice: stay silent, leave the country, or start cooperating." Legally, this conversation commits you to nothing, but afterwards, the person understands that they are on the verge of arrest.</li>
+</ul>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to contents</a>
+</p>
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Preventive Conversations</summary>
+  <ul>
+    <li><strong>Method of psychological pressure:</strong> A phone call or visit home without an official summons, displaying printouts of posts with the threat of a criminal case, and offering a "choice": stay silent, leave, or cooperate.</li>
+  </ul>
+</details>
+
+</section> <!-- /End of main chapter H2 -->
+
+<hr>
+
+<!-- MAIN CHAPTER (H2) -->
+<section id="linguistic-expertise" aria-label="7. Pocket Linguistic Expert Assessments">
+<h2 id="section7">7. "Pocket" Linguistic Expert Assessments</h2>
+
+<p>When security forces need to initiate a real case (administrative or criminal), they require formal legal justification. They cannot judge the meaning of a text themselves, so state experts come onto the scene.</p>
+
+<ul>
+  <li><strong>Their own institutes:</strong> The Investigative Committee and the Ministry of Internal Affairs send texts (poems, posts, videos) to state-approved expert centers (e.g., the Center for Expertise at St. Petersburg State University or the ECC of the Ministry of Internal Affairs).</li>
+  <li><strong>Pseudo-scientific "newspeak":</strong> Linguistic experts use maximally vague formulations to fit the text to the article. Their conclusions include phrases like: "The author uses hidden metaphors with the aim of forming a negative attitude towards government bodies" or "The text contains a hidden intent to discredit."</li>
+  <li><strong>Ignoring context:</strong> Experts may take a single line from a poem or an ironic post, completely ignore the artistic intent, and claim that it "calls for extremism." It is impossible to challenge such an expert assessment in court: Russian courts simply refuse to attach alternative research from independent scientists to cases.</li>
+</ul>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to contents</a>
+</p>
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Pocket Expert Assessments</summary>
+  <ul>
+    <li><strong>3 features:</strong> Expert assessments are conducted in state centers. Vague formulations are used to fit the text to the article. Context and artistic intent are ignored. Courts do not accept alternative expert assessments from independent scientists.</li>
+  </ul>
+</details>
+
+</section> <!-- /End of main chapter H2 -->
+
+<hr>
+
+<!-- MAIN CHAPTER (H2) -->
+<section id="why-it-works" aria-label="8. Why This Works">
+<h2 id="section8">8. Why This Works</h2>
+
+<p>This system is designed to keep a person in a state of constant stress. The person knows that cameras are watching them, AI is reading their posts (24/7 interactive automated monitoring), that someone may come to their home at any moment, and that any word of theirs can be twisted by an expert in uniform. This creates total self-censorship — the most effective form of control, where a person begins to remain silent out of fear.</p>
+
+<p>The "Oculus" and "Boar" information systems really do exist, and they are not a figment of the imagination. They are official IT products developed by order of FSUE "GRChTs" (the Main Radio Frequency Center) — a structure within Roskomnadzor directly responsible for censorship and monitoring of the Russian internet. Their creation, contracts, and patents were openly published on the state procurement website and in Rospatent. In the unified digital surveillance system, these two neural networks perform different but complementary tasks: "Oculus" is the "eyes" of the system, and "Boar" is its "brain."</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to contents</a>
+</p>
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Why This Works</summary>
+  <ul>
+    <li><strong>The effect of total self-censorship:</strong> Constant stress, round-the-clock monitoring, and the impossibility of challenging an expert assessment create an atmosphere of fear that forces people to remain silent. The systems really exist and are officially patented.</li>
+  </ul>
+</details>
+
+</section> <!-- /End of main chapter H2 -->
+
+<hr>
+
+<!-- MAIN CHAPTER (H2) -->
+<section id="oculus" aria-label="9. Oculus Automatic Image and Video Analyzer">
+<h2 id="section9">9. "Oculus": Automatic Image and Video Analyzer</h2>
+
+<p>Before this system was implemented, Roskomnadzor employees manually searched for prohibited images, memes, and videos. They opened websites, public pages, Telegram channels, and visually checked the content. "Oculus" (from the Latin oculus — eye) fully automated this process.</p>
+
+<ul>
+  <li><strong>How it works:</strong> The system is built on a basis of convolutional neural networks (computer vision). It is capable of analyzing over 200,000 images and videos per day, spending about 3 seconds on each image.</li>
+  <li><strong>What exactly it looks for:</strong>
+    <ul>
+      <li><strong>Text in images:</strong> The neural network recognizes handwritten or printed text superimposed on photos, protest posters, or screenshots.</li>
+      <li><strong>Faces and caricatures:</strong> The system is trained to recognize the faces of specific politicians, opposition leaders, and top state officials (to instantly filter out insults against the president or visual memes about him).</li>
+      <li><strong>Symbolism:</strong> "Oculus" instantly recognizes prohibited logos, coats of arms, white-blue-white flags, pacifist signs, rainbow symbolism, and emblems of organizations recognized as "extremist."</li>
+      <li><strong>Action scenes:</strong> The algorithm classifies the visual content into categories: "protests" (crowds, posters, police), "violence," "drugs," "suicide."</li>
+    </ul>
+  </li>
+</ul>
+
+<p>If "Oculus" finds a match in its databases, it automatically generates a violation card, takes a screenshot, and sends it to the security forces to initiate a case.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to contents</a>
+</p>
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Oculus</summary>
+  <ul>
+    <li><strong>"Eyes" of the system:</strong> A computer vision neural network analyzing >200,000 images per day. Recognizes text in images, politicians' faces, caricatures, prohibited symbolism, and protest scenes.</li>
+  </ul>
+</details>
+
+</section> <!-- /End of main chapter H2 -->
+
+<hr>
+
+<!-- MAIN CHAPTER (H2) -->
+<section id="boar" aria-label="10. Boar Predictor of Information Bombs">
+<h2 id="section10">10. "Boar": Predictor of "Information Bombs"</h2>
+
+<p>If "Oculus" works with what has already been published in the form of media files, the "Boar" information system is a large-scale analytical complex for text monitoring and prediction. Its task is to find so-called "points of information tension."</p>
+
+<ul>
+  <li><strong>How it works:</strong> "Boar" (developed by the St. Petersburg IT company "Neobit") continuously scans the textual space: media, blogs, forums, chats, and social networks. It searches not just for individual "forbidden words" but assesses the overall tone of publications, the speed of their reposts, and audience engagement.</li>
+  <li><strong>What exactly it does:</strong>
+    <ul>
+      <li><strong>Search for "infobombs":</strong> The system identifies resonant news stories that quickly gain views and provoke negative reactions from the population (e.g., posts about losses, mobilization, price increases, or criticism of local officials).</li>
+      <li><strong>Risk prediction:</strong> Based on AI algorithms, "Boar" attempts to predict whether an online discussion of a topic will escalate into a real street protest or mass discontent. It calculates how the news will spread in the coming hours.</li>
+      <li><strong>De-anonymization and source tracking:</strong> The program tracks chains of reposts to understand which particular public page or account the "wave" originated from (this helps security forces identify the authors of anonymous channels).</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Officials from Roskomnadzor have stated that "Boar" is capable of detecting and recording content threatening to the authorities in just a few minutes.</p>
+
+<p><strong>An important technical detail: what is it built on?</strong></p>
+
+<p>At the end of 2024, Roskomnadzor officially patented the "Boar" system in Rospatent. Journalists noted an ironic fact: the main patriotic surveillance system for the Russian internet is built on the <strong>Ubuntu</strong> operating system (a Linux distribution developed by the British company Canonical). The server-side source code is written in <strong>Python</strong> and <strong>Go</strong>.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to contents</a>
+</p>
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Boar</summary>
+  <ul>
+    <li><strong>"Brain" of the system:</strong> Text monitoring and prediction. Search for "infobombs," prediction of protest risks, de-anonymization through repost chains. Built on Ubuntu, written in Python and Go.</li>
+  </ul>
+</details>
+
+</section> <!-- /End of main chapter H2 -->
+
+<hr>
+
+<!-- MAIN CHAPTER (H2) -->
+<section id="conclusion" aria-label="11. Conclusion">
+<h2 id="section11">11. Conclusion</h2>
+
+<p>Russia has created a fully automated factory of digital censorship. Neural networks operate around the clock — "seeing" (Oculus) and "thinking" (Boar) — turning any careless word, like, or image into a ready-made legal basis for a visit from Center "E" operatives.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to contents</a>
+</p>
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Conclusion</summary>
+  <ul>
+    <li><strong>Main conclusion:</strong> A fully automated factory of digital censorship has been created: "Oculus" and "Boar" round the clock turn any careless word, like, or image into a legal basis for the actions of security forces.</li>
+  </ul>
+</details>
+
+</section> <!-- /End of main chapter H2 -->
+
+<!-- "Back to top" button at the end of the article -->
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to contents</a>
+</p>
+
+<!-- Начало блока перекрестных ссылок для статьи "Великие понты великого диктатора" -->
+<hr>
+<aside aria-label="Связанные материалы">
+<p>Связанные страницы:</p>
+
+<ul>
+	
+<li>
+    <a href="targeted-attack-analysis.html">
+        Analysis of the Detected Targeted Complex Attack
+    </a> — Description of the detected complex targeted attack.
+</li>
+<li>
+    <a href="psychological-suppression-by-security-forces.html">
+        Psychological Suppression via the Disbelief Effect
+    </a> — analysis of manipulation tactics and protective strategies.
+</li>
+<li>
+    <a href="rigidity-of-expectations-in-threat-analysis.html">
+        Rigidity of Expectations in Threat Analysis
+    </a> — The problem of rigidity of expectations in cybersecurity threat analysis: why an experienced attacker acts in non-standard (non-obvious) ways.
+</li>
+<li>
+    <a href="silent-polygon-ai-trials-intelligent-weapon-on-rightless-human.html">
+        Silent Polygon: AI Trials of Intelligent Weapons on the Rightless Human
+    </a> — Or, Bringing Clarity to Military Intelligence-Analytical AI.
+</li>
+<li>
+    <a href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/operator-deconstruction.html">
+        Deconstruction of the Targeted Attack Operator. Analysis of First-Order Executor's Systemic Errors (Case Study 2019–2026)
+    </a> — Documented analysis of eight critical errors of the manipulator who controlled the reconnaissance-analytical AI. Transformation of the Victim from a Humanities Scholar to a Security Staff Member, information barrier failure, and professional unfitness of the operator.
+</li>
+<li>
+    <a href="information-and-behavioral-hygiene-for-working-with-a-pc.html">
+        Information and Behavioral Hygiene for Working with a PC
+    </a> — A basic practical guide to digital, behavioral, and information hygiene for personal computer users.
+</li>
+<li>
+    <a href="consciousness-reformatting-for-survival.html">
+        Consciousness Reformatting for Survival in Critical Conditions: Specifics and Consequences
+    </a> — analysis of adaptive mental restructuring and its long-term consequences.
+</li>
+<li>
+    <a href="great-pretenses-of-a-great-dictator.html">
+        The Great Pretenses of a Great Dictator
+    </a> — The article shows how the dictator's lack of self-criticism and narcissism, manifested in the pursuit of pretenses and showiness, undermine real efficiency, destroy technology, pragmatism, and defense capability, leading the system to strategic failure.
+</li>
+
+</ul>
+</aside>
+
+<!-- Конец блока -->
+
+</article>
+
+  <footer>
+    <!-- Смысловой манифест и дисклеймер безопасности -->
+    <section aria-label="О целях контента и безопасности">
+      <p style="margin-bottom: 1rem;">Материалы сайта посвящены анализу проблем кибернетической, социальной и психологической безопасности, противодействию тоталитарным режимам, деструктивным сектам и псевдонаучным культам, а также противодействию механизмам индивидуальных манипуляций. Отдельное внимание уделяется вопросам психологии, философии и устойчивого развития личности, способной осознанно и эффективно противостоять данным угрозам.</p>
+      <p style="margin-bottom: 1rem;">Контент распространяется свободно и предназначен исключительно для обучения, защитных исследований и осмысленного практического использования. Автор придерживается принципов научной добросовестности и критического мышления.</p>
+    </section>
+
+    <!-- Метаданные и лицензия CC0 -->
+    <p>Автор: <strong>blackcat568</strong>. Дата составления: <time datetime="2026-06-20">20.06.2026</time>.</p>
+    <p>Лицензия: <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="license noopener external" target="_blank">CC0 1.0 Universal (Public Domain)</a></p>
+  </footer>
+
+</main>
+
+</body>
+</html>

@@ -7,7 +7,7 @@
 flush ruleset
 
 table inet filter { # Открытие листа правил
-  
+
   
   # ============================================
   # НАЧАЛО ЦЕПОЧКИ INPUT
@@ -265,6 +265,10 @@ table inet filter { # Открытие листа правил
     ct state established,related accept
     oif "lo" accept
     
+    # Разрешаем DNS (Quad9), чтобы имена преобразовывались в IP
+    ip daddr 9.9.9.9 udp dport 53 ct state new accept
+    ip daddr 9.9.9.9 tcp dport 53 ct state new accept
+    
     # == Критически важные ICMP для сети ==
     ip protocol icmp icmp type { destination-unreachable, time-exceeded, parameter-problem } accept
 
@@ -290,78 +294,83 @@ table inet filter { # Открытие листа правил
     # === Веб-интерфейс роутера ===
     ip daddr 192.168.0.1 tcp dport 80 accept
     
-    # === Debian 13 репозитории (по IP-диапазонам) ===
+    # === Debian 13 репозитории (нужны порты 80 и 443 для apt) ===
+    # Сюда входят базовые сервера обновлений и глобальный CDN Fastly (debian.map.fastlydns.net)
     ip daddr {
-        151.101.0.0/16,    # deb.debian.org (Fastly CDN)
-        194.109.0.0/16,    # security.debian.org
-        185.31.16.0/24     # дополнительный диапазон
-    } tcp dport { 80, 443 } accept
+        151.101.0.0/16,       # Основной пул CDN Fastly для deb.debian.org
+        199.232.0.0/16,       # Дополнительный пул Fastly для серверов безопасности
+        146.75.0.0/17,        # Резервные маршруты доставки пакетов Debian
+        130.89.148.0/24,      # Физические сервера ftp.debian.org (включая зеркало hamsolo)
+        128.31.0.0/16         # Официальные IP-сети инфраструктуры Debian (MIT/США)
+    } tcp dport { 80, 443 } ct state new accept
 
     # === Google сервисы (поиск, Gmail, Drive, YouTube, Gemini) ===
+    # Масштабные диапазоны официальной автономной системы Google (ASN 15169)
+    # Открывать строго порты 80 и 443; ct state new обязателен для инициации сессии
     ip daddr {
-        142.250.0.0/15,    # Основной диапазон Google
-        172.217.0.0/16,    # Дополнительный диапазон Google
-        216.58.192.0/19,   # YouTube / Google Services
-        64.233.160.0/19,   # Gmail / Google Drive
-        74.125.0.0/16,     # Еще диапазон Google
-        35.190.0.0/16,     # Google Cloud
-        35.191.0.0/16      # Google Cloud
-    } tcp dport { 443, 80 } accept
+        64.233.160.0/19,      # Глобальная инфраструктура Google (Поиск, Аккаунты)
+        74.125.0.0/16,        # Пулы сервисов Google, включая Gmail и gstatic
+        142.250.0.0/15,       # Крупнейшая базовая подсеть для YouTube и Gemini API
+        172.217.0.0/16,       # Сервера доставки контента и googleusercontent
+        173.194.0.0/16,       # Дополнительные маршруты для Google Drive и авторизации
+        209.85.128.0/17,      # Региональные дата-центры Google Cloud/API
+        216.58.192.0/19       # Старые, но активные пулы DNS и фронтендов Google
+    } tcp dport { 80, 443 } ct state new accept
 
-    # === GitHub ===
-    ip daddr {
-        140.82.112.0/20,   # Основной диапазон GitHub
-        185.199.108.0/22,  # GitHub Pages / CDN
-        192.30.252.0/22,   # GitHub (старый диапазон)
-    } tcp dport { 443, 80 } accept
 
-    # === DeepSeek ===
-    # Определите IP через ping deepseek.com и добавьте сюда
-    ip daddr {
-        104.18.24.0/24,    # Примерный диапазон Cloudflare
-        172.67.192.0/24    # Примерный диапазон Cloudflare
-    } tcp dport 443 accept
+    # === GitHub (нужны порты 443 и 80) ===
+    ip daddr { 
+        140.82.112.0/20,      # Основные подсети GitHub
+        192.30.252.0/22,      # Дополнительные пулы GitHub
+        185.199.108.0/22      # CDN-сети (raw.githubusercontent.com, githubassets.com)
+    } tcp dport { 80, 443 } ct state new accept
 
-    # === ChatGPT (OpenAI) - Azure IP-диапазоны ===
+    # === DeepSeek (нужен только порт 443) ===
     ip daddr {
-        20.70.0.0/15,      # Azure US East
-        40.0.0.0/8,        # Azure общий диапазон
-        52.230.0.0/16,     # Azure East US
-        20.60.0.0/16,      # Azure West Europe
-        23.96.0.0/16       # Azure
-    } tcp dport 443 accept
+        154.8.0.0/16,         # Азиатские и глобальные пулы хостинга DeepSeek
+        103.193.104.0/22      # Дополнительные маршруты DeepSeek
+    } tcp dport 443 ct state new accept
+
+    # === ChatGPT (OpenAI) ===
+    # OpenAI полностью работает за прокси-защитой Cloudflare (ASN 13335).
+    # Открывать строго 443 порт (HTTPS), ct state new обязателен.
+    ip daddr {
+        104.16.0.0/12,        # Огромный базовый диапазон Cloudflare (включая chatgpt.com и cdn.openai.com)
+        172.64.0.0/13,        # Дополнительный пул Cloudflare для API и авторизации auth0
+        162.158.0.0/15,       # Маршруты доставки веб-скриптов и интерфейса ChatGPT
+        108.162.192.0/18,     # Резервные адреса проксирования OpenAI
+        198.41.128.0/17       # Сети авторизационных шлюзов OpenAI
+    } tcp dport 443 ct state new accept
 
     # === Proton (почта, диск, VPN) ===
+    # Собственная автономная система Proton в Швейцарии (ASN 62240) + резервные дата-центры
     ip daddr {
-        185.70.40.0/22,    # Proton Mail
-        194.109.0.0/16,    # Proton VPN
-        185.159.156.0/22,  # Proton
-    } tcp dport { 443, 80 } accept
+        185.70.40.0/22,       # Основной пул серверов ProtonMail и ProtonDrive в Женеве
+        185.159.157.0/24,     # Сети координации и авторизации ProtonVPN
+        143.244.32.0/19,      # Дополнительные серверные мощности Proton в Европе
+        89.145.80.0/21,       # Инфраструктура обмена трафиком и API Proton
+        37.19.192.0/19        # Резервные шлюзы аккаунтов ProtonVPN
+    } tcp dport { 80, 443 } ct state new accept
 
-    # === Википедия и проекты Викимедиа ===
+    # === Википедия ===
+    # Официальные диапазоны некоммерческого фонда Wikimedia Foundation (ASN 14907)
+    # Сюда входит upload.wikimedia.org, откуда подгружаются все картинки
     ip daddr {
-        208.80.154.0/24,    # Основной диапазон Википедии (ASH/ESAMS)
-        198.35.26.0/24,     # Викимедиа CDN (Fastly)
-        91.198.174.0/24,    # Викимедиа Европа (AMS)
-        185.15.56.0/24,     # Викимедиа CDN (Equinix)
-        103.102.166.0/24    # Викимедиа Азия (Equinix)
-    } tcp dport { 443, 80 } accept
+        208.80.152.0/22,      # Главный пул серверов Википедии (включая ru и en поддомены)
+        198.35.26.0/23,       # Дата-центры Wikimedia в США и зеркала доставки
+        185.15.56.0/22,       # Европейские кэш-сервера Википедии (Амстердам)
+        91.198.174.0/24       # Дополнительный технический пул серверов обслуживания
+    } tcp dport { 80, 443 } ct state new accept
 
     # === Debian Wiki ===
+    # Физические IP-адреса официальной некоммерческой организации Software in the Public Interest
+    # Обслуживают основной домен debian.org и внутреннюю документацию (Wiki)
     ip daddr {
-        130.89.148.0/24,   # debian.org
-        140.211.15.0/24,   # debian.org CDN
-    } tcp dport { 443, 80 } accept
-
-    # === Сайт провайдера Prosto ===
-    ip daddr {
-        31.43.36.2,        # my.prosto.net
-        176.122.99.153     # prosto.net
-    } tcp dport { 80, 443 } accept
-
-    # === Веб-интерфейс роутера ===
-    ip daddr 192.168.0.1 tcp dport 80 accept
-
+        128.31.0.0/16,        # Основная сеть серверов Debian в США (включая wiki.debian.org)
+        130.89.148.0/24,      # Физический дата-центр Университета Твенте (Нидерланды)
+        149.20.4.0/24,        # Сервера зеркалирования и документации Debian
+        206.12.19.0/24        # Резервная площадка хостинга инфраструктуры Debian
+    } tcp dport { 80, 443 } ct state new accept
 
   } #  Предпоследняя скобка закрывает лист правил цепочки output. Не удалять!
   

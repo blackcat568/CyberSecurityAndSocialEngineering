@@ -265,9 +265,13 @@ table inet filter { # Открытие листа правил
     ct state established,related accept
     oif "lo" accept
     
-    # Разрешаем DNS (Quad9), чтобы имена преобразовывались в IP
+    # =========================================================================
+    # 3. DNS-СЕРВИС (Строгая привязка только к Quad9 на IP 9.9.9.9)
+    # =========================================================================
+    # Любой другой DNS-запрос к провайдеру или серверам хакеров будет уничтожен
     ip daddr 9.9.9.9 udp dport 53 ct state new accept
     ip daddr 9.9.9.9 tcp dport 53 ct state new accept
+
     
     # == Критически важные ICMP для сети ==
     ip protocol icmp icmp type { destination-unreachable, time-exceeded, parameter-problem } accept
@@ -284,12 +288,6 @@ table inet filter { # Открытие листа правил
     # политикой policy drop. Явные правила для них не требуются.
     # =========================================================================
     
-
-    # = СПИСОК РАЗРЕШЕННЫХ ДОМЕНОВ  =
-    
-    # == DNS-серверы (ваши локальные или публичные) ==
-    ip daddr { 8.8.8.8, 1.1.1.1, 9.9.9.9 } udp dport 53 accept
-    ip daddr { 8.8.8.8, 1.1.1.1, 9.9.9.9 } tcp dport 53 accept
     
     # === Веб-интерфейс роутера ===
     ip daddr 192.168.0.1 tcp dport 80 accept

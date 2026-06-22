@@ -543,6 +543,8 @@ tty (fallback access)</p>
 # nftables ruleset, configuration 2
 # Retrieved: 2026-04-13
 
+```nginx
+
 table inet filter {
 	chain input {
 		type filter hook input priority filter; policy accept;
@@ -705,6 +707,9 @@ table ip filter {
 	}
 }
 
+[код nftables]
+```
+
 </code>
 </pre>
 </div>
@@ -720,6 +725,9 @@ table ip filter {
   <strong>sysctl hardening configuration (2026-03-03):</strong>
   <pre style="max-height: 350px; overflow-y: auto; margin-top: 0.8rem; background: #1e1e1e; color: #d4d4d4; padding: 0.8rem; border-radius: 4px; overflow-x: auto;">
 <code style="color: inherit; background: none; padding: 0;">
+	
+```ini
+	
 # ============================================
 # SYSTEM HARDENING CONFIG (Debian 13 / MATE)
 # Version: 6.0 (final)
@@ -773,6 +781,10 @@ net.core.bpf_jit_harden = 2
 kernel.unprivileged_bpf_disabled = 1
 
 # ========== END OF CONFIG ==========
+
+[код sysctl]
+```
+
 </code>
 </pre>
 </div>

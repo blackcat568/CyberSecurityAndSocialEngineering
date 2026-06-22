@@ -301,6 +301,22 @@ table inet filter { # Открытие листа правил
         130.89.148.0/24,      # Физические сервера ftp.debian.org (включая зеркало hamsolo)
         128.31.0.0/16         # Официальные IP-сети инфраструктуры Debian (MIT/США)
     } tcp dport { 80, 443 } ct state new accept
+    
+    # === Безопасность: Репозиторий Zeek (openSUSE) ===
+    # Официальные пулы серверов дистрибуции инфраструктуры openSUSE
+    ip daddr {
+        195.135.220.0/22,     # Основной дата-центр openSUSE (включая download.opensuse.org)
+        130.57.0.0/16         # Дополнительные серверные пулы и зеркала Novell/SUSE
+    } tcp dport { 80, 443 } ct state new accept
+
+    # === Браузер: Репозиторий LibreWolf ===
+    # Официальный сервер обновлений repo.librewolf.net на мощностях Frantech/BuyVM
+    ip daddr {
+        179.61.251.0/24,      # Конкретная подсеть, где висит сервер repo.librewolf.net
+        198.251.80.0/20,      # Диапазон адресов BuyVM в Люксембурге/США
+        209.141.32.0/19       # Дополнительные маршруты хостинга инфраструктуры LibreWolf
+    } tcp dport 443 ct state new accept
+
 
     # === Google сервисы (поиск, Gmail, Drive, YouTube, Gemini) ===
     # Масштабные диапазоны официальной автономной системы Google (ASN 15169)
@@ -315,7 +331,6 @@ table inet filter { # Открытие листа правил
         216.58.192.0/19       # Старые, но активные пулы DNS и фронтендов Google
     } tcp dport { 80, 443 } ct state new accept
 
-
     # === GitHub (нужны порты 443 и 80) ===
     ip daddr { 
         140.82.112.0/20,      # Основные подсети GitHub
@@ -323,10 +338,26 @@ table inet filter { # Открытие листа правил
         185.199.108.0/22      # CDN-сети (raw.githubusercontent.com, githubassets.com)
     } tcp dport { 80, 443 } ct state new accept
 
-    # === DeepSeek (нужен только порт 443) ===
+
+    # === DeepSeek (Интерфейс чата, API и CDN) ===
+    # ВНИМАНИЕ! Эти диапазоны взяты из реальных DNS-запросов к DeepSeek.
+    # Если сайт перестанет работать — проверьте новые IP через ping/traceroute.
     ip daddr {
+        # Основные серверы DeepSeek (из DNS-записей)
         154.8.0.0/16,         # Азиатские и глобальные пулы хостинга DeepSeek
-        103.193.104.0/22      # Дополнительные маршруты DeepSeek
+        103.193.104.0/22,     # Собственные технологические маршруты компании
+        # Amazon CloudFront CDN (используется DeepSeek для доставки контента)
+        13.32.0.0/15,         # CloudFront US East
+        143.204.0.0/16,       # CloudFront EU
+        54.239.128.0/18,      # CloudFront Asia Pacific
+        13.224.0.0/14,        # CloudFront Edge (глобальный)
+        18.160.0.0/13,        # CloudFront Edge (дополнительный)
+        52.84.0.0/15,         # CloudFront аутентификация
+        # Cloudflare (используется для DDoS-защиты и DNS)
+        104.16.0.0/12,        # Основной пул Cloudflare
+        172.64.0.0/13,        # Дополнительный пул Cloudflare
+        162.158.0.0/15,       # Cloudflare EU
+        198.41.128.0/17       # Cloudflare US
     } tcp dport 443 ct state new accept
 
     # === ChatGPT (OpenAI) ===
@@ -377,5 +408,4 @@ table inet filter { # Открытие листа правил
   # ============================================
   
 } #  Последняя скобка закрывает лист правил всего конфига. Не удалять!
-
 

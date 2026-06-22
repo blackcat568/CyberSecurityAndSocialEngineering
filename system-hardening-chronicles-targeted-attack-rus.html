@@ -45,6 +45,16 @@
   <link rel="alternate" hreflang="x-default" href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/system-hardening-chronicles-targeted-attack.html">
   
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  
+  <!-- Стили для темной темы кода -->
+  <link rel="stylesheet" href="https://cloudflare.com">
+  
+  <!-- Сам движок подсветки кода -->
+  <script src="https://cloudflare.com"></script>
+  
+  <!-- Языковой пакет для конфигурационных файлов (sysctl) -->
+  <script src="https://cloudflare.com"></script>
+  
   <style>
     body { font-family: "Segoe UI", Tahoma, Verdana, Arial, sans-serif; 
 		  line-height:1.45; 
@@ -539,12 +549,11 @@ tty (запасной доступ)</p>
 
 <div class="historical-fact">
   <strong>Файл правил nftables (13.04.2026):</strong>
-  <pre style="max-height: 350px; overflow-y: auto; margin-top: 0.8rem; background: #1e1e1e; color: #d4d4d4; padding: 0.8rem; border-radius: 4px; overflow-x: auto;">
-<code style="color: inherit; background: none; padding: 0;">
+  <pre style="white-space: pre; max-height: 350px; overflow-y: auto; margin-top: 0.8rem; background: #1e1e1e; color: #d4d4d4; padding: 0.8rem; border-radius: 4px; overflow-x: auto;">
+<code class="language-nginx" style="color: inherit; background: none; padding: 0;">
+
 # Список правил nftables, конфигурация 2
 # Получено: 13.04.2026
-
-```nginx
 
 table inet filter {
 	chain input {
@@ -708,8 +717,6 @@ table ip filter {
 	}
 }
 
-[код nftables]
-```
 
 </code>
 </pre>
@@ -727,7 +734,6 @@ table ip filter {
   <pre style="max-height: 350px; overflow-y: auto; margin-top: 0.8rem; background: #1e1e1e; color: #d4d4d4; padding: 0.8rem; border-radius: 4px; overflow-x: auto;">
 <code style="color: inherit; background: none; padding: 0;">
 	
-```ini
 	
 # ============================================
 # SYSTEM HARDENING CONFIG (Debian 13 / MATE)
@@ -783,8 +789,6 @@ kernel.unprivileged_bpf_disabled = 1
 
 # ========== END OF CONFIG ==========
 
-[код sysctl]
-```
 
 </code>
 </pre>

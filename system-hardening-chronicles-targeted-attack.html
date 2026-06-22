@@ -486,15 +486,28 @@ Capabilities: Power Management version 2, MSI (enabled)</p>
 
 <hr>
 
-<!-- Подсекция H3 3.3 -->
+<!-- Подсекция H3 2.3 -->
 <section id="config2" aria-label="3.3 Hardened Configuration Post-Attack: CONFIGURATION 2">
-<h3 id="section3-3">3.3 Hardened Configuration Post-Attack: CONFIGURATION 2</h3>
+	
+<h3 id="section3-3">2.3 Hardened Configuration Post-Attack: CONFIGURATION 2</h3>
 
-<h4>Hardware</h4>
+<!-- Подсекция H3 2.3.1 -->
+<section id="config2-hardware" aria-label="2.3.1 CONFIGURATION 2 Hardware">
+
+<h4 id="section3-3-1">2.3.1 CONFIGURATION 2 Hardware</h4>
 
 <p>Same system unit (no changes).</p>
 
-<h4>Software</h4>
+</section>
+
+<!-- Конец подсекции H4 -->
+
+<hr>
+
+<!-- Подсекция H3 2.3.2 -->
+<section id="config2-software" aria-label="2.3.2 CONFIGURATION 2 Software">
+
+<h4 id="section3-3-1">2.3.1 CONFIGURATION 2 Software</h4>
 
 <p><strong>Operating System:</strong><br>
 Distributor ID: Debian<br>
@@ -1002,6 +1015,10 @@ Compiled with support for: Linux audit, Libcapng, Seccomp, Systemd, Umockdev</p>
 
 <ul>
 	
+</section>
+
+<!-- Конец подсекции H4 -->
+	
   <li><strong>⚠️ Confirmed (19.06.2026 12:48):</strong> — full visibility for the adversary of all activity in the <strong>LibreWolf</strong> browser installed via <strong>Flatpak</strong>.</li>
   
 </ul>
@@ -1016,7 +1033,7 @@ Compiled with support for: Linux audit, Libcapng, Seccomp, Systemd, Umockdev</p>
 
 <hr>
 
-<!-- Подсекция H3 3.4 -->
+<!-- Подсекция H3 2.4 -->
 <section id="config3" aria-label="2.4 CONFIGURATION 3">
 	
     
@@ -1026,7 +1043,7 @@ Compiled with support for: Linux audit, Libcapng, Seccomp, Systemd, Umockdev</p>
 
 <p>Repeats configuration 2, except for changes to the nftables <code>output</code> chain and switching to the Quad9 DNS server (9.9.9.9).</p>
 
-<!-- Подсекция H4 3.4.1 -->
+<!-- Подсекция H4 2.4.1 -->
 <section id="config3-nftables" aria-label="2.4.1 Changes in the nftables config">
 
 <h4>2.4.1 Changes in the nftables config</h4>
@@ -1458,8 +1475,10 @@ table inet filter { # Opening the ruleset
 
 <hr>
 
-<!-- Подсекция H4 3.4.1 -->
+<!-- Подсекция H4 2.4.1 -->
 <section id="config3-dns-quard9" aria-label="2.4.2 Switching to the Quad9 DNS server (9.9.9.9)">
+	
+
 
 <h4>2.4.2 Switching to the Quad9 DNS server (9.9.9.9)</h4>
 

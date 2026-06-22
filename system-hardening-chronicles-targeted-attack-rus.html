@@ -491,7 +491,7 @@ Capabilities: Power Management version 2, MSI (включено)</p>
 	
 <h3 id="section3-3">2.3 Конфигурация системы после атаки с усилением защиты: КОНФИГУРАЦИЯ 2</h3>
 
-<!-- Подсекция H3 2.3.1 -->
+<!-- Подсекция H4 2.3.1 -->
 <section id="config2-hardware" aria-label="2.3.1 КОНФИГУРАЦИЯ 2 Hardware">
 
 <h4 id="section3-3-1">2.3.1 КОНФИГУРАЦИЯ 2 Hardware</h4>
@@ -504,10 +504,10 @@ Capabilities: Power Management version 2, MSI (включено)</p>
 
 <hr>
 
-<!-- Подсекция H3 2.3.2 -->
+<!-- Подсекция H4 2.3.2 -->
 <section id="config2-softdware" aria-label="2.3.2 КОНФИГУРАЦИЯ 2 Software">
 	
-<h4 id="section3-3-1">2.3.1 КОНФИГУРАЦИЯ 2 Software</h4>
+<h4 id="section3-3-1">2.3.2 КОНФИГУРАЦИЯ 2 Software</h4>
 
 <p><strong>Операционная система:</strong><br>
 Distributor ID: Debian<br>
@@ -522,6 +522,9 @@ Linux home 6.12.74+deb13+1-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.12.74-2 (2026-0
 Окружение: GNOME / Wayland<br>
 GNOME Shell 48.7<br>
 tty (запасной доступ)</p>
+
+<!-- Подсекция H4-A 2.3.2 -->
+<section id="config2-softdware-nftables" aria-label="2.3.2 КОНФИГУРАЦИЯ 2 Software nftables">
 
 <p><strong>nftables версия:</strong><br> 
 1.1.3 (Commodore Bullmoose #4)</p>
@@ -699,6 +702,13 @@ table ip filter {
 </pre>
 </div>
 
+</section>
+
+<!-- Конец подсекции H4-A -->
+
+<!-- Подсекция H4-B 2.3.2 -->
+<section id="config2-softdware-sysctl" aria-label="2.3.2 КОНФИГУРАЦИЯ 2 Software sysctl">
+
 <div class="historical-fact">
   <strong>Конфигурация усиления защиты sysctl (2026-03-03):</strong>
   <pre style="max-height: 350px; overflow-y: auto; margin-top: 0.8rem; background: #1e1e1e; color: #d4d4d4; padding: 0.8rem; border-radius: 4px; overflow-x: auto;">
@@ -760,20 +770,12 @@ kernel.unprivileged_bpf_disabled = 1
 </pre>
 </div>
 
-<p><strong>AppArmor:</strong><br>
-Версия парсера: 4.1.0</p>
+</section>
 
-<p><strong>Flatpak:</strong><br>
-Версия: 1.16.3</p>
+<!-- Конец подсекции H4-B -->
 
-<p><strong>Установленные Flatpak-приложения:</strong></p>
-<ul>
-<li>Flatseal (com.github.tchx84.Flatseal) — 2.4.0</li>
-<li>Viber (com.viber.Viber) — 24.9.0.3 (мессенджер, установлен через Flatpak, системная версия удалена)</li>
-<li>LibreWolf (io.gitlab.librewolf-community) — 149.0-1 (браузер, установлен через Flatpak, системная версия удалена)</li>
-<li>Geany (org.geany.Geany) — 2.1.0 (редактор кода, установлен через Flatpak, системная версия удалена)</li>
-<li>KeePassXC (org.keepassxc.KeePassXC) — 2.7.12 (менеджер паролей, установлен через Flatpak, системная версия удалена)</li>
-</ul>
+<!-- Подсекция H4-C 2.3.2 -->
+<section id="config2-softdware-opensnitch" aria-label="2.3.2 CONFIGURATION 2 Software OpenSnitch">
 
 <p><strong>OpenSnitch:</strong><br>
 Версия GUI: 1.6.9<br>
@@ -985,6 +987,24 @@ grpc: 1.51.1</p>
 </pre>
 </div>
 
+</section>
+
+<!-- Конец подсекции H4-C -->
+
+<p><strong>AppArmor:</strong><br>
+Версия парсера: 4.1.0</p>
+
+<p><strong>Flatpak:</strong><br>
+Версия: 1.16.3</p>
+
+<p><strong>Установленные Flatpak-приложения:</strong></p>
+<ul>
+<li>Flatseal (com.github.tchx84.Flatseal) — 2.4.0</li>
+<li>Viber (com.viber.Viber) — 24.9.0.3 (мессенджер, установлен через Flatpak, системная версия удалена)</li>
+<li>LibreWolf (io.gitlab.librewolf-community) — 149.0-1 (браузер, установлен через Flatpak, системная версия удалена)</li>
+<li>Geany (org.geany.Geany) — 2.1.0 (редактор кода, установлен через Flatpak, системная версия удалена)</li>
+<li>KeePassXC (org.keepassxc.KeePassXC) — 2.7.12 (менеджер паролей, установлен через Flatpak, системная версия удалена)</li>
+</ul>
 
 <p><strong>USBGuard:</strong><br>
 Версия: 1.1.3<br>

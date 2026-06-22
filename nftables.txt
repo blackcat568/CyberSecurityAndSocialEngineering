@@ -341,6 +341,7 @@ table inet filter { # Открытие листа правил
     } tcp dport { 80, 443 } ct state new accept
 
 
+
     # === DeepSeek (Интерфейс чата, API и CDN) ===
     # ВНИМАНИЕ! Эти диапазоны взяты из реальных DNS-запросов к DeepSeek.
     # Если сайт перестанет работать — проверьте новые IP через ping/traceroute.

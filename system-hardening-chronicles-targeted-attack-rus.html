@@ -1478,9 +1478,9 @@ table inet filter { # Открытие листа правил
 
 <p>Таким образом мы переключаем DNS-запросы на хорошо защищенный и стабильно работающий сервер Quad9.</p>
 
-<div class="historical-fact">
+<div class="book-quote" style="margin: 1.5rem 0;">
     <strong>Подробнее о Quad9:</strong>
-    <pre style="max-height: 350px; overflow-y: auto; margin-top: 0.8rem; background: #f4f4f4; color: #1e1e1e; padding: 0.8rem; border-radius: 4px; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;">
+    <div style="background: #f5f5f0; border-left: 4px solid #8b0000; border-radius: 0 8px 8px 0; padding: 1rem 1.25rem; font-family: Georgia, 'Times New Roman', Times, serif; font-size: 0.9rem; line-height: 1.6; color: #2c2c20; max-height: 300px; overflow-y: auto;">
         <p><strong>Quad9 (9.9.9.9)</strong> — это глобальная некоррелируемая DNS-служба, созданная как некоммерческий проект (в организаторах числятся Глобальный киберсоюз (GCA), IBM и фонд Packet Clearing House).</p>
         
         <p>Главное отличие Quad9 от коммерческих гигантов вроде Google (8.8.8.8) и Cloudflare (1.1.1.1) заключается в том, что его базовая цель — не скорость предоставления услуг ради сбора данных, а кибербезопасность и жесткая приватность пользователя.</p>
@@ -1549,7 +1549,7 @@ table inet filter { # Открытие листа правил
         </table>
         
         <p style="margin-top: 0.8rem;"><strong>Итог для Конфигурации 3:</strong> Использование 9.9.9.9 должно лишить малварь возможности использовать DNS-туннелирование, не давать провайдеру собирать историю ваших переходов по сайтам и исключать коммерческие корпорации из вашей цепочки доверия.</p>
-    </pre>
+    </div>
 </div>
 
 <h4>Наблюдаем за ходом эксперимента с конфигурацией 3</h4>

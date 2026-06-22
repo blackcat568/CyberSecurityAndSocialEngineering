@@ -1475,9 +1475,9 @@ table inet filter { # Opening the ruleset
 
 <p>Thus, we switch DNS queries to the well-protected and stably operating Quad9 server.</p>
 
-<div class="historical-fact">
+<div class="book-quote" style="margin: 1.5rem 0;">
     <strong>More about Quad9:</strong>
-        <pre style="max-height: 350px; overflow-y: auto; margin-top: 0.8rem; background: #f4f4f4; color: #1e1e1e; padding: 0.8rem; border-radius: 4px; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;">
+        <div style="background: #f5f5f0; border-left: 4px solid #8b0000; border-radius: 0 8px 8px 0; padding: 1rem 1.25rem; font-family: Georgia, 'Times New Roman', Times, serif; font-size: 0.9rem; line-height: 1.6; color: #2c2c20; max-height: 300px; overflow-y: auto;">
         <p><strong>Quad9 (9.9.9.9)</strong> is a global, non-correlating DNS service created as a non-profit project (with organizers including the Global Cyber Alliance (GCA), IBM, and the Packet Clearing House foundation).</p>
         
         <p>The main difference between Quad9 and commercial giants like Google (8.8.8.8) and Cloudflare (1.1.1.1) is that its primary goal is not speed of service delivery for data collection, but cybersecurity and strict user privacy.</p>
@@ -1546,7 +1546,7 @@ table inet filter { # Opening the ruleset
         </table>
         
         <p style="margin-top: 0.8rem;"><strong>Conclusion for Configuration 3:</strong> Using 9.9.9.9 should deprive malware of the ability to use DNS tunneling, prevent the ISP from collecting your browsing history, and exclude commercial corporations from your chain of trust.</p>
-    </pre>
+    </div>
 </div>
 
 <h4>Observing the progress of the experiment with configuration 3</h4>

@@ -1,3 +1,5 @@
+Текущий конфигnftables
+
 #!/usr/sbin/nft -f
 # = модификация 25 =
 # 03.03.2026 19:52 Закомментирован запрет исходящих UDP портиов, что мешают работе ProtonVPN
@@ -408,4 +410,170 @@ table inet filter { # Открытие листа правил
   # ============================================
   
 } #  Последняя скобка закрывает лист правил всего конфига. Не удалять!
+
+вывод терминала:
+root@home:/home/user# sudo nft list ruleset
+table inet filter {
+	chain input {
+		type filter hook input priority filter; policy accept;
+		udp sport 53 queue flags bypass to 0
+		iif "lo" accept
+		ct state established,related accept
+		ip saddr 0.0.0.0/0 ct state new limit rate 25/second burst 50 packets accept
+		ip saddr 0.0.0.0/0 ct state new log prefix "🔥 BAN: too many conn " flags all
+		ip saddr 0.0.0.0/0 ct state new drop
+		ip protocol icmp icmp type echo-request limit rate 1/second burst 5 packets accept
+		ip protocol icmp icmp type echo-request log prefix "🔥 BAN: ICMP flood " flags all
+		ip protocol icmp icmp type echo-request drop
+		ip daddr 239.255.255.250 udp dport 1900 drop
+		ip daddr 224.0.0.251 udp dport 5353 drop
+		udp dport 137 drop
+		udp dport 138 drop
+		udp dport 5355 drop
+		ip saddr { 45.9.20.0/24, 89.248.160.0/19, 185.107.56.0/24, 185.129.62.0/23, 185.220.100.0/22, 198.96.155.0/24 } log prefix "🔥 BAN: known bots " flags all
+		ip saddr { 45.9.20.0/24, 89.248.160.0/19, 185.107.56.0/24, 185.129.62.0/23, 185.220.100.0/22, 198.96.155.0/24 } drop
+		tcp flags ! fin,syn,rst,psh,ack,urg drop
+		tcp flags & (fin | psh | urg) == fin | psh | urg drop
+		tcp flags & (fin | syn) == fin | syn drop
+		tcp flags & (fin | syn | rst) == fin | syn | rst drop
+		tcp flags & (fin | syn | rst | psh | ack) == fin | syn | rst | ack drop
+		ip frag-off & 0x1fff != 0x0 drop
+		ip saddr 127.0.0.0/8 drop
+		ip saddr 10.0.0.0/8 drop
+		ip saddr 172.16.0.0/12 drop
+		ip saddr 192.168.0.0/16 drop
+		ip saddr 169.254.0.0/16 drop
+		ip saddr 0.0.0.0/8 drop
+		ip saddr 224.0.0.0/4 drop
+		ip saddr 240.0.0.0/5 drop
+	}
+
+	chain forward {
+		type filter hook forward priority filter; policy accept;
+		tcp dport { 53, 80, 443, 873, 12043, 13000-13050 } accept
+		tcp dport 9392 accept
+		udp dport { 53, 443, 3478-3481 } accept
+		tcp dport { 21, 22, 23, 137, 138, 139, 445, 1080, 1234, 1337, 1433, 1434, 1900, 3128, 3306, 3389, 4444, 5555, 5900, 8000, 8080, 8888, 9001, 9200, 10000 } drop
+		udp dport { 161, 162 } drop
+		tcp dport { 1024-32767 } drop
+		udp dport { 1024-32767, 61000-65535 } drop
+		ip saddr { 37.0.0.0/8, 77.0.0.0/8, 88.0.0.0/8, 91.0.0.0/8, 185.0.0.0/8 } drop
+	}
+
+	chain output {
+		type filter hook output priority filter; policy accept;
+		ct state established,related accept
+		oif "lo" accept
+		ip daddr 9.9.9.9 udp dport 53 ct state new accept
+		ip daddr 9.9.9.9 tcp dport 53 ct state new accept
+		ip protocol icmp icmp type { destination-unreachable, time-exceeded, parameter-problem } accept
+		ip6 nexthdr ipv6-icmp icmpv6 type { destination-unreachable, packet-too-big, time-exceeded, parameter-problem } accept
+		ip6 nexthdr ipv6-icmp icmpv6 type { nd-neighbor-solicit, nd-neighbor-advert } accept
+		ip6 nexthdr ipv6-icmp icmpv6 type { nd-router-solicit, nd-router-advert } accept
+		ip daddr 192.168.0.1 tcp dport 80 accept
+		ip daddr { 128.31.0.0/16, 130.89.148.0/24, 146.75.0.0/17, 151.101.0.0/16, 199.232.0.0/16 } tcp dport { 80, 443 } ct state new accept
+		ip daddr { 130.57.0.0/16, 195.135.220.0/22 } tcp dport { 80, 443 } ct state new accept
+		ip daddr { 179.61.251.0/24, 198.251.80.0/20, 209.141.32.0/19 } tcp dport 443 ct state new accept
+		ip daddr { 64.233.160.0/19, 74.125.0.0/16, 142.250.0.0/15, 172.217.0.0/16, 173.194.0.0/16, 209.85.128.0/17, 216.58.192.0/19 } tcp dport { 80, 443 } ct state new accept
+		ip daddr { 13.32.0.0/15, 13.224.0.0/14, 18.160.0.0/13, 52.84.0.0/15, 54.239.128.0/18, 103.193.104.0/22, 104.16.0.0/12, 143.204.0.0/16, 154.8.0.0/16, 162.158.0.0/15, 172.64.0.0/13, 198.41.128.0/17 } tcp dport 443 ct state new accept
+		ip daddr { 104.16.0.0/12, 108.162.192.0/18, 162.158.0.0/15, 172.64.0.0/13, 198.41.128.0/17 } tcp dport 443 ct state new accept
+		ip daddr { 140.82.112.0/20, 185.199.108.0/22, 192.30.252.0/22 } tcp dport { 80, 443 } ct state new accept
+		ip daddr { 37.19.192.0/19, 89.145.80.0/21, 143.244.32.0/19, 185.70.40.0/22, 185.159.157.0/24 } tcp dport { 80, 443 } ct state new accept
+		ip daddr { 91.198.174.0/24, 185.15.56.0/22, 198.35.26.0/23, 208.80.152.0/22 } tcp dport { 80, 443 } ct state new accept
+		ip daddr { 128.31.0.0/16, 130.89.148.0/24, 149.20.4.0/24, 206.12.19.0/24 } tcp dport { 80, 443 } ct state new accept
+	}
+}
+table inet nat {
+	chain filter-prerouting {
+		type filter hook prerouting priority filter; policy accept;
+	}
+
+	chain prerouting {
+		type nat hook prerouting priority dstnat; policy accept;
+	}
+
+	chain postrouting {
+		type nat hook postrouting priority srcnat; policy accept;
+	}
+
+	chain input {
+		type nat hook input priority srcnat; policy accept;
+	}
+
+	chain output {
+		type nat hook output priority 100; policy accept;
+	}
+}
+table inet mangle {
+	chain output {
+		type filter hook output priority mangle; policy accept;
+		icmp type { echo-reply, destination-unreachable, echo-request } accept
+		udp dport 51820 accept
+		meta l4proto != tcp ct state related,new queue flags bypass to 0
+		tcp flags & (fin | syn | rst | ack) == syn queue flags bypass to 0
+	}
+
+	chain prerouting {
+		type filter hook prerouting priority mangle; policy accept;
+	}
+
+	chain postrouting {
+		type filter hook postrouting priority mangle; policy accept;
+	}
+
+	chain forward {
+		type filter hook forward priority mangle; policy accept;
+	}
+}
+# Warning: table ip nat is managed by iptables-nft, do not touch!
+table ip nat {
+	chain DOCKER {
+		iifname "docker0" counter packets 0 bytes 0 return
+	}
+
+	chain POSTROUTING {
+		type nat hook postrouting priority srcnat; policy accept;
+		ip saddr 172.17.0.0/16 oifname != "docker0" counter packets 0 bytes 0 masquerade
+	}
+
+	chain PREROUTING {
+		type nat hook prerouting priority dstnat; policy accept;
+		fib daddr type local counter packets 0 bytes 0 jump DOCKER
+	}
+
+	chain OUTPUT {
+		type nat hook output priority dstnat; policy accept;
+		ip daddr != 127.0.0.0/8 fib daddr type local counter packets 0 bytes 0 jump DOCKER
+	}
+}
+# Warning: table ip filter is managed by iptables-nft, do not touch!
+table ip filter {
+	chain DOCKER {
+	}
+
+	chain DOCKER-ISOLATION-STAGE-1 {
+		iifname "docker0" oifname != "docker0" counter packets 0 bytes 0 jump DOCKER-ISOLATION-STAGE-2
+		counter packets 0 bytes 0 return
+	}
+
+	chain DOCKER-ISOLATION-STAGE-2 {
+		oifname "docker0" counter packets 0 bytes 0 drop
+		counter packets 0 bytes 0 return
+	}
+
+	chain FORWARD {
+		type filter hook forward priority filter; policy drop;
+		counter packets 0 bytes 0 jump DOCKER-USER
+		counter packets 0 bytes 0 jump DOCKER-ISOLATION-STAGE-1
+		oifname "docker0" ct state related,established counter packets 0 bytes 0 accept
+		oifname "docker0" counter packets 0 bytes 0 jump DOCKER
+		iifname "docker0" oifname != "docker0" counter packets 0 bytes 0 accept
+		iifname "docker0" oifname "docker0" counter packets 0 bytes 0 accept
+	}
+
+	chain DOCKER-USER {
+		counter packets 0 bytes 0 return
+	}
+}
+root@home:/home/user# 
 

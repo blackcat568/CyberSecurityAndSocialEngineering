@@ -44,6 +44,38 @@
   <link rel="alternate" hreflang="ru" href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/system-hardening-chronicles-targeted-attack-rus.html">
   <link rel="alternate" hreflang="x-default" href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/system-hardening-chronicles-targeted-attack.html">
   
+
+  <!-- НАЧАЛО ПОДКЛЮЧЕНИЯ БИБЛИОТЕК ПОДСВЕТКИ КОДА -->
+    
+    <!-- 1. Подключаем CSS-тему оформления (можно выбрать другую тему, например 'github-dark' или 'atom-one-dark') -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    
+    <!-- 2. Подключаем саму библиотеку Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    
+    <!-- 3. Инициализация: говорим библиотеке подсветить все блоки <code> с классом language-* -->
+    <script>
+        // Функция подсветки
+        function initHighlighting() {
+            if (typeof hljs !== 'undefined') {
+                hljs.highlightAll();
+            }
+        }
+
+        // Запускаем после загрузки DOM
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initHighlighting);
+        } else {
+            initHighlighting();
+        }
+
+        // Резервный вариант
+        window.addEventListener('load', initHighlighting);
+    </script>
+    
+  <!-- КОНЕЦ ПОДКЛЮЧЕНИЯ БИБЛИОТЕК ПОДСВЕТКИ КОДА -->
+
+  
   <meta name="viewport" content="width=device-width,initial-scale=1">
  
   <style>
@@ -625,14 +657,14 @@ table inet filter {
     } drop
 
     # == 🚫 Блокировка странных TCP-флагов (XMAS, NULL-скан и другие) ==
-    tcp flags & (fin|syn|rst|psh|ack|urg) == 0 drop        # NULL scan
-    tcp flags & (fin|psh|urg) == (fin|psh|urg) drop          # XMAS scan
-    tcp flags & (fin|syn) == (fin|syn) drop                  # SYN-ACK scan
-    tcp flags & (syn|rst|fin) == (syn|rst|fin) drop          # Xmas scan
-    tcp flags & (syn|fin|rst|psh|ack) == (syn|rst|fin|ack) drop # Xmas scan
+    tcp flags &amp; (fin|syn|rst|psh|ack|urg) == 0 drop        # NULL scan
+    tcp flags &amp; (fin|psh|urg) == (fin|psh|urg) drop          # XMAS scan
+    tcp flags &amp; (fin|syn) == (fin|syn) drop                  # SYN-ACK scan
+    tcp flags &amp; (syn|rst|fin) == (syn|rst|fin) drop          # Xmas scan
+    tcp flags &amp; (syn|fin|rst|psh|ack) == (syn|rst|fin|ack) drop # Xmas scan
 
     # == 🚫 Блокировка фрагментированных пакетов — часто используются в обходах фильтров ==
-    ip frag-off & 0x1fff != 0 drop
+    ip frag-off &amp; 0x1fff != 0 drop
 
     # == 🔒 Блокировка пакетов с поддельными IP (спуфинг) ==
     ip saddr 127.0.0.0/8 drop          # localhost
@@ -1419,14 +1451,14 @@ table inet filter { # Открытие листа правил
     } drop
 
     # == 🚫 Блокировка странных TCP-флагов (XMAS, NULL-скан и другие) ==
-    tcp flags & (fin|syn|rst|psh|ack|urg) == 0 drop        # NULL scan
-    tcp flags & (fin|psh|urg) == (fin|psh|urg) drop          # XMAS scan
-    tcp flags & (fin|syn) == (fin|syn) drop                  # SYN-ACK scan
-    tcp flags & (syn|rst|fin) == (syn|rst|fin) drop          # Xmas scan
-    tcp flags & (syn|fin|rst|psh|ack) == (syn|rst|fin|ack) drop # Xmas scan
+    tcp flags &amp; (fin|syn|rst|psh|ack|urg) == 0 drop        # NULL scan
+    tcp flags &amp; (fin|psh|urg) == (fin|psh|urg) drop          # XMAS scan
+    tcp flags &amp; (fin|syn) == (fin|syn) drop                  # SYN-ACK scan
+    tcp flags &amp; (syn|rst|fin) == (syn|rst|fin) drop          # Xmas scan
+    tcp flags &amp; (syn|fin|rst|psh|ack) == (syn|rst|fin|ack) drop # Xmas scan
 
     # == 🚫 Блокировка фрагментированных пакетов — часто используются в обходах фильтров ==
-    ip frag-off & 0x1fff != 0 drop
+    ip frag-off &amp; 0x1fff != 0 drop
 
     # == 🔒 Блокировка пакетов с поддельными IP (спуфинг) ==
     ip saddr 127.0.0.0/8 drop          # localhost

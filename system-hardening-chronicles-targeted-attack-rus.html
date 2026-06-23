@@ -1793,22 +1793,22 @@ table inet filter { # Открытие листа правил
 
 <h4>2.4.2 Переход на DNS-сервер Quad9 (9.9.9.9)</h4>
 
-<p>Жестко фиксированы настройки <code>/etc/resolv.conf</code> на 9.9.9.9. Всё содержимое файла заменено на строчку:</p>
+<p>Жестко фиксированы настройки <code class="language-bash">/etc/resolv.conf</code> на 9.9.9.9. Всё содержимое файла заменено на строчку:</p>
 
 <pre style="background: #1e1e1e; color: #d4d4d4; padding: 0.8rem; border-radius: 4px; overflow-x: auto;">
-<code style="color: inherit; background: none; padding: 0;">nameserver 9.9.9.9</code>
+<code class="language-bash" style="color: inherit; background: none; padding: 0;">nameserver 9.9.9.9</code>
 </pre>
 
 <p>Файл защищен от перезаписи командой:</p>
 
 <pre style="background: #1e1e1e; color: #d4d4d4; padding: 0.8rem; border-radius: 4px; overflow-x: auto;">
-<code style="color: inherit; background: none; padding: 0;">chattr +i /etc/resolv.conf # блокировка изменения файла системой</code>
+<code class="language-bash" style="color: inherit; background: none; padding: 0;">chattr +i /etc/resolv.conf # блокировка изменения файла системой</code>
 </pre>
 
 <p>Команда для разрешения перезаписи файла:</p>
 
 <pre style="background: #1e1e1e; color: #d4d4d4; padding: 0.8rem; border-radius: 4px; overflow-x: auto;">
-<code style="color: inherit; background: none; padding: 0;">chattr -i /etc/resolv.conf # разблокировка изменения файла системой</code>
+<code class="language-bash" style="color: inherit; background: none; padding: 0;">chattr -i /etc/resolv.conf # разблокировка изменения файла системой</code>
 </pre>
 
 <p>Таким образом мы переключаем DNS-запросы на хорошо защищенный и стабильно работающий сервер Quad9.</p>

@@ -1863,7 +1863,7 @@ table inet filter { # Opening the ruleset
 	
 <h4>2.4.2 Switching to the Quad9 DNS server (9.9.9.9)</h4>
 
-<p>The <code class="language-bash">/etc/resolv.conf</code> settings are hardcoded to 9.9.9.9. All contents of the file have been replaced with the line:</p>
+<p>The <code class="language-ini">/etc/resolv.conf</code> settings are hardcoded to 9.9.9.9. All contents of the file have been replaced with the line:</p>
 
 <pre style="background: #1e1e1e; color: #d4d4d4; padding: 0.8rem; border-radius: 4px; overflow-x: auto;">
 <code class="language-bash" style="color: inherit; background: none; padding: 0;">nameserver 9.9.9.9</code>
@@ -1872,13 +1872,13 @@ table inet filter { # Opening the ruleset
 <p>The file is protected from being overwritten by the command:</p>
 
 <pre style="background: #1e1e1e; color: #d4d4d4; padding: 0.8rem; border-radius: 4px; overflow-x: auto;">
-<code class="language-bash" style="color: inherit; background: none; padding: 0;">chattr +i /etc/resolv.conf # locks the file from being changed by the system</code>
+<code class="language-ini" style="color: inherit; background: none; padding: 0;">chattr +i /etc/resolv.conf # locks the file from being changed by the system</code>
 </pre>
 
 <p>Command to allow overwriting the file:</p>
 
 <pre style="background: #1e1e1e; color: #d4d4d4; padding: 0.8rem; border-radius: 4px; overflow-x: auto;">
-<code class="language-bash" style="color: inherit; background: none; padding: 0;">chattr -i /etc/resolv.conf # unlocks the file for changes by the system</code>
+<code class="language-ini" style="color: inherit; background: none; padding: 0;">chattr -i /etc/resolv.conf # unlocks the file for changes by the system</code>
 </pre>
 
 <p>Thus, we switch DNS queries to the well-protected and stably operating Quad9 server.</p>

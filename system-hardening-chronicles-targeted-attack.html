@@ -1145,7 +1145,57 @@ kernel.unprivileged_bpf_disabled = 1
 
 <!-- Конец подсекции H4-C -->
 
-<!-- Подсекция H4-D 2.3.2 -->
+<!-- Subsection: FLATSEAL CONFIGURATION H4-D 2.3.2 -->
+<section id="config2-software-flatseal" aria-label="2.3.2 CONFIGURATION 2 Software Flatseal overrides">
+
+<div class="historical-fact">
+    <strong>Flatpak application permission overrides (Flatseal):</strong>
+    <pre>
+        <code class="language-bash">
+# Retrieved: 22.06.2026
+# Command used: for file in ~/.local/share/flatpak/overrides/*; do echo "=== $file ==="; cat "$file"; echo; done
+
+=== /home/user/.local/share/flatpak/overrides/com.viber.Viber ===
+[Context]
+sockets=!x11
+
+=== /home/user/.local/share/flatpak/overrides/io.gitlab.librewolf-community ===
+[Context]
+shared=!ipc
+sockets=!cups;!pcsc;!fallback-x11
+features=per-app-dev-shm
+filesystems=/home/user/Videos;/home/user/Pictures;/home/user/Music;/home/user/Downloads;/home/user/Documents;/home/user/Desktop
+
+[Session Bus Policy]
+org.a11y.Bus=none
+
+=== /home/user/.local/share/flatpak/overrides/org.geany.Geany ===
+[Context]
+shared=!ipc;!network
+sockets=!fallback-x11;!x11
+filesystems=/home/user/Desktop/команды и настройки/Социнженерия/Прочие публикации;!host
+
+=== /home/user/.local/share/flatpak/overrides/org.keepassxc.KeePassXC ===
+[Context]
+shared=!ipc;!network
+sockets=!pcsc;!ssh-auth;!x11
+filesystems=/home/user/Desktop/команды и настройки/Коды и пароли;!host
+        </code>
+    </pre>
+</div>
+
+<p>These overrides show the permissions that were modified for applications via Flatseal:</p>
+<ul>
+    <li><strong>LibreWolf:</strong> IPC, CUPS, PCSC, and X11 access restricted; access allowed to main user folders.</li>
+    <li><strong>Geany:</strong> IPC and network disabled; X11 blocked (runs via Wayland).</li>
+    <li><strong>KeePassXC:</strong> IPC, network, PCSC, SSH agent, and X11 disabled.</li>
+    <li><strong>Viber:</strong> X11 disabled (runs via Wayland).</li>
+</ul>
+
+</section>
+<!-- End of subsection H4-D -->
+
+<!-- Подсекция H4-E 2.3.2 -->
 <section id="config2-softdware-opensnitch" aria-label="2.3.2 CONFIGURATION 2 Software OpenSnitch">
 
 <p><strong>OpenSnitch:</strong><br>
@@ -1361,9 +1411,9 @@ grpc: 1.51.1</p>
 
 </section>
 
-<!-- Конец подсекции H4-D -->
+<!-- Конец подсекции H4-E -->
 
-<!-- Подсекция H4-E 2.3.2 -->
+<!-- Подсекция H4-F 2.3.2 -->
 <section id="config2-softdware-other-prigrams" aria-label="2.3.2 CONFIGURATION 2 Software Other Programs">
 
 <p><strong>AppArmor:</strong><br>
@@ -1387,7 +1437,7 @@ Compiled with support for: Linux audit, Libcapng, Seccomp, Systemd, Umockdev</p>
 
 </section>
 
-<!-- Конец подсекции H4-E -->
+<!-- Конец подсекции H4-F -->
 
 <p><strong>Key changes in Configuration 2 compared to Configuration 1:</strong></p>
 <ul>

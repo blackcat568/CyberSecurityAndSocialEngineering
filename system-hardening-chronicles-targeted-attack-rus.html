@@ -44,9 +44,25 @@
   <link rel="alternate" hreflang="ru" href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/system-hardening-chronicles-targeted-attack-rus.html">
   <link rel="alternate" hreflang="x-default" href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/system-hardening-chronicles-targeted-attack.html">
   
+  <!-- Добавление библиотек для подсветки кода -->
+    
+    <!-- 1. Подключаем CSS-тему оформления (можно выбрать другую тему, например 'github-dark' или 'atom-one-dark') -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+    
+    <!-- 2. Подключаем саму библиотеку Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    
+    <!-- 3. Инициализация: говорим библиотеке подсветить все блоки <code> с классом language-* -->
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            hljs.highlightAll();
+        });
+    </script>
+    
+  <!-- Конец блока библиотек для подсветки кода -->
+  
   <meta name="viewport" content="width=device-width,initial-scale=1">
  
-  
   <style>
     body { font-family: "Segoe UI", Tahoma, Verdana, Arial, sans-serif; 
 		  line-height:1.45; 
@@ -134,6 +150,26 @@
       font-size: 1.05em;
       font-weight: 600;
      color: #222;
+    }
+    
+    /* Стили для блоков кода */
+    .historical-fact pre {
+        max-height: 350px;
+        overflow-y: auto;
+        margin-top: 0.8rem;
+        background: #1e1e1e;
+        color: #d4d4d4;
+        padding: 0.8rem;
+        border-radius: 4px;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+    
+    .historical-fact code {
+        color: #d4d4d4;
+        background: none;
+        padding: 0;
     }
     
     /* ========== МОБИЛЬНАЯ АДАПТАЦИЯ ========== */
@@ -540,178 +576,407 @@ tty (запасной доступ)</p>
 1.1.3 (Commodore Bullmoose #4)</p>
 
 <div class="historical-fact">
-  <strong>Файл правил nftables (13.04.2026):</strong>
-  <pre style="max-height: 350px; overflow-y: auto; margin-top: 0.8rem; background: #1e1e1e; color: #d4d4d4; padding: 0.8rem; border-radius: 4px; overflow-x: auto;">
-<code style="color: inherit; background: none; padding: 0;">
+    <strong>Файл правил nftables (13.04.2026):</strong>
+    <pre>
+        <code class="language-plaintext">
 
-# Список правил nftables, конфигурация 2
-# Получено: 13.04.2026
+#!/usr/sbin/nft -f
+
+flush ruleset
 
 table inet filter {
-	chain input {
-		type filter hook input priority filter; policy accept;
-		udp sport 53 queue flags bypass to 0
-		iif "lo" accept
-		ct state established,related accept
-		ip saddr 0.0.0.0/0 ct state new limit rate 25/second burst 50 packets accept
-		ip saddr 0.0.0.0/0 ct state new drop
-		ip protocol icmp icmp type echo-request limit rate 1/second burst 5 packets accept
-		ip protocol icmp icmp type echo-request log prefix "🔥 BAN: ICMP flood " flags all
-		ip protocol icmp icmp type echo-request drop
-		ip daddr 239.255.255.250 udp dport 1900 drop
-		ip daddr 224.0.0.251 udp dport 5353 drop
-		udp dport 137 drop
-		udp dport 138 drop
-		udp dport 5355 drop
-		ip saddr { 45.9.20.0/24, 89.248.160.0/19, 185.107.56.0/24, 185.129.62.0/23, 185.220.100.0/22, 198.96.155.0/24 } log prefix "🔥 BAN: known bots " flags all
-		ip saddr { 45.9.20.0/24, 89.248.160.0/19, 185.107.56.0/24, 185.129.62.0/23, 185.220.100.0/22, 198.96.155.0/24 } drop
-		tcp flags ! fin,syn,rst,psh,ack,urg drop
-		tcp flags & (fin | psh | urg) == fin | psh | urg drop
-		tcp flags & (fin | syn) == fin | syn drop
-		tcp flags & (fin | syn | rst) == fin | syn | rst drop
-		tcp flags & (fin | syn | rst | psh | ack) == fin | syn | rst | ack drop
-		ip frag-off & 0x1fff != 0x0 drop
-		ip saddr 127.0.0.0/8 drop
-		ip saddr 10.0.0.0/8 drop
-		ip saddr 172.16.0.0/12 drop
-		ip saddr 192.168.0.0/16 drop
-		ip saddr 169.254.0.0/16 drop
-		ip saddr 0.0.0.0/8 drop
-		ip saddr 224.0.0.0/4 drop
-		ip saddr 240.0.0.0/5 drop
-	}
+  
+  # = Основная политика цепочки =
+  chain input {
+    type filter hook input priority 0;
+    policy drop;
 
-	chain forward {
-		type filter hook forward priority filter; policy accept;
-		tcp dport { 53, 80, 443, 873, 12043, 13000-13050 } accept
-		udp dport { 53, 443, 3478-3481 } accept
-		tcp dport { 21, 22, 23, 137, 138, 139, 445, 1080, 1234, 1337, 1433, 1434, 1900, 3128, 3306, 3389, 4444, 5555, 5900, 8000, 8080, 8888, 9001, 9200, 10000 } drop
-		udp dport { 161, 162 } drop
-		tcp dport { 1024-65535 } drop
-		udp dport { 1024-65535 } drop
-		ip saddr { 37.0.0.0/8, 77.0.0.0/8, 88.0.0.0/8, 91.0.0.0/8, 185.0.0.0/8 } drop
-	}
+    # = Набор общих правил =
+    # 🌀 Разрешаем loopback-интерфейс (внутренние процессы)
+    iif "lo" accept
 
-	chain output {
-		type filter hook output priority filter; policy accept;
-		ip saddr 0.0.0.0/0 ct state new limit rate 25/second burst 50 packets accept
-		ip saddr 0.0.0.0/0 ct state new drop
-		ip protocol icmp icmp type echo-request limit rate 1/second burst 5 packets accept
-		ip protocol icmp icmp type echo-request log prefix "🔥 BAN: ICMP flood " flags all
-		ip protocol icmp icmp type echo-request drop
-		ip protocol icmp icmp type { destination-unreachable, time-exceeded, parameter-problem } accept
-		ip6 nexthdr ipv6-icmp icmpv6 type { destination-unreachable, packet-too-big, time-exceeded, parameter-problem } accept
-		ip6 nexthdr ipv6-icmp icmpv6 type { nd-neighbor-solicit, nd-neighbor-advert } accept
-		ip6 nexthdr ipv6-icmp icmpv6 type { nd-router-solicit, nd-router-advert } accept
-		ip protocol icmp drop
-		ip6 nexthdr ipv6-icmp drop
-		meta l4proto sctp drop
-		meta l4proto dccp drop
-		tcp dport { 53, 80, 443, 873, 3000, 3306, 3478, 3690, 4443, 12043, 13000-13050 } accept
-		udp dport { 443, 13000-13050 } accept
-		tcp dport { 21, 22, 23, 137, 138, 139, 445, 1080, 1234, 1337, 1433, 1434, 1900, 3128, 3306, 3389, 4444, 5555, 5900, 8000, 8080, 8888, 9001, 9200, 10000 } drop
-		udp dport { 161, 162 } drop
-		tcp dport { 1-5999, 7000-7999, 9000-32767 } drop
-		udp dport { 1024-4095, 8192-32767 } drop
-		ip saddr { 37.0.0.0/8, 77.0.0.0/8, 88.0.0.0/8, 91.0.0.0/8, 185.0.0.0/8 } drop
-	}
+    # == 🔁 Разрешаем установленные и связанные соединения ==
+    ct state established,related accept
+    
+    # == 🔒 Ограничение новых соединений от одного IP (anti-DDoS) ==
+    # == 🔒 Limit the rate of NEW connections per source IP (basic anti-DDoS protection) ==
+    #    If you experience issues with slow or failed page loads in your browser,
+    #    try increasing the limit, for example:
+    #    ip saddr 0.0.0.0/0 ct state new limit rate 50/second burst 100 packets accept
+    ip saddr 0.0.0.0/0 ct state new limit rate 25/second burst 50 packets accept
+    ip saddr 0.0.0.0/0 ct state new log prefix "🔥 BAN: too many conn " flags all
+    ip saddr 0.0.0.0/0 ct state new drop
+
+    # == 🛡️ Ограничение ping'ов ==
+    ip protocol icmp icmp type echo-request limit rate 1/second accept
+    ip protocol icmp icmp type echo-request log prefix "🔥 BAN: ICMP flood " flags all
+    ip protocol icmp icmp type echo-request drop
+
+    # == 🚫 Блокировка SSDP и mDNS (локальные протоколы вещания) ==
+    ip daddr 239.255.255.250 udp dport 1900 drop   # ❌ SSDP (UPnP/обнаружение устройств)
+    ip daddr 224.0.0.251 udp dport 5353 drop       # ❌ mDNS (Bonjour, Avahi)
+
+    # == 🛑 Блокировка NetBIOS и LLMNR (внутрисетевые протоколы Windows/systemd) ==
+    udp dport 137 drop    # ❌ NetBIOS Name Service (Windows сетевые имена)
+    udp dport 138 drop    # ❌ NetBIOS Datagram Service (распознавание в LAN)
+    udp dport 5355 drop   # ❌ LLMNR (Link-Local Multicast Name Resolution)
+
+    # = Набор правил блокировки IP адресов и диапазонов =
+    
+    # == 🧱 Блокировка известных бот-сетей и прокси ==
+    ip saddr {
+      45.9.20.0/24,
+      89.248.160.0/19,
+      185.220.100.0/22,
+      198.96.155.0/24,
+      185.107.56.0/24,
+      185.129.62.0/23
+    } log prefix "🔥 BAN: known bots " flags all
+    ip saddr {
+      45.9.20.0/24,
+      89.248.160.0/19,
+      185.220.100.0/22,
+      198.96.155.0/24,
+      185.107.56.0/24,
+      185.129.62.0/23
+    } drop
+
+    # == 🚫 Блокировка странных TCP-флагов (XMAS, NULL-скан и другие) ==
+    tcp flags & (fin|syn|rst|psh|ack|urg) == 0 drop        # NULL scan
+    tcp flags & (fin|psh|urg) == (fin|psh|urg) drop          # XMAS scan
+    tcp flags & (fin|syn) == (fin|syn) drop                  # SYN-ACK scan
+    tcp flags & (syn|rst|fin) == (syn|rst|fin) drop          # Xmas scan
+    tcp flags & (syn|fin|rst|psh|ack) == (syn|rst|fin|ack) drop # Xmas scan
+
+    # == 🚫 Блокировка фрагментированных пакетов — часто используются в обходах фильтров ==
+    ip frag-off & 0x1fff != 0 drop
+
+    # == 🔒 Блокировка пакетов с поддельными IP (спуфинг) ==
+    ip saddr 127.0.0.0/8 drop          # localhost
+    ip saddr 10.0.0.0/8 drop           # частная сеть
+    ip saddr 172.16.0.0/12 drop        # частная сеть
+    ip saddr 192.168.0.0/16 drop       # частная сеть
+    ip saddr 169.254.0.0/16 drop       # APIPA
+    ip saddr 0.0.0.0/8 drop            # недопустимый адрес
+    ip saddr 224.0.0.0/4 drop          # multicast
+    ip saddr 240.0.0.0/5 drop          # зарезервировано
+  }
+
+  # = Основная политика цепочки =
+  chain forward {
+    type filter hook forward priority 0;
+    policy accept;
+    
+    #  = Запреты разного рода атак =
+    # Нужно в chain forward только при наличии Docker, oracle virtualbox. 
+    # Если нужно - раскомментировать
+
+    #  == 🔒 Ограничение новых соединений от одного IP (anti-DDoS) ==
+    # ip saddr 0.0.0.0/0 ct state new limit rate 25/second burst 50 packets accept
+    # ip saddr 0.0.0.0/0 ct state new log prefix "🔥 BAN: too many conn " flags all
+    # ip saddr 0.0.0.0/0 ct state new drop
+
+    # == 🛡️ Ограничение ping'ов ==
+    # ip protocol icmp icmp type echo-request limit rate 1/second accept
+    # ip protocol icmp icmp type echo-request log prefix "🔥 BAN: ICMP flood " flags all
+    # ip protocol icmp icmp type echo-request drop
+
+    # = Разрешаем необходимые TCP/UDP порты и диапазоны =
+
+    # == Разрешаем TCP-порты, необходимые для работы приложений ==
+    tcp dport {
+      53,         # DNS — нужен для разрешения доменных имён
+      80,         # HTTP — веб-трафик, загрузка обновлений и ресурсов
+      443,        # HTTPS — защищённый веб-трафик, VPN, браузер
+      12043,      # Пользовательское 3D приложение — специфический порт клиента
+      13000-13050 # Пользовательское 3D приложение — диапазон динамических портов клиента
+    } accept
+    
+
+    # == Разрешаем UDP-порты, необходимые для работы приложений ==
+    udp dport {
+      53,         # DNS — нужен для разрешения доменных имён
+      443,        # HTTPS через QUIC/HTTP3, браузерные протоколы
+      3478,       # STUN/TURN — WebRTC и видеоконференции
+      3479-3481   # STUN/TURN — WebRTC и видеоконференции
+    } accept
+
+    # = Запрещаем потенциально опасные и ненужные TCP/UDP порты и диапазоны =
+    
+    # Эти запреты рассчитаны на ДЕСКТОП / рабочую станцию.
+    # Они блокируют удалённый доступ, устаревшие сервисы, прокси, БД, IoT и порты,
+    # которые часто используются вредоносами, сканерами и C2-инфраструктурой.
+    #
+    # ⚠ Если вы используете систему как СЕРВЕР, включаете IP forwarding
+    # или запускаете сервисы с собственной маршрутизацией
+    # (Docker NAT/bridge, VirtualBox host-only/bridged, VPN-клиенты),
+    # обязательно проверьте список запрещённых портов и диапазонов в цепочке forward —
+    # этим сервисам могут потребоваться дополнительные порты.
+    # При необходимости откорректируйте или закомментируйте нужные порты и диапазоны.
+
+    # == Запрещаем различные подозрительные TCP порты ==
+    tcp dport {
+    # === Удалённый доступ (высокий риск) ===
+      22,     # SSH — цель брутфорсов
+      23,     # Telnet — устаревший, без шифрования
+      3389,   # RDP — Windows удалённый доступ
+      5900,   # VNC — удалённый доступ, частая уязвимость
+    # === FTP / SMB / NetBIOS (опасные файлообменные сервисы) ===
+      21,     # FTP — небезопасный протокол
+      137,    # NetBIOS Name Service
+      138,    # NetBIOS Datagram
+      139,    # NetBIOS Session
+      445,    # SMB/CIFS — частая цель эксплойтов
+    # === Базы данных (НИКОГДА не открывать в интернет) ===
+      3306,   # MySQL/MariaDB
+      1433,   # MS SQL Server
+      1434,   # MS SQL Browser
+    # === HTTP-alt/Proxy/Elasticsearch (опасны и часто атакуются) ===
+      8080,   # HTTP-прокси / веб-интерфейсы — часто открытые тестовые интерфейсы
+      9200,   # Elasticsearch API — полный удалённый доступ к данным
+    # === UPnP/IoT (уязвимые по дизайну) ===
+      1900,   # SSDP / UPnP
+    # === Часто используемые вредоносами (RAT, C2, обратные шеллы) ===
+      4444,   # Metasploit reverse shell
+      5555,   # Android ADB / IoT ботнеты
+      9001,   # Tor транспорт (часто используют малвари)
+      1234,   # Netcat / обратные соединения
+      1337,   # Частый порт C2 инфраструктуры малвари
+    #  === ⚠️ Порты сканеров и потенциально уязвимых сервисов === 
+      1080,   # SOCKS-прокси — часто используется злоумышленниками для обхода фильтров
+      3128,   # HTTP-прокси Squid — может быть использован как прокси/для обхода блокировок
+      8000,   # Альтернативные HTTP-порты, веб-сервисы — потенциально уязвимые
+      8888,   # Альтернативные веб-интерфейсы — тестовые и прокси-порты
+      10000   # Webmin — веб-админка, цель атак
+    } drop
+
+    # == Запрещаем различные подозрительные udp порты ==
+    udp dport {
+      161,    # SNMP — мониторинг сети; может использоваться злоумышленниками
+      162     # SNMP Trap — аналогично, потенциальная уязвимость
+    } drop
+
+    # Внимание! Блокируя широкие диапазоны портов - будьте осторожны! 
+    # Не навредите работе системы и приложений!
+    
+    # == Диапазоны TCP-портов, не используемых рабочей станцией при транзитной маршрутизации ==
+    # Блокируются для исключения нежеленного проброса трафика, скрытых туннелей,
+    # обхода NAT, паразитных соединений и потенциальных атак через forward-путь.
+
+    tcp dport {
+      1024-2047,    # Системные и устаревшие сервисы; почти никогда не нужны в forward
+      2048-4095,    # Проприетарные и редкие демоны; NFS (2049) — смотри если используешь
+      4096-8191,    # Старые VPN, некоторые игры, P2P; редко нужны на десктопе
+      8192-12287,   # Альтернативные HTTP/прокси, мультимедиа; тестировать
+      12288-16383,  # Медиаданные/VoIP (TCP fallback); могут ломать звонки
+      16384-24575,  # RTP/WebRTC (TCP fallback); блокировать если аудио/видео не нужно
+      24576-32767  # Динамические диапазоны игр/VPN; возможны побочные эффекты
+      32768-49151,  # Основные registered/ephemeral порты; опасно, может ломать NAT, Docker, VM
+      49152-65535   # High ephemeral; активно используются современными приложениями
+    } drop
+
+
+    # == 🚫 Блокировка UDP-портов — высокие и динамические диапазоны ==
+    udp dport {
+      1024-9999,     # Hизкие и средние ephemeral порты, редко используются системными сервисами, 
+                     # могут быть использованы троянами, P2P, играми, VPN
+      10000-32767,   # потенциально опасные порты для исходящих соединений
+                     # Блокируем, так как они не используются ядром для эфемерных портов
+                     # Здесь могут сидеть P2P-клиенты, игры, вредоносное ПО
+      32768-60999,   # Стандартные эфемерные порты Linux
+                     # ВНИМАНИЕ! Эти порты нужны для нормальной работы:
+                     # - Docker-контейнеров (скачивание обновлений)
+                     # - DNS-запросов (часто используют высокие порты)
+                     # - APT и других менеджеров пакетов
+                     # - Нормальной работы сети
+      61000-65535    # Верхний резервный диапазон
+                     # Обычно не используется стандартными приложениями
+                     # Блокируем для предотвращения нестандартных исходящих соединений
+    } drop
+
+
+    # = 🕷️ Подозрительные IP — крупные диапазоны, часто используемые ботнетами, 
+    # спам-сетями и сканерами =
+    ip saddr {
+      185.0.0.0/8,   # злоупотребляемые хостинги и прокси‑сети
+      37.0.0.0/8,    # дешёвые VPS, источники сканирования
+      88.0.0.0/8,    # частые brute‑force и сканеры
+      77.0.0.0/8,    # массовые TOR/прокси‑узлы
+      91.0.0.0/8     # бот‑сети и “серые” хостинги
+    } drop
+  }
+
+  chain output {
+    # = Основная политика цепочки =
+    type filter hook output priority 0;
+    policy accept;
+
+    #  = Запреты разного рода атак =
+
+    # == 🔒 Ограничение новых соединений от одного IP (anti-DDoS) ==
+    ip saddr 0.0.0.0/0 ct state new limit rate 25/second burst 50 packets accept
+    ip saddr 0.0.0.0/0 ct state new log prefix "🔥 BAN: too many conn " flags all
+    ip saddr 0.0.0.0/0 ct state new drop
+
+
+    # = Ограничения протокола iCPM =
+    
+    # == 🛡️ Ограничение ping'ов ==
+    ip protocol icmp icmp type echo-request limit rate 1/second accept
+    ip protocol icmp icmp type echo-request log prefix "🔥 BAN: ICMP flood " flags all
+    ip protocol icmp icmp type echo-request drop
+    
+    # == Критически важные ICMP для сети ==
+    ip protocol icmp icmp type { destination-unreachable, time-exceeded, parameter-problem } accept
+
+    # == Важные ICMPv6 для IPv6 ==
+    ip6 nexthdr icmpv6 icmpv6 type { 1, 2, 3, 4 } accept
+    ip6 nexthdr icmpv6 icmpv6 type { 135, 136 } accept  # NS/NA
+    ip6 nexthdr icmpv6 icmpv6 type { 133, 134 } accept  # RS/RA
+
+    # == Запрещаем весь остальной ICMP и ICMPv6 ==
+    ip protocol icmp drop           # все остальное ICMP дроп
+    ip6 nexthdr icmpv6 drop         # все остальное ICMPv6 дроп
+
+    
+    # = Блокирование протокола SCTP =
+    # 99,9% настольных систем вообще не используют SCTP
+    meta l4proto sctp drop
+    
+    
+    # = Блокировка DCCP — Datagram Congestion Control Protocol =
+    # На десктопе не используется ни одним массовым приложением
+    meta l4proto dccp drop
+    
+    
+    # = Разрешаем необходимые TCP/UDP порты и диапазоны =
+
+    # == Разрешаем TCP порты  и димапазоны, необходимые для работы приложений ==
+    tcp dport {
+    53,     # NS клиент Нужно для работы интернета: резолвинг доменных имён (UDP/TCP).
+    80,     # HTTP Трафик к веб-сайтам без шифрования; приложения могут обращаться к API/редиректам.
+    443,    # HTTPS Основной порт для всего зашифрованного веб-трафика — браузер, API, VPN, обновления.
+    3306,   # MySQL клиент	Нужно, если подключаешься к MySQL
+    3478,   # STUN/TURN WebRTC	Нужно для аудио/видео/Discord
+    3000,   # Node.js dev servers	Нужно при разработке
+    3690,   # SVN	Если работаешь со старым репозиторием
+    4443,   # Альтернативный HTTPS (некоторые API)	Иногда используется VPN/клиентами
+    12043,  # Hеобходим для работы пользовательского 3D приложения
+    13000-13050   # Необходимы для работы пользовательского 3D приложения
+    } accept
+    
+  
+    # == Разрешаем UDP порты  и димапазоны, необходимые для работы приложений ==
+    udp dport {
+    443,    # Нужен для быстрой и стабильной работы современных сайтов 
+            # (Google, YouTube, ChatGPT, Cloudflare)
+    13000-13050   # Необходимы для работы пользовательского 3D приложения
+    } accept 
+
+    # = Запрещаем потенциально опасные и ненужные TCP/UDP порты и диапазоны =
+    
+    # Эти запреты рассчитаны на ДЕСКТОП / рабочую станцию.
+    # ⚠ Если вы используете систему как СЕРВЕР - 
+    # при необходимости откорректируйте или закомментируйте нужные порты и диапазоны.
+
+    # == Запрещаем различные подозрительные TCP порты ==
+    tcp dport {
+    # === Удалённый доступ (высокий риск) ===
+      22,     # SSH — цель брутфорсов
+      23,     # Telnet — устаревший, без шифрования
+      3389,   # RDP — Windows удалённый доступ
+      5900,   # VNC — удалённый доступ, частая уязвимость
+    # === FTP / SMB / NetBIOS (опасные файлообменные сервисы) ===
+      21,     # FTP — небезопасный протокол
+      137,    # NetBIOS Name Service
+      138,    # NetBIOS Datagram
+      139,    # NetBIOS Session
+      445,    # SMB/CIFS — частая цель эксплойтов
+    # === Базы данных (НИКОГДА не открывать в интернет) ===
+      3306,   # MySQL/MariaDB
+      1433,   # MS SQL Server
+      1434,   # MS SQL Browser
+    # === HTTP-alt/Proxy/Elasticsearch (опасны и часто атакуются) ===
+      8080,   # HTTP-прокси / веб-интерфейсы — часто открытые тестовые интерфейсы
+      9200,   # Elasticsearch API — полный удалённый доступ к данным
+    # === UPnP/IoT (уязвимые по дизайну) ===
+      1900,   # SSDP / UPnP
+    # === Часто используемые вредоносами (RAT, C2, обратные шеллы) ===
+      4444,   # Metasploit reverse shell
+      5555,   # Android ADB / IoT ботнеты
+      9001,   # Tor транспорт (часто используют малвари)
+      1234,   # Netcat / обратные соединения
+      1337,   # Частый порт C2 инфраструктуры малвари
+    #  === ⚠️ Порты сканеров и потенциально уязвимых сервисов === 
+      1080,   # SOCKS-прокси — часто используется злоумышленниками для обхода фильтров
+      3128,   # HTTP-прокси Squid — может быть использован как прокси/для обхода блокировок
+      8000,   # Альтернативные HTTP-порты, веб-сервисы — потенциально уязвимые
+      8888,   # Альтернативные веб-интерфейсы — тестовые и прокси-порты
+      10000   # Webmin — веб-админка, цель атак
+    } drop
+
+    # == Запрещаем различные подозрительные udp порты ==
+    udp dport {
+      161,    # SNMP — мониторинг сети; может использоваться злоумышленниками
+      162     # SNMP Trap — аналогично, потенциальная уязвимость
+    } drop
+
+
+    # Внимание! ⚠️ Блокируя широкие диапазоны портов - будьте осторожны! ⚠️ 
+    # Не навредите работе системы и приложений!
+    # Если вам нужен какой либо диапазон - раскомментируйте струку с ним. 
+    # Если не нужен - закомментируйте.
+
+
+    #  == Запрещаем диапазоны “опасных” и критически не нужных для десктопа TCP-портов ==
+    tcp dport {
+      1-1023,	    # 🛑 Привилегированные порты
+      1024-2047,	# r-commands (rlogin, rsh, rexec), старые RPC, NFS, устаревшие демоны
+      2048-3071,    # редкие проприетарные протоколы и middleware
+      3072-4999,    # преимущественно порты устаревших, серверных и корпоративных приложений; 
+                    # обычным рабочим станциям почти не нужны            
+      5000-5999,    # альтернативные сервисы, старые P2P/администрирование, редко нужны на десктопе
+      7000-7999,    # альтернативные сервисы, тестовые порты, часто используются троянами
+      9000-9999,    # веб-сервисы, прокси, возможные backdoor порты
+      10000-19998,  # динамические и высокие сервисные порты; могут использоваться приложениями вроде Firestorm, 
+                    # но для большинства десктопных сервисов не нужны          
+      19999-32767   # ephemeral порты старого диапазона; активно используются P2P, 
+                    # игры, некоторые VPN, но системные сервисы их почти не трогают       
+    } drop
+
+
+    #  == Запрещаем диапазоны “опасных” и критически не нужных для десктопа UDP-портов ==
+    udp dport {
+      1024-2047,    # старые UNIX‑сервисы, RPC, NFS, r‑commands, устаревшие демоны
+                    # Обычно безопасно блокировать
+      2048-4095,    # редко используемые стандартные порты, проприетарные сервисы
+                    # Тоже обычно безопасно блокировать
+    #  4096-8191,    # VPN, игры, P2P, WebRTC, VoIP некоторых клиентов
+                    # Блокировать можно, но осторожно: может затронуть VPN/приложения
+      8192-12287,   # QUIC/HTTP3, прокси, мультимедиа-протоколы
+                    # Возможны побочные эффекты, лучше тестировать
+      12288-16383,  # старые RTP/VoIP диапазоны и медиапотоки
+                    # Блокировать можно, но может нарушить видеосвязь
+      16384-24575,  # основной RTP диапазон (аудио/видео), WebRTC, VoIP
+                    # ❗ Не блокировать, если нужны видеозвонки/WebRTC/VPN
+      24576-32767   # динамические порты для VPN, P2P, игр, потоковых данных
+                    # ❗ Может нарушить работу VPN и некоторых приложений
+    } drop
+
+    # == 🕷️ Запрещаем подозрительные IP — крупные диапазоны, 
+    # часто используемые ботнетами, спам-сетями и сканерами ==
+    ip saddr {
+      185.0.0.0/8,  # злоупотребляемые хостинги и прокси‑сети
+      37.0.0.0/8,   # дешёвые VPS, источники сканирования
+      88.0.0.0/8,   # частые brute‑force и сканеры
+      77.0.0.0/8,   # массовые TOR/прокси‑узлы
+      91.0.0.0/8    # бот‑сети и “серые” хостинги
+    } drop
+  }
 }
-table inet nat {
-	chain filter-prerouting {
-		type filter hook prerouting priority filter; policy accept;
-	}
 
-	chain prerouting {
-		type nat hook prerouting priority dstnat; policy accept;
-	}
-
-	chain postrouting {
-		type nat hook postrouting priority srcnat; policy accept;
-	}
-
-	chain input {
-		type nat hook input priority srcnat; policy accept;
-	}
-
-	chain output {
-		type nat hook output priority 100; policy accept;
-	}
-}
-table inet mangle {
-	chain output {
-		type filter hook output priority mangle; policy accept;
-		icmp type { echo-reply, destination-unreachable, echo-request } accept
-		udp dport 51820 accept
-		meta l4proto != tcp ct state related,new queue flags bypass to 0
-		tcp flags & (fin | syn | rst | ack) == syn queue flags bypass to 0
-	}
-
-	chain prerouting {
-		type filter hook prerouting priority mangle; policy accept;
-	}
-
-	chain postrouting {
-		type filter hook postrouting priority mangle; policy accept;
-	}
-
-	chain forward {
-		type filter hook forward priority mangle; policy accept;
-	}
-}
-# Warning: table ip nat is managed by iptables-nft, do not touch!
-table ip nat {
-	chain DOCKER {
-		iifname "docker0" counter packets 0 bytes 0 return
-	}
-
-	chain POSTROUTING {
-		type nat hook postrouting priority srcnat; policy accept;
-		ip saddr 172.17.0.0/16 oifname != "docker0" counter packets 0 bytes 0 masquerade
-	}
-
-	chain PREROUTING {
-		type nat hook prerouting priority dstnat; policy accept;
-		fib daddr type local counter packets 0 bytes 0 jump DOCKER
-	}
-
-	chain OUTPUT {
-		type nat hook output priority dstnat; policy accept;
-		ip daddr != 127.0.0.0/8 fib daddr type local counter packets 0 bytes 0 jump DOCKER
-	}
-}
-# Warning: table ip filter is managed by iptables-nft, do not touch!
-table ip filter {
-	chain DOCKER {
-	}
-
-	chain DOCKER-ISOLATION-STAGE-1 {
-		iifname "docker0" oifname != "docker0" counter packets 0 bytes 0 jump DOCKER-ISOLATION-STAGE-2
-		counter packets 0 bytes 0 return
-	}
-
-	chain DOCKER-ISOLATION-STAGE-2 {
-		oifname "docker0" counter packets 0 bytes 0 drop
-		counter packets 0 bytes 0 return
-	}
-
-	chain FORWARD {
-		type filter hook forward priority filter; policy drop;
-		counter packets 0 bytes 0 jump DOCKER-USER
-		counter packets 0 bytes 0 jump DOCKER-ISOLATION-STAGE-1
-		oifname "docker0" ct state related,established counter packets 0 bytes 0 accept
-		oifname "docker0" counter packets 0 bytes 0 jump DOCKER
-		iifname "docker0" oifname != "docker0" counter packets 0 bytes 0 accept
-		iifname "docker0" oifname "docker0" counter packets 0 bytes 0 accept
-	}
-
-	chain DOCKER-USER {
-		counter packets 0 bytes 0 return
-	}
-}
-
-
-</code>
-</pre>
+        </code>
+    </pre>
 </div>
 
 </section>

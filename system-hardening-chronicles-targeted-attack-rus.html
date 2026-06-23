@@ -52,6 +52,31 @@
 
     <!-- 2. Подключаем саму библиотеку Highlight.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    
+    <!-- Регистрируем синтаксис nftables в Highlight.js -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof hljs !== 'undefined') {
+                hljs.registerLanguage('nftables', (hljs) => {
+                    return {
+                        name: 'nftables',
+                        aliases: ['nft'],
+                        keywords: 'table chain type hook priority policy accept drop reject log counter ip ip6 inet ether tcp udp icmp ct state established    related new invalid dport sport saddr daddr',
+                        contains: [
+                            hljs.HASH_COMMENT_MODE,
+                            hljs.QUOTE_STRING_MODE,
+                            hljs.NUMBER_MODE,
+                            {
+                                className: 'meta',
+                                begin: 'include\\b', end: '$'
+                            }
+                        ]
+                    };
+                });
+            }
+        });
+    </script>
+
 
     <!-- 3. Инициализация: говорим библиотеке подсветить все блоки <code> с классом language-* -->
     <script>
@@ -623,7 +648,7 @@ tty (запасной доступ)</p>
 <div class="historical-fact">
     <strong>Файл правил nftables (13.04.2026):</strong>
     <pre>
-        <code class="language-json">
+        <code class="language-nftables">
 
 #!/usr/sbin/nft -f
 
@@ -1416,7 +1441,7 @@ grpc: 1.51.1</p>
 <div class="historical-fact">
     <strong>Конфиг nftables конфигурации 3 (22.06.2026  тестируется, предварительная версия):</strong>
     <pre>
-        <code class="language-bash">
+        <code class="language-nftables">
 	
 #!/usr/sbin/nft -f
 

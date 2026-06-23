@@ -15,7 +15,7 @@
     "isAccessibleForFree": true,
     "description": "Analysis of the cognitive bias 'rigidity of expectations' in threat modeling. Why expecting obvious attacks is dangerous, and how professional adversaries use stealth and non-standard methods.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-06-19<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-06-23<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -193,17 +193,19 @@
 
 <!-- КРУПНАЯ ГЛАВА (H2) - Оглавление -->
 <section id="table-of-contents" aria-label="Table of Contents">
-<h2 id="section0">Table of Contents</h2>
 
-<ul>
-<li><a href="#section1">What rigidity of expectations is</a></li>
-<li><a href="#section2">Why "standard" attacks are a sign of amateurism</a></li>
-<li><a href="#section3">An analogy from the offline world (for clarity)</a></li>
-<li><a href="#section4">How this looks in infrastructure</a></li>
-<li><a href="#section5">The user as a "well-fed cat"</a></li>
-<li><a href="#section6">What to do about it</a></li>
-<li><a href="#section7">The true sign of mature thinking</a></li>
-</ul>
+<nav id="toc" style="margin: 2rem 0; padding: 1.2rem; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 6px;">
+  <h2 id="section0">Table of Contents</h2>
+  <ul>
+    <li><a href="#section1">What rigidity of expectations is</a></li>
+    <li><a href="#section2">Why "standard" attacks are a sign of amateurism</a></li>
+    <li><a href="#section3">An analogy from the offline world (for clarity)</a></li>
+    <li><a href="#section4">How this looks in infrastructure</a></li>
+    <li><a href="#section5">The user as a "well-fed cat"</a></li>
+    <li><a href="#section6">What to do about it</a></li>
+    <li><a href="#section7">The true sign of mature thinking</a></li>
+  </ul>
+</nav>
 
 <details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
   <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Table of Contents</summary>
@@ -458,6 +460,14 @@ Do not expect attackers to act according to standard and familiar patterns.</p>
 <p>The key problem is that the victim may be confident in their security because all incoming ports are closed and the browser encrypts traffic via HTTPS. However, the user session attack occurs <strong>before</strong> the data is encrypted by the browser and sent over the network. The interception happens at the input, rendering, or DOM manipulation level, rendering classical network defense useless.</p>
 
 <p>In other words, you may suspect traffic interception and take measures to protect against it, unaware that the entire user session — or at least the browser interface — has been compromised. This is a classic example of how rigidity of expectations — focusing on a single threat vector at the expense of others — can lead to a false sense of security and serious consequences.</p>
+
+<p><strong>Designer Malware</strong></p>
+
+<p>If previously creating designer malware — worms individually tailored to attack a specific user — was an extremely labor-intensive procedure for hackers, now intelligence-analytical AIs without ethical constraints have come to their aid. They allow hackers to accelerate and simplify the creation of unique attack tools that are highly effective against a specific system. As a result, the use of such attack tools is no longer a rare, unique phenomenon and is becoming increasingly common.</p>
+
+<p>A situation arises where a user expects to encounter mass-produced, generic threats but instead faces a unique program crafted specifically for their system. They apply standard antivirus solutions and signature-based protection methods, spend considerable time on this, and then wonder why these measures failed to help.</p>
+
+<p><strong>As of now (June 2026)</strong>, any user who faces serious cyber threats or is a potential target of an attack (holds a responsible position, works with sensitive information) should consider the risk of designer malware being deployed against them and build their defense configuration accordingly.</p>
 
 <p><strong>Conclusion:</strong> security should not be built around a single "magic" solution. Only a combined, multi-layered approach with continuous reassessment of the threat model can effectively counter a targeted adversary.</p>
 

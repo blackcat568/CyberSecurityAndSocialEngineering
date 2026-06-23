@@ -55,9 +55,13 @@
     
     <!-- 3. Инициализация: говорим библиотеке подсветить все блоки <code> с классом language-* -->
     <script>
-        // Функция подсветки
         function initHighlighting() {
             if (typeof hljs !== 'undefined') {
+                // Сбрасываем состояние всех блоков
+                document.querySelectorAll('code[data-highlighted]').forEach(el => {
+                    delete el.dataset.highlighted;
+                });
+                // Запускаем подсветку
                 hljs.highlightAll();
             }
         }
@@ -68,9 +72,6 @@
         } else {
             initHighlighting();
         }
-
-        // Резервный вариант
-        window.addEventListener('load', initHighlighting);
     </script>
     
   <!-- КОНЕЦ ПОДКЛЮЧЕНИЯ БИБЛИОТЕК ПОДСВЕТКИ КОДА -->

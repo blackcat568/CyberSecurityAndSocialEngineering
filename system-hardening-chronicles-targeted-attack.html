@@ -1420,16 +1420,16 @@ Compiled with support for: Linux audit, Libcapng, Seccomp, Systemd, Umockdev</p>
 
 <p><strong>Date of formation:</strong> 22.06.2026</p>
 
-<p>Repeats configuration 2, except for changes to the nftables <kbd>output</kbd> chain and switching to the Quad9 DNS server (9.9.9.9).</p>
+<p>Repeats configuration 2, except for changes to the nftables <code>output</code> chain and switching to the Quad9 DNS server (9.9.9.9).</p>
 
 <!-- Подсекция H4 2.4.1 -->
 <section id="config3-nftables" aria-label="2.4.1 Changes in the nftables config">
 
 <h4>2.4.1 Changes in the nftables config</h4>
 <ul>
-    <li>The <kbd>output</kbd> chain policy has been changed to <kbd>drop</kbd>.</li>
-    <li>Global restrictions and permissions for ports and port ranges have been removed from the <kbd>output</kbd> chain.</li>
-    <li>Outbound connections in the <kbd>output</kbd> chain are now only allowed to trusted IP ranges corresponding to trusted sites.</li>
+    <li>The <code>output</code> chain policy has been changed to <code>drop</code>.</li>
+    <li>Global restrictions and permissions for ports and port ranges have been removed from the <code>output</code> chain.</li>
+    <li>Outbound connections in the <code>output</code> chain are now only allowed to trusted IP ranges corresponding to trusted sites.</li>
     <li>Each IP range is restricted to only specific ports.</li>
 </ul>
 

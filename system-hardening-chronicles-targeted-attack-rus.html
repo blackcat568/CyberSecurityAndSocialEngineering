@@ -73,8 +73,27 @@
                         ]
                     };
                 });
-                // 2. ДОБАВЛЕНО: Связываем имя sysctl со встроенным парсером INI-файлов
-                hljs.registerAliases('sysctl', { languageName: 'ini' });
+                // 2. ИСПРАВЛЕНО: Полноценное правило для sysctl, поддерживающее звёздочки *
+                hljs.registerLanguage('sysctl', (hljs) => {
+                    return {
+                        name: 'sysctl',
+                        contains: [
+                            hljs.HASH_COMMENT_MODE,
+                            hljs.NUMBER_MODE,
+                            {
+                                // Подсвечиваем всё имя параметра до знака «=», включая точки и звёздочки
+                                className: 'attr',
+                                begin: /^[a-zA-Z0-9_\.\-\*]+/
+                            },
+                            {
+                                // Подсвечиваем текстовые значения после знака «=»
+                                className: 'string',
+                                begin: /(?<==\s*)[a-zA-Z_/]+/
+                            }
+                        ]
+                    };
+                });
+
             }
         });
     </script>
@@ -1061,7 +1080,7 @@ table inet filter {
 <div class="historical-fact">
     <strong>Конфигурация усиления защиты sysctl (2026-03-03):</strong>
     <pre>
-        <code class="language-ini">
+        <code class="language-sysctl">
 	
 	
 # ============================================

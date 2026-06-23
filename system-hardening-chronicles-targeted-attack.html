@@ -44,23 +44,6 @@
   <link rel="alternate" hreflang="ru" href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/system-hardening-chronicles-targeted-attack-rus.html">
   <link rel="alternate" hreflang="x-default" href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/system-hardening-chronicles-targeted-attack.html">
   
-  <!-- Добавление библиотек для подсветки кода -->
-    
-    <!-- 1. Подключаем CSS-тему оформления (можно выбрать другую тему, например 'github-dark' или 'atom-one-dark') -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
-    
-    <!-- 2. Подключаем саму библиотеку Highlight.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    
-    <!-- 3. Инициализация: говорим библиотеке подсветить все блоки <code> с классом language-* -->
-    <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            hljs.highlightAll();
-        });
-    </script>
-    
-  <!-- Конец блока библиотек для подсветки кода -->
-  
   <meta name="viewport" content="width=device-width,initial-scale=1">
   
   
@@ -1792,8 +1775,6 @@ table inet filter { # Opening the ruleset
 <!-- Подсекция H4 2.4.1 -->
 <section id="config3-dns-quard9" aria-label="2.4.2 Switching to the Quad9 DNS server (9.9.9.9)">
 	
-
-
 <h4>2.4.2 Switching to the Quad9 DNS server (9.9.9.9)</h4>
 
 <p>The <code class="language-bash">/etc/resolv.conf</code> settings are hardcoded to 9.9.9.9. All contents of the file have been replaced with the line:</p>

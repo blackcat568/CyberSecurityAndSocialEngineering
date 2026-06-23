@@ -52,24 +52,14 @@
     <!-- 2. Подключаем саму библиотеку Highlight.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 
-    <!-- 3. Инициализация -->
+    <!-- 3. Инициализация: говорим библиотеке подсветить все блоки <code> с классом language-* -->
     <script>
         function initHighlighting() {
             if (typeof hljs !== 'undefined') {
-                // Регистрируем язык plaintext (для блоков без конкретного языка)
-                if (!hljs.listLanguages().includes('plaintext')) {
-                    hljs.registerLanguage('plaintext', function() {
-                        return { contains: [] };
-                    });
-                }
-                
                 // Сбрасываем состояние всех блоков
                 document.querySelectorAll('code[data-highlighted]').forEach(el => {
                     delete el.dataset.highlighted;
-                    // Удаляем класс hljs, если он есть
-                    el.classList.remove('hljs');
                 });
-                
                 // Запускаем подсветку
                 hljs.highlightAll();
             }
@@ -82,8 +72,8 @@
             initHighlighting();
         }
     </script>
-
-    <!-- КОНЕЦ ПОДКЛЮЧЕНИЯ БИБЛИОТЕК ПОДСВЕТКИ КОДА -->
+    
+  <!-- КОНЕЦ ПОДКЛЮЧЕНИЯ БИБЛИОТЕК ПОДСВЕТКИ КОДА -->
   
   <meta name="viewport" content="width=device-width,initial-scale=1">
   
@@ -1426,7 +1416,7 @@ Compiled with support for: Linux audit, Libcapng, Seccomp, Systemd, Umockdev</p>
 <div class="historical-fact">
     <strong>nftables config for configuration 3 (22.06.2026  testing, preliminary version):</strong>
     <pre>
-        <code class="language-plaintext">
+        <code class="language-bash">
 
 #!/usr/sbin/nft -f
 

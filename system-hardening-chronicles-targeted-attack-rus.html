@@ -45,22 +45,32 @@
   <link rel="alternate" hreflang="x-default" href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/system-hardening-chronicles-targeted-attack.html">
   
 
-  <!-- НАЧАЛО ПОДКЛЮЧЕНИЯ БИБЛИОТЕК ПОДСВЕТКИ КОДА -->
-    
-    <!-- 1. Подключаем CSS-тему оформления (можно выбрать другую тему, например 'github-dark' или 'atom-one-dark') -->
+    <!-- НАЧАЛО ПОДКЛЮЧЕНИЯ БИБЛИОТЕК ПОДСВЕТКИ КОДА -->
+
+    <!-- 1. Подключаем CSS-тему оформления (тёмная тема) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
-    
+
     <!-- 2. Подключаем саму библиотеку Highlight.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    
-    <!-- 3. Инициализация: говорим библиотеке подсветить все блоки <code> с классом language-* -->
+
+    <!-- 3. Инициализация -->
     <script>
         function initHighlighting() {
             if (typeof hljs !== 'undefined') {
+                // Регистрируем язык plaintext (для блоков без конкретного языка)
+                if (!hljs.listLanguages().includes('plaintext')) {
+                    hljs.registerLanguage('plaintext', function() {
+                        return { contains: [] };
+                    });
+                }
+                
                 // Сбрасываем состояние всех блоков
                 document.querySelectorAll('code[data-highlighted]').forEach(el => {
                     delete el.dataset.highlighted;
+                    // Удаляем класс hljs, если он есть
+                    el.classList.remove('hljs');
                 });
+                
                 // Запускаем подсветку
                 hljs.highlightAll();
             }
@@ -73,8 +83,8 @@
             initHighlighting();
         }
     </script>
-    
-  <!-- КОНЕЦ ПОДКЛЮЧЕНИЯ БИБЛИОТЕК ПОДСВЕТКИ КОДА -->
+
+    <!-- КОНЕЦ ПОДКЛЮЧЕНИЯ БИБЛИОТЕК ПОДСВЕТКИ КОДА -->
 
   
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -623,7 +633,7 @@ tty (запасной доступ)</p>
 <div class="historical-fact">
     <strong>Файл правил nftables (13.04.2026):</strong>
     <pre>
-        <code class="language-bash">
+        <code class="language-plaintext">
 
 #!/usr/sbin/nft -f
 
@@ -1416,7 +1426,7 @@ grpc: 1.51.1</p>
 <div class="historical-fact">
     <strong>Конфиг nftables конфигурации 3 (22.06.2026  тестируется, предварительная версия):</strong>
     <pre>
-        <code class="language-bash">
+        <code class="language-plaintext">
 	
 #!/usr/sbin/nft -f
 

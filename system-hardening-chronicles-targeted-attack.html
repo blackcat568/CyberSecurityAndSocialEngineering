@@ -97,7 +97,7 @@
         });
     </script>
 
-    <!-- 3. Инициализация: говорим библиотеке подсветить все блоки <code> и добавляем кнопки копирования -->
+    <!-- 3. Инициализация: говорим библиотеке подсветить все блоки <code> с классом language-* -->
     <script>
         function initHighlighting() {
             if (typeof hljs !== 'undefined') {
@@ -107,42 +107,6 @@
                 });
                 // Запускаем подсветку
                 hljs.highlightAll();
-
-                // Автоматически добавляем кнопку "Скопировать" к каждому блоку <pre>
-                document.querySelectorAll('pre').forEach((preBlock) => {
-                    if (preBlock.querySelector('.copy-code-btn')) return;
-
-                    const codeBlock = preBlock.querySelector('code');
-                    if (!codeBlock) return;
-
-                    // ЖЕСТКАЯ ФИКСАЦИЯ: Гарантируем, что pre является контейнером для кнопки
-                    preBlock.style.position = 'relative';
-
-                    const button = document.createElement('button');
-                    button.className = 'copy-code-btn';
-                    button.type = 'button';
-                    button.innerText = 'Скопировать';
-
-                    button.addEventListener('click', () => {
-                        // Используем textContent вместо innerText, чтобы избежать захвата скрытых элементов HTML
-                        const textToCopy = codeBlock.textContent.trim();
-
-                        navigator.clipboard.writeText(textToCopy).then(() => {
-                            button.innerText = 'Скопировано!';
-                            button.classList.add('copied');
-
-                            setTimeout(() => {
-                                button.innerText = 'Скопировать';
-                                button.classList.remove('copied');
-                            }, 2000);
-                        }).catch(err => {
-                            console.error('Ошибка копирования: ', err);
-                            button.innerText = 'Ошибка';
-                        });
-                    });
-
-                    preBlock.appendChild(button);
-                });
             }
         }
 
@@ -153,8 +117,6 @@
             initHighlighting();
         }
     </script>
-
-
     
   <!-- КОНЕЦ ПОДКЛЮЧЕНИЯ БИБЛИОТЕК ПОДСВЕТКИ КОДА -->
   
@@ -270,45 +232,30 @@
         padding: 0;
     }
     
-    /* Делаем блок pre контейнером для абсолютного позиционирования кнопки */
-    pre {
-        position: relative;
-    }
-
-    /* Стили самой кнопки копирования */
     .copy-code-btn {
-        position: absolute;
-        top: 8px;
-        right: 8px;
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: #d4d4d4;
-        border-radius: 4px;
-        padding: 4px 8px;
-        font-size: 0.75rem;
-        cursor: pointer;
-        font-family: sans-serif;
-        transition: all 0.2s ease;
-        opacity: 0; /* Прячем кнопку по умолчанию */
-    }
+    /* Меняем на sticky, чтобы кнопка не уходила при прокрутке */
+    position: sticky;
+    /* Прижимаем к верхнему и правому краю */
+    top: 8px;
+    float: right;
+    /* Сдвигаем вправо, чтобы она не перекрывала текст кода */
+    margin-right: 8px;
+    margin-bottom: -32px; /* Компенсируем высоту, чтобы код не съезжал вниз */
+    z-index: 10; /* Кнопка всегда будет поверх текста */
+    
+    /* Остальные ваши стили внешнего вида */
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #d4d4d4;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    font-family: sans-serif;
+    transition: all 0.2s ease;
+    opacity: 0;
+}
 
-    /* Показываем кнопку при наведении мыши на блок кода */
-    pre:hover .copy-code-btn {
-        opacity: 1;
-    }
-
-    /* Эффект при наведении на саму кнопку */
-    .copy-code-btn:hover {
-        background: rgba(255, 255, 255, 0.2);
-        color: #ffffff;
-    }
-
-    /* Стиль кнопки после успешного копирования */
-    .copy-code-btn.copied {
-        background: #2e7d32;
-        border-color: #2e7d32;
-        color: #ffffff;
-    }
 
     
     /* ========== МОБИЛЬНАЯ АДАПТАЦИЯ ========== */
@@ -746,6 +693,7 @@ tty (fallback access)</p>
 <div class="historical-fact">
     <strong>nftables ruleset file (13.04.2026):</strong>
     <pre>
+	    <button class="copy-code-btn" onclick="navigator.clipboard.writeText(this.nextElementSibling.textContent.trim()); this.innerText='Скопировано!'; setTimeout(() => this.innerText='Copy', 2000)">Copy</button>
         <code class="language-nftables">
 
 #!/usr/sbin/nft -f
@@ -1157,6 +1105,7 @@ table inet filter {
 	
 <div class="historical-fact">
     <strong>sysctl hardening configuration (2026-03-03):</strong>
+    <button class="copy-code-btn" onclick="navigator.clipboard.writeText(this.nextElementSibling.textContent.trim()); this.innerText='Скопировано!'; setTimeout(() => this.innerText='Copy', 2000)">Copy</button>
     <pre>
         <code class="language-sysctl">
 	
@@ -1230,6 +1179,7 @@ kernel.unprivileged_bpf_disabled = 1
 <div class="historical-fact">
     <strong>Flatpak application permission overrides (Flatseal):</strong>
     <pre>
+		<button class="copy-code-btn" onclick="navigator.clipboard.writeText(this.nextElementSibling.textContent.trim()); this.innerText='Скопировано!'; setTimeout(() => this.innerText='Copy', 2000)">Copy</button>
         <code class="language-ini">
 # Retrieved: 22.06.2026
 # Command used: for file in ~/.local/share/flatpak/overrides/*; do echo "=== $file ==="; cat "$file"; echo; done
@@ -1285,6 +1235,7 @@ grpc: 1.51.1</p>
 <div class="historical-fact">
     <strong>OpenSnitch user rules (excerpt):</strong>
     <pre>
+		<button class="copy-code-btn" onclick="navigator.clipboard.writeText(this.nextElementSibling.textContent.trim()); this.innerText='Скопировано!'; setTimeout(() => this.innerText='Copy', 2000)">Copy</button>
         <code class="language-json">
 	
 # ============================================
@@ -1590,6 +1541,7 @@ Compiled with support for: Linux audit, Libcapng, Seccomp, Systemd, Umockdev</p>
 <div class="historical-fact">
     <strong>nftables config for configuration 3 (22.06.2026  testing, preliminary version):</strong>
     <pre>
+		<button class="copy-code-btn" onclick="navigator.clipboard.writeText(this.nextElementSibling.textContent.trim()); this.innerText='Скопировано!'; setTimeout(() => this.innerText='Copy', 2000)">Copy</button>
         <code class="language-nftables">
 
 #!/usr/sbin/nft -f

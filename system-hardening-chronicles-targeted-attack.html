@@ -15,7 +15,7 @@
     "isAccessibleForFree": true,
     "description": "A real-world chronicle of defending against a targeted attack: documenting vulnerabilities, configurations, responses, and system hardening. From zero security to resilient configurations. Covers Debian 12 & 13, nftables, AppArmor, OpenSnitch, Flatpak, USBGuard, sysctl. For cybersecurity and InfoSec professionals.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-06-23<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-06-24<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -47,10 +47,10 @@
     <!-- НАЧАЛО ПОДКЛЮЧЕНИЯ БИБЛИОТЕК ПОДСВЕТКИ КОДА -->
 
     <!-- 1. Подключаем CSS-тему оформления (тёмная тема) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="https://cloudflare.com">
 
     <!-- 2. Подключаем саму библиотеку Highlight.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cloudflare.com"></script>
     
     <!-- Регистрируем синтаксис nftables в Highlight.js -->
     <script>
@@ -82,12 +82,12 @@
                             {
                                 // Подсвечиваем всё имя параметра до знака «=», включая точки и звёздочки
                                 className: 'attr',
-                                begin: /^[a-zA-Z0-9_\.\-\*]+/
+                                begin: /[a-zA-Z0-9_\.\-\*]+(?=\s*=)/
                             },
                             {
                                 // Подсвечиваем текстовые значения после знака «=»
                                 className: 'string',
-                                begin: /(?<==\s*)[a-zA-Z_/]+/
+                                begin: /(?<==\s*)[^\s#]+/
                             }
                         ]
                     };
@@ -97,7 +97,7 @@
         });
     </script>
 
-    <!-- 3. Инициализация: говорим библиотеке подсветить все блоки <code> с классом language-* -->
+    <!-- 3. Инициализация: говорим библиотеке подсветить все блоки <code> и добавляем кнопки копирования -->
     <script>
         function initHighlighting() {
             if (typeof hljs !== 'undefined') {
@@ -107,6 +107,38 @@
                 });
                 // Запускаем подсветку
                 hljs.highlightAll();
+
+                // Автоматически добавляем кнопку "Скопировать" к каждому блоку <pre>
+                document.querySelectorAll('pre').forEach((preBlock) => {
+                    if (preBlock.querySelector('.copy-code-btn')) return;
+
+                    const codeBlock = preBlock.querySelector('code');
+                    if (!codeBlock) return;
+
+                    const button = document.createElement('button');
+                    button.className = 'copy-code-btn';
+                    button.type = 'button';
+                    button.innerText = 'Скопировать';
+
+                    button.addEventListener('click', () => {
+                        const textToCopy = codeBlock.innerText.trim();
+
+                        navigator.clipboard.writeText(textToCopy).then(() => {
+                            button.innerText = 'Скопировано!';
+                            button.classList.add('copied');
+
+                            setTimeout(() => {
+                                button.innerText = 'Скопировать';
+                                button.classList.remove('copied');
+                            }, 2000);
+                        }).catch(err => {
+                            console.error('Ошибка копирования: ', err);
+                            button.innerText = 'Ошибка';
+                        });
+                    });
+
+                    preBlock.appendChild(button);
+                });
             }
         }
 
@@ -117,6 +149,7 @@
             initHighlighting();
         }
     </script>
+
     
   <!-- КОНЕЦ ПОДКЛЮЧЕНИЯ БИБЛИОТЕК ПОДСВЕТКИ КОДА -->
   
@@ -231,6 +264,47 @@
         background: none;
         padding: 0;
     }
+    
+    /* Делаем блок pre контейнером для абсолютного позиционирования кнопки */
+    pre {
+        position: relative;
+    }
+
+    /* Стили самой кнопки копирования */
+    .copy-code-btn {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #d4d4d4;
+        border-radius: 4px;
+        padding: 4px 8px;
+        font-size: 0.75rem;
+        cursor: pointer;
+        font-family: sans-serif;
+        transition: all 0.2s ease;
+        opacity: 0; /* Прячем кнопку по умолчанию */
+    }
+
+    /* Показываем кнопку при наведении мыши на блок кода */
+    pre:hover .copy-code-btn {
+        opacity: 1;
+    }
+
+    /* Эффект при наведении на саму кнопку */
+    .copy-code-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: #ffffff;
+    }
+
+    /* Стиль кнопки после успешного копирования */
+    .copy-code-btn.copied {
+        background: #2e7d32;
+        border-color: #2e7d32;
+        color: #ffffff;
+    }
+
     
     /* ========== МОБИЛЬНАЯ АДАПТАЦИЯ ========== */
     /* Базовый размер шрифта */

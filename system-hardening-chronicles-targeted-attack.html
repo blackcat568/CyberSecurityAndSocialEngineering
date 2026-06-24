@@ -232,32 +232,6 @@
         padding: 0;
     }
     
-    .copy-code-btn {
-    /* Меняем на sticky, чтобы кнопка не уходила при прокрутке */
-    position: sticky;
-    /* Прижимаем к верхнему и правому краю */
-    top: 8px;
-    float: right;
-    /* Сдвигаем вправо, чтобы она не перекрывала текст кода */
-    margin-right: 8px;
-    margin-bottom: -32px; /* Компенсируем высоту, чтобы код не съезжал вниз */
-    z-index: 10; /* Кнопка всегда будет поверх текста */
-    
-    /* Остальные ваши стили внешнего вида */
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #d4d4d4;
-    border-radius: 4px;
-    padding: 4px 8px;
-    font-size: 0.75rem;
-    cursor: pointer;
-    font-family: sans-serif;
-    transition: all 0.2s ease;
-    opacity: 0;
-}
-
-
-    
     /* ========== МОБИЛЬНАЯ АДАПТАЦИЯ ========== */
     /* Базовый размер шрифта */
     html {
@@ -1517,9 +1491,22 @@ Compiled with support for: Linux audit, Libcapng, Seccomp, Systemd, Umockdev</p>
 
 <p><strong>Date of formation:</strong> 22.06.2026</p>
 
+<!-- Подсекция H4 2.4.1 -->
+<section id="config3-hardware" aria-label="2.4.1 CONFIGURATION 3 Hardware">
+
+<h4 id="section3-3-1">2.3.1 CONFIGURATION 2 Hardware</h4>
+
+<p>Same system unit (no changes).</p>
+
+</section>
+
+<!-- Конец подсекции H4 -->
+
+
+
 <p>Repeats configuration 2, except for changes to the nftables <code>output</code> chain and switching to the Quad9 DNS server (9.9.9.9).</p>
 
-<!-- Подсекция H4 2.4.1 -->
+<!-- Подсекция H4 2.4.2 -->
 <section id="config3-nftables" aria-label="2.4.1 Changes in the nftables config">
 
 <h4>2.4.1 Changes in the nftables config</h4>
@@ -1953,7 +1940,7 @@ table inet filter { # Opening the ruleset
 
 <hr>
 
-<!-- Подсекция H4 2.4.1 -->
+<!-- Подсекция H4 2.4.2 -->
 <section id="config3-dns-quard9" aria-label="2.4.2 Switching to the Quad9 DNS server (9.9.9.9)">
 	
 <h4>2.4.2 Switching to the Quad9 DNS server (9.9.9.9)</h4>

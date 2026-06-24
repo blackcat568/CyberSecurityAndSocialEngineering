@@ -1492,12 +1492,30 @@ grpc: 1.51.1</p>
 
 <p><strong>Дата формирования:</strong> 22.06.2026</p>
 
+<!-- Подсекция H4 2.4.1 -->
+<section id="config3-hardware" aria-label="2.4.1 КОНФИГУРАЦИЯ 3 Hardware">
+
+<h4 id="section3-3-1">2.3.1 КОНФИГУРАЦИЯ 2 Hardware</h4>
+
+<p>Тот же системный блок (без изменений).</p>
+
+</section>
+
+<!-- Конец подсекции H4 2.4.1-->
+
+<hr>
+
+<!-- Подсекция H4 2.4.2 -->
+<section id="config3-softdware" aria-label="2.4.2 КОНФИГУРАЦИЯ 3 Software">
+	
+<h4 id="section3-3-2">2.3.2 КОНФИГУРАЦИЯ 2 Software</h4>
+
 <p>Повторяет конфигурацию 2, за исключением изменения цепочки <code>output</code> в nftables и перехода на DNS-сервер Quad9 (9.9.9.9).</p>
 
-<!-- Подсекция H4 3.4.1 -->
-<section id="config3-nftables" aria-label="2.4.1 Изменения в конфиге nftables">
+<!-- Подсекция H4-A 2.4.2 -->
+<section id="config3-softdware-nftables" aria-label="2.4.2-A КОНФИГУРАЦИЯ 3 Изменения в конфиге nftables">
 
-<h4>2.4.1 Изменения в конфиге nftables</h4>
+<h4>2.4.2-A Изменения в конфиге nftables</h4>
 <ul>
     <li>Политика цепочки <code>output</code> заменена на <code>drop</code>.</li>
     <li>Из цепочки <code>output</code> удалены глобальные запреты и разрешения портов и диапазонов портов.</li>
@@ -1925,14 +1943,14 @@ table inet filter { # Открытие листа правил
 
 </section> 
 
-<!-- Конец подсекции H4-->
+<!-- Конец подсекции H4-A 2.4.2-->
 
 <hr>
 
-<!-- Подсекция H4 3.4.1 -->
-<section id="config3-dns-quard9" aria-label="2.4.2 Переход на DNS-сервер Quad9 (9.9.9.9)">
+<!-- Подсекция H4-B 2.4.2 -->
+<section id="config3-dns-quard9" aria-label="2.4.2-B Переход на DNS-сервер Quad9 (9.9.9.9)">
 
-<h4>2.4.2 Переход на DNS-сервер Quad9 (9.9.9.9)</h4>
+<h4>2.4.2 B Переход на DNS-сервер Quad9 (9.9.9.9)</h4>
 
 <p>Жестко фиксированы настройки <code>/etc/resolv.conf</code> на 9.9.9.9. Всё содержимое файла заменено на строчку:</p>
 
@@ -2028,6 +2046,14 @@ table inet filter { # Открытие листа правил
     </div>
 </div>
 
+</section>
+
+<!-- Конец подсекции H4-B 2.4.2-->
+
+</section> 
+
+<!-- Конец подсекции H4 2.4.2-->
+
 <h4>Наблюдаем за ходом эксперимента с конфигурацией 3</h4>
 <p>Текущий статус конфигурации 3 (на 22.06.2026):</p>
 <ul>
@@ -2042,11 +2068,7 @@ table inet filter { # Открытие листа правил
 
 </section> 
 
-<!-- Конец подсекции H4-->
-
-</section> 
-
-<!-- Конец подсекции H3-->
+<!-- Конец подсекции H3 2.4-->
 
 <details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
   <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Хроника хардеринга и атак</summary>

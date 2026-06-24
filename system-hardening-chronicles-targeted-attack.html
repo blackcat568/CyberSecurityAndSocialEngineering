@@ -47,10 +47,10 @@
     <!-- НАЧАЛО ПОДКЛЮЧЕНИЯ БИБЛИОТЕК ПОДСВЕТКИ КОДА -->
 
     <!-- 1. Подключаем CSS-тему оформления (тёмная тема) -->
-    <link rel="stylesheet" href="https://cloudflare.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 
     <!-- 2. Подключаем саму библиотеку Highlight.js -->
-    <script src="https://cloudflare.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     
     <!-- Регистрируем синтаксис nftables в Highlight.js -->
     <script>
@@ -82,12 +82,12 @@
                             {
                                 // Подсвечиваем всё имя параметра до знака «=», включая точки и звёздочки
                                 className: 'attr',
-                                begin: /[a-zA-Z0-9_\.\-\*]+(?=\s*=)/
+                                begin: /^[a-zA-Z0-9_\.\-\*]+/
                             },
                             {
                                 // Подсвечиваем текстовые значения после знака «=»
                                 className: 'string',
-                                begin: /(?<==\s*)[^\s#]+/
+                                begin: /(?<==\s*)[a-zA-Z_/]+/
                             }
                         ]
                     };
@@ -96,6 +96,7 @@
             }
         });
     </script>
+
 
     <!-- 3. Инициализация: говорим библиотеке подсветить все блоки <code> с классом language-* -->
     <script>
@@ -338,10 +339,12 @@
 
 <!-- КРУПНАЯ ГЛАВА (H2) -->
 <section id="introduction" aria-label="1. Introduction: Analysis of the Initial Configuration and Prerequisites for Hardening">
+	
 <h2 id="section1">1. Introduction: Analysis of the Initial Configuration and Prerequisites for Hardening</h2>
 
 <!-- Подсекция H3 1.1 -->
 <section id="context-assumptions" aria-label="1.1 Context and Assumptions">
+	
 <h3 id="section1-1">1.1 Context and Assumptions</h3>
 
 <p><strong>Adversary Profile:</strong><br>
@@ -356,18 +359,15 @@ Presumably, a group with at least 20 years of experience in targeted attacks. Th
 <p><strong>Conclusion on the Initial Configuration:</strong><br>
 In the initial phase, the system lacked resilience against a targeted attack. I accept full responsibility for this.</p>
 
-<p style="text-align: center; margin-top: 2rem;">
-  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to top</a>
-</p>
-
 </section> 
 
-<!-- Конец подсекции H3 -->
+<!-- Конец подсекции H3 1.1-->
 
 <hr>
 
 <!-- Подсекция 1.2 H3 -->
 <section id="nature-of-attack" aria-label="1.2 Nature of the Attack (Observed Model)">
+	
 <h3 id="section1-2">1.2 Nature of the Attack (Observed Model)</h3>
 
 <p>The attack combines:</p>
@@ -383,12 +383,13 @@ In the initial phase, the system lacked resilience against a targeted attack. I 
 
 </section>
 
-<!-- Конец подсекции H3 -->
+<!-- Конец подсекции H3 1.2-->
 
 <hr>
 
 <!-- Подсекция 1.3 H3 -->
 <section id="scientific-approach-effectiveness" aria-label="1.3 Effectiveness of the Scientific Approach as a Countermeasure">
+	
 <h3 id="section1-3">1.3 Effectiveness of the Scientific Approach as a Countermeasure</h3>
 
 <p>The analysis established:</p>
@@ -400,13 +401,9 @@ In the initial phase, the system lacked resilience against a targeted attack. I 
 <p><strong>Fact:</strong><br>
 Attempts at moral and psychological suppression intensify in direct proportion to progress in studying AI, cybersecurity, social engineering, and forensic psychology. The more the victim's smokescreen of metaphysics and abstract concepts dissipates, the more the adversary displays their concern.</p>
 
-<p style="text-align: center; margin-top: 2rem;">
-  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to top</a>
-</p>
-
 </section>
 
-<!-- Конец подсекции H3 -->
+<!-- Конец подсекции H3 1.3-->
 
 <hr>
 
@@ -428,12 +425,13 @@ Achieve a configuration resilient to targeted attacks, followed by publication o
 
 </section>
 
-<!-- Конец подсекции H3 -->
+<!-- Конец подсекции H3 1.4-->
 
 <hr>
 
 <!-- Подсекция H3 1.5 -->
 <section id="executive-summary" aria-label="1.5 Executive Summary (Technical Report)">
+	
 <h2 id="section1-5">1.5 Executive Summary (Technical Report)</h2>
 
 <table style="border-collapse: collapse; width: 100%; margin: 1rem 0;">
@@ -478,13 +476,9 @@ Achieve a configuration resilient to targeted attacks, followed by publication o
   </ul>
 </details>
 
-<p style="text-align: center; margin-top: 2rem;">
-  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to top</a>
-</p>
-
 </section> 
 
-<!-- Конец подсекции H3 -->
+<!-- Конец подсекции H3 1.5-->
 
 <p style="text-align: center; margin-top: 2rem;">
   <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to top</a>
@@ -512,7 +506,10 @@ Achieve a configuration resilient to targeted attacks, followed by publication o
 <section id="config1" aria-label="2.1 Description of the Previous System Configuration: CONFIGURATION 1">
 <h3 id="section2-1">2.1 Description of the Previous System Configuration: CONFIGURATION 1</h3>
 
-<h4>Hardware</h4>
+<!-- Подсекция H4 2.1.1 -->
+<section id="config1-hardware" aria-label="2.1.1 CONFIGURATION 1 Hardware">
+
+<h4 id="section2-1-1">2.1.1 CONFIGURATION 1 Hardware</h4>
 
 <p><strong>Processor and Architecture:</strong><br>
 Architecture: x86_64<br>
@@ -568,7 +565,10 @@ Subsystem: Biostar Microtech Int'l Corp Device 3407<br>
 Interrupt: pin A routed to IRQ 26<br>
 Capabilities: Power Management version 2, MSI (enabled)</p>
 
-<h4>Software</h4>
+<!-- Подсекция H4 2.1.2 -->
+<section id="config1-software" aria-label="2.1.2 CONFIGURATION 1 Software">
+
+<h4 id="section2-1-2">2.1.2 CONFIGURATION 1 Software</h4>
 
 <p><strong>Operating System:</strong> Debian 12<br>
 <strong>Desktop Environment:</strong> MATE<br>
@@ -584,13 +584,17 @@ Capabilities: Power Management version 2, MSI (enabled)</p>
 
 <p><strong>Configuration 1 finalization date:</strong> 2025-08-01</p>
 
+</section>
+
+<!-- Конец подсекции H4 2.1.2-->
+
 <p style="text-align: center; margin-top: 2rem;">
   <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to top</a>
 </p>
 
 </section>
 
-<!-- Конец подсекции H3-->
+<!-- Конец подсекции H3 2.1 -->
 
 <hr>
 
@@ -618,7 +622,7 @@ Capabilities: Power Management version 2, MSI (enabled)</p>
 
 </section>
 
-<!-- Конец подсекции H3-->
+<!-- Конец подсекции H3 2.2 -->
 
 <hr>
 
@@ -636,7 +640,7 @@ Capabilities: Power Management version 2, MSI (enabled)</p>
 
 </section>
 
-<!-- Конец подсекции H4 -->
+<!-- Конец подсекции H4 2.3.1 -->
 
 <hr>
 
@@ -645,8 +649,10 @@ Capabilities: Power Management version 2, MSI (enabled)</p>
 
 <h4 id="section2-3-2">2.3.2 CONFIGURATION 2 Software</h4>
 
-<!-- Подсекция H4-A 2.3.2 -->
-<section id="config2-softdware-main-parameters" aria-label="2.3.2 CONFIGURATION 2 Software Nain Parameters">
+<!-- Подсекция H5 2.3.2-A  -->
+<section id="config2-softdware-main-parameters" aria-label="2.3.2-A CONFIGURATION 2 Software Nain Parameters">
+	
+<h5>2.3.2-A CONFIGURATION 2 Software Main Parameters</h5>
 
 <p><strong>Operating System:</strong><br>
 Distributor ID: Debian<br>
@@ -664,10 +670,12 @@ tty (fallback access)</p>
 
 </section>
 
-<!-- Конец подсекции H4-A -->
+<!-- Конец подсекции H5 2.3.2-A -->
 
-<!-- Подсекция H4-B 2.3.2 -->
-<section id="config2-softdware-nftables" aria-label="2.3.2 КОНФИГУРАЦИЯ 2 Software nftables">
+<!-- Подсекция H5 2.3.2-B  -->
+<section id="config2-softdware-nftables" aria-label="2.3.2-B КОНФИГУРАЦИЯ 2 Software nftables">
+	
+<h5>2.3.2-B КОНФИГУРАЦИЯ 2 Software nftables</h5>
 
 <p><strong>nftables version:</strong><br> 
 1.1.3 (Commodore Bullmoose #4)</p>
@@ -1080,10 +1088,12 @@ table inet filter {
 
 </section>
 
-<!-- Конец подсекции H4-B -->
+<!-- Конец подсекции H5 2.3.2-B -->
 
-<!-- Подсекция H4-C 2.3.2 -->
-<section id="config2-softdware-sysctl" aria-label="2.3.2 CONFIGURATION 2 Software sysctl">
+<!-- Подсекция H5 2.3.2-C -->
+<section id="config2-softdware-sysctl" aria-label="2.3.2-C CONFIGURATION 2 Software sysctl">
+	
+<h5>2.3.2-C CONFIGURATION 2 Software sysctl</h5>
 	
 <div class="historical-fact">
     <strong>sysctl hardening configuration (2026-03-03):</strong>
@@ -1152,10 +1162,14 @@ kernel.unprivileged_bpf_disabled = 1
 
 </section>
 
-<!-- Конец подсекции H4-C -->
+<!-- Конец подсекции H5 2.3.2-C -->
 
-<!-- Subsection: FLATSEAL CONFIGURATION H4-D 2.3.2 -->
-<section id="config2-software-flatseal" aria-label="2.3.2 CONFIGURATION 2 Software Flatseal overrides">
+<hr>
+
+<!-- Subsection: FLATSEAL CONFIGURATION H5 2.3.2-D -->
+<section id="config2-software-flatseal" aria-label="2.3.2-D CONFIGURATION 2 Software Flatseal overrides">
+	
+<h5>2.3.2-D CONFIGURATION 2 Software Flatseal overrides</h5>
 
 <div class="historical-fact">
     <strong>Flatpak application permission overrides (Flatseal):</strong>
@@ -1202,10 +1216,12 @@ filesystems=/home/user/Desktop/команды и настройки/Коды и 
 </ul>
 
 </section>
-<!-- End of subsection H4-D -->
+<!-- End of subsection H5 2.3.2-D -->
 
-<!-- Подсекция H4-E 2.3.2 -->
-<section id="config2-softdware-opensnitch" aria-label="2.3.2 CONFIGURATION 2 Software OpenSnitch">
+<!-- Подсекция H5 2.3.2-E -->
+<section id="config2-softdware-opensnitch" aria-label="2.3.2-E CONFIGURATION 2 Software OpenSnitch">
+	
+<h5>2.3.2-E CONFIGURATION 2 Software OpenSnitch</h5>
 
 <p><strong>OpenSnitch:</strong><br>
 GUI version: 1.6.9<br>
@@ -1420,10 +1436,14 @@ grpc: 1.51.1</p>
 
 </section>
 
-<!-- Конец подсекции H4-E -->
+<!-- Конец подсекции H5 2.3.2-E -->
 
-<!-- Подсекция H4-F 2.3.2 -->
-<section id="config2-softdware-other-prigrams" aria-label="2.3.2 CONFIGURATION 2 Software Other Programs">
+<hr>
+
+<!-- Подсекция H5 2.3.2-F -->
+<section id="config2-softdware-other-prigrams" aria-label="2.3.2-F CONFIGURATION 2 Software Other Programs">
+	
+<h5>2.3.2-F CONFIGURATION 2 Software Other Programs</h5>
 
 <p><strong>AppArmor:</strong><br>
 Parser version: 4.1.0</p>
@@ -1446,9 +1466,15 @@ Compiled with support for: Linux audit, Libcapng, Seccomp, Systemd, Umockdev</p>
 
 </section>
 
-<!-- Конец подсекции H4-F -->
+<!-- Конец подсекции H5 2.3.2-F -->
 
-<p><strong>Key changes in Configuration 2 compared to Configuration 1:</strong></p>
+<hr>
+
+<!-- Подсекция H5 2.3.2-G -->
+<section id="config2-config1-key-changes" aria-label="2.3.2-G Key changes in Configuration 2 compared to Configuration 1">
+
+<h5>Key changes in Configuration 2 compared to Configuration 1</h5>
+
 <ul>
 <li>Migration from MATE (Xorg) to GNOME (Wayland)</li>
 <li>All critical applications (browser, password manager, code editor, messenger) installed via Flatpak, system versions removed</li>
@@ -1466,15 +1492,27 @@ Compiled with support for: Linux audit, Libcapng, Seccomp, Systemd, Umockdev</p>
 
 <p><strong>Configuration 2 finalization date:</strong> 2026-04-07</p>
 
-<p><strong>Current status of Configuration 2 (as of 2026-04-10):</strong><br>
+</section>
+
+<!-- Конец подсекции H5 2.3.2-G -->
+
+</section>
+
+<!-- Конец подсекции H4 2.3.2-->
+
+<hr>
+
+<!-- Подсекция H4 2.3.3 -->
+<section id="config2-experiment-results" aria-label="2.3.3 Observing the progress of the experiment with configuration 2">
+
+<h4>Current status of Configuration 2 (as of 2026-04-10)</h4>
+
+<p>
 — Under testing.<br>
 — Preliminary data: not all vulnerabilities have been closed.<br>
 — Data requires additional confirmation.<br>
-— Configuration 3 will be built based on the attack data gathered against Configuration 2.</p>
-	
-</section>
-
-<!-- Конец подсекции H4 -->
+— Configuration 3 will be built based on the attack data gathered against Configuration 2.
+</p>
 	
 <ul>
 	
@@ -1482,13 +1520,17 @@ Compiled with support for: Linux audit, Libcapng, Seccomp, Systemd, Umockdev</p>
   
 </ul>
 
+</section>
+
+<!-- Конец подсекции H4 2.3.3-->
+
 <p style="text-align: center; margin-top: 2rem;">
   <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to top</a>
 </p>
 
 </section>
 
-<!-- Конец подсекции H3-->
+<!-- Конец подсекции H3 2.3 -->
 
 <hr>
 
@@ -1498,7 +1540,6 @@ Compiled with support for: Linux audit, Libcapng, Seccomp, Systemd, Umockdev</p>
 <h3 id="section2-4">2.4 CONFIGURATION 3</h3>
 
 <p><strong>Date of formation:</strong> 22.06.2026</p>
-
 
 <!-- Подсекция H4 2.4.1 -->
 <section id="config3-hardware" aria-label="2.4.1 CONFIGURATION 3 Hardware">
@@ -1511,12 +1552,19 @@ Compiled with support for: Linux audit, Libcapng, Seccomp, Systemd, Umockdev</p>
 
 <!-- Конец подсекции H4 2.4.1 -->
 
+<hr>
+
+<!-- Подсекция H4 2.4.2 -->
+<section id="config3-software" aria-label="2.4.2 CONFIGURATION 3 Software">
+
+<h4 id="section2-4-2">2.4.2 CONFIGURATION 3 Software</h4>
+
 <p>Repeats configuration 2, except for changes to the nftables <code>output</code> chain and switching to the Quad9 DNS server (9.9.9.9).</p>
 
-<!-- Подсекция H4 2.4.1 -->
-<section id="config3-nftables" aria-label="2.4.1 Changes in the nftables config">
+<!-- Подсекция H5 2.4.2-A -->
+<section id="config3-nftables" aria-label="2.4.2-A Changes in the nftables config">
 
-<h4>2.4.1 Changes in the nftables config</h4>
+<h5>2.4.2-A Changes in the nftables config</h5>
 <ul>
     <li>The <code>output</code> chain policy has been changed to <code>drop</code>.</li>
     <li>Global restrictions and permissions for ports and port ranges have been removed from the <code>output</code> chain.</li>
@@ -1943,14 +1991,14 @@ table inet filter { # Opening the ruleset
 
 </section> 
 
-<!-- Конец подсекции H4-->
+<!-- Конец подсекции H5 2.4.2-A -->
 
 <hr>
 
-<!-- Подсекция H4 2.4.2 -->
+<!-- Подсекция H5 2.4.2-B -->
 <section id="config3-dns-quard9" aria-label="2.4.2 Switching to the Quad9 DNS server (9.9.9.9)">
 	
-<h4>2.4.2 Switching to the Quad9 DNS server (9.9.9.9)</h4>
+<h5>2.4.2-B Switching to the Quad9 DNS server (9.9.9.9)</h5>
 
 <p>The <code class="language-ini">/etc/resolv.conf</code> settings are hardcoded to 9.9.9.9. All contents of the file have been replaced with the line:</p>
 
@@ -1981,24 +2029,28 @@ table inet filter { # Opening the ruleset
         
         <p>Here is a detailed comparison of why 9.9.9.9 is much better suited for experiments with Configuration 3 than its competitors:</p>
         
-        <h5 style="margin-top: 1rem;">1. Built-in intelligent shield against malware (Threat Intelligence)</h5>
+        <h5 style="margin-top: 1rem;">1. Built-in intelligent shield against malware (Threat Intelligence)</strong></p>
+        
         <p>When your computer sends a query through Quad9, the server doesn't just return the website's IP address. It instantly checks the requested domain against constantly updated threat databases (aggregating information from over 30 leading InfoSec companies worldwide, including IBM X-Force, Kaspersky, Proofpoint, and others).</p>
         <ul>
             <li><strong>How this protects against malware:</strong> If a hidden Trojan (C2 agent) in your system attempts to send stolen data to its command server at hacker-malware-domain.com, Quad9 will detect that this domain is on the malicious nodes blacklist and block that DNS query (returning an NXDOMAIN error). The malware will be unable to learn its master's IP address and will be "blinded".</li>
             <li>Google (8.8.8.8) and Cloudflare (1.1.1.1) do not have such filtering by default. They will dutifully return the malicious server's IP address because they operate on the principle of neutral transit: "whatever is requested, that is returned."</li>
         </ul>
         
-        <h5 style="margin-top: 1rem;">2. Radical level of privacy (No IP logging)</h5>
+        <h5 style="margin-top: 1rem;">2. Radical level of privacy (No IP logging)</strong></p>
+        
         <ul>
             <li><strong>Quad9 (9.9.9.9):</strong> Is a non-profit organization (registered in Switzerland, which removes it from direct legal pressure from the US). They fundamentally do not log your real IP address. The system does not collect a digital profile of which sites you visited and when. They have nothing to sell to advertisers or hand over to law enforcement, as data is erased directly in the servers' RAM.</li>
             <li><strong>Google (8.8.8.8):</strong> Is the world's largest advertising corporation. Queries to 8.8.8.8 are tied to your geolocation and network patterns. Although Google claims to anonymize logs within 24-48 hours, your search habits are still integrated into their global analytical algorithms.</li>
             <li><strong>Cloudflare (1.1.1.1):</strong> Is a commercial US-based company. They keep logs for network optimization purposes. Despite regular independent privacy audits, they are subject to US law (including requests via NSLs — National Security Letters from the FBI), which makes them vulnerable to government pressure.</li>
         </ul>
         
-        <h5 style="margin-top: 1rem;">3. Protection against ISP interception (DNS over TLS / HTTPS)</h5>
+        <h5 style="margin-top: 1rem;">3. Protection against ISP interception (DNS over TLS / HTTPS)</strong></p>
+        
         <p>Quad9 perfectly supports modern encrypted DNS traffic protocols. If you configure the system to operate via an encrypted channel to 9.9.9.9, then neither your local ISP nor SORM systems will be able to see which sites you are visiting — for them, it will be an unreadable stream of bytes.</p>
         
-        <h5 style="margin-top: 1rem;">Comparative table of DNS servers</h5>
+        <h5 style="margin-top: 1rem;">Comparative table of DNS servers</strong></p>
+        
         <table style="width: 100%; border-collapse: collapse; margin-top: 0.8rem;">
             <thead>
                 <tr style="background: #e9ecef;">
@@ -2046,7 +2098,15 @@ table inet filter { # Opening the ruleset
     </div>
 </div>
 
+</section>
+
+<!-- Конец подсекции H5 2.4.2-B -->
+
+<!-- Подсекция H4 2.4.3 -->
+<section id="config3-experiment-results" aria-label="2.4.3 Observing the progress of the experiment with configuration 3">
+
 <h4>Observing the progress of the experiment with configuration 3</h4>
+
 <p>Current status of configuration 3 (as of 22.06.2026):</p>
 <ul>
     <li>🔬 Continues to be tested under hacker attack conditions</li>
@@ -2054,13 +2114,9 @@ table inet filter { # Opening the ruleset
     <li>🎯 Verification goal: to confirm or refute that blocking outbound traffic by an IP whitelist disrupts the communication channels of hypothetical malware.</li>
 </ul>
 
-</section>
-
-<!-- Конец подсекции H4-B 2.4.2-->
-
 </section> 
 
-<!-- Конец подсекции H4 2.4.2-->
+<!-- Конец подсекции H4 2.4.3-->
 
 <p style="text-align: center; margin-top: 2rem;">
   <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to table of contents</a>

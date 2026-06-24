@@ -115,13 +115,17 @@
                     const codeBlock = preBlock.querySelector('code');
                     if (!codeBlock) return;
 
+                    // ЖЕСТКАЯ ФИКСАЦИЯ: Гарантируем, что pre является контейнером для кнопки
+                    preBlock.style.position = 'relative';
+
                     const button = document.createElement('button');
                     button.className = 'copy-code-btn';
                     button.type = 'button';
                     button.innerText = 'Скопировать';
 
                     button.addEventListener('click', () => {
-                        const textToCopy = codeBlock.innerText.trim();
+                        // Используем textContent вместо innerText, чтобы избежать захвата скрытых элементов HTML
+                        const textToCopy = codeBlock.textContent.trim();
 
                         navigator.clipboard.writeText(textToCopy).then(() => {
                             button.innerText = 'Скопировано!';
@@ -149,6 +153,7 @@
             initHighlighting();
         }
     </script>
+
 
     
   <!-- КОНЕЦ ПОДКЛЮЧЕНИЯ БИБЛИОТЕК ПОДСВЕТКИ КОДА -->

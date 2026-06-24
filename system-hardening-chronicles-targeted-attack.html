@@ -15,7 +15,7 @@
     "isAccessibleForFree": true,
     "description": "A real-world chronicle of defending against a targeted attack: documenting vulnerabilities, configurations, responses, and system hardening. From zero security to resilient configurations. Covers Debian 12 & 13, nftables, AppArmor, OpenSnitch, Flatpak, USBGuard, sysctl. For cybersecurity and InfoSec professionals.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-06-24<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-06-25<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -500,10 +500,12 @@ Achieve a configuration resilient to targeted attacks, followed by publication o
 
 <!-- КРУПНАЯ ГЛАВА (H2) -->
 <section id="hardening-chronicle" aria-label="2. Chronicle of Hardening and Attacks">
+	
 <h2 id="section2">2. Chronicle of Hardening and Attacks</h2>
 
 <!-- Подсекция H3 2.1 -->
 <section id="config1" aria-label="2.1 Description of the Previous System Configuration: CONFIGURATION 1">
+	
 <h3 id="section2-1">2.1 Description of the Previous System Configuration: CONFIGURATION 1</h3>
 
 <!-- Подсекция H4 2.1.1 -->
@@ -564,6 +566,12 @@ Type: Motherboard</p>
 Subsystem: Biostar Microtech Int'l Corp Device 3407<br>
 Interrupt: pin A routed to IRQ 26<br>
 Capabilities: Power Management version 2, MSI (enabled)</p>
+
+</section>
+
+<!-- Конец подсекции H4 2.1.1-->
+
+<hr>
 
 <!-- Подсекция H4 2.1.2 -->
 <section id="config1-software" aria-label="2.1.2 CONFIGURATION 1 Software">
@@ -2029,7 +2037,7 @@ table inet filter { # Opening the ruleset
         
         <p>Here is a detailed comparison of why 9.9.9.9 is much better suited for experiments with Configuration 3 than its competitors:</p>
         
-        <h5 style="margin-top: 1rem;">1. Built-in intelligent shield against malware (Threat Intelligence)</strong></p>
+        <p><strong>1. Built-in intelligent shield against malware (Threat Intelligence)</strong></p>
         
         <p>When your computer sends a query through Quad9, the server doesn't just return the website's IP address. It instantly checks the requested domain against constantly updated threat databases (aggregating information from over 30 leading InfoSec companies worldwide, including IBM X-Force, Kaspersky, Proofpoint, and others).</p>
         <ul>
@@ -2037,7 +2045,7 @@ table inet filter { # Opening the ruleset
             <li>Google (8.8.8.8) and Cloudflare (1.1.1.1) do not have such filtering by default. They will dutifully return the malicious server's IP address because they operate on the principle of neutral transit: "whatever is requested, that is returned."</li>
         </ul>
         
-        <h5 style="margin-top: 1rem;">2. Radical level of privacy (No IP logging)</strong></p>
+        <p><strong>2. Radical level of privacy (No IP logging)</strong></p>
         
         <ul>
             <li><strong>Quad9 (9.9.9.9):</strong> Is a non-profit organization (registered in Switzerland, which removes it from direct legal pressure from the US). They fundamentally do not log your real IP address. The system does not collect a digital profile of which sites you visited and when. They have nothing to sell to advertisers or hand over to law enforcement, as data is erased directly in the servers' RAM.</li>
@@ -2045,11 +2053,11 @@ table inet filter { # Opening the ruleset
             <li><strong>Cloudflare (1.1.1.1):</strong> Is a commercial US-based company. They keep logs for network optimization purposes. Despite regular independent privacy audits, they are subject to US law (including requests via NSLs — National Security Letters from the FBI), which makes them vulnerable to government pressure.</li>
         </ul>
         
-        <h5 style="margin-top: 1rem;">3. Protection against ISP interception (DNS over TLS / HTTPS)</strong></p>
+        <p><strong>3. Protection against ISP interception (DNS over TLS / HTTPS)</strong></p>
         
         <p>Quad9 perfectly supports modern encrypted DNS traffic protocols. If you configure the system to operate via an encrypted channel to 9.9.9.9, then neither your local ISP nor SORM systems will be able to see which sites you are visiting — for them, it will be an unreadable stream of bytes.</p>
         
-        <h5 style="margin-top: 1rem;">Comparative table of DNS servers</strong></p>
+        <p><strong>Comparative table of DNS servers</strong></p>
         
         <table style="width: 100%; border-collapse: collapse; margin-top: 0.8rem;">
             <thead>

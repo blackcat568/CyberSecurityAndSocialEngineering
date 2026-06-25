@@ -1632,6 +1632,11 @@ Compiled with support for: Linux audit, Libcapng, Seccomp, Systemd, Umockdev</p>
 
 <h4 id="section2-4-2">2.4.2 CONFIGURATION 3 Software</h4>
 
+<!-- Подсекция H5 2.4.2-A -->
+<section id="config3-intro" aria-label="2.4.2-A Strategic logic of Configuration 3: blocking vectors as a deterrence method">
+	
+<h5>2.4.2-A Introduction</h5>
+
 <p>Repeats configuration 2, except for changes to the nftables <code>output</code> chain and switching to the Quad9 DNS server (9.9.9.9).</p>
 
 <p><strong>Removal of OpenSnitch:</strong></p>
@@ -1650,16 +1655,16 @@ Compiled with support for: Linux audit, Libcapng, Seccomp, Systemd, Umockdev</p>
 
 <p>Preference was given to focusing on strengthening nftables configuration, as the primary and native security mechanism of Debian 13.</p>
 
-<!-- Подсекция H5 2.4.2-A -->
-<section id="config3-nftables" aria-label="2.4.2-A Changes in the nftables config">
+</section> 
 
-<h5>2.4.2-A Changes in the nftables config</h5>
-<ul>
-    <li>The <code>output</code> chain policy has been changed to <code>drop</code>.</li>
-    <li>Global restrictions and permissions for ports and port ranges have been removed from the <code>output</code> chain.</li>
-    <li>Outbound connections in the <code>output</code> chain are now only allowed to trusted IP ranges corresponding to trusted sites.</li>
-    <li>Each IP range is restricted to only specific ports.</li>
-</ul>
+<!-- Конец подсекции H5 2.4.2-A -->
+
+<hr>
+
+<!-- Подсекция H5 2.4.2-B -->
+<section id="config3-logic" aria-label="2.4.2-B Strategic logic of Configuration 3: blocking vectors as a deterrence method">
+
+<h5>2.4.2-B Strategic logic of Configuration 3: blocking vectors as a deterrence method</h5>
 
 <p>I suspect that configuration 2, like configuration 1, was attacked by firmware malware, some type of designer worm, or malicious software that is created individually and strictly for a specific system (in this case, the author's system).</p>
 
@@ -1670,6 +1675,38 @@ Compiled with support for: Linux audit, Libcapng, Seccomp, Systemd, Umockdev</p>
 <p>If the attack is carried out using firmware malware, hunting and analyzing it is pointless. Even if it is detected, suppressed, and its code deanonymized, the attacker will simply create new firmware malware based on different attack principles.</p>
 
 <p>Therefore, the defense strategy is not built on finding a specific attack vector and blocking it, but on creating a protective configuration that blocks as many diverse attack vectors simultaneously as possible. This is the only way to ensure resilience against targeted attacks where the adversary can adapt and change their methods.</p>
+
+<p>The more potential attack vectors are blocked, the fewer remain available to the attacker. Accordingly, their actions become more predictable — they will be forced to use the few vectors that are still available. This provides two important advantages:</p>
+
+<ul>
+    <li><strong>Predictability:</strong> We can calculate the list of unblocked vectors that the attacker might use, and this list will become narrower and narrower.</li>
+    <li><strong>Reverse engineering accuracy:</strong> The narrower the range of possible vectors, the more precise the data for analyzing the attacker's actions, and the easier it becomes to reconstruct their tactics, techniques, and procedures (TTPs).</li>
+</ul>
+
+<p>Thus, the strategy of blocking the maximum number of vectors not only raises the overall level of protection but also turns the system into a kind of "trap" for the attacker, narrowing their maneuverability and simplifying subsequent analysis.</p>
+
+<p>The number of attack vectors available to the adversary is not infinite, and they are depleted, even taking into account the use of an individualized approach to the attack. Each blocked vector is not just a closed door, but a forced change in the adversary's tactics.</p>
+
+<p>At the same time, the fewer attack vectors remain available to the adversary, the higher the cost of the attack and the complexity of writing firmware malware by the attacking side. The adversary is forced to spend more resources, time, and effort on finding new approaches, developing new tools, and testing them to bypass the existing defenses.</p>
+
+<p>As a result, even the adversary's significant technical and resource advantages are reduced to a "Pyrrhic victory" — a victory achieved at such a high cost that it is essentially meaningless. A system that blocks the maximum number of vectors turns into an economically and tactically unfavorable target for attack.</p>
+
+</section> 
+
+<!-- Конец подсекции H5 2.4.2-B -->
+
+<hr>
+
+<!-- Подсекция H5 2.4.2-C -->
+<section id="config3-nftables" aria-label="2.4.2-C Changes in the nftables config">
+
+<h5>2.4.2-C Changes in the nftables config</h5>
+<ul>
+    <li>The <code>output</code> chain policy has been changed to <code>drop</code>.</li>
+    <li>Global restrictions and permissions for ports and port ranges have been removed from the <code>output</code> chain.</li>
+    <li>Outbound connections in the <code>output</code> chain are now only allowed to trusted IP ranges corresponding to trusted sites.</li>
+    <li>Each IP range is restricted to only specific ports.</li>
+</ul>
 
 <div class="historical-fact">
     <strong>nftables config for configuration 3 (22.06.2026  testing, preliminary version):</strong>
@@ -2086,11 +2123,11 @@ table inet filter { # Opening the ruleset
 
 </section> 
 
-<!-- Конец подсекции H5 2.4.2-A -->
+<!-- Конец подсекции H5 2.4.2-C -->
 
 <hr>
 
-<!-- Подсекция H5 2.4.2-B -->
+<!-- Подсекция H5 2.4.2-D -->
 <section id="config3-dns-quard9" aria-label="2.4.2 Switching to the Quad9 DNS server (9.9.9.9)">
 	
 <h5>2.4.2-B Switching to the Quad9 DNS server (9.9.9.9)</h5>
@@ -2195,7 +2232,7 @@ table inet filter { # Opening the ruleset
 
 </section>
 
-<!-- Конец подсекции H5 2.4.2-B -->
+<!-- Конец подсекции H5 2.4.2-D -->
 
 </section> 
 

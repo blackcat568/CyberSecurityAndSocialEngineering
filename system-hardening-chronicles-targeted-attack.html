@@ -1665,6 +1665,12 @@ Compiled with support for: Linux audit, Libcapng, Seccomp, Systemd, Umockdev</p>
 
 <p><strong>The goal of configuration 3</strong> is to interrupt the malware's communication with its server by blocking its ability to send data to it. Thanks to the current nftables settings, the system can only send data to servers on the whitelist of trusted servers, thereby blocking data transmission to any other servers outside the trusted list, including the attacker's hacker servers.</p>
 
+<p><strong>Why this approach:</strong></p>
+
+<p>If the attack is carried out using firmware malware, hunting and analyzing it is pointless. Even if it is detected, suppressed, and its code deanonymized, the attacker will simply create new firmware malware based on different attack principles.</p>
+
+<p>Therefore, the defense strategy is not built on finding a specific attack vector and blocking it, but on creating a protective configuration that blocks as many diverse attack vectors simultaneously as possible. This is the only way to ensure resilience against targeted attacks where the adversary can adapt and change their methods.</p>
+
 <div class="historical-fact">
     <strong>nftables config for configuration 3 (22.06.2026  testing, preliminary version):</strong>
     <pre>

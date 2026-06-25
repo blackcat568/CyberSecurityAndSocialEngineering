@@ -15,7 +15,7 @@
     "isAccessibleForFree": true,
     "description": "Практическое руководство по защите Linux-систем от целевых кибератак и продвинутых устойчивых угроз (APT). Описываются реальные сценарии атак, риски для частных пользователей и методы усиления безопасности Debian и других дистрибутивов Linux.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-06-24<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-06-25<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -432,21 +432,7 @@
     <p>Помимо запрета всех ненужных входящих соединений (на большинстве домашних рабочих станций можно запретить все), обязательно ограничьте и исходящие соединения — запретите все порты и диапазоны, не требующиеся системе и приложениям. Это снижает площадь атаки.</p>
 
     <p>Моя конфигурация nftables доступна <a href="https://wiki.debian.org/Security/ProtectingAgainstTargetedAttacks/SecurityConfigsAndLogs">здесь</a>.</p>
-    
-    <p>Дополнительно к iptables/nftables настоятельно рекомендуется использовать <strong>OpenSnitch</strong><a href="https://www.tecmint.com/opensnitch-linux-application-firewall/"><strong>OpenSnitch</strong></a> — интерактивный межсетевой экран, показывающий в реальном времени IP, процесс, PID и порт для каждого соединения. OpenSnitch позволяет гибко блокировать подозрительную активность, что вместе с nftables даёт значительно более надёжную защиту.</p>
-    
-<figure style="margin: 1.5rem 0; text-align: center;">
-  <img src="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/pictures/wiki/OpenSnitch-example.png"
-       alt="Скриншот интерфейса OpenSnitch: список правил с указанием процесса, IP-адреса и порта"
-       width="650"
-       loading="lazy"
-       style="max-width: 100%; height: auto; border-radius: 4px; border: 1px solid #d0d0d0;">
-  <figcaption style="margin-top: 0.5rem; font-size: 0.85rem; color: #4a4a40;">
-    <strong>Интерфейс OpenSnitch.</strong> Для каждого сетевого подключения отображается имя процесса, IP-адрес назначения и порт, что позволяет гибко управлять разрешениями.
-  </figcaption>
-</figure>
-    
-    <p>OpenSnitch работает поверх nftables/iptables. Он показывает не просто «трафик на порт», а какой именно процесс и куда пытается соединиться. Проект малоизвестен, но крайне полезен, активно развивается и заслуживает внимания и поддержки сообщества.</p>
+
   </li>
 </ol>
 

@@ -1634,6 +1634,22 @@ Compiled with support for: Linux audit, Libcapng, Seccomp, Systemd, Umockdev</p>
 
 <p>Repeats configuration 2, except for changes to the nftables <code>output</code> chain and switching to the Quad9 DNS server (9.9.9.9).</p>
 
+<p><strong>Removal of OpenSnitch:</strong></p>
+
+<p>In Configuration 3, it was decided to discontinue the use of OpenSnitch. During testing of Configuration 2, instability was observed in nftables when running simultaneously with OpenSnitch.</p>
+
+<p><strong>Reasons:</strong></p>
+
+<ul>
+    <li>OpenSnitch overwrites nftables rules created by the system configuration upon startup, leading to loss of user-defined settings and security policies.</li>
+    <li>OpenSnitch creates its own tables and chains in <code>inet filter</code> with the same priority as system rules, which can cause replacement or conflicts.</li>
+    <li>As a result, strict policies (e.g., <code>drop</code>) may be replaced with more permissive OpenSnitch rules (with <code>accept</code> policy), reducing the overall security level of the system.</li>
+</ul>
+
+<p><strong>Solution:</strong></p>
+
+<p>Preference was given to focusing on strengthening nftables configuration, as the primary and native security mechanism of Debian 13.</p>
+
 <!-- Подсекция H5 2.4.2-A -->
 <section id="config3-nftables" aria-label="2.4.2-A Changes in the nftables config">
 

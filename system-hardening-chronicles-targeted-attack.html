@@ -15,7 +15,7 @@
     "isAccessibleForFree": true,
     "description": "A real-world chronicle of defending against a targeted attack: documenting vulnerabilities, configurations, responses, and system hardening. From zero security to resilient configurations. Covers Debian 12 & 13, nftables, AppArmor, OpenSnitch, Flatpak, USBGuard, sysctl. For cybersecurity and InfoSec professionals.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-06-25<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-06-26<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -314,7 +314,7 @@
 
 <div class="alert" style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 2rem 0;">
   <strong style="color: #856404;">⚠️ Notice!</strong>
-  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-06-25<!-- DATE_END --></span>
+  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-06-26<!-- DATE_END --></span>
 </div>
 
 <!-- КРУПНАЯ ГЛАВА H2 0- Оглавление -->
@@ -381,6 +381,7 @@
 								<li style="margin-bottom: 0.1rem;"><a href="#config3-logic" style="text-decoration: none;">2.4.2-B Strategic logic of Configuration 3: blocking vectors as a deterrence method</a></li>
                                 <li style="margin-bottom: 0.1rem;"><a href="#config3-nftables" style="text-decoration: none;">2.4.2-C Changes in the nftables config</a></li>
                                 <li style="margin-bottom: 0.1rem;"><a href="#config3-dns-quard9" style="text-decoration: none;">2.4.2-D Switching to the Quad9 DNS server (9.9.9.9)</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config3-app-nft-monitoring-script" style="text-decoration: none;">2.4.2-E Custom monitoring script for nftables and AppArmor</a></li>
                             </ul>
                         </li>
                         <li style="margin-bottom: 0.1rem;"><a href="#config3-experiment-results" style="text-decoration: none;">2.4.3 Observing the progress of the experiment with configuration 3</a></li>
@@ -2235,6 +2236,178 @@ table inet filter { # Opening the ruleset
 </section>
 
 <!-- Конец подсекции H5 2.4.2-D -->
+
+<hr>
+
+<!-- Subsection H5 2.4.2-E -->
+<section id="config3-app-nft-monitoring-script" aria-label="2.4.2-E Custom monitoring script for nftables and AppArmor">
+
+<h5>2.4.2-E Custom monitoring script for nftables and AppArmor status</h5>
+
+<p>During frequent configuration and reloading of nftables and AppArmor, as well as when they need to be disabled for testing, there is a risk of forgetting to re-enable the services or not noticing that they have failed.</p>
+
+<p>To address this issue, a custom monitoring script was created that tracks the status of both services and, in case of failure or disabling, sends system notifications every 5 minutes.</p>
+
+<p><strong>Script features:</strong></p>
+<ul>
+    <li>Does not require root privileges — runs as a regular user</li>
+    <li>Does not make any changes to the system — monitoring and alerts only</li>
+    <li>Runs via GNOME autostart</li>
+    <li>Does not require installation of additional icons or services</li>
+    <li>Uses native Debian 13 mechanisms (notify-send, systemctl)</li>
+    <li>Tested and adapted for Debian 13 GNOME</li>
+</ul>
+
+<p><strong>Notification messages:</strong></p>
+<ul>
+    <li><code>nftables DISABLE</code> — if only nftables is disabled</li>
+    <li><code>AppArmor DISABLE</code> — if only AppArmor is disabled</li>
+    <li><code>nftables and AppArmor DISABLE</code> — if both services are disabled</li>
+</ul>
+
+<p>The script remains silent when both services are running and starts alerting when a failure is detected. The notification is displayed for 4.5 seconds and then disappears automatically.</p>
+
+<p><strong>Installation and startup:</strong></p>
+
+<pre>
+    <code class="language-bash">
+# Create the scripts directory (if it doesn't exist)
+mkdir -p ~/userscripts/systemservice
+
+# Save the script to a file
+nano ~/userscripts/systemservice/apparmor-nftables-indicator-deb-gnome.py
+
+# Make the script executable
+chmod +x ~/userscripts/systemservice/apparmor-nftables-indicator-deb-gnome.py
+
+# Add to GNOME autostart (via ~/.config/autostart/)
+# or via GUI: Settings → Applications → Startup Applications
+    </code>
+</pre>
+
+<p><strong>Script code (Python):</strong></p>
+
+<div class="historical-fact">
+    <pre>
+        <code class="language-python">
+#!/usr/bin/env python3
+import subprocess
+import time
+import os
+
+# Status check interval (seconds)
+CHECK_INTERVAL = 2
+# Repeat notification interval on failure (seconds)
+NOTIFY_INTERVAL = 300  # 5 minutes
+# Notification display duration (milliseconds)
+NOTIFY_TIMEOUT = 4500  # 4.5 seconds
+
+def check_apparmor():
+    """Check AppArmor status (without sudo)"""
+    try:
+        # Check if the module is loaded
+        if not os.path.exists('/sys/module/apparmor/parameters/enabled'):
+            return False
+        with open('/sys/module/apparmor/parameters/enabled', 'r') as f:
+            if f.read().strip() != 'Y':
+                return False
+
+        # Check service activity via systemctl
+        result = subprocess.run(
+            ['systemctl', 'is-active', 'apparmor'],
+            capture_output=True,
+            text=True
+        )
+        if result.returncode == 0 and result.stdout.strip() == 'active':
+            return True
+
+        # If systemctl fails, try aa-status
+        if os.path.exists('/usr/sbin/aa-status'):
+            result = subprocess.run(
+                ['/usr/sbin/aa-status'],
+                capture_output=True,
+                text=True
+            )
+            if result.returncode == 0 and 'apparmor module is loaded' in result.stdout:
+                return True
+        return False
+    except Exception:
+        return False
+
+def check_nftables():
+    """Check nftables status"""
+    try:
+        result = subprocess.run(
+            ['systemctl', 'is-active', 'nftables'],
+            capture_output=True,
+            text=True
+        )
+        return result.returncode == 0 and result.stdout.strip() == 'active'
+    except Exception:
+        return False
+
+def send_notification(message):
+    """Send system notification via notify-send"""
+    try:
+        subprocess.run(
+            ['notify-send', '-t', str(NOTIFY_TIMEOUT), '⚠️ Security Alert', message],
+            check=True
+        )
+    except Exception as e:
+        print(f"Failed to send notification: {e}")
+
+def main():
+    last_notify_time = 0
+    last_state = (True, True)  # (apparmor, nftables)
+    first_failure_detected = False
+
+    print("Monitoring script started. Checking status every 2 seconds...")
+
+    while True:
+        apparmor_ok = check_apparmor()
+        nftables_ok = check_nftables()
+
+        # Determine current state
+        current_state = (apparmor_ok, nftables_ok)
+
+        # If state has changed, reset the last notification timer
+        if current_state != last_state:
+            last_state = current_state
+            last_notify_time = 0
+            first_failure_detected = False
+
+        # Check if there is a failure
+        if not (apparmor_ok and nftables_ok):
+            now = time.time()
+            # Send notification if enough time has passed since the previous one
+            if now - last_notify_time >= NOTIFY_INTERVAL or not first_failure_detected:
+                # Format the message
+                if not apparmor_ok and not nftables_ok:
+                    message = "nftables and AppArmor DISABLE"
+                elif not nftables_ok:
+                    message = "nftables DISABLE"
+                else:
+                    message = "AppArmor DISABLE"
+
+                send_notification(message)
+                last_notify_time = now
+                first_failure_detected = True
+
+        # Wait for the next check cycle
+        time.sleep(CHECK_INTERVAL)
+
+if __name__ == "__main__":
+    main()
+        </code>
+    </pre>
+</div>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to top</a>
+</p>
+
+</section>
+<!-- End of subsection H5 2.4.2-E -->
 
 </section> 
 

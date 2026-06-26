@@ -15,7 +15,7 @@
     "isAccessibleForFree": true,
     "description": "Реальная хроника противостояния целевой атаке: документирование уязвимостей, конфигураций, реакций и хардеринга системы. От нулевой защиты к поиску устойчивых конфигураций. Технический отчет с анализом аппаратной части, ОС, AppArmor, nftables, OpenSnitch, Flatpak, USBGuard. Для специалистов по кибербезопасности и ИБ.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-06-25<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-06-26<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -313,7 +313,7 @@
 
 <div class="alert" style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 2rem 0;">
   <strong style="color: #856404;">⚠️ Внимание!</strong>
-  <span style="color: #856404;"> Статья находится в разработке. Уточнения и дополнения вносятся по мере получения новых данных об устойчивости новых конфигураций безопасности и активности хакера.<br>Последнее обновление контента: <!-- DATE_START -->2026-06-25<!-- DATE_END --></span>
+  <span style="color: #856404;"> Статья находится в разработке. Уточнения и дополнения вносятся по мере получения новых данных об устойчивости новых конфигураций безопасности и активности хакера.<br>Последнее обновление контента: <!-- DATE_START -->2026-06-26<!-- DATE_END --></span>
 </div>
 
 <!-- КРУПНАЯ ГЛАВА H2 0 - Оглавление -->
@@ -380,6 +380,7 @@
 								<li style="margin-bottom: 0.1rem;"><a href="#config3-logic" style="text-decoration: none;">2.4.2-B Стратегическая логика Конфигурации 3: перекрытие векторов как метод сдерживания</a></li>
                                 <li style="margin-bottom: 0.1rem;"><a href="#config3-software-nftables" style="text-decoration: none;">2.4.2-C Изменения в конфиге nftables</a></li>
                                 <li style="margin-bottom: 0.1rem;"><a href="#config3-dns-quard9" style="text-decoration: none;">2.4.2 D Переход на DNS-сервер Quad9 (9.9.9.9)</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config3-app-nft-monitoring-script" style="text-decoration: none;">2.4.2-E Пользовательский скрипт мониторинга nftables и AppArmor</a></li>
                             </ul>
                         </li>
                         <li style="margin-bottom: 0.1rem;"><a href="#config3-experiment-results" style="text-decoration: none;">Наблюдаем за ходом эксперимента с конфигурацией 3</a></li>
@@ -1681,14 +1682,14 @@ grpc: 1.51.1</p>
 
 </section> 
 
-<!-- Конец подсекции H5 2.4.2-A -->
+<!-- Конец подсекции H5 2.4.2-B -->
 
 <hr>
 
-<!-- Подсекция H5 2.4.2-A -->
-<section id="config3-software-nftables" aria-label="2.4.2-A КОНФИГУРАЦИЯ 3 Изменения в конфиге nftables">
+<!-- Подсекция H5 2.4.2-C -->
+<section id="config3-software-nftables" aria-label="2.4.2-C КОНФИГУРАЦИЯ 3 Изменения в конфиге nftables">
 
-<h5>2.4.2-A Изменения в конфиге nftables</h5>
+<h5>2.4.2-C Изменения в конфиге nftables</h5>
 <ul>
     <li>Политика цепочки <code>output</code> заменена на <code>drop</code>.</li>
     <li>Из цепочки <code>output</code> удалены глобальные запреты и разрешения портов и диапазонов портов.</li>
@@ -2112,14 +2113,14 @@ table inet filter { # Открытие листа правил
 
 </section> 
 
-<!-- Конец подсекции H5 2.4.2-A -->
+<!-- Конец подсекции H5 2.4.2-C -->
 
 <hr>
 
-<!-- Подсекция H5 2.4.2-B -->
-<section id="config3-dns-quard9" aria-label="2.4.2-B Переход на DNS-сервер Quad9 (9.9.9.9)">
+<!-- Подсекция H5 2.4.2-D -->
+<section id="config3-dns-quard9" aria-label="2.4.2-D Переход на DNS-сервер Quad9 (9.9.9.9)">
 
-<h5>2.4.2 B Переход на DNS-сервер Quad9 (9.9.9.9)</h5>
+<h5>2.4.2-D Переход на DNS-сервер Quad9 (9.9.9.9)</h5>
 
 <p>Жестко фиксированы настройки <code>/etc/resolv.conf</code> на 9.9.9.9. Всё содержимое файла заменено на строчку:</p>
 
@@ -2221,7 +2222,179 @@ table inet filter { # Открытие листа правил
 
 </section>
 
-<!-- Конец подсекции H5 2.4.2-B -->
+<!-- Конец подсекции H5 2.4.2-D -->
+
+<hr>
+
+<!-- Подсекция H5 2.4.2-E -->
+<section id="config3-app-nft-monitoring-script" aria-label="2.4.2-E Пользовательский скрипт мониторинга nftables и AppArmor">
+
+<h5>2.4.2-E Пользовательский скрипт мониторинга состояния nftables и AppArmor</h5>
+
+<p>В процессе частой настройки и перезагрузки nftables и AppArmor, а также при необходимости их отключения для тестирования, существует риск забыть включить службы обратно или не заметить их падение.</p>
+
+<p>Для решения этой проблемы был создан пользовательский скрипт мониторинга, который отслеживает состояние обеих служб и, в случае их отключения или сбоя, отправляет системные уведомления каждые 5 минут.</p>
+
+<p><strong>Особенности скрипта:</strong></p>
+<ul>
+    <li>Не требует прав root — запускается от обычного пользователя</li>
+    <li>Не вносит никаких изменений в систему — только мониторинг и оповещение</li>
+    <li>Запускается через автозагрузку GNOME</li>
+    <li>Не требует установки дополнительных иконок или служб</li>
+    <li>Использует нативные механизмы Debian 13 (notify-send, systemctl)</li>
+    <li>Протестирован и адаптирован для Debian 13 GNOME</li>
+</ul>
+
+<p><strong>Текст уведомлений:</strong></p>
+<ul>
+    <li><code>nftables DISABLE</code> — если отключена только nftables</li>
+    <li><code>AppArmor DISABLE</code> — если отключен только AppArmor</li>
+    <li><code>nftables and AppArmor DISABLE</code> — если отключены обе службы</li>
+</ul>
+
+<p>Скрипт молчит, когда обе службы работают, и начинает сигналить при обнаружении сбоя. Уведомление отображается 4,5 секунды, затем исчезает автоматически.</p>
+
+<p><strong>Установка и запуск:</strong></p>
+
+<pre>
+    <code class="language-bash">
+# Создайте директорию для скриптов (если её нет)
+mkdir -p ~/userscripts/systemservice
+
+# Сохраните скрипт в файл
+nano ~/userscripts/systemservice/apparmor-nftables-indicator-deb-gnome.py
+
+# Сделайте скрипт исполняемым
+chmod +x ~/userscripts/systemservice/apparmor-nftables-indicator-deb-gnome.py
+
+# Добавьте в автозапуск GNOME (через ~/.config/autostart/)
+# или через GUI: Настройки → Приложения → Автозапуск
+    </code>
+</pre>
+
+<p><strong>Код скрипта (Python):</strong></p>
+
+<div class="historical-fact">
+    <pre>
+        <code class="language-python">
+#!/usr/bin/env python3
+import subprocess
+import time
+import os
+
+# Интервал проверки состояния (секунды)
+CHECK_INTERVAL = 2
+# Интервал повторных уведомлений при сбое (секунды)
+NOTIFY_INTERVAL = 300  # 5 минут
+# Время отображения уведомления (миллисекунды)
+NOTIFY_TIMEOUT = 4500  # 4,5 секунд
+
+def check_apparmor():
+    """Проверка состояния AppArmor (без sudo)"""
+    try:
+        # Проверяем, загружен ли модуль
+        if not os.path.exists('/sys/module/apparmor/parameters/enabled'):
+            return False
+        with open('/sys/module/apparmor/parameters/enabled', 'r') as f:
+            if f.read().strip() != 'Y':
+                return False
+
+        # Проверяем активность сервиса через systemctl
+        result = subprocess.run(
+            ['systemctl', 'is-active', 'apparmor'],
+            capture_output=True,
+            text=True
+        )
+        if result.returncode == 0 and result.stdout.strip() == 'active':
+            return True
+
+        # Если systemctl не помог, пробуем aa-status
+        if os.path.exists('/usr/sbin/aa-status'):
+            result = subprocess.run(
+                ['/usr/sbin/aa-status'],
+                capture_output=True,
+                text=True
+            )
+            if result.returncode == 0 and 'apparmor module is loaded' in result.stdout:
+                return True
+        return False
+    except Exception:
+        return False
+
+def check_nftables():
+    """Проверка состояния nftables"""
+    try:
+        result = subprocess.run(
+            ['systemctl', 'is-active', 'nftables'],
+            capture_output=True,
+            text=True
+        )
+        return result.returncode == 0 and result.stdout.strip() == 'active'
+    except Exception:
+        return False
+
+def send_notification(message):
+    """Отправка системного уведомления через notify-send"""
+    try:
+        subprocess.run(
+            ['notify-send', '-t', str(NOTIFY_TIMEOUT), '⚠️ Security Alert', message],
+            check=True
+        )
+    except Exception as e:
+        print(f"Не удалось отправить уведомление: {e}")
+
+def main():
+    last_notify_time = 0
+    last_state = (True, True)  # (apparmor, nftables)
+    first_failure_detected = False
+
+    print("Скрипт мониторинга запущен. Проверка состояния каждые 2 секунды...")
+
+    while True:
+        apparmor_ok = check_apparmor()
+        nftables_ok = check_nftables()
+
+        # Определяем текущее состояние
+        current_state = (apparmor_ok, nftables_ok)
+
+        # Если состояние изменилось, сбрасываем таймер последнего уведомления
+        if current_state != last_state:
+            last_state = current_state
+            last_notify_time = 0
+            first_failure_detected = False
+
+        # Проверяем, есть ли сбой
+        if not (apparmor_ok and nftables_ok):
+            now = time.time()
+            # Отправляем уведомление, если прошло достаточно времени с предыдущего
+            if now - last_notify_time >= NOTIFY_INTERVAL or not first_failure_detected:
+                # Формируем сообщение
+                if not apparmor_ok and not nftables_ok:
+                    message = "nftables and AppArmor DISABLE"
+                elif not nftables_ok:
+                    message = "nftables DISABLE"
+                else:
+                    message = "AppArmor DISABLE"
+
+                send_notification(message)
+                last_notify_time = now
+                first_failure_detected = True
+
+        # Ждём следующий цикл проверки
+        time.sleep(CHECK_INTERVAL)
+
+if __name__ == "__main__":
+    main()
+        </code>
+    </pre>
+</div>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+</section>
+<!-- Конец подсекции H5 2.4.2-E -->
 
 </section> 
 

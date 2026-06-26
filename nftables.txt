@@ -1,0 +1,186 @@
+#!/usr/sbin/nft -f
+# = модификация 25 =
+# 03.03.2026 19:52 Закомментирован запрет исходящих UDP портиов, что мешают работе ProtonVPN
+# 04.03.2026 19:53 Разрешены нужные для Doker  порты в цепочке  forward
+# 21.06.2026 08:24 Установлена фильтрация исходящих соединений по IP адресу
+
+flush ruleset
+
+table inet filter { # Открытие листа правил
+
+  
+  # ============================================
+  # НАЧАЛО ЦЕПОЧКИ INPUT
+  # ============================================
+  
+  # = Основная политика цепочки =
+  chain input {
+    type filter hook input priority 0;
+    policy drop;
+
+    # = Набор общих правил =
+    # 🌀 Разрешаем loopback-интерфейс (внутренние процессы)
+    iif "lo" accept
+
+    # == 🔁 Разрешаем установленные и связанные соединения ==
+    ct state established,related accept
+    
+    # == 🔒 Ограничение новых соединений от одного IP (anti-DDoS) ==
+    # == 🔒 Limit the rate of NEW connections per source IP (basic anti-DDoS protection) ==
+    #    If you experience issues with slow or failed page loads in your browser,
+    #    try increasing the limit, for example:
+    #    ip saddr 0.0.0.0/0 ct state new limit rate 50/second burst 100 packets accept
+    ip saddr 0.0.0.0/0 ct state new limit rate 25/second burst 50 packets accept
+    ip saddr 0.0.0.0/0 ct state new log prefix "🔥 BAN: too many conn " flags all
+    ip saddr 0.0.0.0/0 ct state new drop
+
+    # == 🛡️ Ограничение ping'ов ==
+    ip protocol icmp icmp type echo-request limit rate 1/second accept
+    ip protocol icmp icmp type echo-request log prefix "🔥 BAN: ICMP flood " flags all
+    ip protocol icmp icmp type echo-request drop
+
+    # == 🚫 Блокировка SSDP и mDNS (локальные протоколы вещания) ==
+    ip daddr 239.255.255.250 udp dport 1900 drop   # ❌ SSDP (UPnP/обнаружение устройств)
+    ip daddr 224.0.0.251 udp dport 5353 drop       # ❌ mDNS (Bonjour, Avahi)
+
+    # == 🛑 Блокировка NetBIOS и LLMNR (внутрисетевые протоколы Windows/systemd) ==
+    udp dport 137 drop    # ❌ NetBIOS Name Service (Windows сетевые имена)
+    udp dport 138 drop    # ❌ NetBIOS Datagram Service (распознавание в LAN)
+    udp dport 5355 drop   # ❌ LLMNR (Link-Local Multicast Name Resolution)
+
+    # = Набор правил блокировки IP адресов и диапазонов =
+    
+    # == 🧱 Блокировка известных бот-сетей и прокси ==
+    ip saddr {
+      45.9.20.0/24,
+      89.248.160.0/19,
+      185.220.100.0/22,
+      198.96.155.0/24,
+      185.107.56.0/24,
+      185.129.62.0/23
+    } log prefix "🔥 BAN: known bots " flags all
+    ip saddr {
+      45.9.20.0/24,
+      89.248.160.0/19,
+      185.220.100.0/22,
+      198.96.155.0/24,
+      185.107.56.0/24,
+      185.129.62.0/23
+    } drop
+
+    # == 🚫 Блокировка странных TCP-флагов (XMAS, NULL-скан и другие) ==
+    tcp flags & (fin|syn|rst|psh|ack|urg) == 0 drop        # NULL scan
+    tcp flags & (fin|psh|urg) == (fin|psh|urg) drop          # XMAS scan
+    tcp flags & (fin|syn) == (fin|syn) drop                  # SYN-ACK scan
+    tcp flags & (syn|rst|fin) == (syn|rst|fin) drop          # Xmas scan
+    tcp flags & (syn|fin|rst|psh|ack) == (syn|rst|fin|ack) drop # Xmas scan
+
+    # == 🚫 Блокировка фрагментированных пакетов — часто используются в обходах фильтров ==
+    ip frag-off & 0x1fff != 0 drop
+
+    # == 🔒 Блокировка пакетов с поддельными IP (спуфинг) ==
+    ip saddr 127.0.0.0/8 drop          # localhost
+    ip saddr 10.0.0.0/8 drop           # частная сеть
+    ip saddr 172.16.0.0/12 drop        # частная сеть
+    ip saddr 192.168.0.0/16 drop       # частная сеть
+    ip saddr 169.254.0.0/16 drop       # APIPA
+    ip saddr 0.0.0.0/8 drop            # недопустимый адрес
+    ip saddr 224.0.0.0/4 drop          # multicast
+    ip saddr 240.0.0.0/5 drop          # зарезервировано
+  }
+
+  # ============================================
+  # КОНЕЦ ЦЕПОЧКИ INPUT
+  # ============================================
+
+
+  # ============================================
+  # НАЧАЛО ЦЕПОЧКИ FORWARD
+  # ============================================
+
+  # = Основная политика цепочки =
+  chain forward {
+    type filter hook forward priority 0;
+    policy accept;
+    
+    #  = Запреты разного рода атак =
+    # Нужно в chain forward только при наличии Docker, oracle virtualbox. 
+    # Если нужно - раскомментировать
+
+    #  == 🔒 Ограничение новых соединений от одного IP (anti-DDoS) ==
+    # ip saddr 0.0.0.0/0 ct state new limit rate 25/second burst 50 packets accept
+    # ip saddr 0.0.0.0/0 ct state new log prefix "🔥 BAN: too many conn " flags all
+    # ip saddr 0.0.0.0/0 ct state new drop
+
+    # == 🛡️ Ограничение ping'ов ==
+    # ip protocol icmp icmp type echo-request limit rate 1/second accept
+    # ip protocol icmp icmp type echo-request log prefix "🔥 BAN: ICMP flood " flags all
+    # ip protocol icmp icmp type echo-request drop
+
+    # ⬇️ ВСТАВКА: Список правил для forward TCP UDP
+    # запрещенные и разрешенные TCP и UDP порты и диапазоны
+    
+        include "/etc/nftables.d/forward-tcp-udp.nft"
+        
+    # ⬆️ КОНЕЦ ВСТАВКИ
+
+  }
+
+  # ============================================
+  # КОНЕЦ ЦЕПОЧКИ FORWARD
+  # ============================================
+  
+  # ============================================
+  # НАЧАЛО ЦЕПОЧКИ OUTPUT
+  # ============================================
+
+  chain output {
+    # = Основная политика цепочки =
+    type filter hook output priority 0;
+    policy drop;
+    
+    # = САМЫЕ ПЕРВЫЕ - критически важные правила =
+    # пояснение
+    
+    ct state established,related accept
+    oif "lo" accept
+    
+    # =========================================================================
+    # 3. DNS-СЕРВИС (Строгая привязка только к Quad9 на IP 9.9.9.9)
+    # =========================================================================
+    # Любой другой DNS-запрос к провайдеру или серверам хакеров будет уничтожен
+    ip daddr 9.9.9.9 udp dport 53 ct state new accept
+    ip daddr 9.9.9.9 tcp dport 53 ct state new accept
+
+    
+    # == Критически важные ICMP для сети ==
+    ip protocol icmp icmp type { destination-unreachable, time-exceeded, parameter-problem } accept
+
+    # == Важные ICMPv6 для IPv6 ==
+    ip6 nexthdr icmpv6 icmpv6 type { 1, 2, 3, 4 } accept
+    ip6 nexthdr icmpv6 icmpv6 type { 135, 136 } accept  # NS/NA
+    ip6 nexthdr icmpv6 icmpv6 type { 133, 134 } accept  # RS/RA
+    
+    # =========================================================================
+    # БЛОКИРОВКА РЕДКИХ ПРОТОКОЛОВ
+    # =========================================================================
+    # Все редкие протоколы (SCTP, DCCP и другие) автоматически блокируются
+    # политикой policy drop. Явные правила для них не требуются.
+    # =========================================================================
+    
+    
+    # ⬇️ СЮДА ВСТАВЛЯЕТСЯ СОДЕРЖИМОЕ ФАЙЛА whitelist.nft
+    
+        include "/etc/nftables.d/whitelist.nft"
+        
+    # ⬆️ ВСТАВКА ЗАКОНЧИЛАСЬ
+
+
+  } #  Предпоследняя скобка закрывает лист правил цепочки output. Не удалять!
+  
+  # ============================================
+  # КОНЕЦ ЦЕПОЧКИ OUTPUT
+  # ============================================
+  
+} #  Последняя скобка закрывает лист правил всего конфига. Не удалять!
+

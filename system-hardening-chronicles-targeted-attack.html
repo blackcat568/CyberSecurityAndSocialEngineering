@@ -1715,6 +1715,10 @@ Compiled with support for: Linux audit, Libcapng, Seccomp, Systemd, Umockdev</p>
 
 <p><strong>The goal of configuration 3</strong> is to interrupt the malware's communication with its server by blocking its ability to send data to it. Thanks to the current nftables settings, the system can only send data to servers on the whitelist of trusted servers, thereby blocking data transmission to any other servers outside the trusted list, including the attacker's hacker servers.</p>
 
+<p>It is highly probable that the adversary's malware (presumably firmware malware) uses legitimate, widely used ports (such as 80 and 443) for its traffic, disguising its outbound activity as ordinary legitimate traffic. This makes filtering based solely on port numbers largely ineffective: blocking widely used ports is impossible without disrupting the system's normal operation.</p>
+
+<p>Therefore, a transition to a more stringent and flexible filtering model — based on IP addresses — is required. Under such a model, each trusted IP address, range, or group of ranges is assigned a strictly minimal and sufficient set of allowed outbound ports for its operation. This approach significantly narrows the channels for data exfiltration and blocks most covert outbound connections without compromising the legitimate functioning of the system.</p>
+
 <p><strong>Why this approach:</strong></p>
 
 <p>If the attack is carried out using firmware malware, hunting and analyzing it is pointless. Even if it is detected, suppressed, and its code deanonymized, the attacker will simply create new firmware malware based on different attack principles.</p>

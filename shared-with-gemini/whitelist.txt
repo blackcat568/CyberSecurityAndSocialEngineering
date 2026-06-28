@@ -1,0 +1,163 @@
+# /etc/nftables.d/whitelist.nft
+# Белый список IP-адресов для исходящих соединений
+
+# Старый жесткий список (для провайдера «Просто» и коммунальных IP)
+
+# === Веб-интерфейс роутера ===
+ip daddr 192.168.0.1 tcp dport 80 accept
+
+# =========================================================================
+# === Интернет-провайдер "Prosto"  ===
+# =========================================================================
+# Личный кабинет (my.prosto.net) и основной сайт (prosto.net) 
+# Прописаны жесткими CIDR-диапазонами автономной системы AS51823 
+# Открываются для пополнения счета даже при сбоях DNS и блокировках 
+ip daddr {
+    31.43.36.0/24,        # Локация веб-сервера личного кабинета my.prosto.net 
+    176.122.99.0/24,      # Локация информационного сайта prosto.net 
+    31.43.32.0/19,        # Магистральный пул адресов провайдера «Просто» 
+    176.122.96.0/20       # Абонентский пул маршрутизации
+} tcp dport { 80, 443 } ct state new accept
+
+# === Cloudflare (глобальная сеть CDN и DDoS-защиты) ===
+# Используется ChatGPT, DeepSeek и многими другими сервисами для
+# ускорения загрузки и защиты от атак. Основной пул 104.16.0.0/12.
+ip daddr {
+    104.16.0.0/12,        # Основной пул Cloudflare (104.16.0.0 – 104.31.255.255)
+    172.64.0.0/13,        # Дополнительный пул Cloudflare
+    162.158.0.0/15,       # Европейский пул Cloudflare
+    198.41.128.0/17       # Американский пул Cloudflare
+} tcp dport { 80, 443 } ct state new accept
+
+# === Fastly (сеть доставки контента) ===
+# Используется для загрузки статики, шрифтов и скриптов.
+ip daddr {
+    151.101.0.0/16,       # Основной пул Fastly
+    199.232.0.0/16        # Дополнительный пул Fastly
+} tcp dport { 80, 443 } ct state new accept
+
+# === Amazon CloudFront / AWS (облачная инфраструктура) ===
+# Широко используется для хостинга API, бэкендов и CDN.
+ip daddr {
+    13.32.0.0/15,         # CloudFront US East
+    143.204.0.0/16,       # CloudFront EU
+    54.239.128.0/18,      # CloudFront Asia Pacific
+    13.224.0.0/14,        # CloudFront Edge (глобальный)
+    18.160.0.0/13,        # CloudFront Edge (дополнительный)
+    52.84.0.0/15,         # CloudFront аутентификация
+    3.173.0.0/16,         # AWS Edge (общий пул)
+    23.211.0.0/16,        # AWS CloudFront (дополнительный)
+    23.47.0.0/16          # AWS CloudFront (резервный)
+} tcp dport { 80, 443 } ct state new accept
+
+# === Amazon Web Services (AWS CloudFront / EC2) ===
+ip daddr { 3.0.0.0/8 } tcp dport { 80, 443 } ct state new accept
+
+# === Google Cloud / YouTube (инфраструктура Google, ASN 15169) ===
+ip daddr {
+    64.233.160.0/19,      # Основной пул Google (Поиск, Аккаунты)
+    74.125.0.0/16,        # Пулы сервисов Google, включая Gmail и gstatic
+    142.250.0.0/15,       # Крупнейшая подсеть для YouTube и Gemini API
+    172.217.0.0/16,       # Сервера доставки контента и googleusercontent
+    173.194.0.0/16,       # Дополнительные маршруты для Google Drive и авторизации
+    209.85.128.0/17,      # Региональные дата-центры Google Cloud/API
+    216.58.192.0/19,      # Старые, но активные пулы DNS и фронтендов Google
+    35.190.0.0/16,        # Google Cloud (общий пул)
+    35.191.0.0/16         # Google Cloud (дополнительный)
+} tcp dport { 80, 443 } ct state new accept
+
+# === Google (AS15169) - поиск, YouTube, Gmail, API ===
+ip daddr { 142.250.0.0/15, 172.217.0.0/16, 74.125.0.0/16 } tcp dport { 80, 443 } ct state new accept
+
+# === GitHub (платформа разработки) ===
+ip daddr {
+    140.82.112.0/20,      # Основные подсети GitHub
+    192.30.252.0/22,      # Дополнительные пулы GitHub
+    185.199.108.0/22      # CDN-сети (raw.githubusercontent.com, githubassets.com)
+} tcp dport { 80, 443 } ct state new accept
+
+# === Debian Infrastructure (официальные сервера и зеркала) ===
+ip daddr {
+    130.89.148.0/24,      # Физические сервера ftp.debian.org (Нидерланды)
+    128.31.0.0/16,        # Официальные сети инфраструктуры Debian (MIT/США)
+    149.20.4.0/24,        # Технологические шлюзы зеркалирования и форума
+    206.12.19.0/24,       # Резервные пулы маршрутизации SPI
+    151.101.0.0/16,       # CDN Fastly для deb.debian.org
+    199.232.0.0/16,       # Дополнительный пул Fastly для безопасности
+    146.75.0.0/17         # Резервные маршруты доставки пакетов Debian
+} tcp dport { 80, 443 } ct state new accept
+
+# === Debian Project & Wiki (По доменным именам раздельными строками) ===
+# Раздельный синтаксис исключает конфликты парсера при разрешении имен.
+# Полностью открывает доступ к документации и руководствам системы.
+ip daddr "wiki.debian.org" tcp dport { 80, 443 } ct state new accept
+
+# === openSUSE / Zeek (инфраструктура openSUSE) ===
+ip daddr {
+    195.135.220.0/22,     # Основной дата-центр openSUSE
+    130.57.0.0/16         # Дополнительные серверные пулы Novell/SUSE
+} tcp dport { 80, 443 } ct state new accept
+
+# === LibreWolf (репозиторий обновлений) ===
+ip daddr {
+    179.61.251.0/24,      # Сервер repo.librewolf.net (Frantech/BuyVM)
+    198.251.80.0/20,      # Диапазон BuyVM в Люксембурге/США
+    209.141.32.0/19       # Дополнительные маршруты хостинга LibreWolf
+} tcp dport 443 ct state new accept
+
+# === DeepSeek (специфичные IP-адреса и подсети) ===
+# Выделены на основе анализа вашего списка.
+ip daddr {
+    103.193.104.0/22,     # Собственные технологические маршруты компании DeepSeek
+    154.8.0.0/16,         # Азиатские и глобальные пулы хостинга DeepSeek
+    159.69.48.177/32,     # Hetzner (Германия) - возможный бэкенд
+    150.171.109.51/32,    # Возможный бэкенд или партнерский сервер
+    43.109.10.32/27,      # Азиатский пул (диапазон 43.109.10.32 - 43.109.10.63)
+    38.54.123.48/32,      # Cogent Communications (возможный маршрут)
+    95.101.61.198/32,     # Малый диапазон (Германия, возможно партнер)
+    95.101.61.209/32,
+    95.101.61.218/32,
+    111.170.168.113/32,   # Китайский провайдер (региональный доступ)
+    20.150.95.164/32,     # Microsoft Azure (возможный бэкенд)
+    34.107.243.93/32      # Google Cloud (возможный бэкенд)
+} tcp dport { 80, 443 } ct state new accept
+
+# === Википедия ===
+ip daddr {
+    wikipedia.org,
+    www.wikipedia.org,
+    en.wikipedia.org,
+    ru.wikipedia.org,
+    wikimedia.org,
+    upload.wikimedia.org
+} tcp dport { 443, 80 } ct state new accept
+
+# ===  Стихи.ру ===
+ip daddr {
+    stihi.ru
+} tcp dport { 443, 80 } ct state new accept
+
+# === Facebook / Meta ===
+ip daddr 57.144.0.0/14 tcp dport { 80, 443 } ct state new accept
+
+# === Hetzner Cloud (если используете) ===
+ip daddr 150.171.0.0/16 tcp dport { 80, 443 } ct state new accept
+
+# === Akamai Technologies (CDN) ===
+ip daddr { 23.211.0.0/16, 23.64.0.0/16 } tcp dport { 80, 443 } ct state new accept
+
+# === Резервный DNS Quad9 ===
+ip daddr 9.9.9.0/24 udp dport 53 accept
+
+# === Коммунальные службы (ДТЭК, КОЕЦ, Ясно) ===
+ip daddr {
+    185.225.250.0/24,   # ok.dtek-krem.com.ua
+    45.60.78.0/24       # ok.koec.com.ua / solar.yasno.com.ua
+} tcp dport { 80, 443 } ct state new accept
+
+# === Резервный DNS Quad9 (149.112.0.0/16) ===
+ip daddr 149.112.0.0/16 udp dport 53 accept
+
+# === Akamai (расширенный диапазон 23.32.0.0/11) ===
+ip daddr 23.32.0.0/11 tcp dport { 80, 443 } ct state new accept
+

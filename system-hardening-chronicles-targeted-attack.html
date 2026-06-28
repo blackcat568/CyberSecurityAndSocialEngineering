@@ -15,7 +15,7 @@
     "isAccessibleForFree": true,
     "description": "A real-world chronicle of defending against a targeted attack: documenting vulnerabilities, configurations, responses, and system hardening. From zero security to resilient configurations. Covers Debian 12 & 13, nftables, AppArmor, OpenSnitch, Flatpak, USBGuard, sysctl. For cybersecurity and InfoSec professionals.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-06-26<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-06-28<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -314,7 +314,7 @@
 
 <div class="alert" style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 2rem 0;">
   <strong style="color: #856404;">⚠️ Notice!</strong>
-  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-06-26<!-- DATE_END --></span>
+  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-06-28<!-- DATE_END --></span>
 </div>
 
 <!-- КРУПНАЯ ГЛАВА H2 0- Оглавление -->
@@ -2173,6 +2173,8 @@ table inet filter { # Opening the ruleset
 
 <div class="warning-block">
     <p><strong>⚠️ Warning:</strong> This configuration 3 config is an individual security measure demonstrating the logic of an experiment in building protection. <strong>Refrain from directly copying it.</strong> The lists of IP address ranges should be configured individually for your specific system.</p>
+    
+    <p>When using this defense logic (a strict whitelist of outgoing IP addresses), you must add the IP addresses of your DNS server and your internet service provider to it, and specifically <strong>as numeric ranges rather than domain names</strong>.</p>
 </div>
 
 <p style="text-align: center; margin-top: 2rem;">

@@ -172,5 +172,4 @@ ip daddr {
 
  # === Резервный DNS Quad9 (149.112.0.0/16) ===
  ip daddr 149.112.0.0/16 udp dport 53 accept
-root@home:/home/user# 
 

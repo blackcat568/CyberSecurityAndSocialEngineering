@@ -380,8 +380,9 @@
 								<li style="margin-bottom: 0.1rem;"><a href="#config3-intro" style="text-decoration: none;">2.4.2-A Introduction</a></li>
 								<li style="margin-bottom: 0.1rem;"><a href="#config3-logic" style="text-decoration: none;">2.4.2-B Strategic logic of Configuration 3: blocking vectors as a deterrence method</a></li>
                                 <li style="margin-bottom: 0.1rem;"><a href="#config3-nftables" style="text-decoration: none;">2.4.2-C Changes in the nftables config</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config3-dns-quard9" style="text-decoration: none;">2.4.2-D Switching to the Quad9 DNS server (9.9.9.9)</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config3-app-nft-monitoring-script" style="text-decoration: none;">2.4.2-E Custom monitoring script for nftables and AppArmor</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config3-nftables-fixes" style="text-decoration: none;">2.4.2-D Fixing the nftables configuration of Configuration 3</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config3-dns-quard9" style="text-decoration: none;">2.4.2-E Switching to the Quad9 DNS server (9.9.9.9)</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config3-app-nft-monitoring-script" style="text-decoration: none;">2.4.2-F Custom monitoring script for nftables and AppArmor</a></li>
                             </ul>
                         </li>
                         <li style="margin-bottom: 0.1rem;"><a href="#config3-experiment-results" style="text-decoration: none;">2.4.3 Observing the progress of the experiment with configuration 3</a></li>
@@ -2187,7 +2188,282 @@ table inet filter { # Opening the ruleset
 
 <hr>
 
-<!-- Подсекция H5 2.4.2-D -->
+
+<!-- Subsection H5 2.4.2-D -->
+<section id="config3-nftables-fixes" aria-label="2.4.2-D Fixing the nftables configuration of Configuration 3">
+
+<h5>2.4.2-D Fixing the nftables configuration of Configuration 3</h5>
+
+<p><time datetime="2026-06-28">Created: 28 June 2026</time></p>
+
+<p>In previous versions of the configuration, errors were made that significantly reduced the effectiveness of the configuration.</p>
+
+<p>The rate-limiting rule that was present in the <code>input</code> and <code>forward</code> chains, as well as in the <code>output</code> chain in earlier versions of the configuration, was placed at the beginning of the chain and contained the <code>accept</code> command, which neutralized a significant portion of the subsequent chain rules:</p>
+
+<div class="historical-fact">
+    <pre>
+        <code class="language-bash">
+# == 🔒 Limit new connections per source IP (anti-DDoS) ==
+# == 🔒 Limit the rate of NEW connections per source IP (basic anti-DDoS protection) ==
+#    If you experience issues with slow or failed page loads in your browser,
+#    try increasing the limit, for example:
+#    ip saddr 0.0.0.0/0 ct state new limit rate 50/second burst 100 packets accept
+ip saddr 0.0.0.0/0 ct state new limit rate 25/second burst 50 packets accept
+ip saddr 0.0.0.0/0 ct state new log prefix "🔥 BAN: too many conn " flags all
+ip saddr 0.0.0.0/0 ct state new drop
+        </code>
+    </pre>
+</div>
+
+<p>In the current configuration, it has been replaced with:</p>
+
+<div class="historical-fact">
+    <pre>
+        <code class="language-bash">
+# == 🔒 Proper protection against aggressive incoming traffic (anti-DDoS) ==
+# We do NOT allow traffic, we only instantly destroy what exceeds the limit.
+# If the rate exceeds 25 per second, the packet is logged and dropped right here.
+# If the rate is within limits, the packet goes further down, where a reliable default DROP awaits it.
+ip saddr 0.0.0.0/0 ct state new limit rate over 25/second burst 50 packets log prefix "🔥 BAN: too many conn " flags all drop
+        </code>
+    </pre>
+</div>
+
+<p>for the <code>input</code> and <code>forward</code> chains.</p>
+
+<p>It was also replaced with:</p>
+
+<div class="historical-fact">
+    <pre>
+        <code class="language-bash">
+# ATTENTION: There is NO accept keyword here. This rule does NOT allow packets out to the internet.
+# The "!" sign means: if the rate exceeds the limit, LOG and DROP the packet.
+# If the rate is within limits, the packet silently passes below — to your IP whitelist.
+# ATTENTION: meta l4proto { tcp, udp } and th dport cover both TCP and UDP (HTTP/3) with a single shield.
+meta l4proto { tcp, udp } th dport { 80, 443 } ct state new limit rate over 20/second burst 40 packets log prefix "🔥 OUT_WEB_LIMIT_BURST: " drop
+        </code>
+    </pre>
+</div>
+
+<p>for the <code>output</code> chain.</p>
+
+<p><strong>Important note:</strong> the configuration with erroneous logic was posted on one of the IT forums, where a significant portion of participants, instead of analyzing the logic of the provided configuration and drawing conclusions based on the substance of the configuration's logic, began to engage in personal conflicts with the author, accusing them of paranoia and lies, while failing to notice the errors in the provided configuration. Instead of analyzing the situation impartially and on its merits, a person tends to analyze the situation based on their own emotions (often negative) and prejudices that have nothing to do with objective reality. As a result, the analysis of the situation turns out to be partially or completely erroneous.</p>
+
+<p><strong>Conclusions:</strong> in addition to consulting with people, it is essential to verify new configurations multiple times using Gemini, DeepSeek, and other AI tools focused on code work. People have original creative thinking that AI lacks, but at the same time they are subject to negative emotions and prejudices that distract them from an impartial analysis of the situation on its merits, and often completely deprive them of the ability to perform such analysis. AI does not have these negative aspects, which is worth using for additional verification of what has already been submitted for public scrutiny.</p>
+
+<p>Additionally, the list of port permissions and restrictions in the <code>forward</code> chain and the IP whitelist in the <code>output</code> chain have been moved to separate files using the <code>include</code> function. There are no changes in the logic of these restriction lists compared to the previous nftables configuration of Configuration 3.</p>
+
+<p><strong>Fixed nftables configuration of Configuration 3:</strong></p>
+
+<div class="historical-fact">
+    <pre>
+        <code class="language-bash">
+#!/usr/sbin/nft -f
+# = modification 25 =
+# 03.03.2026 19:52 Commented out the outbound UDP port restriction that was interfering with ProtonVPN
+# 04.03.2026 19:53 Allowed necessary ports for Docker in the forward chain
+# 21.06.2026 08:24 Implemented outbound connection filtering by IP address
+
+flush ruleset
+
+table inet filter { # Opening the ruleset
+  
+  # ============================================
+  # START OF INPUT CHAIN
+  # ============================================
+  
+  # = Main chain policy =
+  chain input {
+    type filter hook input priority 0;
+    policy drop;
+
+    # = Set of general rules =
+    # 🌀 Allow loopback interface (internal processes)
+    iif "lo" accept
+
+    # == 🔁 Allow established and related connections ==
+    ct state established,related accept
+    
+    # == 🔒 Proper protection against aggressive incoming traffic (anti-DDoS) ==
+    # We do NOT allow traffic, we only instantly destroy what exceeds the limit.
+    # If the rate exceeds 25 per second, the packet is logged and dropped right here.
+    # If the rate is within limits, the packet goes further down, where a reliable default DROP awaits it.
+    ip saddr 0.0.0.0/0 ct state new limit rate over 25/second burst 50 packets log prefix "🔥 BAN: too many conn " flags all drop
+
+    # == 🛡️ Rate-limit ICMP echo requests (ping) ==
+    ip protocol icmp icmp type echo-request limit rate 1/second accept
+    ip protocol icmp icmp type echo-request log prefix "🔥 BAN: ICMP flood " flags all
+    ip protocol icmp icmp type echo-request drop
+
+    # == 🚫 Block SSDP and mDNS (local broadcast protocols) ==
+    ip daddr 239.255.255.250 udp dport 1900 drop   # ❌ SSDP (UPnP/device discovery)
+    ip daddr 224.0.0.251 udp dport 5353 drop       # ❌ mDNS (Bonjour, Avahi)
+
+    # == 🛑 Block NetBIOS and LLMNR (internal Windows/systemd protocols) ==
+    udp dport 137 drop    # ❌ NetBIOS Name Service (Windows network names)
+    udp dport 138 drop    # ❌ NetBIOS Datagram Service (LAN browsing)
+    udp dport 5355 drop   # ❌ LLMNR (Link-Local Multicast Name Resolution)
+
+    # = Set of rules for blocking IP addresses and ranges =
+    
+    # == 🧱 Block known botnets and proxies ==
+    ip saddr {
+      45.9.20.0/24,
+      89.248.160.0/19,
+      185.220.100.0/22,
+      198.96.155.0/24,
+      185.107.56.0/24,
+      185.129.62.0/23
+    } log prefix "🔥 BAN: known bots " flags all
+    ip saddr {
+      45.9.20.0/24,
+      89.248.160.0/19,
+      185.220.100.0/22,
+      198.96.155.0/24,
+      185.107.56.0/24,
+      185.129.62.0/23
+    } drop
+
+    # == 🚫 Block invalid TCP flags (XMAS, NULL scan, etc.) ==
+    tcp flags & (fin|syn|rst|psh|ack|urg) == 0 drop        # NULL scan
+    tcp flags & (fin|psh|urg) == (fin|psh|urg) drop          # XMAS scan
+    tcp flags & (fin|syn) == (fin|syn) drop                  # SYN-ACK scan
+    tcp flags & (syn|rst|fin) == (syn|rst|fin) drop          # Xmas scan
+    tcp flags & (syn|fin|rst|psh|ack) == (syn|rst|fin|ack) drop # Xmas scan
+
+    # == 🚫 Block fragmented packets — often used to bypass filters ==
+    ip frag-off & 0x1fff != 0 drop
+
+    # == 🔒 Block packets with spoofed IPs (anti-spoofing) ==
+    ip saddr 127.0.0.0/8 drop          # localhost
+    ip saddr 10.0.0.0/8 drop           # private network
+    ip saddr 172.16.0.0/12 drop        # private network
+    ip saddr 192.168.0.0/16 drop       # private network
+    ip saddr 169.254.0.0/16 drop       # APIPA
+    ip saddr 0.0.0.0/8 drop            # invalid address
+    ip saddr 224.0.0.0/4 drop          # multicast
+    ip saddr 240.0.0.0/5 drop          # reserved
+  }
+
+  # ============================================
+  # END OF INPUT CHAIN
+  # ============================================
+
+
+  # ============================================
+  # START OF FORWARD CHAIN
+  # ============================================
+
+  # = Main chain policy =
+  chain forward {
+    type filter hook forward priority 0;
+    policy accept;
+    
+    #  = Various attack restrictions =
+    # Only needed in chain forward if you have Docker, Oracle VirtualBox.
+    # Uncomment if needed.
+
+    # == 🔒 Proper protection against aggressive incoming traffic (anti-DDoS) ==
+    # We do NOT allow traffic, we only instantly destroy what exceeds the limit.
+    # If the rate exceeds 25 per second, the packet is logged and dropped right here.
+    # If the rate is within limits, the packet goes further down, where a reliable default DROP awaits it.
+    ip saddr 0.0.0.0/0 ct state new limit rate over 25/second burst 50 packets log prefix "🔥 BAN: too many conn " flags all drop
+
+    # == 🛡️ Rate-limit ICMP echo requests (ping) ==
+    # ip protocol icmp icmp type echo-request limit rate 1/second accept
+    # ip protocol icmp icmp type echo-request log prefix "🔥 BAN: ICMP flood " flags all
+    # ip protocol icmp icmp type echo-request drop
+
+    # ⬇️ INSERT: Forward chain port rules
+    # Blocked and allowed TCP/UDP ports and ranges
+    
+        include "/etc/nftables.d/forward-tcp-udp.nft"
+        
+    # ⬆️ END OF INSERT
+
+  }
+
+  # ============================================
+  # END OF FORWARD CHAIN
+  # ============================================
+  
+  # ============================================
+  # START OF OUTPUT CHAIN
+  # ============================================
+
+  chain output {
+    # = Main chain policy =
+    type filter hook output priority 0;
+    policy drop;
+    
+    # = THE VERY FIRST - critically important rules =
+    
+    ct state established,related accept
+    oif "lo" accept
+
+    # =======================================================================
+    # 1. GENERAL PROTECTIVE SHIELD (Only rate limiting!)
+    # =======================================================================
+    
+    # ATTENTION: There is NO accept keyword here. This rule does NOT allow packets out to the internet.
+    # The "!" sign means: if the rate exceeds the limit, LOG and DROP the packet.
+    # If the rate is within limits, the packet silently passes below — to your IP whitelist.
+    # ATTENTION: meta l4proto { tcp, udp } and th dport cover both TCP and UDP (HTTP/3) with a single shield.
+    meta l4proto { tcp, udp } th dport { 80, 443 } ct state new limit rate over 20/second burst 40 packets log prefix "🔥 OUT_WEB_LIMIT_BURST: " drop
+    
+    
+    # =========================================================================
+    # 3. DNS SERVICE (Strict binding only to Quad9 at IP 9.9.9.9)
+    # =========================================================================
+    # Any other DNS query to the provider or hacker servers will be dropped
+    ip daddr 9.9.9.9 udp dport 53 ct state new accept
+    ip daddr 9.9.9.9 tcp dport 53 ct state new accept
+
+    
+    # == Critically important ICMP for the network ==
+    ip protocol icmp icmp type { destination-unreachable, time-exceeded, parameter-problem } accept
+
+    # == Important ICMPv6 for IPv6 ==
+    ip6 nexthdr icmpv6 icmpv6 type { 1, 2, 3, 4 } accept
+    ip6 nexthdr icmpv6 icmpv6 type { 135, 136 } accept  # NS/NA
+    ip6 nexthdr icmpv6 icmpv6 type { 133, 134 } accept  # RS/RA
+    
+    # =========================================================================
+    # BLOCKING RARE PROTOCOLS
+    # =========================================================================
+    # All rare protocols (SCTP, DCCP, and others) are automatically blocked
+    # by the policy drop. Explicit rules are not required for them.
+    # =========================================================================
+    
+    
+    # ⬇️ INSERT: whitelist.nft file contents are inserted here
+    
+        include "/etc/nftables.d/whitelist.nft"
+        
+    # ⬆️ END OF INSERT
+
+
+  } #  The penultimate brace closes the ruleset of the output chain. Do not remove!
+  
+  # ============================================
+  # END OF OUTPUT CHAIN
+  # ============================================
+  
+} #  The last brace closes the entire configuration ruleset. Do not remove!
+        </code>
+    </pre>
+</div>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to top</a>
+</p>
+
+</section>
+<!-- End of subsection H5 2.4.2-D -->
+
+<hr>
+
+<!-- Подсекция H5 2.4.2-E -->
 <section id="config3-dns-quard9" aria-label="2.4.2 Switching to the Quad9 DNS server (9.9.9.9)">
 	
 <h5>2.4.2-B Switching to the Quad9 DNS server (9.9.9.9)</h5>
@@ -2296,11 +2572,11 @@ table inet filter { # Opening the ruleset
 
 </section>
 
-<!-- Конец подсекции H5 2.4.2-D -->
+<!-- Конец подсекции H5 2.4.2-E -->
 
 <hr>
 
-<!-- Subsection H5 2.4.2-E -->
+<!-- Subsection H5 2.4.2-F -->
 <section id="config3-app-nft-monitoring-script" aria-label="2.4.2-E Custom monitoring script for nftables and AppArmor">
 
 <h5>2.4.2-E Custom monitoring script for nftables and AppArmor status</h5>
@@ -2468,7 +2744,7 @@ if __name__ == "__main__":
 </p>
 
 </section>
-<!-- End of subsection H5 2.4.2-E -->
+<!-- End of subsection H5 2.4.2-F -->
 
 </section> 
 

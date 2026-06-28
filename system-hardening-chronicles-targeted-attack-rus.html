@@ -379,8 +379,9 @@
 								<li style="margin-bottom: 0.1rem;"><a href="#config3-intro" style="text-decoration: none;">2.4.2-A Вступление</a></li>
 								<li style="margin-bottom: 0.1rem;"><a href="#config3-logic" style="text-decoration: none;">2.4.2-B Стратегическая логика Конфигурации 3: перекрытие векторов как метод сдерживания</a></li>
                                 <li style="margin-bottom: 0.1rem;"><a href="#config3-software-nftables" style="text-decoration: none;">2.4.2-C Изменения в конфиге nftables</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config3-dns-quard9" style="text-decoration: none;">2.4.2 D Переход на DNS-сервер Quad9 (9.9.9.9)</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config3-app-nft-monitoring-script" style="text-decoration: none;">2.4.2-E Пользовательский скрипт мониторинга nftables и AppArmor</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config3-nftables-fixes" style="text-decoration: none;">2.4.2-D Исправление конфига nftables конфигурации 3</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config3-dns-quard9" style="text-decoration: none;">2.4.2 E Переход на DNS-сервер Quad9 (9.9.9.9)</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config3-app-nft-monitoring-script" style="text-decoration: none;">2.4.2-F Пользовательский скрипт мониторинга nftables и AppArmor</a></li>
                             </ul>
                         </li>
                         <li style="margin-bottom: 0.1rem;"><a href="#config3-experiment-results" style="text-decoration: none;">Наблюдаем за ходом эксперимента с конфигурацией 3</a></li>
@@ -2193,6 +2194,281 @@ table inet filter { # Открытие листа правил
 <hr>
 
 <!-- Подсекция H5 2.4.2-D -->
+<section id="config3-nftables-fixes" aria-label="2.4.2-D Исправление конфига nftables конфигурации 3">
+
+<h5>2.4.2-D Исправление конфига nftables конфигурации 3</h5>
+
+<p><time datetime="2026-06-28">Created: 28 June 2026</time></p>
+
+<p>В предыдущих версиях конфига были допущены ошибки, которые существенно снижали эффективность работы конфига.</p>
+
+<p>Правило лимитирования запросов, присутствовавшее в цепочках <code>input</code> и <code>forward</code>, а также в цепочке <code>output</code> в более ранних версиях конфига, шло в начале цепочки и содержало команду <code>accept</code>, что сводило на нет значительную часть дальнейших правил цепочки:</p>
+
+<div class="historical-fact">
+    <pre>
+        <code class="language-bash">
+# == 🔒 Ограничение новых соединений от одного IP (anti-DDoS) ==
+# == 🔒 Limit the rate of NEW connections per source IP (basic anti-DDoS protection) ==
+#    If you experience issues with slow or failed page loads in your browser,
+#    try increasing the limit, for example:
+#    ip saddr 0.0.0.0/0 ct state new limit rate 50/second burst 100 packets accept
+ip saddr 0.0.0.0/0 ct state new limit rate 25/second burst 50 packets accept
+ip saddr 0.0.0.0/0 ct state new log prefix "🔥 BAN: too many conn " flags all
+ip saddr 0.0.0.0/0 ct state new drop
+        </code>
+    </pre>
+</div>
+
+<p>В текущем конфиге оно заменено на:</p>
+
+<div class="historical-fact">
+    <pre>
+        <code class="language-bash">
+# == 🔒 Правильная защита от агрессивного входящего трафика (anti-DDoS) ==
+# Мы НЕ разрешаем трафик, мы только на лету уничтожаем то, что превышает лимит.
+# Если скорость превысила 25 в секунду, пакет логируется и дропается прямо здесь.
+# Если скорость в норме — пакет идет ниже, где его встретит надежный дефолтный DROP.
+ip saddr 0.0.0.0/0 ct state new limit rate over 25/second burst 50 packets log prefix "🔥 BAN: too many conn " flags all drop
+        </code>
+    </pre>
+</div>
+
+<p>для цепочек <code>input</code> и <code>forward</code>.</p>
+
+<p>А также заменено на:</p>
+
+<div class="historical-fact">
+    <pre>
+        <code class="language-bash">
+# ВНИМАНИЕ: Здесь НЕТ слова accept. Это правило НЕ выпускает пакеты в интернет.
+# Знак "!" означает: если скорость превысила лимит, то выполнить действие ЛОГ и ДРОП.
+# Если скорость в норме, пакет просто молча пролетает ниже — в ваш белый список IP.
+# ВНИМАНИЕ: meta l4proto { tcp, udp } и th dport накрывают куполом и TCP, и UDP (HTTP/3)
+meta l4proto { tcp, udp } th dport { 80, 443 } ct state new limit rate over 20/second burst 40 packets log prefix "🔥 OUT_WEB_LIMIT_BURST: " drop
+        </code>
+    </pre>
+</div>
+
+<p>для цепочки <code>output</code>.</p>
+
+<p><strong>Важное замечание:</strong> конфиг с ошибочной логикой был предоставлен на одном из IT-форумов, где значительная часть участников вместо того, чтобы анализировать логику предоставленного конфига и делать выводы исходя из анализа логики конфига по существу, начали развивать личные конфликты с автором, обвиняя его в паранойе и лжи, не заметив ошибок в предоставленном конфиге. Вместо анализа ситуации непредвзято и по существу человек склонен к анализу ситуации исходя из собственных эмоций (зачастую негативных) и предрассудков, не имеющих никакого отношения к объективной реальности. В итоге анализ ситуации получается частично или полностью ошибочным.</p>
+
+<p><strong>Выводы:</strong> помимо советов с людьми — обязательно проверять, желательно несколько раз, новые конфиги в Gemini, DeepSeek и других ИИ, ориентированных на работу с кодом. Люди имеют оригинальное творческое мышление, которого нет у ИИ, но в то же время подвержены негативным эмоциям и предрассудкам, отвлекающим их от непредвзятого анализа ситуации по существу, а зачастую и полностью лишающим их способности к таковому анализу. У ИИ таких негативных сторон нет, чем стоит воспользоваться для дополнительной проверки того, что уже было предоставлено на суд общественности.</p>
+
+<p>Также перечень разрешений и запретов портов в цепочке <code>forward</code> и белый список IP в цепочке <code>output</code> вынесены в отдельные файлы с помощью функции <code>include</code>. Изменений в логике данных перечней запретов, представленных в предыдущем конфиге nftables конфигурации 3, нет.</p>
+
+<p><strong>Исправленный конфиг nftables конфигурации 3:</strong></p>
+
+<div class="historical-fact">
+    <pre>
+        <code class="language-bash">
+#!/usr/sbin/nft -f
+# = модификация 25 =
+# 03.03.2026 19:52 Закомментирован запрет исходящих UDP портов, что мешают работе ProtonVPN
+# 04.03.2026 19:53 Разрешены нужные для Doker  порты в цепочке  forward
+# 21.06.2026 08:24 Установлена фильтрация исходящих соединений по IP адресу
+
+flush ruleset
+
+table inet filter { # Открытие листа правил
+  
+  # ============================================
+  # НАЧАЛО ЦЕПОЧКИ INPUT
+  # ============================================
+  
+  # = Основная политика цепочки =
+  chain input {
+    type filter hook input priority 0;
+    policy drop;
+
+    # = Набор общих правил =
+    # 🌀 Разрешаем loopback-интерфейс (внутренние процессы)
+    iif "lo" accept
+
+    # == 🔁 Разрешаем установленные и связанные соединения ==
+    ct state established,related accept
+    
+    # == 🔒 Правильная защита от агрессивного входящего трафика (anti-DDoS) ==
+    # Мы НЕ разрешаем трафик, мы только на лету уничтожаем то, что превышает лимит.
+    # Если скорость превысила 25 в секунду, пакет логируется и дропается прямо здесь.
+    # Если скорость в норме — пакет идет ниже, где его встретит надежный дефолтный DROP.
+    ip saddr 0.0.0.0/0 ct state new limit rate over 25/second burst 50 packets log prefix "🔥 BAN: too many conn " flags all drop
+
+    # == 🛡️ Ограничение ping'ов ==
+    ip protocol icmp icmp type echo-request limit rate 1/second accept
+    ip protocol icmp icmp type echo-request log prefix "🔥 BAN: ICMP flood " flags all
+    ip protocol icmp icmp type echo-request drop
+
+    # == 🚫 Блокировка SSDP и mDNS (локальные протоколы вещания) ==
+    ip daddr 239.255.255.250 udp dport 1900 drop   # ❌ SSDP (UPnP/обнаружение устройств)
+    ip daddr 224.0.0.251 udp dport 5353 drop       # ❌ mDNS (Bonjour, Avahi)
+
+    # == 🛑 Блокировка NetBIOS и LLMNR (внутрисетевые протоколы Windows/systemd) ==
+    udp dport 137 drop    # ❌ NetBIOS Name Service (Windows сетевые имена)
+    udp dport 138 drop    # ❌ NetBIOS Datagram Service (распознавание в LAN)
+    udp dport 5355 drop   # ❌ LLMNR (Link-Local Multicast Name Resolution)
+
+    # = Набор правил блокировки IP адресов и диапазонов =
+    
+    # == 🧱 Блокировка известных бот-сетей и прокси ==
+    ip saddr {
+      45.9.20.0/24,
+      89.248.160.0/19,
+      185.220.100.0/22,
+      198.96.155.0/24,
+      185.107.56.0/24,
+      185.129.62.0/23
+    } log prefix "🔥 BAN: known bots " flags all
+    ip saddr {
+      45.9.20.0/24,
+      89.248.160.0/19,
+      185.220.100.0/22,
+      198.96.155.0/24,
+      185.107.56.0/24,
+      185.129.62.0/23
+    } drop
+
+    # == 🚫 Блокировка странных TCP-флагов (XMAS, NULL-скан и другие) ==
+    tcp flags & (fin|syn|rst|psh|ack|urg) == 0 drop        # NULL scan
+    tcp flags & (fin|psh|urg) == (fin|psh|urg) drop          # XMAS scan
+    tcp flags & (fin|syn) == (fin|syn) drop                  # SYN-ACK scan
+    tcp flags & (syn|rst|fin) == (syn|rst|fin) drop          # Xmas scan
+    tcp flags & (syn|fin|rst|psh|ack) == (syn|rst|fin|ack) drop # Xmas scan
+
+    # == 🚫 Блокировка фрагментированных пакетов — часто используются в обходах фильтров ==
+    ip frag-off & 0x1fff != 0 drop
+
+    # == 🔒 Блокировка пакетов с поддельными IP (спуфинг) ==
+    ip saddr 127.0.0.0/8 drop          # localhost
+    ip saddr 10.0.0.0/8 drop           # частная сеть
+    ip saddr 172.16.0.0/12 drop        # частная сеть
+    ip saddr 192.168.0.0/16 drop       # частная сеть
+    ip saddr 169.254.0.0/16 drop       # APIPA
+    ip saddr 0.0.0.0/8 drop            # недопустимый адрес
+    ip saddr 224.0.0.0/4 drop          # multicast
+    ip saddr 240.0.0.0/5 drop          # зарезервировано
+  }
+
+  # ============================================
+  # КОНЕЦ ЦЕПОЧКИ INPUT
+  # ============================================
+
+
+  # ============================================
+  # НАЧАЛО ЦЕПОЧКИ FORWARD
+  # ============================================
+
+  # = Основная политика цепочки =
+  chain forward {
+    type filter hook forward priority 0;
+    policy accept;
+    
+    #  = Запреты разного рода атак =
+    # Нужно в chain forward только при наличии Docker, oracle virtualbox. 
+    # Если нужно - раскомментировать
+
+    # == 🔒 Правильная защита от агрессивного входящего трафика (anti-DDoS) ==
+    # Мы НЕ разрешаем трафик, мы только на лету уничтожаем то, что превышает лимит.
+    # Если скорость превысила 25 в секунду, пакет логируется и дропается прямо здесь.
+    # Если скорость в норме — пакет идет ниже, где его встретит надежный дефолтный DROP.
+    ip saddr 0.0.0.0/0 ct state new limit rate over 25/second burst 50 packets log prefix "🔥 BAN: too many conn " flags all drop
+
+    # == 🛡️ Ограничение ping'ов ==
+    # ip protocol icmp icmp type echo-request limit rate 1/second accept
+    # ip protocol icmp icmp type echo-request log prefix "🔥 BAN: ICMP flood " flags all
+    # ip protocol icmp icmp type echo-request drop
+
+    # ⬇️ ВСТАВКА: Список правил для forward TCP UDP
+    # запрещенные и разрешенные TCP и UDP порты и диапазоны
+    
+        include "/etc/nftables.d/forward-tcp-udp.nft"
+        
+    # ⬆️ КОНЕЦ ВСТАВКИ
+
+  }
+
+  # ============================================
+  # КОНЕЦ ЦЕПОЧКИ FORWARD
+  # ============================================
+  
+  # ============================================
+  # НАЧАЛО ЦЕПОЧКИ OUTPUT
+  # ============================================
+
+  chain output {
+    # = Основная политика цепочки =
+    type filter hook output priority 0;
+    policy drop;
+    
+    # = САМЫЕ ПЕРВЫЕ - критически важные правила =
+    # пояснение
+    
+    ct state established,related accept
+    oif "lo" accept
+
+    # =======================================================================
+    # 1. ОБЩИЙ ЗАЩИТНЫЙ КУПОЛ (Только блокировка превышения скорости!)
+    # =======================================================================
+    
+    # ВНИМАНИЕ: Здесь НЕТ слова accept. Это правило НЕ выпускает пакеты в интернет.
+    # Знак "!" означает: если скорость превысила лимит, то выполнить действие ЛОГ и ДРОП.
+    # Если скорость в норме, пакет просто молча пролетает ниже — в ваш белый список IP.
+    # ВНИМАНИЕ: meta l4proto { tcp, udp } и th dport накрывают куполом и TCP, и UDP (HTTP/3)
+    meta l4proto { tcp, udp } th dport { 80, 443 } ct state new limit rate over 20/second burst 40 packets log prefix "🔥 OUT_WEB_LIMIT_BURST: " drop
+    
+    
+    # =========================================================================
+    # 3. DNS-СЕРВИС (Строгая привязка только к Quad9 на IP 9.9.9.9)
+    # =========================================================================
+    # Любой другой DNS-запрос к провайдеру или серверам хакеров будет уничтожен
+    ip daddr 9.9.9.9 udp dport 53 ct state new accept
+    ip daddr 9.9.9.9 tcp dport 53 ct state new accept
+
+    
+    # == Критически важные ICMP для сети ==
+    ip protocol icmp icmp type { destination-unreachable, time-exceeded, parameter-problem } accept
+
+    # == Важные ICMPv6 для IPv6 ==
+    ip6 nexthdr icmpv6 icmpv6 type { 1, 2, 3, 4 } accept
+    ip6 nexthdr icmpv6 icmpv6 type { 135, 136 } accept  # NS/NA
+    ip6 nexthdr icmpv6 icmpv6 type { 133, 134 } accept  # RS/RA
+    
+    # =========================================================================
+    # БЛОКИРОВКА РЕДКИХ ПРОТОКОЛОВ
+    # =========================================================================
+    # Все редкие протоколы (SCTP, DCCP и другие) автоматически блокируются
+    # политикой policy drop. Явные правила для них не требуются.
+    # =========================================================================
+    
+    
+    # ⬇️ СЮДА ВСТАВЛЯЕТСЯ СОДЕРЖИМОЕ ФАЙЛА whitelist.nft
+    
+        include "/etc/nftables.d/whitelist.nft"
+        
+    # ⬆️ ВСТАВКА ЗАКОНЧИЛАСЬ
+
+
+  } #  Предпоследняя скобка закрывает лист правил цепочки output. Не удалять!
+  
+  # ============================================
+  # КОНЕЦ ЦЕПОЧКИ OUTPUT
+  # ============================================
+  
+} #  Последняя скобка закрывает лист правил всего конфига. Не удалять!
+        </code>
+    </pre>
+</div>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+</section>
+<!-- Конец подсекции H5 2.4.2-D -->
+
+<hr>
+
+<!-- Подсекция H5 2.4.2-E -->
 <section id="config3-dns-quard9" aria-label="2.4.2-D Переход на DNS-сервер Quad9 (9.9.9.9)">
 
 <h5>2.4.2-D Переход на DNS-сервер Quad9 (9.9.9.9)</h5>
@@ -2301,11 +2577,11 @@ table inet filter { # Открытие листа правил
 
 </section>
 
-<!-- Конец подсекции H5 2.4.2-D -->
+<!-- Конец подсекции H5 2.4.2-E -->
 
 <hr>
 
-<!-- Подсекция H5 2.4.2-E -->
+<!-- Подсекция H5 2.4.2-F -->
 <section id="config3-app-nft-monitoring-script" aria-label="2.4.2-E Пользовательский скрипт мониторинга nftables и AppArmor">
 
 <h5>2.4.2-E Пользовательский скрипт мониторинга состояния nftables и AppArmor</h5>
@@ -2473,7 +2749,7 @@ if __name__ == "__main__":
 </p>
 
 </section>
-<!-- Конец подсекции H5 2.4.2-E -->
+<!-- Конец подсекции H5 2.4.2-F -->
 
 </section> 
 

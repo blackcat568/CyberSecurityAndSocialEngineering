@@ -69,6 +69,13 @@ ip daddr {
 # === Google (AS15169) - поиск, YouTube, Gmail, API ===
 ip daddr { 142.250.0.0/15, 172.217.0.0/16, 74.125.0.0/16 } tcp dport { 80, 443 } ct state new accept
 
+ # === Поисковая система Bing и службы Microsoft ===
+ ip daddr {
+    150.171.0.0/16,       # Основной пул адресов поискового движка Bing
+    40.126.0.0/18,        # Службы авторизации Microsoft Live / Office
+    20.190.128.0/18,      # Облачные бэкенды Azure / Microsoft
+} tcp dport { 80, 443 } ct state new accept
+
 # === GitHub (платформа разработки) ===
 ip daddr {
     140.82.112.0/20,      # Основные подсети GitHub
@@ -84,7 +91,8 @@ ip daddr {
     206.12.19.0/24,       # Резервные пулы маршрутизации SPI
     151.101.0.0/16,       # CDN Fastly для deb.debian.org
     199.232.0.0/16,       # Дополнительный пул Fastly для безопасности
-    146.75.0.0/17         # Резервные маршруты доставки пакетов Debian
+    146.75.0.0/17,        # Резервные маршруты доставки пакетов Debian
+    51.83.0.0/16          # Зеркала репозиториев обновлений deb.debian.org
 } tcp dport { 80, 443 } ct state new accept
 
 # === Debian Project & Wiki (По доменным именам раздельными строками) ===
@@ -143,21 +151,26 @@ ip daddr 57.144.0.0/14 tcp dport { 80, 443 } ct state new accept
 # === Hetzner Cloud (если используете) ===
 ip daddr 150.171.0.0/16 tcp dport { 80, 443 } ct state new accept
 
-# === Akamai Technologies (CDN) ===
-ip daddr { 23.211.0.0/16, 23.64.0.0/16 } tcp dport { 80, 443 } ct state new accept
-
-# === Резервный DNS Quad9 ===
-ip daddr 9.9.9.0/24 udp dport 53 accept
-
 # === Коммунальные службы (ДТЭК, КОЕЦ, Ясно) ===
 ip daddr {
-    185.225.250.0/24,   # ok.dtek-krem.com.ua
-    45.60.78.0/24       # ok.koec.com.ua / solar.yasno.com.ua
+    185.225.250.0/24,   # НОВЫЙ сервер ДТЭК (Hostpro),
+    45.60.78.0/24,      # Коммунальный шлюз "Ясно" (Imperva),
+    193.19.141.134,       # Личный кабинет КОЕК
+    193.19.141.137,       # Личный кабинет ДТЭК (старый)
+    193.19.140.0/22      # Общая подсеть Cosmonova (КОЕК/ДТЭК) 
 } tcp dport { 80, 443 } ct state new accept
 
-# === Резервный DNS Quad9 (149.112.0.0/16) ===
-ip daddr 149.112.0.0/16 udp dport 53 accept
-
 # === Akamai (расширенный диапазон 23.32.0.0/11) ===
-ip daddr 23.32.0.0/11 tcp dport { 80, 443 } ct state new accept
+ip daddr {
+     23.32.0.0/11, 
+     23.211.0.0/16, 
+     23.64.0.0/16
+} tcp dport { 80, 443 } ct state new accept
+
+ # === Резервный DNS Quad9 ===
+ ip daddr  9.9.9.0/24 udp dport 53 accept
+
+ # === Резервный DNS Quad9 (149.112.0.0/16) ===
+ ip daddr 149.112.0.0/16 udp dport 53 accept
+root@home:/home/user# 
 

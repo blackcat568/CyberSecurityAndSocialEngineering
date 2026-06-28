@@ -24,14 +24,11 @@ table inet filter { # Открытие листа правил
     # == 🔁 Разрешаем установленные и связанные соединения ==
     ct state established,related accept
     
-    # == 🔒 Ограничение новых соединений от одного IP (anti-DDoS) ==
-    # == 🔒 Limit the rate of NEW connections per source IP (basic anti-DDoS protection) ==
-    #    If you experience issues with slow or failed page loads in your browser,
-    #    try increasing the limit, for example:
-    #    ip saddr 0.0.0.0/0 ct state new limit rate 50/second burst 100 packets accept
-    ip saddr 0.0.0.0/0 ct state new limit rate 25/second burst 50 packets accept
-    ip saddr 0.0.0.0/0 ct state new log prefix "🔥 BAN: too many conn " flags all
-    ip saddr 0.0.0.0/0 ct state new drop
+    # == 🔒 Правильная защита от агрессивного входящего трафика (anti-DDoS) ==
+    # Мы НЕ разрешаем трафик, мы только на лету уничтожаем то, что превышает лимит.
+    # Если скорость превысила 25 в секунду, пакет логируется и дропается прямо здесь.
+    # Если скорость в норме — пакет идет ниже, где его встретит надежный дефолтный DROP.
+    ip saddr 0.0.0.0/0 ct state new limit rate over 25/second burst 50 packets log prefix "🔥 BAN: too many conn " flags all drop
 
     # == 🛡️ Ограничение ping'ов ==
     ip protocol icmp icmp type echo-request limit rate 1/second accept
@@ -106,10 +103,11 @@ table inet filter { # Открытие листа правил
     # Нужно в chain forward только при наличии Docker, oracle virtualbox. 
     # Если нужно - раскомментировать
 
-    #  == 🔒 Ограничение новых соединений от одного IP (anti-DDoS) ==
-    # ip saddr 0.0.0.0/0 ct state new limit rate 25/second burst 50 packets accept
-    # ip saddr 0.0.0.0/0 ct state new log prefix "🔥 BAN: too many conn " flags all
-    # ip saddr 0.0.0.0/0 ct state new drop
+    # == 🔒 Правильная защита от агрессивного входящего трафика (anti-DDoS) ==
+    # Мы НЕ разрешаем трафик, мы только на лету уничтожаем то, что превышает лимит.
+    # Если скорость превысила 25 в секунду, пакет логируется и дропается прямо здесь.
+    # Если скорость в норме — пакет идет ниже, где его встретит надежный дефолтный DROP.
+    ip saddr 0.0.0.0/0 ct state new limit rate over 25/second burst 50 packets log prefix "🔥 BAN: too many conn " flags all drop
 
     # == 🛡️ Ограничение ping'ов ==
     # ip protocol icmp icmp type echo-request limit rate 1/second accept
@@ -143,6 +141,16 @@ table inet filter { # Открытие листа правил
     
     ct state established,related accept
     oif "lo" accept
+
+    # =======================================================================
+    # 1. ОБЩИЙ ЗАЩИТНЫЙ КУПОЛ (Только блокировка превышения скорости!)
+    # =======================================================================
+    
+    # ВНИМАНИЕ: Здесь НЕТ слова accept. Это правило НЕ выпускает пакеты в интернет.
+    # Знак "!" означает: если скорость превысила лимит, то выполнить действие ЛОГ и ДРОП.
+    # Если скорость в норме, пакет просто молча пролетает ниже — в ваш белый список IP.
+    meta l4proto tcp tcp dport { 80, 443 } ct state new limit rate over 20/second burst 40 packets log prefix "🔥 OUT_WEB_LIMIT_BURST: " drop
+    
     
     # =========================================================================
     # 3. DNS-СЕРВИС (Строгая привязка только к Quad9 на IP 9.9.9.9)
@@ -182,3 +190,4 @@ table inet filter { # Открытие листа правил
   # ============================================
   
 } #  Последняя скобка закрывает лист правил всего конфига. Не удалять!
+

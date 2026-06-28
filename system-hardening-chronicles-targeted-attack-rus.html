@@ -2261,7 +2261,7 @@ meta l4proto { tcp, udp } th dport { 80, 443 } ct state new limit rate over 20/s
 
 <div class="historical-fact">
     <pre>
-        <code class="language-bash">
+        <code class="language-nftables">
 #!/usr/sbin/nft -f
 # = модификация 25 =
 # 03.03.2026 19:52 Закомментирован запрет исходящих UDP портов, что мешают работе ProtonVPN

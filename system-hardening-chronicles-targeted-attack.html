@@ -2257,7 +2257,7 @@ meta l4proto { tcp, udp } th dport { 80, 443 } ct state new limit rate over 20/s
 
 <div class="historical-fact">
     <pre>
-        <code class="language-bash">
+        <code class="language-nftables">
 #!/usr/sbin/nft -f
 # = modification 25 =
 # 03.03.2026 19:52 Commented out the outbound UDP port restriction that was interfering with ProtonVPN

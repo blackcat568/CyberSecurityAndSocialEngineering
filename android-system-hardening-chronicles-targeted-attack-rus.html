@@ -15,7 +15,7 @@
     "isAccessibleForFree": true,
     "description": "Анализ целевой атаки на Android-устройства (ZTE Blade A522, Android 7.1.1 и Lenovo TB-8504X, Android 8.1.0). Получение хакером полного удалённого доступа к микрофону, камере и трафику. Частичная защита планшета через NetGuard. Дополнение к «Хроникам хардеринга системы».",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-06-24<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-06-29<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -44,7 +44,85 @@
   <link rel="alternate" hreflang="ru" href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/android-system-hardening-chronicles-targeted-attack-rus.html">
   <link rel="alternate" hreflang="x-default" href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/android-system-hardening-chronicles-targeted-attack.html">
   
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+      <!-- НАЧАЛО ПОДКЛЮЧЕНИЯ БИБЛИОТЕК ПОДСВЕТКИ КОДА -->
+
+    <!-- 1. Подключаем CSS-тему оформления (тёмная тема) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+
+    <!-- 2. Подключаем саму библиотеку Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    
+    <!-- Регистрируем синтаксис nftables в Highlight.js -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof hljs !== 'undefined') {
+                hljs.registerLanguage('nftables', (hljs) => {
+                    return {
+                        name: 'nftables',
+                        aliases: ['nft'],
+                        keywords: 'table chain type hook priority policy accept drop reject log counter ip ip6 inet ether tcp udp icmp ct state established    related new invalid dport sport saddr daddr',
+                        contains: [
+                            hljs.HASH_COMMENT_MODE,
+                            hljs.QUOTE_STRING_MODE,
+                            hljs.NUMBER_MODE,
+                            {
+                                className: 'meta',
+                                begin: 'include\\b', end: '$'
+                            }
+                        ]
+                    };
+                });
+                // 2. ИСПРАВЛЕНО: Полноценное правило для sysctl, поддерживающее звёздочки *
+                hljs.registerLanguage('sysctl', (hljs) => {
+                    return {
+                        name: 'sysctl',
+                        contains: [
+                            hljs.HASH_COMMENT_MODE,
+                            hljs.NUMBER_MODE,
+                            {
+                                // Подсвечиваем всё имя параметра до знака «=», включая точки и звёздочки
+                                className: 'attr',
+                                begin: /^[a-zA-Z0-9_\.\-\*]+/
+                            },
+                            {
+                                // Подсвечиваем текстовые значения после знака «=»
+                                className: 'string',
+                                begin: /(?<==\s*)[a-zA-Z_/]+/
+                            }
+                        ]
+                    };
+                });
+
+            }
+        });
+    </script>
+
+
+    <!-- 3. Инициализация: говорим библиотеке подсветить все блоки <code> с классом language-* -->
+    <script>
+        function initHighlighting() {
+            if (typeof hljs !== 'undefined') {
+                // Сбрасываем состояние всех блоков
+                document.querySelectorAll('code[data-highlighted]').forEach(el => {
+                    delete el.dataset.highlighted;
+                });
+                // Запускаем подсветку
+                hljs.highlightAll();
+            }
+        }
+
+        // Запускаем после загрузки DOM
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initHighlighting);
+        } else {
+            initHighlighting();
+        }
+    </script>
+    
+  <!-- КОНЕЦ ПОДКЛЮЧЕНИЯ БИБЛИОТЕК ПОДСВЕТКИ КОДА -->
+
   <style>
     body { font-family: "Segoe UI", Tahoma, Verdana, Arial, sans-serif; 
 		  line-height:1.45; 
@@ -132,6 +210,26 @@
       font-size: 1.05em;
       font-weight: 600;
      color: #222;
+    }
+    
+    /* Стили для блоков кода */
+    .historical-fact pre {
+        max-height: 350px;
+        overflow-y: auto;
+        margin-top: 0.8rem;
+        background: #1e1e1e;
+        color: #d4d4d4;
+        padding: 0.8rem;
+        border-radius: 4px;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+    
+    .historical-fact code {
+        color: #d4d4d4;
+        background: none;
+        padding: 0;
     }
     
     /* ========== МОБИЛЬНАЯ АДАПТАЦИЯ ========== */
@@ -574,9 +672,332 @@
 
 </section>
 
+<!-- Конец подсекции 3.4 -->
+
+<hr>
+
+<!-- Подсекция 3.5 -->
+<section id="device2-configuration-2" aria-label="3.5. Планшет - конфигурация 2">
+<h3 id="section3-5">3.5. Планшет - конфигурация 2</h3>
+
+Раздел создан: 29.06.2026
+
+Изменения:
+- Shelter удален так как сильно замедляет и без того устаревшее устройство. Позитивный эффект от применения Shelter не выявлен.
+- Добавлен Гугл акаунт, так как влияние наличия или отсутствия Гугл акаунта на безопасность устройства не обнаружено. Данные об активности браузера (мои разговаоры с DeepSeek, просмотр YouTube) все равно доступны злоумышленику.
+
+Неопределенные данные:
+- неизвестно, доступна ли злоумышленнику файловая система. 
+			
+<div class="historical-fact">
+    <strong>Конфигурация NetGuard планшета:</strong>
+    <pre>
+        <code class="language-ini">
+	
+&lt;?xml version='1.0' encoding='UTF-8' standalone='yes' ?&gt;
+&lt;netguard&gt;
+  &lt;!-- ========================================== --&gt;
+  &lt;!-- ГРУППА 1: Wi-Fi ЗАБЛОКИРОВАН, Мобильный ЗАБЛОКИРОВАН --&gt;
+  &lt;!-- (whitelist = false, value="true" = ЗАБЛОКИРОВАНО) --&gt;
+  &lt;!-- ========================================== --&gt;
+  &lt;!-- 187 ЗАБЛОКИРОВАННЫХ СИСТЕМНЫХ ПРИЛОЖЕНИЙ (исключены 8 разрешённых): --&gt;
+  &lt;wifi&gt;
+    &lt;setting key="com.lenovo.ota" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.storagemanager" type="boolean" value="true" /&gt;
+    &lt;setting key="com.lenovo.csdkplatform" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.printspooler" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qualcomm.svi" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qti.service.colorservice" type="boolean" value="true" /&gt;
+    &lt;setting key="com.longcheertel.midtest" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.defcontainer" type="boolean" value="true" /&gt;
+    &lt;setting key="org.codeaurora.btmultisim" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qualcomm.qti.poweroffalarm" type="boolean" value="true" /&gt;
+    &lt;setting key="android.media" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qualcomm.qti.StatsPollManager" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qualcomm.qti.simsettings" type="boolean" value="true" /&gt;
+    &lt;setting key="org.videolan.vlc" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.pacprocessor" type="boolean" value="true" /&gt;
+    &lt;setting key="com.google.android.packageinstaller" type="boolean" value="true" /&gt;
+    &lt;setting key="com.rhmsoft.edit" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qualcomm.qti.phonefeature" type="boolean" value="true" /&gt;
+    &lt;setting key="com.wapi.wapicertmanage" type="boolean" value="true" /&gt;
+    &lt;setting key="com.lenovo.tab4_8" type="boolean" value="true" /&gt;
+    &lt;setting key="com.rarlab.rar" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qualcomm.cabl" type="boolean" value="true" /&gt;
+    &lt;setting key="com.tblenovo.soundrecorder" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.wallpaper.livepicker" type="boolean" value="true" /&gt;
+    &lt;setting key="nobody" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.providers.telephony" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.contacts" type="boolean" value="true" /&gt;
+    &lt;setting key="com.google.android.partnersetup" type="boolean" value="true" /&gt;
+    &lt;setting key="com.google.android.talk" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qualcomm.qti.networksetting" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.deskclock" type="boolean" value="true" /&gt;
+    &lt;setting key="com.dti.lenovo.tablet" type="boolean" value="true" /&gt;
+    &lt;setting key="com.google.android.tts" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.dreams.phototable" type="boolean" value="true" /&gt;
+    &lt;setting key="com.lenovo.lps.cloud.sync.row" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qualcomm.qti.qcom_accesslogkit" type="boolean" value="true" /&gt;
+    &lt;setting key="com.google.android.ext.shared" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.cts.ctsshim" type="boolean" value="true" /&gt;
+    &lt;setting key="com.google.android.apps.photos" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.providers.contacts" type="boolean" value="true" /&gt;
+    &lt;setting key="com.lenovo.ue.device" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.sharedstoragebackup" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.mtp" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.documentsui" type="boolean" value="true" /&gt;
+    &lt;setting key="com.tblenovo.setup" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.bookmarkprovider" type="boolean" value="true" /&gt;
+    &lt;setting key="com.lenovo.weather.theme.dreamlandPad" type="boolean" value="true" /&gt;
+    &lt;setting key="com.google.android.gsf" type="boolean" value="true" /&gt;
+    &lt;setting key="com.google.android.apps.maps" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qualcomm.qti.autoregistration" type="boolean" value="true" /&gt;
+    &lt;setting key="com.google.android.apps.tachyon" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.emergency" type="boolean" value="true" /&gt;
+    &lt;setting key="com.google.android.ims" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qualcomm.simcontacts" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.carrierdefaultapp" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qualcomm.qti.auth.fidocryptoservice" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.location.fused" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.cellbroadcastreceiver" type="boolean" value="true" /&gt;
+    &lt;setting key="com.lenovo.launcher" type="boolean" value="true" /&gt;
+    &lt;setting key="com.google.android.googlequicksearchbox" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.statementservice" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.providers.settings" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.systemui.theme.dark" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qti.qualcomm.datastatusnotification" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.systemui" type="boolean" value="true" /&gt;
+    &lt;setting key="com.dsi.ant.server" type="boolean" value="true" /&gt;
+    &lt;setting key="org.codeaurora.ims" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.bips" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qualcomm.location" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.companiondevicemanager" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.dreams.basic" type="boolean" value="true" /&gt;
+    &lt;setting key="android.gps" type="boolean" value="true" /&gt;
+    &lt;setting key="com.codeaurora.fmradio" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qualcomm.qcrilmsgtunnel" type="boolean" value="true" /&gt;
+    &lt;setting key="com.lenovo.dsa" type="boolean" value="true" /&gt;
+    &lt;setting key="com.chaozhuo.filemanager" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qualcomm.qti.appnetaccess" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.mms" type="boolean" value="true" /&gt;
+    &lt;setting key="com.kidoz.lenovo" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.shell" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qualcomm.embms" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qti.xdivert" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.backupconfirm" type="boolean" value="true" /&gt;
+    &lt;setting key="com.google.android.onetimeinitializer" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qualcomm.timeservice" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.settings" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.providers.userdictionary" type="boolean" value="true" /&gt;
+    &lt;setting key="com.google.android.feedback" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qualcomm.qti.ims" type="boolean" value="true" /&gt;
+    &lt;setting key="com.lenovo.lsf" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qualcomm.qti.telephonyservice" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qualcomm.qti.confdialer" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.wantjoin.settings" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qti.dpmserviceapp" type="boolean" value="true" /&gt;
+    &lt;setting key="com.google.android.setupwizard" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.bluetoothmidiservice" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qualcomm.wfd.service" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.carrierconfig" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.dialer" type="boolean" value="true" /&gt;
+    &lt;setting key="com.google.android.webview" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.phone" type="boolean" value="true" /&gt;
+    &lt;setting key="com.goodix.test" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.mms.service" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.egg" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.captiveportallogin" type="boolean" value="true" /&gt;
+    &lt;setting key="com.google.android.printservice.recommendation" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.timerswitch" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.inputdevices" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qualcomm.qti.accesscache" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qualcomm.qti.auth.sampleauthenticatorservice" type="boolean" value="true" /&gt;
+    &lt;setting key="com.kunzisoft.keepass.libre" type="boolean" value="true" /&gt;
+    &lt;setting key="com.google.android.apps.work.oobconfig" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.calllogbackup" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.providers.partnerbookmarks" type="boolean" value="true" /&gt;
+    &lt;setting key="com.tblenovo.whatsnewclient" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.providers.calendar" type="boolean" value="true" /&gt;
+    &lt;setting key="com.google.android.tag" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qti.confuridialer" type="boolean" value="true" /&gt;
+    &lt;setting key="com.lenovo.wallpaper" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.externalstorage" type="boolean" value="true" /&gt;
+    &lt;setting key="org.codeaurora.bluetooth" type="boolean" value="true" /&gt;
+    &lt;setting key="com.lenovo.agent0" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qualcomm.qti.callfeaturessetting" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.server.telecom" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.vending" type="boolean" value="true" /&gt;
+    &lt;setting key="com.dolby.dax2appUI" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.keychain" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.wallpaperbackup" type="boolean" value="true" /&gt;
+    &lt;setting key="com.lenovo.lsf.device" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.chrome" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.managedprovisioning" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.stk" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.providers.media" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qualcomm.qti.auth.sampleextauthservice" type="boolean" value="true" /&gt;
+    &lt;setting key="com.google.android.apps.docs" type="boolean" value="true" /&gt;
+    &lt;setting key="com.google.android.youtube" type="boolean" value="true" /&gt;
+    &lt;setting key="com.lenovo.ocpl" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.wallpapercropper" type="boolean" value="true" /&gt;
+    &lt;setting key="android" type="boolean" value="true" /&gt;
+    &lt;setting key="org.codeaurora.snapcam" type="boolean" value="true" /&gt;
+    &lt;setting key="com.skype.raider" type="boolean" value="true" /&gt;
+    &lt;setting key="com.google.android.gms" type="boolean" value="true" /&gt;
+    &lt;setting key="com.google.android.backuptransport" type="boolean" value="true" /&gt;
+    &lt;setting key="com.lenovo.launcher.provider" type="boolean" value="true" /&gt;
+    &lt;setting key="com.motorola.demo" type="boolean" value="true" /&gt;
+    &lt;setting key="com.google.android.videos" type="boolean" value="true" /&gt;
+    &lt;setting key="com.tblenovo.lewea" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.certinstaller" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qualcomm.qti.auth.securesampleauthservice" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qapp.secprotect" type="boolean" value="true" /&gt;
+    &lt;setting key="com.google.android.marvin.talkback" type="boolean" value="true" /&gt;
+    &lt;setting key="root" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qualcomm.qti.qtisystemservice" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.proxyhandler" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.poweronalert" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.smspush" type="boolean" value="true" /&gt;
+    &lt;setting key="com.wantjoin.safeBrowser" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.providers.downloads" type="boolean" value="true" /&gt;
+    &lt;setting key="com.longcheertel.modemlog" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qti.qualcomm.deviceinfo" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.wantjoin.childmode.ctrl" type="boolean" value="true" /&gt;
+    &lt;setting key="android.dns" type="boolean" value="true" /&gt;
+    &lt;setting key="com.google.android.ext.services" type="boolean" value="true" /&gt;
+    &lt;setting key="com.quicinc.cne.CNEService" type="boolean" value="true" /&gt;
+    &lt;setting key="com.lenovo.dagent" type="boolean" value="true" /&gt;
+    &lt;setting key="com.goodix.rawdata" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.bluetooth" type="boolean" value="true" /&gt;
+    &lt;setting key="app.olauncher" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.calculator2" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.cts.priv.ctsshim" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qualcomm.qti.auth.secureextauthservice" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qualcomm.qti.lpa" type="boolean" value="true" /&gt;
+    &lt;setting key="com.google.android.syncadapters.contacts" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.providers.downloads.ui" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.providers.blockednumber" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qualcomm.qti.uceShimService" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qualcomm.qti.uim" type="boolean" value="true" /&gt;
+    &lt;setting key="com.google.android.gm" type="boolean" value="true" /&gt;
+    &lt;setting key="android.multicast" type="boolean" value="true" /&gt;
+    &lt;setting key="com.qualcomm.qti.callenhancement" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.partnerbrowsercustomizations.example" type="boolean" value="true" /&gt;
+    &lt;setting key="com.google.android.inputmethod.latin" type="boolean" value="true" /&gt;
+    &lt;setting key="com.google.android.music" type="boolean" value="true" /&gt;
+    &lt;setting key="com.android.htmlviewer" type="boolean" value="true" /&gt;
+    &lt;setting key="com.google.android.configupdater" type="boolean" value="true" /&gt;
+    &lt;setting key="com.tblenovo.whatsnewhost" type="boolean" value="true" /&gt;
+    &lt;setting key="com.google.android.calendar" type="boolean" value="true" /&gt;
+  &lt;/wifi&gt;
+
+  &lt;!-- ========================================== --&gt;
+  &lt;!-- ГРУППА 2: Wi-Fi РАЗРЕШЁН, Мобильный РАЗРЕШЁН --&gt;
+  &lt;!-- (whitelist = false, НЕ УКАЗАНЫ в экспорте, но РАЗРЕШЕНЫ по скриншоту) --&gt;
+  &lt;!-- ========================================== --&gt;
+  &lt;!-- 
+    8 разрешённых приложений (НЕ ВКЛЮЧЕНЫ в списки выше):
+    1. com.aurora.store (Aurora Store)
+    2. org.fdroid.fdroid (F-Droid)
+    3. org.mozilla.fennec (Fennec)
+    4. com.github.libretube (LibreTube)
+    5. com.mediaget.android (MediaGet)
+    6. mark.via (Via)
+    7. com.android.vpndialogs (VpnDialogs)
+  --&gt;
+
+  &lt;!-- ========================================== --&gt;
+  &lt;!-- ГРУППА 3: Wi-Fi ЗАБЛОКИРОВАН, Мобильный РАЗРЕШЁН --&gt;
+  &lt;!-- ========================================== --&gt;
+  &lt;!-- (нет таких приложений) --&gt;
+
+  &lt;!-- ========================================== --&gt;
+  &lt;!-- ГРУППА 4: Wi-Fi РАЗРЕШЁН, Мобильный ЗАБЛОКИРОВАН --&gt;
+  &lt;!-- ========================================== --&gt;
+  &lt;!-- (нет таких приложений) --&gt;
+
+  &lt;!-- ========================================== --&gt;
+  &lt;!-- ГЛОБАЛЬНЫЕ НАСТРОЙКИ --&gt;
+  &lt;!-- ========================================== --&gt;
+  &lt;application&gt;
+    &lt;setting key="subnet" type="boolean" value="false" /&gt;
+    &lt;setting key="reload_onconnectivity" type="boolean" value="true" /&gt;
+    &lt;setting key="disable_on_call" type="boolean" value="false" /&gt;
+    &lt;setting key="filter_udp" type="boolean" value="true" /&gt;
+    &lt;setting key="dark_theme" type="boolean" value="true" /&gt;
+    &lt;setting key="whitelist_roaming" type="boolean" value="true" /&gt;
+    &lt;setting key="lockdown_other" type="boolean" value="true" /&gt;
+    &lt;setting key="lan" type="boolean" value="false" /&gt;
+    &lt;setting key="national_roaming" type="boolean" value="false" /&gt;
+    &lt;setting key="pcap_file_size" type="string" value="2" /&gt;
+    &lt;setting key="whitelist_other" type="boolean" value="false" /&gt;
+    &lt;setting key="unmetered_4g" type="boolean" value="false" /&gt;
+    &lt;setting key="hint_fairemail" type="boolean" value="false" /&gt;
+    &lt;setting key="hint_push" type="boolean" value="false" /&gt;
+    &lt;setting key="pcap_record_size" type="string" value="64" /&gt;
+    &lt;setting key="version" type="integer" value="2026052101" /&gt;
+    &lt;setting key="wifi_homes" type="set" value="" /&gt;
+    &lt;setting key="hosts_url" type="string" value="https://www.netguard.me/hosts" /&gt;
+    &lt;setting key="install" type="boolean" value="true" /&gt;
+    &lt;setting key="use_metered" type="boolean" value="false" /&gt;
+    &lt;setting key="nodoze" type="boolean" value="false" /&gt;
+    &lt;setting key="stats_frequency" type="string" value="1000" /&gt;
+    &lt;setting key="lockdown_wifi" type="boolean" value="true" /&gt;
+    &lt;setting key="eu_roaming" type="boolean" value="false" /&gt;
+    &lt;setting key="show_top" type="boolean" value="false" /&gt;
+    &lt;setting key="notify_access" type="boolean" value="false" /&gt;
+    &lt;setting key="log_app" type="boolean" value="false" /&gt;
+    &lt;setting key="show_stats" type="boolean" value="false" /&gt;
+    &lt;setting key="show_system" type="boolean" value="true" /&gt;
+    &lt;setting key="enabled" type="boolean" value="true" /&gt;
+    &lt;setting key="manage_system" type="boolean" value="true" /&gt;
+    &lt;setting key="stats_samples" type="string" value="90" /&gt;
+    &lt;setting key="hint_usage" type="boolean" value="false" /&gt;
+    &lt;setting key="screen_other" type="boolean" value="false" /&gt;
+    &lt;setting key="initialized" type="boolean" value="true" /&gt;
+    &lt;setting key="theme" type="string" value="teal" /&gt;
+    &lt;setting key="whitelist_wifi" type="boolean" value="false" /&gt;
+    &lt;setting key="unmetered_2g" type="boolean" value="false" /&gt;
+    &lt;setting key="use_hosts" type="boolean" value="true" /&gt;
+    &lt;setting key="handover" type="boolean" value="false" /&gt;
+    &lt;setting key="hint_system" type="boolean" value="false" /&gt;
+    &lt;setting key="screen_on" type="boolean" value="true" /&gt;
+    &lt;setting key="update_check" type="boolean" value="true" /&gt;
+    &lt;setting key="socks5_enabled" type="boolean" value="false" /&gt;
+    &lt;setting key="debug_iab" type="boolean" value="false" /&gt;
+    &lt;setting key="ip6" type="boolean" value="true" /&gt;
+    &lt;setting key="filter" type="boolean" value="false" /&gt;
+    &lt;setting key="auto_enable" type="string" value="0" /&gt;
+    &lt;setting key="screen_delay" type="string" value="0" /&gt;
+    &lt;setting key="watchdog" type="string" value="0" /&gt;
+    &lt;setting key="hint_whitelist" type="boolean" value="false" /&gt;
+    &lt;setting key="loglevel" type="string" value="6" /&gt;
+    &lt;setting key="screen_wifi" type="boolean" value="false" /&gt;
+    &lt;setting key="tethering" type="boolean" value="false" /&gt;
+    &lt;setting key="track_usage" type="boolean" value="false" /&gt;
+    &lt;setting key="unmetered_3g" type="boolean" value="false" /&gt;
+  &lt;/application&gt;
+  &lt;screen_wifi /&gt;
+  &lt;screen_other /&gt;
+  &lt;roaming /&gt;
+  &lt;lockdown /&gt;
+  &lt;apply /&gt;
+  &lt;notify /&gt;
+  &lt;filter /&gt;
+  &lt;forward /&gt;
+&lt;/netguard&gt;
+
+        </code>
+    </pre>
+</div>
+
 <p style="text-align: center; margin-top: 2rem;">
   <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
 </p>
+
+</section>
+
+<!-- Конец подсекции 3.5 -->
 
 <details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
   <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Устройство 2 (планшет)</summary>
@@ -586,7 +1007,6 @@
 </details>
 
 </section> <!-- /Конец основной главы H2 -->
-
 
 <!-- Начало блока перекрестных ссылок для статьи "Хроники хардеринга системы андроид и поиск конфигурации, устойчивой к целевой атаке" -->
 <hr>

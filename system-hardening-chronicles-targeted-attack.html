@@ -2471,9 +2471,15 @@ table inet filter { # Opening the ruleset
 
 <p><time datetime="2026-06-29">Created: 29 June 2026</time></p>
 
+<p>The implementation of the strategy aimed at disrupting communication channels between the presumed hacker infrastructure and the author's system continues.</p>
+
+<p>The objective remains unchanged: in addition to applying other measures that hinder the proper functioning of potential malware — such as kernel parameter tuning via <code>sysctl</code>, system fragmentation using sandboxes (<code>Firejail</code>, <code>Flatpak</code>), and application permission restrictions through <code>AppArmor</code> — it is essential to maximally complicate both the attacker's access to the author's system and the malware's response to the adversary's server.</p>
+
+<p>The communication channel between the attacker's server and the victim's computer represents a <strong>critical bottleneck</strong> — a "choke point" that, regardless of the sophistication of the hacker infrastructure, cannot be entirely bypassed. For this reason, particular attention must be paid to the analysis and filtering of this network segment.</p>
+
 <p>In order to enhance security and to practically explore the potential of nftables, it was decided to strengthen the nftables configuration of Configuration 3.</p>
 
-<p>In addition to establishing outbound traffic filtering by IP and fixing the limit on allowed connections per second, made in sections <a href="#config3-nftables-changes">"2.4.2-A Changes in the nftables config"</a> and <a href="#config3-nftables-fixes">"2.4.2-D Fixing the nftables configuration of Configuration 3"</a>, the following additional security features were added to the configuration and to the whitelist of allowed IPs for the <code>output</code> chain which was extracted from the main config:</p>
+<p>In addition to establishing outbound traffic filtering by IP and fixing the limit on allowed connections per second, made in sections <a href="#config3-nftables-changes">"2.4.2-C Changes in the nftables config"</a> and <a href="#config3-nftables-fixes">"2.4.2-D Fixing the nftables configuration of Configuration 3"</a>, the following additional security features were added to the configuration and to the whitelist of allowed IPs for the <code>output</code> chain which was extracted from the main config:</p>
 
 <ul>
     <li><strong>Filtering access to IPs from the whitelist by user UID</strong> — even if an IP address is allowed, only specific users (e.g., <code>user</code>, <code>_apt</code>, <code>root</code>) are permitted to access it. This prevents malicious processes running under other UIDs from using allowed IP addresses.</li>

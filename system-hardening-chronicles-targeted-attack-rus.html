@@ -15,7 +15,7 @@
     "isAccessibleForFree": true,
     "description": "Реальная хроника противостояния целевой атаке: документирование уязвимостей, конфигураций, реакций и хардеринга системы. От нулевой защиты к поиску устойчивых конфигураций. Технический отчет с анализом аппаратной части, ОС, AppArmor, nftables, OpenSnitch, Flatpak, USBGuard. Для специалистов по кибербезопасности и ИБ.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-06-28<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-06-29<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -313,7 +313,7 @@
 
 <div class="alert" style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 2rem 0;">
   <strong style="color: #856404;">⚠️ Внимание!</strong>
-  <span style="color: #856404;"> Статья находится в разработке. Уточнения и дополнения вносятся по мере получения новых данных об устойчивости новых конфигураций безопасности и активности хакера.<br>Последнее обновление контента: <!-- DATE_START -->2026-06-28<!-- DATE_END --></span>
+  <span style="color: #856404;"> Статья находится в разработке. Уточнения и дополнения вносятся по мере получения новых данных об устойчивости новых конфигураций безопасности и активности хакера.<br>Последнее обновление контента: <!-- DATE_START -->2026-06-29<!-- DATE_END --></span>
 </div>
 
 <!-- КРУПНАЯ ГЛАВА H2 0 - Оглавление -->
@@ -380,8 +380,9 @@
 								<li style="margin-bottom: 0.1rem;"><a href="#config3-logic" style="text-decoration: none;">2.4.2-B Стратегическая логика Конфигурации 3: перекрытие векторов как метод сдерживания</a></li>
                                 <li style="margin-bottom: 0.1rem;"><a href="#config3-software-nftables" style="text-decoration: none;">2.4.2-C Изменения в конфиге nftables</a></li>
                                 <li style="margin-bottom: 0.1rem;"><a href="#config3-nftables-fixes" style="text-decoration: none;">2.4.2-D Исправление конфига nftables конфигурации 3</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config3-dns-quard9" style="text-decoration: none;">2.4.2 E Переход на DNS-сервер Quad9 (9.9.9.9)</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config3-app-nft-monitoring-script" style="text-decoration: none;">2.4.2-F Пользовательский скрипт мониторинга nftables и AppArmor</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config3-nftables-enhancements" style="text-decoration: none;">2.4.2-E Усиление конфига nftables конфигурации 3</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config3-dns-quard9" style="text-decoration: none;">2.4.2 F Переход на DNS-сервер Quad9 (9.9.9.9)</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config3-app-nft-monitoring-script" style="text-decoration: none;">2.4.2-G Пользовательский скрипт мониторинга nftables и AppArmor</a></li>
                             </ul>
                         </li>
                         <li style="margin-bottom: 0.1rem;"><a href="#config3-experiment-results" style="text-decoration: none;">Наблюдаем за ходом эксперимента с конфигурацией 3</a></li>
@@ -2329,14 +2330,14 @@ table inet filter { # Открытие листа правил
     } drop
 
     # == 🚫 Блокировка странных TCP-флагов (XMAS, NULL-скан и другие) ==
-    tcp flags & (fin|syn|rst|psh|ack|urg) == 0 drop        # NULL scan
-    tcp flags & (fin|psh|urg) == (fin|psh|urg) drop          # XMAS scan
-    tcp flags & (fin|syn) == (fin|syn) drop                  # SYN-ACK scan
-    tcp flags & (syn|rst|fin) == (syn|rst|fin) drop          # Xmas scan
-    tcp flags & (syn|fin|rst|psh|ack) == (syn|rst|fin|ack) drop # Xmas scan
+    tcp flags &amp; (fin|syn|rst|psh|ack|urg) == 0 drop        # NULL scan
+    tcp flags &amp; (fin|psh|urg) == (fin|psh|urg) drop          # XMAS scan
+    tcp flags &amp; (fin|syn) == (fin|syn) drop                  # SYN-ACK scan
+    tcp flags &amp; (syn|rst|fin) == (syn|rst|fin) drop          # Xmas scan
+    tcp flags &amp; (syn|fin|rst|psh|ack) == (syn|rst|fin|ack) drop # Xmas scan
 
     # == 🚫 Блокировка фрагментированных пакетов — часто используются в обходах фильтров ==
-    ip frag-off & 0x1fff != 0 drop
+    ip frag-off &amp; 0x1fff != 0 drop
 
     # == 🔒 Блокировка пакетов с поддельными IP (спуфинг) ==
     ip saddr 127.0.0.0/8 drop          # localhost
@@ -2468,10 +2469,562 @@ table inet filter { # Открытие листа правил
 
 <hr>
 
-<!-- Подсекция H5 2.4.2-E -->
-<section id="config3-dns-quard9" aria-label="2.4.2-D Переход на DNS-сервер Quad9 (9.9.9.9)">
+<!-- Subsection H5 2.4.2-E -->
+<section id="config3-nftables-enhancements" aria-label="2.4.2-E Усиление конфига nftables конфигурации 3">
 
-<h5>2.4.2-D Переход на DNS-сервер Quad9 (9.9.9.9)</h5>
+<h5>2.4.2-E Усиление конфига nftables конфигурации 3</h5>
+
+<p><time datetime="2026-06-29">Created: 29 June 2026</time></p>
+
+<p>В целях усиления защиты, а также практического изучения потенциала nftables, было принято решение усилить конфиг nftables конфигурации 3.</p>
+
+<p>Помимо установления фильтрации исходящего трафика по IP и исправления лимита на количество разрешённых соединений в секунду, сделанных в главах <a href="#config3-nftables-changes">"2.4.2-A Изменения в конфиге nftables"</a> и <a href="#config3-nftables-fixes">"2.4.2-D Исправление конфига nftables конфигурации 3"</a>, в конфиг и вынесенный из конфига белый лист разрешённых IP цепочки <code>output</code> были добавлены такие дополнительные защитные функции:</p>
+
+<ul>
+    <li><strong>Фильтрация доступа к IP из белого списка по UID пользователя</strong> — теперь даже если IP-адрес разрешён, доступ к нему имеют только определённые пользователи (например, <code>user</code>, <code>_apt</code>, <code>root</code>). Это предотвращает использование разрешённых IP-адресов вредоносными процессами, запущенными от других UID.</li>
+    <li><strong>Фильтрация невалидных пакетов в chain <code>output</code></strong> — пакеты, которые conntrack пометил как невалидные (invalid), немедленно отбрасываются с логированием. Это предотвращает отправку подозрительных или повреждённых пакетов в интернет.</li>
+</ul>
+
+<p><strong>Усовершенствованный конфиг nftables конфигурации 3:</strong></p>
+
+<div class="historical-fact">
+    <pre>
+        <code class="language-nftables">
+#!/usr/sbin/nft -f
+# 03.03.2026 19:52 Закомментирован запрет исходящих UDP портиов, что мешают работе ProtonVPN
+# 04.03.2026 19:53 Разрешены нужные для Doker  порты в цепочке  forward
+# 21.06.2026 08:24 Установлена фильтрация исходящих соединений по IP адресу
+# 28.06.2026 21:53 установлен лимит на количество соединений в секунду
+# Установлена фильтрация доступа к IP из белого списка по UID пользователя
+# Установлена фильтрация невалидных пакетов в chain output
+
+flush ruleset
+
+table inet filter { # Открытие листа правил
+  
+  # ============================================
+  # НАЧАЛО ЦЕПОЧКИ INPUT
+  # ============================================
+  
+  # = Основная политика цепочки =
+  chain input {
+    type filter hook input priority 0;
+    policy drop;
+
+    # = Набор общих правил =
+    # 🌀 Разрешаем loopback-интерфейс (внутренние процессы)
+    iif "lo" accept
+
+    # == 🔁 Разрешаем установленные и связанные соединения ==
+    ct state established,related accept
+    
+    # == 🔒 Правильная защита от агрессивного входящего трафика (anti-DDoS) ==
+    # Мы НЕ разрешаем трафик, мы только на лету уничтожаем то, что превышает лимит.
+    # Если скорость превысила 25 в секунду, пакет логируется и дропается прямо здесь.
+    # Если скорость в норме — пакет идет ниже, где его встретит надежный дефолтный DROP.
+    ip saddr 0.0.0.0/0 ct state new limit rate over 25/second burst 50 packets log prefix "🔥 BAN: too many conn " flags all drop
+
+    # == 🛡️ Ограничение ping'ов ==
+    ip protocol icmp icmp type echo-request limit rate 1/second accept
+    ip protocol icmp icmp type echo-request log prefix "🔥 BAN: ICMP flood " flags all
+    ip protocol icmp icmp type echo-request drop
+
+    # == 🚫 Блокировка SSDP и mDNS (локальные протоколы вещания) ==
+    ip daddr 239.255.255.250 udp dport 1900 drop   # ❌ SSDP (UPnP/обнаружение устройств)
+    ip daddr 224.0.0.251 udp dport 5353 drop       # ❌ mDNS (Bonjour, Avahi)
+
+    # == 🛑 Блокировка NetBIOS и LLMNR (внутрисетевые протоколы Windows/systemd) ==
+    udp dport 137 drop    # ❌ NetBIOS Name Service (Windows сетевые имена)
+    udp dport 138 drop    # ❌ NetBIOS Datagram Service (распознавание в LAN)
+    udp dport 5355 drop   # ❌ LLMNR (Link-Local Multicast Name Resolution)
+
+    # = Набор правил блокировки IP адресов и диапазонов =
+    
+    # == 🧱 Блокировка известных бот-сетей и прокси ==
+    ip saddr {
+      45.9.20.0/24,
+      89.248.160.0/19,
+      185.220.100.0/22,
+      198.96.155.0/24,
+      185.107.56.0/24,
+      185.129.62.0/23
+    } log prefix "🔥 BAN: known bots " flags all
+    ip saddr {
+      45.9.20.0/24,
+      89.248.160.0/19,
+      185.220.100.0/22,
+      198.96.155.0/24,
+      185.107.56.0/24,
+      185.129.62.0/23
+    } drop
+
+    # == 🚫 Блокировка странных TCP-флагов (XMAS, NULL-скан и другие) ==
+    tcp flags &amp; (fin|syn|rst|psh|ack|urg) == 0 drop        # NULL scan
+    tcp flags &amp; (fin|psh|urg) == (fin|psh|urg) drop          # XMAS scan
+    tcp flags &amp; (fin|syn) == (fin|syn) drop                  # SYN-ACK scan
+    tcp flags &amp; (syn|rst|fin) == (syn|rst|fin) drop          # Xmas scan
+    tcp flags &amp; (syn|fin|rst|psh|ack) == (syn|rst|fin|ack) drop # Xmas scan
+
+    # == 🚫 Блокировка фрагментированных пакетов — часто используются в обходах фильтров ==
+    ip frag-off &amp; 0x1fff != 0 drop
+
+    # == 🔒 Блокировка пакетов с поддельными IP (спуфинг) ==
+    ip saddr 127.0.0.0/8 drop          # localhost
+    ip saddr 10.0.0.0/8 drop           # частная сеть
+    ip saddr 172.16.0.0/12 drop        # частная сеть
+    ip saddr 192.168.0.0/16 drop       # частная сеть
+    ip saddr 169.254.0.0/16 drop       # APIPA
+    ip saddr 0.0.0.0/8 drop            # недопустимый адрес
+    ip saddr 224.0.0.0/4 drop          # multicast
+    ip saddr 240.0.0.0/5 drop          # зарезервировано
+  }
+
+  # ============================================
+  # КОНЕЦ ЦЕПОЧКИ INPUT
+  # ============================================
+
+
+  # ============================================
+  # НАЧАЛО ЦЕПОЧКИ FORWARD
+  # ============================================
+
+  # = Основная политика цепочки =
+  chain forward {
+    type filter hook forward priority 0;
+    policy accept;
+    
+    #  = Запреты разного рода атак =
+    # Нужно в chain forward только при наличии Docker, oracle virtualbox. 
+    # Если нужно - раскомментировать
+
+    # == 🔒 Правильная защита от агрессивного входящего трафика (anti-DDoS) ==
+    # Мы НЕ разрешаем трафик, мы только на лету уничтожаем то, что превышает лимит.
+    # Если скорость превысила 25 в секунду, пакет логируется и дропается прямо здесь.
+    # Если скорость в норме — пакет идет ниже, где его встретит надежный дефолтный DROP.
+    ip saddr 0.0.0.0/0 ct state new limit rate over 25/second burst 50 packets log prefix "🔥 BAN: too many conn " flags all drop
+
+    # == 🛡️ Ограничение ping'ов ==
+    # ip protocol icmp icmp type echo-request limit rate 1/second accept
+    # ip protocol icmp icmp type echo-request log prefix "🔥 BAN: ICMP flood " flags all
+    # ip protocol icmp icmp type echo-request drop
+
+    # ⬇️ ВСТАВКА: Список правил для forward TCP UDP
+    # запрещенные и разрешенные TCP и UDP порты и диапазоны
+    
+        include "/etc/nftables.d/forward-tcp-udp.nft"
+        
+    # ⬆️ КОНЕЦ ВСТАВКИ
+
+  }
+
+  # ============================================
+  # КОНЕЦ ЦЕПОЧКИ FORWARD
+  # ============================================
+  
+  # ============================================
+  # НАЧАЛО ЦЕПОЧКИ OUTPUT
+  # ============================================
+
+  chain output {
+    # = Основная политика цепочки =
+    type filter hook output priority 0;
+    policy drop;
+    
+    # = САМЫЕ ПЕРВЫЕ - критически важные правила =
+    # пояснение
+    
+    ct state established,related accept
+    oif "lo" accept
+
+    # Дропаем любые исходящие пакеты, которые conntrack пометил как невалидные
+    # Это обеспечит немедленное уничтожение невалидных пакетов
+    # до начала применения остальных правил фильтрации.
+    ct state invalid log prefix "🔥 INVALID_OUT_PACKET: " drop
+
+    # =======================================================================
+    # 1. ОБЩИЙ ЗАЩИТНЫЙ КУПОЛ (Только блокировка превышения скорости!)
+    # =======================================================================
+    
+    # ВНИМАНИЕ: Здесь НЕТ слова accept. Это правило НЕ выпускает пакеты в интернет.
+    # Знак "!" означает: если скорость превысила лимит, то выполнить действие ЛОГ и ДРОП.
+    # Если скорость в норме, пакет просто молча пролетает ниже — в ваш белый список IP.
+    # ВНИМАНИЕ: meta l4proto { tcp, udp } и th dport накрывают куполом и TCP, и UDP (HTTP/3)
+    meta l4proto { tcp, udp } th dport { 80, 443 } ct state new limit rate over 20/second burst 40 packets log prefix "🔥 OUT_WEB_LIMIT_BURST: " drop
+    
+    
+    # =========================================================================
+    # 3. DNS-СЕРВИС (Строгая привязка только к Quad9 на IP 9.9.9.9)
+    # =========================================================================
+
+    # 1. По UDP пропускаем только короткие запросы (&lt;=150 байт) и строго от доверенных лиц
+    ip daddr { 9.9.9.9, 31.43.43.243, 31.43.43.143 } udp dport 53 meta length &lt;= 150 meta skuid { user, _apt, root } ct state new accept
+
+    # 2. По TCP длину не ограничиваем (для тяжелых ответов DNSSEC), но пользователя проверяем железно
+    ip daddr { 9.9.9.9, 31.43.43.243, 31.43.43.143 } tcp dport 53 meta skuid { user, _apt, root } ct state new accept
+
+    # 3. Все остальные попытки любых левых служб (или длинный UDP) — логируем и уничтожаем
+    ip daddr { 9.9.9.9, 31.43.43.243, 31.43.43.143 } meta l4proto { tcp, udp } th dport 53 log prefix "🔥 OUT_ILLEGAL_DNS: " drop
+
+
+    # == Критически важные ICMP для сети ==
+    ip protocol icmp icmp type { destination-unreachable, time-exceeded, parameter-problem } accept
+
+    # == Важные ICMPv6 для IPv6 ==
+    ip6 nexthdr icmpv6 icmpv6 type { 1, 2, 3, 4 } accept
+    ip6 nexthdr icmpv6 icmpv6 type { 135, 136 } accept  # NS/NA
+    ip6 nexthdr icmpv6 icmpv6 type { 133, 134 } accept  # RS/RA
+    
+    # =========================================================================
+    # БЛОКИРОВКА РЕДКИХ ПРОТОКОЛОВ
+    # =========================================================================
+    # Все редкие протоколы (SCTP, DCCP и другие) автоматически блокируются
+    # политикой policy drop. Явные правила для них не требуются.
+    # =========================================================================
+    
+    
+    # ⬇️ СЮДА ВСТАВЛЯЕТСЯ СОДЕРЖИМОЕ ФАЙЛА whitelist.nft
+    
+        include "/etc/nftables.d/whitelist.nft"
+        
+    # ⬆️ ВСТАВКА ЗАКОНЧИЛАСЬ
+
+
+  } #  Предпоследняя скобка закрывает лист правил цепочки output. Не удалять!
+  
+  # ============================================
+  # КОНЕЦ ЦЕПОЧКИ OUTPUT
+  # ============================================
+  
+} #  Последняя скобка закрывает лист правил всего конфига. Не удалять!
+        </code>
+    </pre>
+</div>
+
+<p><strong>Белый лист IP-адресов цепочки output, доступ к которым ограничен по номеру порта и UID пользователя:</strong></p>
+
+<div class="historical-fact">
+    <pre>
+        <code class="language-nftables">
+# /etc/nftables.d/whitelist.nft
+# Белый список IP-адресов для исходящих соединений
+# Так же применяется фильтрация по UID
+
+# === Веб-интерфейс роутера ===
+ip daddr 192.168.0.1 tcp dport 80 meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+# =========================================================================
+# === Интернет-провайдер  ===
+# =========================================================================
+# Личный кабинет и основной сайт провайдера your.provider.net
+# Прописаны жесткими CIDR-диапазонами автономной системы
+# Открываются для пополнения счета даже при сбоях DNS и блокировках
+ip daddr {
+    192.0.2.0/24,         # Локация веб-сервера личного кабинета
+    198.51.100.0/24,      # Локация информационного сайта
+    192.0.2.0/19,         # Магистральный пул адресов провайдера
+    198.51.100.0/20       # Абонентский пул маршрутизации
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+# === Cloudflare (глобальная сеть CDN и DDoS-защиты) ===
+# Используется ChatGPT, DeepSeek и многими другими сервисами для
+# ускорения загрузки и защиты от атак. Основной пул 104.16.0.0/12.
+ip daddr {
+    104.16.0.0/12,        # Основной пул Cloudflare (104.16.0.0 – 104.31.255.255)
+    172.64.0.0/13,        # Дополнительный пул Cloudflare
+    162.158.0.0/15,       # Европейский пул Cloudflare
+    198.41.128.0/17       # Американский пул Cloudflare
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+# === Fastly (сеть доставки контента) ===
+# Используется для загрузки статики, шрифтов и скриптов.
+ip daddr {
+    151.101.0.0/16,       # Основной пул Fastly
+    199.232.0.0/16        # Дополнительный пул Fastly
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+# === Amazon CloudFront / AWS (облачная инфраструктура) ===
+# Широко используется для хостинга API, бэкендов и CDN.
+ip daddr {
+    13.32.0.0/15,         # CloudFront US East
+    143.204.0.0/16,       # CloudFront EU
+    54.239.128.0/18,      # CloudFront Asia Pacific
+    13.224.0.0/14,        # CloudFront Edge (глобальный)
+    18.160.0.0/13,        # CloudFront Edge (дополнительный)
+    52.84.0.0/15,         # CloudFront аутентификация
+    3.173.0.0/16,         # AWS Edge (общий пул)
+    23.211.0.0/16,        # AWS CloudFront (дополнительный)
+    23.47.0.0/16          # AWS CloudFront (резервный)
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+# === Amazon Web Services (AWS CloudFront / EC2) ===
+ip daddr {
+    3.0.0.0/8,
+    54.0.0.0/8,
+    52.0.0.0/8,
+    18.66.233.0/24
+ } tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+# === Google Cloud / YouTube (инфраструктура Google, ASN 15169) ===
+ip daddr {
+    64.233.160.0/19,      # Основной пул Google (Поиск, Аккаунты)
+    74.125.0.0/16,        # Пулы сервисов Google, включая Gmail и gstatic
+    142.250.0.0/15,       # Крупнейшая подсеть для YouTube и Gemini API
+    172.217.0.0/16,       # Сервера доставки контента и googleusercontent
+    173.194.0.0/16,       # Дополнительные маршруты для Google Drive и авторизации
+    209.85.128.0/17,      # Региональные дата-центры Google Cloud/API
+    216.58.192.0/19,      # Старые, но активные пулы DNS и фронтендов Google
+    35.190.0.0/16,        # Google Cloud (общий пул)
+    35.191.0.0/16         # Google Cloud (дополнительный)
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+# === Google (AS15169) - поиск, YouTube, Gmail, API ===
+ip daddr {
+    142.250.0.0/15,
+    172.217.0.0/16,
+    74.125.0.0/16 
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+ # === Поисковая система Bing и службы Microsoft ===
+ ip daddr {
+    150.171.0.0/16,       # Основной пул адресов поискового движка Bing
+    40.126.0.0/18,        # Службы авторизации Microsoft Live / Office
+    20.190.128.0/18,      # Облачные бэкенды Azure / Microsoft
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+# === GitHub (платформа разработки) ===
+ip daddr {
+    140.82.112.0/20,      # Основные подсети GitHub
+    192.30.252.0/22,      # Дополнительные пулы GitHub
+    185.199.108.0/22      # CDN-сети (raw.githubusercontent.com, githubassets.com)
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+# === Debian Infrastructure (официальные сервера и зеркала) ===
+ip daddr {
+    130.89.148.0/24,      # Физические сервера ftp.debian.org (Нидерланды)
+    128.31.0.0/16,        # Официальные сети инфраструктуры Debian (MIT/США)
+    149.20.4.0/24,        # Технологические шлюзы зеркалирования и форума
+    206.12.19.0/24,       # Резервные пулы маршрутизации SPI
+    151.101.0.0/16,       # CDN Fastly для deb.debian.org
+    199.232.0.0/16,       # Дополнительный пул Fastly для безопасности
+    146.75.0.0/17,        # Резервные маршруты доставки пакетов Debian
+    51.83.0.0/16          # Зеркала репозиториев обновлений deb.debian.org
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+# === Debian Project &amp; Wiki (По доменным именам раздельными строками) ===
+# Раздельный синтаксис исключает конфликты парсера при разрешении имен.
+# Полностью открывает доступ к документации и руководствам системы.
+ip daddr "wiki.debian.org" tcp dport { 80, 443 } ct state new accept
+
+# === openSUSE / Zeek (инфраструктура openSUSE) ===
+ip daddr {
+    195.135.220.0/22,     # Основной дата-центр openSUSE
+    130.57.0.0/16         # Дополнительные серверные пулы Novell/SUSE
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+# === LibreWolf (репозиторий обновлений) ===
+ip daddr {
+    179.61.251.0/24,      # Сервер repo.librewolf.net (Frantech/BuyVM)
+    198.251.80.0/20,      # Диапазон BuyVM в Люксембурге/США
+    209.141.32.0/19       # Дополнительные маршруты хостинга LibreWolf
+} tcp dport 443 ct state new accept
+
+# === DeepSeek (специфичные IP-адреса и подсети) ===
+# Выделены на основе анализа вашего списка.
+ip daddr {
+    103.193.104.0/22,     # Собственные технологические маршруты компании DeepSeek
+    154.8.0.0/16,         # Азиатские и глобальные пулы хостинга DeepSeek
+    159.69.48.177/32,     # Hetzner (Германия) - возможный бэкенд
+    150.171.109.51/32,    # Возможный бэкенд или партнерский сервер
+    43.109.10.32/27,      # Азиатский пул (диапазон 43.109.10.32 - 43.109.10.63)
+    38.54.123.48/32,      # Cogent Communications (возможный маршрут)
+    95.101.61.198/32,     # Малый диапазон (Германия, возможно партнер)
+    95.101.61.209/32,
+    95.101.61.218/32,
+    111.170.168.113/32,   # Китайский провайдер (региональный доступ)
+    20.150.95.164/32,     # Microsoft Azure (возможный бэкенд)
+    34.107.243.93/32      # Google Cloud (возможный бэкенд)
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+# === Википедия ===
+ip daddr {
+    wikipedia.org,
+    www.wikipedia.org,
+    en.wikipedia.org,
+    ru.wikipedia.org,
+    wikimedia.org,
+    upload.wikimedia.org
+} tcp dport { 443, 80 } meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+# === Facebook / Meta ===
+ip daddr 57.144.0.0/14 tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+# === Hetzner Cloud (если используете) ===
+ip daddr 150.171.0.0/16 tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+# === Akamai (расширенный диапазон 23.32.0.0/11) ===
+ip daddr {
+     23.32.0.0/11, 
+     23.211.0.0/16, 
+     23.64.0.0/16
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+ # === Резервный DNS Quad9 ===
+ ip daddr  9.9.9.0/24 udp dport 53 meta skuid { user, _apt, root } accept
+
+ # === Резервный DNS Quad9 (149.112.0.0/16) ===
+ ip daddr 149.112.0.0/16 udp dport 53 meta skuid { user, _apt, root } accept
+        </code>
+    </pre>
+</div>
+
+<p><strong>Список запретов и разрешений TCP и UDP портов для цепочки <code>forward</code></strong></p>
+
+<p>Список запретов и разрешений TCP и UDP портов и запретов подозрительных IP для цепочки <code>forward</code> не менялся, но для полноты картины настроек nftables прилагаю его к данной главе:</p>
+
+<div class="historical-fact">
+    <pre>
+        <code class="language-nftables">
+# /etc/nftables.d/forward-tcp-udp.nft
+# Список правил для цепочки forward TCP UDP
+# Состояние на 26.06.2026 12:08
+
+# = Разрешаем необходимые TCP/UDP порты и диапазоны =
+
+# == Разрешаем TCP-порты, необходимые для работы приложений ==
+tcp dport {
+  53,         # DNS — нужен для разрешения доменных имён
+  80,         # HTTP — веб-трафик, загрузка обновлений и ресурсов
+  443,        # HTTPS — защищённый веб-трафик, VPN, браузер
+  12043,      # Пользовательское 3D приложение — специфический порт клиента
+  13000-13050 # Пользовательское 3D приложение — диапазон динамических портов клиента
+} accept
+
+# == Разрешаем UDP-порты, необходимые для работы приложений ==
+udp dport {
+  53,         # DNS — нужен для разрешения доменных имён
+  443,        # HTTPS через QUIC/HTTP3, браузерные протоколы
+  3478,       # STUN/TURN — WebRTC и видеоконференции
+  3479-3481   # STUN/TURN — WebRTC и видеоконференции
+} accept
+
+# = Запрещаем потенциально опасные и ненужные TCP/UDP порты и диапазоны =
+
+# Эти запреты рассчитаны на ДЕСКТОП / рабочую станцию.
+# Они блокируют удалённый доступ, устаревшие сервисы, прокси, БД, IoT и порты,
+# которые часто используются вредоносами, сканерами и C2-инфраструктурой.
+#
+# ⚠ Если вы используете систему как СЕРВЕР, включаете IP forwarding
+# или запускаете сервисы с собственной маршрутизацией
+# (Docker NAT/bridge, VirtualBox host-only/bridged, VPN-клиенты),
+# обязательно проверьте список запрещённых портов и диапазонов в цепочке forward —
+# этим сервисам могут потребоваться дополнительные порты.
+# При необходимости откорректируйте или закомментируйте нужные порты и диапазоны.
+
+# == Запрещаем различные подозрительные TCP порты ==
+tcp dport {
+# === Удалённый доступ (высокий риск) ===
+  22,     # SSH — цель брутфорсов
+  23,     # Telnet — устаревший, без шифрования
+  3389,   # RDP — Windows удалённый доступ
+  5900,   # VNC — удалённый доступ, частая уязвимость
+# === FTP / SMB / NetBIOS (опасные файлообменные сервисы) ===
+  21,     # FTP — небезопасный протокол
+  137,    # NetBIOS Name Service
+  138,    # NetBIOS Datagram
+  139,    # NetBIOS Session
+  445,    # SMB/CIFS — частая цель эксплойтов
+# === Базы данных (НИКОГДА не открывать в интернет) ===
+  3306,   # MySQL/MariaDB
+  1433,   # MS SQL Server
+  1434,   # MS SQL Browser
+# === HTTP-alt/Proxy/Elasticsearch (опасны и часто атакуются) ===
+  8080,   # HTTP-прокси / веб-интерфейсы — часто открытые тестовые интерфейсы
+  9200,   # Elasticsearch API — полный удалённый доступ к данным
+# === UPnP/IoT (уязвимые по дизайну) ===
+  1900,   # SSDP / UPnP
+# === Часто используемые вредоносами (RAT, C2, обратные шеллы) ===
+  4444,   # Metasploit reverse shell
+  5555,   # Android ADB / IoT ботнеты
+  9001,   # Tor транспорт (часто используют малвари)
+  1234,   # Netcat / обратные соединения
+  1337,   # Частый порт C2 инфраструктуры малвари
+#  === ⚠️ Порты сканеров и потенциально уязвимых сервисов === 
+  1080,   # SOCKS-прокси — часто используется злоумышленниками для обхода фильтров
+  3128,   # HTTP-прокси Squid — может быть использован как прокси/для обхода блокировок
+  8000,   # Альтернативные HTTP-порты, веб-сервисы — потенциально уязвимые
+  8888,   # Альтернативные веб-интерфейсы — тестовые и прокси-порты
+  10000   # Webmin — веб-админка, цель атак
+} drop
+
+# == Запрещаем различные подозрительные udp порты ==
+udp dport {
+  161,    # SNMP — мониторинг сети; может использоваться злоумышленниками
+  162     # SNMP Trap — аналогично, потенциальная уязвимость
+} drop
+
+# Внимание! Блокируя широкие диапазоны портов - будьте осторожны! 
+# Не навредите работе системы и приложений!
+
+# == Диапазоны TCP-портов, не используемых рабочей станцией при транзитной маршрутизации ==
+# Блокируются для исключения нежеленного проброса трафика, скрытых туннелей,
+# обхода NAT, паразитных соединений и потенциальных атак через forward-путь.
+
+tcp dport {
+  1024-2047,    # Системные и устаревшие сервисы; почти никогда не нужны в forward
+  2048-4095,    # Проприетарные и редкие демоны; NFS (2049) — смотри если используешь
+  4096-8191,    # Старые VPN, некоторые игры, P2P; редко нужны на десктопе
+  8192-12287,   # Альтернативные HTTP/прокси, мультимедиа; тестировать
+  12288-16383,  # Медиаданные/VoIP (TCP fallback); могут ломать звонки
+  16384-24575,  # RTP/WebRTC (TCP fallback); блокировать если аудио/видео не нужно
+  24576-32767,  # Динамические диапазоны игр/VPN; возможны побочные эффекты
+  32768-49151,  # Основные registered/ephemeral порты; опасно, может ломать NAT, Docker, VM
+  49152-65535   # High ephemeral; активно используются современными приложениями
+} drop
+
+# == 🚫 Блокировка UDP-портов — высокие и динамические диапазоны ==
+udp dport {
+  1024-9999,     # Hизкие и средние ephemeral порты, редко используются системными сервисами, 
+                 # могут быть использованы троянами, P2P, играми, VPN
+  10000-32767,   # потенциально опасные порты для исходящих соединений
+                 # Блокируем, так как они не используются ядром для эфемерных портов
+                 # Здесь могут сидеть P2P-клиенты, игры, вредоносное ПО
+  32768-60999,   # Стандартные эфемерные порты Linux
+                 # ВНИМАНИЕ! Эти порты нужны для нормальной работы:
+                 # - Docker-контейнеров (скачивание обновлений)
+                 # - DNS-запросов (часто используют высокие порты)
+                 # - APT и других менеджеров пакетов
+                 # - Нормальной работы сети
+  61000-65535    # Верхний резервный диапазон
+                 # Обычно не используется стандартными приложениями
+                 # Блокируем для предотвращения нестандартных исходящих соединений
+} drop
+
+# = 🕷️ Подозрительные IP — крупные диапазоны, часто используемые ботнетами, 
+# спам-сетями и сканерами =
+ip saddr {
+  185.0.0.0/8,   # злоупотребляемые хостинги и прокси‑сети
+  37.0.0.0/8,    # дешёвые VPS, источники сканирования
+  88.0.0.0/8,    # частые brute‑force и сканеры
+  77.0.0.0/8,    # массовые TOR/прокси‑узлы
+  91.0.0.0/8     # бот‑сети и “серые” хостинги
+} drop
+        </code>
+    </pre>
+</div>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+</section>
+<!-- End of subsection H5 2.4.2-E -->
+
+<hr>
+
+<!-- Подсекция H5 2.4.2-F -->
+<section id="config3-dns-quard9" aria-label="2.4.2-F Переход на DNS-сервер Quad9 (9.9.9.9)">
+
+<h5>2.4.2-F Переход на DNS-сервер Quad9 (9.9.9.9)</h5>
 
 <p>Жестко фиксированы настройки <code>/etc/resolv.conf</code> на 9.9.9.9. Всё содержимое файла заменено на строчку:</p>
 
@@ -2577,14 +3130,14 @@ table inet filter { # Открытие листа правил
 
 </section>
 
-<!-- Конец подсекции H5 2.4.2-E -->
+<!-- Конец подсекции H5 2.4.2-F -->
 
 <hr>
 
-<!-- Подсекция H5 2.4.2-F -->
-<section id="config3-app-nft-monitoring-script" aria-label="2.4.2-E Пользовательский скрипт мониторинга nftables и AppArmor">
+<!-- Подсекция H5 2.4.2-G -->
+<section id="config3-app-nft-monitoring-script" aria-label="2.4.2-G Пользовательский скрипт мониторинга nftables и AppArmor">
 
-<h5>2.4.2-E Пользовательский скрипт мониторинга состояния nftables и AppArmor</h5>
+<h5>2.4.2-G Пользовательский скрипт мониторинга состояния nftables и AppArmor</h5>
 
 <p>В процессе частой настройки и перезагрузки nftables и AppArmor, а также при необходимости их отключения для тестирования, существует риск забыть включить службы обратно или не заметить их падение.</p>
 
@@ -2749,7 +3302,7 @@ if __name__ == "__main__":
 </p>
 
 </section>
-<!-- Конец подсекции H5 2.4.2-F -->
+<!-- Конец подсекции H5 2.4.2-G -->
 
 </section> 
 

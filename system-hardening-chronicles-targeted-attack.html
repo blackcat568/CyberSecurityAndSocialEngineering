@@ -15,7 +15,7 @@
     "isAccessibleForFree": true,
     "description": "A real-world chronicle of defending against a targeted attack: documenting vulnerabilities, configurations, responses, and system hardening. From zero security to resilient configurations. Covers Debian 12 & 13, nftables, AppArmor, OpenSnitch, Flatpak, USBGuard, sysctl. For cybersecurity and InfoSec professionals.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-06-28<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-06-29<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -314,7 +314,7 @@
 
 <div class="alert" style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 2rem 0;">
   <strong style="color: #856404;">⚠️ Notice!</strong>
-  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-06-28<!-- DATE_END --></span>
+  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-06-29<!-- DATE_END --></span>
 </div>
 
 <!-- КРУПНАЯ ГЛАВА H2 0- Оглавление -->
@@ -381,8 +381,9 @@
 								<li style="margin-bottom: 0.1rem;"><a href="#config3-logic" style="text-decoration: none;">2.4.2-B Strategic logic of Configuration 3: blocking vectors as a deterrence method</a></li>
                                 <li style="margin-bottom: 0.1rem;"><a href="#config3-nftables" style="text-decoration: none;">2.4.2-C Changes in the nftables config</a></li>
                                 <li style="margin-bottom: 0.1rem;"><a href="#config3-nftables-fixes" style="text-decoration: none;">2.4.2-D Fixing the nftables configuration of Configuration 3</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config3-dns-quard9" style="text-decoration: none;">2.4.2-E Switching to the Quad9 DNS server (9.9.9.9)</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config3-app-nft-monitoring-script" style="text-decoration: none;">2.4.2-F Custom monitoring script for nftables and AppArmor</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config3-nftables-enhancements" style="text-decoration: none;">2.4.2-E Enhancing the nftables configuration of Configuration 3</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config3-dns-quard9" style="text-decoration: none;">2.4.2-F Switching to the Quad9 DNS server (9.9.9.9)</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config3-app-nft-monitoring-script" style="text-decoration: none;">2.4.2-G Custom monitoring script for nftables and AppArmor</a></li>
                             </ul>
                         </li>
                         <li style="margin-bottom: 0.1rem;"><a href="#config3-experiment-results" style="text-decoration: none;">2.4.3 Observing the progress of the experiment with configuration 3</a></li>
@@ -2325,14 +2326,14 @@ table inet filter { # Opening the ruleset
     } drop
 
     # == 🚫 Block invalid TCP flags (XMAS, NULL scan, etc.) ==
-    tcp flags & (fin|syn|rst|psh|ack|urg) == 0 drop        # NULL scan
-    tcp flags & (fin|psh|urg) == (fin|psh|urg) drop          # XMAS scan
-    tcp flags & (fin|syn) == (fin|syn) drop                  # SYN-ACK scan
-    tcp flags & (syn|rst|fin) == (syn|rst|fin) drop          # Xmas scan
-    tcp flags & (syn|fin|rst|psh|ack) == (syn|rst|fin|ack) drop # Xmas scan
+    tcp flags &amp; (fin|syn|rst|psh|ack|urg) == 0 drop        # NULL scan
+    tcp flags &amp; (fin|psh|urg) == (fin|psh|urg) drop          # XMAS scan
+    tcp flags &amp; (fin|syn) == (fin|syn) drop                  # SYN-ACK scan
+    tcp flags &amp; (syn|rst|fin) == (syn|rst|fin) drop          # Xmas scan
+    tcp flags &amp; (syn|fin|rst|psh|ack) == (syn|rst|fin|ack) drop # Xmas scan
 
     # == 🚫 Block fragmented packets — often used to bypass filters ==
-    ip frag-off & 0x1fff != 0 drop
+    ip frag-off &amp; 0x1fff != 0 drop
 
     # == 🔒 Block packets with spoofed IPs (anti-spoofing) ==
     ip saddr 127.0.0.0/8 drop          # localhost
@@ -2463,10 +2464,561 @@ table inet filter { # Opening the ruleset
 
 <hr>
 
-<!-- Подсекция H5 2.4.2-E -->
-<section id="config3-dns-quard9" aria-label="2.4.2 Switching to the Quad9 DNS server (9.9.9.9)">
+<!-- Subsection H5 2.4.2-E -->
+<section id="config3-nftables-enhancements" aria-label="2.4.2-E Enhancing the nftables configuration of Configuration 3">
+
+<h5>2.4.2-E Enhancing the nftables configuration of Configuration 3</h5>
+
+<p><time datetime="2026-06-29">Created: 29 June 2026</time></p>
+
+<p>In order to enhance security and to practically explore the potential of nftables, it was decided to strengthen the nftables configuration of Configuration 3.</p>
+
+<p>In addition to establishing outbound traffic filtering by IP and fixing the limit on allowed connections per second, made in sections <a href="#config3-nftables-changes">"2.4.2-A Changes in the nftables config"</a> and <a href="#config3-nftables-fixes">"2.4.2-D Fixing the nftables configuration of Configuration 3"</a>, the following additional security features were added to the configuration and to the whitelist of allowed IPs for the <code>output</code> chain which was extracted from the main config:</p>
+
+<ul>
+    <li><strong>Filtering access to IPs from the whitelist by user UID</strong> — even if an IP address is allowed, only specific users (e.g., <code>user</code>, <code>_apt</code>, <code>root</code>) are permitted to access it. This prevents malicious processes running under other UIDs from using allowed IP addresses.</li>
+    <li><strong>Filtering invalid packets in the <code>output</code> chain</strong> — packets marked as invalid by conntrack are immediately dropped with logging. This prevents suspicious or malformed packets from being sent to the internet.</li>
+</ul>
+
+<p><strong>Enhanced nftables configuration of Configuration 3:</strong></p>
+
+<div class="historical-fact">
+    <pre>
+        <code class="language-nftables">
+#!/usr/sbin/nft -f
+# 03.03.2026 19:52 Commented out the outbound UDP port restriction that was interfering with ProtonVPN
+# 04.03.2026 19:53 Allowed necessary ports for Docker in the forward chain
+# 21.06.2026 08:24 Implemented outbound connection filtering by IP address
+# 28.06.2026 21:53 Set a limit on the number of connections per second
+# Added filtering of whitelisted IP access by user UID
+# Added filtering of invalid packets in the output chain
+
+flush ruleset
+
+table inet filter { # Opening the ruleset
+  
+  # ============================================
+  # START OF INPUT CHAIN
+  # ============================================
+  
+  # = Main chain policy =
+  chain input {
+    type filter hook input priority 0;
+    policy drop;
+
+    # = Set of general rules =
+    # 🌀 Allow loopback interface (internal processes)
+    iif "lo" accept
+
+    # == 🔁 Allow established and related connections ==
+    ct state established,related accept
+    
+    # == 🔒 Proper protection against aggressive incoming traffic (anti-DDoS) ==
+    # We do NOT allow traffic, we only instantly destroy what exceeds the limit.
+    # If the rate exceeds 25 per second, the packet is logged and dropped right here.
+    # If the rate is within limits, the packet goes further down, where a reliable default DROP awaits it.
+    ip saddr 0.0.0.0/0 ct state new limit rate over 25/second burst 50 packets log prefix "🔥 BAN: too many conn " flags all drop
+
+    # == 🛡️ Rate-limit ICMP echo requests (ping) ==
+    ip protocol icmp icmp type echo-request limit rate 1/second accept
+    ip protocol icmp icmp type echo-request log prefix "🔥 BAN: ICMP flood " flags all
+    ip protocol icmp icmp type echo-request drop
+
+    # == 🚫 Block SSDP and mDNS (local broadcast protocols) ==
+    ip daddr 239.255.255.250 udp dport 1900 drop   # ❌ SSDP (UPnP/device discovery)
+    ip daddr 224.0.0.251 udp dport 5353 drop       # ❌ mDNS (Bonjour, Avahi)
+
+    # == 🛑 Block NetBIOS and LLMNR (internal Windows/systemd protocols) ==
+    udp dport 137 drop    # ❌ NetBIOS Name Service (Windows network names)
+    udp dport 138 drop    # ❌ NetBIOS Datagram Service (LAN browsing)
+    udp dport 5355 drop   # ❌ LLMNR (Link-Local Multicast Name Resolution)
+
+    # = Set of rules for blocking IP addresses and ranges =
+    
+    # == 🧱 Block known botnets and proxies ==
+    ip saddr {
+      45.9.20.0/24,
+      89.248.160.0/19,
+      185.220.100.0/22,
+      198.96.155.0/24,
+      185.107.56.0/24,
+      185.129.62.0/23
+    } log prefix "🔥 BAN: known bots " flags all
+    ip saddr {
+      45.9.20.0/24,
+      89.248.160.0/19,
+      185.220.100.0/22,
+      198.96.155.0/24,
+      185.107.56.0/24,
+      185.129.62.0/23
+    } drop
+
+    # == 🚫 Block invalid TCP flags (XMAS, NULL scan, etc.) ==
+    tcp flags &amp; (fin|syn|rst|psh|ack|urg) == 0 drop        # NULL scan
+    tcp flags &amp; (fin|psh|urg) == (fin|psh|urg) drop          # XMAS scan
+    tcp flags &amp; (fin|syn) == (fin|syn) drop                  # SYN-ACK scan
+    tcp flags &amp; (syn|rst|fin) == (syn|rst|fin) drop          # Xmas scan
+    tcp flags &amp; (syn|fin|rst|psh|ack) == (syn|rst|fin|ack) drop # Xmas scan
+
+    # == 🚫 Block fragmented packets — often used to bypass filters ==
+    ip frag-off &amp; 0x1fff != 0 drop
+
+    # == 🔒 Block packets with spoofed IPs (anti-spoofing) ==
+    ip saddr 127.0.0.0/8 drop          # localhost
+    ip saddr 10.0.0.0/8 drop           # private network
+    ip saddr 172.16.0.0/12 drop        # private network
+    ip saddr 192.168.0.0/16 drop       # private network
+    ip saddr 169.254.0.0/16 drop       # APIPA
+    ip saddr 0.0.0.0/8 drop            # invalid address
+    ip saddr 224.0.0.0/4 drop          # multicast
+    ip saddr 240.0.0.0/5 drop          # reserved
+  }
+
+  # ============================================
+  # END OF INPUT CHAIN
+  # ============================================
+
+
+  # ============================================
+  # START OF FORWARD CHAIN
+  # ============================================
+
+  # = Main chain policy =
+  chain forward {
+    type filter hook forward priority 0;
+    policy accept;
+    
+    #  = Various attack restrictions =
+    # Only needed in chain forward if you have Docker, Oracle VirtualBox.
+    # Uncomment if needed.
+
+    # == 🔒 Proper protection against aggressive incoming traffic (anti-DDoS) ==
+    # We do NOT allow traffic, we only instantly destroy what exceeds the limit.
+    # If the rate exceeds 25 per second, the packet is logged and dropped right here.
+    # If the rate is within limits, the packet goes further down, where a reliable default DROP awaits it.
+    ip saddr 0.0.0.0/0 ct state new limit rate over 25/second burst 50 packets log prefix "🔥 BAN: too many conn " flags all drop
+
+    # == 🛡️ Rate-limit ICMP echo requests (ping) ==
+    # ip protocol icmp icmp type echo-request limit rate 1/second accept
+    # ip protocol icmp icmp type echo-request log prefix "🔥 BAN: ICMP flood " flags all
+    # ip protocol icmp icmp type echo-request drop
+
+    # ⬇️ INSERT: Forward chain port rules
+    # Blocked and allowed TCP/UDP ports and ranges
+    
+        include "/etc/nftables.d/forward-tcp-udp.nft"
+        
+    # ⬆️ END OF INSERT
+
+  }
+
+  # ============================================
+  # END OF FORWARD CHAIN
+  # ============================================
+  
+  # ============================================
+  # START OF OUTPUT CHAIN
+  # ============================================
+
+  chain output {
+    # = Main chain policy =
+    type filter hook output priority 0;
+    policy drop;
+    
+    # = THE VERY FIRST - critically important rules =
+    
+    ct state established,related accept
+    oif "lo" accept
+
+    # Drop any outgoing packets marked as invalid by conntrack
+    # This ensures immediate destruction of invalid packets
+    # before the remaining filtering rules are applied.
+    ct state invalid log prefix "🔥 INVALID_OUT_PACKET: " drop
+
+    # =======================================================================
+    # 1. GENERAL PROTECTIVE SHIELD (Only rate limiting!)
+    # =======================================================================
+    
+    # ATTENTION: There is NO accept keyword here. This rule does NOT allow packets out to the internet.
+    # The "!" sign means: if the rate exceeds the limit, LOG and DROP the packet.
+    # If the rate is within limits, the packet silently passes below — to your IP whitelist.
+    # ATTENTION: meta l4proto { tcp, udp } and th dport cover both TCP and UDP (HTTP/3) with a single shield.
+    meta l4proto { tcp, udp } th dport { 80, 443 } ct state new limit rate over 20/second burst 40 packets log prefix "🔥 OUT_WEB_LIMIT_BURST: " drop
+    
+    
+    # =========================================================================
+    # 3. DNS SERVICE (Strict binding only to Quad9 at IP 9.9.9.9)
+    # =========================================================================
+
+    # 1. For UDP, allow only short requests (&lt;=150 bytes) and strictly from trusted users
+    ip daddr { 9.9.9.9, 31.43.43.243, 31.43.43.143 } udp dport 53 meta length &lt;= 150 meta skuid { user, _apt, root } ct state new accept
+
+    # 2. For TCP, no length limit (for heavy DNSSEC responses), but strictly check the user
+    ip daddr { 9.9.9.9, 31.43.43.243, 31.43.43.143 } tcp dport 53 meta skuid { user, _apt, root } ct state new accept
+
+    # 3. All other attempts by any unauthorized services (or long UDP) — log and destroy
+    ip daddr { 9.9.9.9, 31.43.43.243, 31.43.43.143 } meta l4proto { tcp, udp } th dport 53 log prefix "🔥 OUT_ILLEGAL_DNS: " drop
+
+
+    # == Critically important ICMP for the network ==
+    ip protocol icmp icmp type { destination-unreachable, time-exceeded, parameter-problem } accept
+
+    # == Important ICMPv6 for IPv6 ==
+    ip6 nexthdr icmpv6 icmpv6 type { 1, 2, 3, 4 } accept
+    ip6 nexthdr icmpv6 icmpv6 type { 135, 136 } accept  # NS/NA
+    ip6 nexthdr icmpv6 icmpv6 type { 133, 134 } accept  # RS/RA
+    
+    # =========================================================================
+    # BLOCKING RARE PROTOCOLS
+    # =========================================================================
+    # All rare protocols (SCTP, DCCP, and others) are automatically blocked
+    # by the policy drop. Explicit rules are not required for them.
+    # =========================================================================
+    
+    
+    # ⬇️ INSERT: whitelist.nft file contents are inserted here
+    
+        include "/etc/nftables.d/whitelist.nft"
+        
+    # ⬆️ END OF INSERT
+
+
+  } #  The penultimate brace closes the ruleset of the output chain. Do not remove!
+  
+  # ============================================
+  # END OF OUTPUT CHAIN
+  # ============================================
+  
+} #  The last brace closes the entire configuration ruleset. Do not remove!
+        </code>
+    </pre>
+</div>
+
+<p><strong>Whitelist of IP addresses for the output chain, with access restricted by port number and user UID:</strong></p>
+
+<div class="historical-fact">
+    <pre>
+        <code class="language-nftables">
+# /etc/nftables.d/whitelist.nft
+# Whitelist of IP addresses for outbound connections
+# Also applies filtering by UID
+
+# === Router web interface ===
+ip daddr 192.168.0.1 tcp dport 80 meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+# =========================================================================
+# === Internet service provider ===
+# =========================================================================
+# Provider's personal account and main website your.provider.net
+# Defined using strict CIDR ranges of the autonomous system
+# Opened for account top-up even during DNS failures and blocks
+ip daddr {
+    192.0.2.0/24,         # Location of the personal account web server
+    198.51.100.0/24,      # Location of the information website
+    192.0.2.0/19,         # Provider's main address pool
+    198.51.100.0/20       # Subscriber routing pool
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+# === Cloudflare (global CDN and DDoS protection network) ===
+# Used by ChatGPT, DeepSeek, and many other services for
+# faster loading and attack protection. Main pool 104.16.0.0/12.
+ip daddr {
+    104.16.0.0/12,        # Main Cloudflare pool (104.16.0.0 – 104.31.255.255)
+    172.64.0.0/13,        # Additional Cloudflare pool
+    162.158.0.0/15,       # European Cloudflare pool
+    198.41.128.0/17       # American Cloudflare pool
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+# === Fastly (content delivery network) ===
+# Used for loading static content, fonts, and scripts.
+ip daddr {
+    151.101.0.0/16,       # Main Fastly pool
+    199.232.0.0/16        # Additional Fastly pool
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+# === Amazon CloudFront / AWS (cloud infrastructure) ===
+# Widely used for hosting APIs, backends, and CDN.
+ip daddr {
+    13.32.0.0/15,         # CloudFront US East
+    143.204.0.0/16,       # CloudFront EU
+    54.239.128.0/18,      # CloudFront Asia Pacific
+    13.224.0.0/14,        # CloudFront Edge (global)
+    18.160.0.0/13,        # CloudFront Edge (additional)
+    52.84.0.0/15,         # CloudFront authentication
+    3.173.0.0/16,         # AWS Edge (general pool)
+    23.211.0.0/16,        # AWS CloudFront (additional)
+    23.47.0.0/16          # AWS CloudFront (backup)
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+# === Amazon Web Services (AWS CloudFront / EC2) ===
+ip daddr {
+    3.0.0.0/8,
+    54.0.0.0/8,
+    52.0.0.0/8,
+    18.66.233.0/24
+ } tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+# === Google Cloud / YouTube (Google infrastructure, ASN 15169) ===
+ip daddr {
+    64.233.160.0/19,      # Main Google pool (Search, Accounts)
+    74.125.0.0/16,        # Google service pools, including Gmail and gstatic
+    142.250.0.0/15,       # Largest subnet for YouTube and Gemini API
+    172.217.0.0/16,       # Content delivery servers and googleusercontent
+    173.194.0.0/16,       # Additional routes for Google Drive and authorization
+    209.85.128.0/17,      # Regional Google Cloud/API data centers
+    216.58.192.0/19,      # Old but active Google DNS and frontend pools
+    35.190.0.0/16,        # Google Cloud (general pool)
+    35.191.0.0/16         # Google Cloud (additional)
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+# === Google (AS15169) - search, YouTube, Gmail, API ===
+ip daddr {
+    142.250.0.0/15,
+    172.217.0.0/16,
+    74.125.0.0/16 
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+ # === Bing search engine and Microsoft services ===
+ ip daddr {
+    150.171.0.0/16,       # Main address pool of the Bing search engine
+    40.126.0.0/18,        # Microsoft Live / Office authorization services
+    20.190.128.0/18,      # Azure / Microsoft cloud backends
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+# === GitHub (development platform) ===
+ip daddr {
+    140.82.112.0/20,      # Main GitHub subnets
+    192.30.252.0/22,      # Additional GitHub pools
+    185.199.108.0/22      # CDN networks (raw.githubusercontent.com, githubassets.com)
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+# === Debian Infrastructure (official servers and mirrors) ===
+ip daddr {
+    130.89.148.0/24,      # Physical ftp.debian.org servers (Netherlands)
+    128.31.0.0/16,        # Official Debian infrastructure networks (MIT/USA)
+    149.20.4.0/24,        # Technological gateways for mirroring and forums
+    206.12.19.0/24,       # SPI routing backup pools
+    151.101.0.0/16,       # Fastly CDN for deb.debian.org
+    199.232.0.0/16,       # Additional Fastly pool for security
+    146.75.0.0/17,        # Backup Debian package delivery routes
+    51.83.0.0/16          # Mirror repositories for deb.debian.org updates
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+# === Debian Project &amp; Wiki (By domain names in separate lines) ===
+# Separate syntax eliminates parser conflicts when resolving names.
+# Fully opens access to system documentation and manuals.
+ip daddr "wiki.debian.org" tcp dport { 80, 443 } ct state new accept
+
+# === openSUSE / Zeek (openSUSE infrastructure) ===
+ip daddr {
+    195.135.220.0/22,     # Main openSUSE data center
+    130.57.0.0/16         # Additional Novell/SUSE server pools
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+# === LibreWolf (update repository) ===
+ip daddr {
+    179.61.251.0/24,      # repo.librewolf.net server (Frantech/BuyVM)
+    198.251.80.0/20,      # BuyVM range in Luxembourg/USA
+    209.141.32.0/19       # Additional LibreWolf hosting routes
+} tcp dport 443 ct state new accept
+
+# === DeepSeek (specific IP addresses and subnets) ===
+# Identified based on analysis of your list.
+ip daddr {
+    103.193.104.0/22,     # DeepSeek company's own technological routes
+    154.8.0.0/16,         # Asian and global DeepSeek hosting pools
+    159.69.48.177/32,     # Hetzner (Germany) - possible backend
+    150.171.109.51/32,    # Possible backend or partner server
+    43.109.10.32/27,      # Asian pool (range 43.109.10.32 - 43.109.10.63)
+    38.54.123.48/32,      # Cogent Communications (possible route)
+    95.101.61.198/32,     # Small range (Germany, possibly partner)
+    95.101.61.209/32,
+    95.101.61.218/32,
+    111.170.168.113/32,   # Chinese provider (regional access)
+    20.150.95.164/32,     # Microsoft Azure (possible backend)
+    34.107.243.93/32      # Google Cloud (possible backend)
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+# === Wikipedia ===
+ip daddr {
+    wikipedia.org,
+    www.wikipedia.org,
+    en.wikipedia.org,
+    ru.wikipedia.org,
+    wikimedia.org,
+    upload.wikimedia.org
+} tcp dport { 443, 80 } meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+# === Facebook / Meta ===
+ip daddr 57.144.0.0/14 tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+# === Hetzner Cloud (if you use it) ===
+ip daddr 150.171.0.0/16 tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+# === Akamai (extended range 23.32.0.0/11) ===
+ip daddr {
+     23.32.0.0/11, 
+     23.211.0.0/16, 
+     23.64.0.0/16
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+ # === Backup DNS Quad9 ===
+ ip daddr  9.9.9.0/24 udp dport 53 meta skuid { user, _apt, root } accept
+
+ # === Backup DNS Quad9 (149.112.0.0/16) ===
+ ip daddr 149.112.0.0/16 udp dport 53 meta skuid { user, _apt, root } accept
+        </code>
+    </pre>
+</div>
+
+<p><strong>List of TCP and UDP port restrictions and allowances and suspicious IPs restriction for the <code>forward</code> chain</strong></p>
+
+<p>The list of TCP and UDP port restrictions and allowances for the <code>forward</code> chain has not changed, but for the sake of completeness of the nftables configuration picture, I am attaching it to this chapter:</p>
+
+<div class="historical-fact">
+    <pre>
+        <code class="language-nftables">
+# /etc/nftables.d/forward-tcp-udp.nft
+# List of rules for the forward chain TCP UDP
+# Status as of 26.06.2026 12:08
+
+# = Allow necessary TCP/UDP ports and ranges =
+
+# == Allow TCP ports required for applications ==
+tcp dport {
+  53,         # DNS — needed for domain name resolution
+  80,         # HTTP — web traffic, downloading updates and resources
+  443,        # HTTPS — secure web traffic, VPN, browser
+  12043,      # Custom 3D application — specific client port
+  13000-13050 # Custom 3D application — dynamic client port range
+} accept
+
+# == Allow UDP ports required for applications ==
+udp dport {
+  53,         # DNS — needed for domain name resolution
+  443,        # HTTPS over QUIC/HTTP3, browser protocols
+  3478,       # STUN/TURN — WebRTC and video conferencing
+  3479-3481   # STUN/TURN — WebRTC and video conferencing
+} accept
+
+# = Block potentially dangerous and unnecessary TCP/UDP ports and ranges =
+
+# These restrictions are designed for a DESKTOP / workstation.
+# They block remote access, outdated services, proxies, databases, IoT, and ports
+# that are frequently used by malware, scanners, and C2 infrastructure.
+#
+# ⚠ If you are using the system as a SERVER, enable IP forwarding,
+# or run services with their own routing
+# (Docker NAT/bridge, VirtualBox host-only/bridged, VPN clients),
+# be sure to review the list of blocked ports and ranges in the forward chain —
+# these services may require additional ports.
+# If necessary, adjust or comment out the required ports and ranges.
+
+# == Block various suspicious TCP ports ==
+tcp dport {
+# === Remote access (high risk) ===
+  22,     # SSH — brute-force target
+  23,     # Telnet — outdated, no encryption
+  3389,   # RDP — Windows remote access
+  5900,   # VNC — remote access, frequent vulnerability
+# === FTP / SMB / NetBIOS (dangerous file-sharing services) ===
+  21,     # FTP — insecure protocol
+  137,    # NetBIOS Name Service
+  138,    # NetBIOS Datagram
+  139,    # NetBIOS Session
+  445,    # SMB/CIFS — frequent exploit target
+# === Databases (NEVER open to the internet) ===
+  3306,   # MySQL/MariaDB
+  1433,   # MS SQL Server
+  1434,   # MS SQL Browser
+# === HTTP-alt/Proxy/Elasticsearch (dangerous, frequently attacked) ===
+  8080,   # HTTP proxy / web interfaces — often open test interfaces
+  9200,   # Elasticsearch API — full remote data access
+# === UPnP/IoT (inherently vulnerable by design) ===
+  1900,   # SSDP / UPnP
+# === Frequently used by malware (RAT, C2, reverse shells) ===
+  4444,   # Metasploit reverse shell
+  5555,   # Android ADB / IoT botnets
+  9001,   # Tor transport (frequently used by malware)
+  1234,   # Netcat / reverse connections
+  1337,   # Frequent C2 infrastructure port for malware
+#  === ⚠️ Ports for scanners and potentially vulnerable services === 
+  1080,   # SOCKS proxy — often used by attackers to bypass filters
+  3128,   # Squid HTTP proxy — can be used as a proxy/to bypass blocks
+  8000,   # Alternative HTTP ports, web services — potentially vulnerable
+  8888,   # Alternative web interfaces — test and proxy ports
+  10000   # Webmin — web admin panel, attack target
+} drop
+
+# == Block various suspicious UDP ports ==
+udp dport {
+  161,    # SNMP — network monitoring; can be used by attackers
+  162     # SNMP Trap — similarly, potential vulnerability
+} drop
+
+# Attention! When blocking wide port ranges, be careful!
+# Do not harm the operation of the system and applications!
+
+# == TCP port ranges not used by workstations during transit routing ==
+# Blocked to prevent unwanted traffic forwarding, hidden tunnels,
+# NAT bypass, parasitic connections, and potential attacks through the forward path.
+
+tcp dport {
+  1024-2047,    # System and outdated services; almost never needed in forward
+  2048-4095,    # Proprietary and rare daemons; NFS (2049) — check if you use it
+  4096-8191,    # Old VPNs, some games, P2P; rarely needed on a desktop
+  8192-12287,   # Alternative HTTP/proxy, multimedia; test
+  12288-16383,  # Media data/VoIP (TCP fallback); may break calls
+  16384-24575,  # RTP/WebRTC (TCP fallback); block if audio/video not needed
+  24576-32767,  # Dynamic ranges for games/VPN; possible side effects
+  32768-49151,  # Main registered/ephemeral ports; dangerous, can break NAT, Docker, VM
+  49152-65535   # High ephemeral; actively used by modern applications
+} drop
+
+# == 🚫 Block UDP ports — high and dynamic ranges ==
+udp dport {
+  1024-9999,     # Low and medium ephemeral ports, rarely used by system services,
+                 # can be used by Trojans, P2P, games, VPNs
+  10000-32767,   # Potentially dangerous ports for outbound connections
+                 # We block them because they are not used by the kernel for ephemeral ports
+                 # P2P clients, games, and malware may be hiding here
+  32768-60999,   # Standard Linux ephemeral ports
+                 # CAUTION! These ports are needed for normal operation:
+                 # - Docker containers (downloading updates)
+                 # - DNS queries (often use high ports)
+                 # - APT and other package managers
+                 # - Normal network operation
+  61000-65535    # Upper reserved range
+                 # Usually not used by standard applications
+                 # We block to prevent non-standard outbound connections
+} drop
+
+# = 🕷️ Suspicious IPs — large ranges frequently used by botnets,
+# spam networks, and scanners =
+ip saddr {
+  185.0.0.0/8,   # Abused hosting and proxy networks
+  37.0.0.0/8,    # Cheap VPS, scanning sources
+  88.0.0.0/8,    # Frequent brute-force and scanners
+  77.0.0.0/8,    # Mass TOR/proxy nodes
+  91.0.0.0/8     # Botnets and "gray" hosting
+} drop
+        </code>
+    </pre>
+</div>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to top</a>
+</p>
+
+</section>
+<!-- End of subsection H5 2.4.2-E -->
+
+<hr>
+
+<!-- Подсекция H5 2.4.2-F -->
+<section id="config3-dns-quard9" aria-label="2.4.2-F Switching to the Quad9 DNS server (9.9.9.9)">
 	
-<h5>2.4.2-B Switching to the Quad9 DNS server (9.9.9.9)</h5>
+<h5>2.4.2-F Switching to the Quad9 DNS server (9.9.9.9)</h5>
 
 <p>The <code class="language-ini">/etc/resolv.conf</code> settings are hardcoded to 9.9.9.9. All contents of the file have been replaced with the line:</p>
 
@@ -2572,12 +3124,12 @@ table inet filter { # Opening the ruleset
 
 </section>
 
-<!-- Конец подсекции H5 2.4.2-E -->
+<!-- Конец подсекции H5 2.4.2-F -->
 
 <hr>
 
-<!-- Subsection H5 2.4.2-F -->
-<section id="config3-app-nft-monitoring-script" aria-label="2.4.2-E Custom monitoring script for nftables and AppArmor">
+<!-- Subsection H5 2.4.2-G -->
+<section id="config3-app-nft-monitoring-script" aria-label="2.4.2-G Custom monitoring script for nftables and AppArmor">
 
 <h5>2.4.2-E Custom monitoring script for nftables and AppArmor status</h5>
 
@@ -2744,7 +3296,7 @@ if __name__ == "__main__":
 </p>
 
 </section>
-<!-- End of subsection H5 2.4.2-F -->
+<!-- End of subsection H5 2.4.2-G -->
 
 </section> 
 

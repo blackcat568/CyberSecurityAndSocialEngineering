@@ -327,6 +327,7 @@ It describes the experience with Android mobile devices, which confirms and expa
       <li><a href="#section3-2">3.2. Current Attacker Capabilities (With NetGuard Configuration)</a></li>
       <li><a href="#section3-3">3.3. Changes After Installing NetGuard</a></li>
       <li><a href="#section3-4">3.4. Research Status and Priorities</a></li>
+      <li><a href="#section3-5">3.5. Tablet - Configuration 2</a></li>
     </ul>
   </li>
   </ul>
@@ -435,6 +436,10 @@ It describes the experience with Android mobile devices, which confirms and expa
 
 </section>
 
+<!-- Конец подсекции 2.1 -->
+
+<hr>
+
 <!-- Подсекция 2.2 -->
 <section id="device1-hack" aria-label="2.2. Detected Compromise">
 <h3 id="section2-2">2.2. Detected Compromise</h3>
@@ -467,6 +472,10 @@ Complete capability to read all internet traffic from the device (including traf
 
 </section>
 
+<!-- Конец подсекции 2.2 -->
+
+<hr>
+
 <!-- Подсекция 2.3 -->
 <section id="device1-status" aria-label="2.3. Status and Limitations of Further Investigation">
 <h3 id="section2-3">2.3. Status and Limitations of Further Investigation</h3>
@@ -481,6 +490,8 @@ Subsequently, the smartphone suffered physical damage, making further forensic i
 <blockquote>
 <p>The standard (factory) configuration of any device, whether desktop Linux or Android, is not resilient against a targeted attack by a professional group.</p>
 </blockquote>
+
+<!-- Конец подсекции 2.3 -->
 
 </section>
 
@@ -569,7 +580,15 @@ Subsequently, the smartphone suffered physical damage, making further forensic i
 <li><strong>Network Environment</strong>: The device does not leave the home premises (within Wi-Fi router range), connecting only through a trusted home network.</li>
 </ul>
 
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to top</a>
+</p>
+
 </section>
+
+<!-- Конец подсекции 3.1 -->
+
+<hr>
 
 <!-- Подсекция 3.2 -->
 <section id="device2-capabilities" aria-label="3.2. Current Attacker Capabilities (With NetGuard Configuration)">
@@ -613,8 +632,6 @@ Due to limited available time, the priority remains the investigation of the att
 
 </section>
 
-
-
 <hr>
 
 <!-- Subsection 3.5 -->
@@ -645,7 +662,7 @@ Due to limited available time, the priority remains the investigation of the att
   &lt;!-- ГРУППА 1: Wi-Fi ЗАБЛОКИРОВАН, Мобильный ЗАБЛОКИРОВАН --&gt;
   &lt;!-- (whitelist = false, value="true" = ЗАБЛОКИРОВАНО) --&gt;
   &lt;!-- ========================================== --&gt;
-  &lt;!-- 187 ЗАБЛОКИРОВАННЫХ СИСТЕМНЫХ ПРИЛОЖЕНИЙ (исключены 8 разрешённых): --&gt;
+  &lt;!-- 187 ЗАБЛОКИРОВАННЫХ СИСТЕМНЫХ ПРИЛОЖЕНИЙ: --&gt;
   &lt;wifi&gt;
     &lt;setting key="com.lenovo.ota" type="boolean" value="true" /&gt;
     &lt;setting key="com.android.storagemanager" type="boolean" value="true" /&gt;
@@ -841,7 +858,7 @@ Due to limited available time, the priority remains the investigation of the att
   &lt;!-- (whitelist = false, НЕ УКАЗАНЫ в экспорте, но РАЗРЕШЕНЫ по скриншоту) --&gt;
   &lt;!-- ========================================== --&gt;
   &lt;!-- 
-    8 разрешённых приложений (НЕ ВКЛЮЧЕНЫ в списки выше):
+    7 разрешённых приложений (НЕ ВКЛЮЧЕНЫ в списки выше):
     1. com.aurora.store (Aurora Store)
     2. org.fdroid.fdroid (F-Droid)
     3. org.mozilla.fennec (Fennec)

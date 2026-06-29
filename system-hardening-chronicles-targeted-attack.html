@@ -379,7 +379,7 @@
                             <ul style="list-style: none; padding-left: 1.5rem;">
 								<li style="margin-bottom: 0.1rem;"><a href="#config3-intro" style="text-decoration: none;">2.4.2-A Introduction</a></li>
 								<li style="margin-bottom: 0.1rem;"><a href="#config3-logic" style="text-decoration: none;">2.4.2-B Strategic logic of Configuration 3: blocking vectors as a deterrence method</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config3-nftables" style="text-decoration: none;">2.4.2-C Changes in the nftables config</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config3-software-nftables" style="text-decoration: none;">2.4.2-C Changes in the nftables config</a></li>
                                 <li style="margin-bottom: 0.1rem;"><a href="#config3-nftables-fixes" style="text-decoration: none;">2.4.2-D Fixing the nftables configuration of Configuration 3</a></li>
                                 <li style="margin-bottom: 0.1rem;"><a href="#config3-nftables-enhancements" style="text-decoration: none;">2.4.2-E Enhancing the nftables configuration of Configuration 3</a></li>
                                 <li style="margin-bottom: 0.1rem;"><a href="#config3-dns-quard9" style="text-decoration: none;">2.4.2-F Switching to the Quad9 DNS server (9.9.9.9)</a></li>
@@ -2479,7 +2479,7 @@ table inet filter { # Opening the ruleset
 
 <p>In order to enhance security and to practically explore the potential of nftables, it was decided to strengthen the nftables configuration of Configuration 3.</p>
 
-<p>In addition to establishing outbound traffic filtering by IP and fixing the limit on allowed connections per second, made in sections <a href="#config3-nftables-changes">"2.4.2-C Changes in the nftables config"</a> and <a href="#config3-nftables-fixes">"2.4.2-D Fixing the nftables configuration of Configuration 3"</a>, the following additional security features were added to the configuration and to the whitelist of allowed IPs for the <code>output</code> chain which was extracted from the main config:</p>
+<p>In addition to establishing outbound traffic filtering by IP and fixing the limit on allowed connections per second, made in sections <a href="#config3-software-nftables">"2.4.2-C Changes in the nftables config"</a> and <a href="#config3-nftables-fixes">"2.4.2-D Fixing the nftables configuration of Configuration 3"</a>, the following additional security features were added to the configuration and to the whitelist of allowed IPs for the <code>output</code> chain which was extracted from the main config:</p>
 
 <ul>
     <li><strong>Filtering access to IPs from the whitelist by user UID</strong> — even if an IP address is allowed, only specific users (e.g., <code>user</code>, <code>_apt</code>, <code>root</code>) are permitted to access it. This prevents malicious processes running under other UIDs from using allowed IP addresses.</li>

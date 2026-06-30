@@ -2205,6 +2205,34 @@ table inet filter { # Opening the ruleset
     <p>When using this defense logic (a strict whitelist of outgoing IP addresses), you must add the IP addresses of your DNS server and your internet service provider to it, and specifically <strong>as numeric ranges rather than domain names</strong>.</p>
 </div>
 
+<hr>
+
+<p><strong>Deep network activity analysis using <code>tcpdump</code>:</strong></p>
+
+<p>If you wish to gain a more comprehensive view of your internet connection activity, perform a traffic capture using <code>tcpdump</code>:</p>
+
+<div class="historical-fact">
+    <pre>
+        <code class="language-bash">
+# Start analysis with logging to a file
+sudo tcpdump -i enp0s7 -n "((tcp or udp) and (dst port 80 or dst port 443)) and not dst net 192.168.0.0/24" -v > /home/user/ai_traffic_raw.txt
+        </code>
+    </pre>
+</div>
+
+<p><strong>Extracting unique IP addresses:</strong></p>
+
+<div class="historical-fact">
+    <pre>
+        <code class="language-bash">
+# Remove duplicates from the file
+grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' /home/user/ai_traffic_raw.txt | sort -u > /home/user/ai_unique_ips.txt
+        </code>
+    </pre>
+</div>
+
+<p>Submit the resulting list of unique IP addresses to Gemini (or another AI assistant) for analysis and annotation. Based on this analysis, you will obtain the necessary individual IP addresses and CIDR ranges to ensure stable access to your websites.</p>
+
 <p style="text-align: center; margin-top: 2rem;">
   <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to table of contents</a>
 </p>

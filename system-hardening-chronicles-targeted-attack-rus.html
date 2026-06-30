@@ -2208,6 +2208,34 @@ table inet filter { # Открытие листа правил
     <p>При использовании данной логики защиты (строгий белый список исходящих IP-адресов) необходимо добавить в него IP-адреса вашего DNS-сервера и вашего интернет-провайдера, причём <strong>в виде числовых диапазонов, а не доменных имён</strong>.</p>
 </div>
 
+<hr>
+
+<p><strong>Глубокий анализ сетевой активности с помощью <code>tcpdump</code>:</strong></p>
+
+<p>Если вы хотите получить более полную картину активности вашего интернет-соединения, выполните захват трафика с помощью <code>tcpdump</code>:</p>
+
+<div class="historical-fact">
+    <pre>
+        <code class="language-bash">
+# Запуск анализа с логированием в файл
+sudo tcpdump -i enp0s7 -n "((tcp or udp) and (dst port 80 or dst port 443)) and not dst net 192.168.0.0/24" -v > /home/user/ai_traffic_raw.txt
+        </code>
+    </pre>
+</div>
+
+<p><strong>Извлечение уникальных IP-адресов:</strong></p>
+
+<div class="historical-fact">
+    <pre>
+        <code class="language-bash">
+# Очистка файла от дубликатов
+grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' /home/user/ai_traffic_raw.txt | sort -u > /home/user/ai_unique_ips.txt
+        </code>
+    </pre>
+</div>
+
+<p>Полученный список уникальных IP-адресов передайте для анализа и аннотирования в Gemini (или другой ИИ-ассистент). На основе этого анализа вы получите необходимые одиночные IP-адреса и диапазоны CIDR для обеспечения стабильного доступа к вашим сайтам.</p>
+
 <p style="text-align: center; margin-top: 2rem;">
   <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
 </p>

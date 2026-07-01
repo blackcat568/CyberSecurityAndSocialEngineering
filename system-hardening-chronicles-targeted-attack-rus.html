@@ -75,6 +75,43 @@
                         ]
                     };
                 });
+                
+                // Регистрируем язык bash (стандартный, но с расширенной поддержкой)
+                hljs.registerLanguage('bash', function(hljs) {
+                    return {
+                        name: 'bash',
+                        aliases: ['sh'],
+                        keywords: {
+                            keyword: 'if then else fi for while do done case esac function select',
+                            built_in: 'sudo echo cat grep sort uniq dig curl wget nft systemctl journalctl ls cd pwd mkdir rm cp mv chmod chown kill pkill top htop ps netstat ss ip ifconfig',
+                            literal: 'true false'
+                        },
+                        contains: [
+                            hljs.HASH_COMMENT_MODE,
+                            {
+                                className: 'string',
+                                begin: /"/,
+                                end: /"/,
+                                contains: [hljs.BACKSLASH_ESCAPE]
+                            },
+                            {
+                                className: 'string',
+                                begin: /'/,
+                                end: /'/
+                            },
+                            {
+                                className: 'variable',
+                                begin: /\$[a-zA-Z_][a-zA-Z0-9_]*/
+                            },
+                            {
+                                className: 'meta',
+                                begin: '#!',
+                                end: '$'
+                            }
+                        ]
+                    };
+                });
+                
                 // 2. ИСПРАВЛЕНО: Полноценное правило для sysctl, поддерживающее звёздочки *
                 hljs.registerLanguage('sysctl', (hljs) => {
                     return {

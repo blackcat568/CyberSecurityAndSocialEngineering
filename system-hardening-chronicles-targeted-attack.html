@@ -1766,6 +1766,8 @@ Compiled with support for: Linux audit, Libcapng, Seccomp, Systemd, Umockdev</p>
 
 <p><strong>Obtaining IP addresses for the whitelist using <code>dig</code>:</strong></p>
 
+<p><strong>Important warning:</strong> when building an IP whitelist, do not use textual domain names. Specify individual IP addresses and CIDR ranges associated with the given domain name. Using domain names instead of numeric IP addresses leads to nftables failures.</p>
+
 <p>To maintain an up-to-date IP whitelist, it is recommended to use the <code>dig</code> utility, which retrieves all A records for a given domain.</p>
 
 <p><strong>Example command:</strong></p>

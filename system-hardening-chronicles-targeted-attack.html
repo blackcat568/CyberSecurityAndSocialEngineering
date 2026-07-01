@@ -2533,11 +2533,17 @@ table inet filter { # Opening the ruleset
 
 <p>In order to enhance security and to practically explore the potential of nftables, it was decided to strengthen the nftables configuration of Configuration 3.</p>
 
+<p>For example, many users who have configured security in Windows-based operating systems have noticed that many Windows-oriented firewalls offer outbound traffic filtering by process name.</p>
+
+<p>There is no such logic in nftables, but a somewhat different logic is applied: <strong>filtering by UID — username</strong>. This is what should be used.</p>
+
 <p>In addition to establishing outbound traffic filtering by IP and fixing the limit on allowed connections per second, made in sections <a href="#config3-software-nftables">"2.4.2-C Changes in the nftables config"</a> and <a href="#config3-nftables-fixes">"2.4.2-D Fixing the nftables configuration of Configuration 3"</a>, the following additional security features were added to the configuration and to the whitelist of allowed IPs for the <code>output</code> chain which was extracted from the main config:</p>
 
 <ul>
     <li><strong>Filtering access to IPs from the whitelist by user UID</strong> — even if an IP address is allowed, only specific users (e.g., <code>user</code>, <code>_apt</code>, <code>root</code>) are permitted to access it. This prevents malicious processes running under other UIDs from using allowed IP addresses.</li>
     <li><strong>Filtering invalid packets in the <code>output</code> chain</strong> — packets marked as invalid by conntrack are immediately dropped with logging. This prevents suspicious or malformed packets from being sent to the internet.</li>
+    <li><strong>Stateful Connection Isolation & Hijacking Protection via Socket UID</strong>  —  eliminates the classic firewall "blind spot" where any packets with <code>established</code> status are blindly approved.</li>
+    <li><strong>Mandatory DNS shield with tunneling protection (Strict DNS &amp; Anti-Tunneling)</strong> — restricts port 53 (TCP/UDP) exclusively to three servers (Quad9 and the ISP). For UDP, only short queries (<code>meta length &lt;= 150</code> bytes) are allowed, effectively blocking DNS tunneling, while <code>meta skuid</code> checks completely close off DNS access to ghost system processes (such as <code>nobody</code> or <code>daemon</code>).</li>
 </ul>
 
 <p><strong>Enhanced nftables configuration of Configuration 3:</strong></p>
@@ -2575,9 +2581,9 @@ table inet filter { # Opening the ruleset
     
     # == 🔒 Proper protection against aggressive incoming traffic (anti-DDoS) ==
     # We do NOT allow traffic, we only instantly destroy what exceeds the limit.
-    # If the rate exceeds 25 per second, the packet is logged and dropped right here.
+    # If the rate exceeds 100 per second, the packet is logged and dropped right here.
     # If the rate is within limits, the packet goes further down, where a reliable default DROP awaits it.
-    ip saddr 0.0.0.0/0 ct state new limit rate over 25/second burst 50 packets log prefix "🔥 BAN: too many conn " flags all drop
+    ip saddr 0.0.0.0/0 ct state new limit rate over 100/second burst 200 packets log prefix "🔥 BAN: too many conn " flags all drop
 
     # == 🛡️ Rate-limit ICMP echo requests (ping) ==
     ip protocol icmp icmp type echo-request limit rate 1/second accept
@@ -2654,9 +2660,9 @@ table inet filter { # Opening the ruleset
 
     # == 🔒 Proper protection against aggressive incoming traffic (anti-DDoS) ==
     # We do NOT allow traffic, we only instantly destroy what exceeds the limit.
-    # If the rate exceeds 25 per second, the packet is logged and dropped right here.
+    # If the rate exceeds 100 per second, the packet is logged and dropped right here.
     # If the rate is within limits, the packet goes further down, where a reliable default DROP awaits it.
-    ip saddr 0.0.0.0/0 ct state new limit rate over 25/second burst 50 packets log prefix "🔥 BAN: too many conn " flags all drop
+    ip saddr 0.0.0.0/0 ct state new limit rate over 100/second burst 200 packets log prefix "🔥 BAN: too many conn " flags all drop
 
     # == 🛡️ Rate-limit ICMP echo requests (ping) ==
     # ip protocol icmp icmp type echo-request limit rate 1/second accept
@@ -2694,6 +2700,17 @@ table inet filter { # Opening the ruleset
     # This ensures immediate destruction of invalid packets
     # before the remaining filtering rules are applied.
     ct state invalid log prefix "🔥 INVALID_OUT_PACKET: " drop
+    
+    # =========================================================================
+    # 🔒 SMART INSPECTION OF ESTABLISHED SESSIONS (Protection against Connection Hijacking)
+    # =========================================================================
+    
+    # Allow established sessions ONLY if the packets within them originate from You, Your Browser, APT, or Root.
+    # System ghosts (nobody, daemon) are completely exiled from here.
+    ct state established,related meta skuid { user, _flatpak, _apt, root, systemd-timesync } accept
+
+    # ⬇️ INSTANT CUTOFF: If an unauthorized system process attempts to hijack your session
+    ct state established,related log flags skuid prefix "🔥 HIJACK_ATTEMPT_DROP: " drop
 
     # =======================================================================
     # 1. GENERAL PROTECTIVE SHIELD (Only rate limiting!)
@@ -2703,20 +2720,22 @@ table inet filter { # Opening the ruleset
     # The "!" sign means: if the rate exceeds the limit, LOG and DROP the packet.
     # If the rate is within limits, the packet silently passes below — to your IP whitelist.
     # ATTENTION: meta l4proto { tcp, udp } and th dport cover both TCP and UDP (HTTP/3) with a single shield.
-    meta l4proto { tcp, udp } th dport { 80, 443 } ct state new limit rate over 20/second burst 40 packets log prefix "🔥 OUT_WEB_LIMIT_BURST: " drop
+    meta l4proto { tcp, udp } th dport { 80, 443 } ct state new limit rate over 100/second burst 200 packets log prefix "🔥 OUT_WEB_LIMIT_BURST: " drop
     
     
     # =========================================================================
-    # 3. DNS SERVICE (Strict binding only to Quad9 at IP 9.9.9.9)
+    # 2. DNS SERVICE
+    # Strict binding only to Quad9 at IP 9.9.9.9
+    # Length control, user filtering, and backup servers
     # =========================================================================
 
-    # 1. For UDP, allow only short requests (&lt;=150 bytes) and strictly from trusted users
+    # 2.1. For UDP, allow only short requests (&lt;=150 bytes) and strictly from trusted users
     ip daddr { 9.9.9.9, 31.43.43.243, 31.43.43.143 } udp dport 53 meta length &lt;= 150 meta skuid { user, _apt, root } ct state new accept
 
-    # 2. For TCP, no length limit (for heavy DNSSEC responses), but strictly check the user
+    # 2.2. For TCP, no length limit (for heavy DNSSEC responses), but strictly check the user
     ip daddr { 9.9.9.9, 31.43.43.243, 31.43.43.143 } tcp dport 53 meta skuid { user, _apt, root, systemd-timesync } ct state new accept
 
-    # 3. All other attempts by any unauthorized services (or long UDP) — log and destroy
+    # 2.3. All other attempts by any unauthorized services (or long UDP) — log and destroy
     ip daddr { 9.9.9.9, 31.43.43.243, 31.43.43.143 } meta l4proto { tcp, udp } th dport 53 log flags skuid prefix "🔥 OUT_BLOCK_LEAK_DNS: " drop
 
 

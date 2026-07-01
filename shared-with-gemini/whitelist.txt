@@ -1,10 +1,11 @@
 # /etc/nftables.d/whitelist.nft
 # Белый список IP-адресов для исходящих соединений
+# Так же перименяется фильтрация по UID
 
-# Старый жесткий список (для провайдера «Просто» и коммунальных IP)
+# Список (для провайдера «Просто» и коммунальных IP)
 
 # === Веб-интерфейс роутера ===
-ip daddr 192.168.0.1 tcp dport 80 accept
+ip daddr 192.168.0.1 tcp dport 80 meta skuid { user, _flatpak, _apt, root } ct state new accept
 
 # =========================================================================
 # === Интернет-провайдер "Prosto"  ===
@@ -17,7 +18,7 @@ ip daddr {
     176.122.99.0/24,      # Локация информационного сайта prosto.net 
     31.43.32.0/19,        # Магистральный пул адресов провайдера «Просто» 
     176.122.96.0/20       # Абонентский пул маршрутизации
-} tcp dport { 80, 443 } ct state new accept
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
 
 # === Cloudflare (глобальная сеть CDN и DDoS-защиты) ===
 # Используется ChatGPT, DeepSeek и многими другими сервисами для
@@ -27,14 +28,14 @@ ip daddr {
     172.64.0.0/13,        # Дополнительный пул Cloudflare
     162.158.0.0/15,       # Европейский пул Cloudflare
     198.41.128.0/17       # Американский пул Cloudflare
-} tcp dport { 80, 443 } ct state new accept
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
 
 # === Fastly (сеть доставки контента) ===
 # Используется для загрузки статики, шрифтов и скриптов.
 ip daddr {
     151.101.0.0/16,       # Основной пул Fastly
     199.232.0.0/16        # Дополнительный пул Fastly
-} tcp dport { 80, 443 } ct state new accept
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
 
 # === Amazon CloudFront / AWS (облачная инфраструктура) ===
 # Широко используется для хостинга API, бэкендов и CDN.
@@ -48,10 +49,15 @@ ip daddr {
     3.173.0.0/16,         # AWS Edge (общий пул)
     23.211.0.0/16,        # AWS CloudFront (дополнительный)
     23.47.0.0/16          # AWS CloudFront (резервный)
-} tcp dport { 80, 443 } ct state new accept
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
 
 # === Amazon Web Services (AWS CloudFront / EC2) ===
-ip daddr { 3.0.0.0/8 } tcp dport { 80, 443 } ct state new accept
+ip daddr {
+    3.0.0.0/8,
+    54.0.0.0/8,
+    52.0.0.0/8,
+    18.66.233.0/24
+ } tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
 
 # === Google Cloud / YouTube (инфраструктура Google, ASN 15169) ===
 ip daddr {
@@ -64,24 +70,28 @@ ip daddr {
     216.58.192.0/19,      # Старые, но активные пулы DNS и фронтендов Google
     35.190.0.0/16,        # Google Cloud (общий пул)
     35.191.0.0/16         # Google Cloud (дополнительный)
-} tcp dport { 80, 443 } ct state new accept
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
 
 # === Google (AS15169) - поиск, YouTube, Gmail, API ===
-ip daddr { 142.250.0.0/15, 172.217.0.0/16, 74.125.0.0/16 } tcp dport { 80, 443 } ct state new accept
+ip daddr {
+    142.250.0.0/15,
+    172.217.0.0/16,
+    74.125.0.0/16 
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
 
  # === Поисковая система Bing и службы Microsoft ===
  ip daddr {
     150.171.0.0/16,       # Основной пул адресов поискового движка Bing
     40.126.0.0/18,        # Службы авторизации Microsoft Live / Office
     20.190.128.0/18,      # Облачные бэкенды Azure / Microsoft
-} tcp dport { 80, 443 } ct state new accept
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
 
 # === GitHub (платформа разработки) ===
 ip daddr {
     140.82.112.0/20,      # Основные подсети GitHub
     192.30.252.0/22,      # Дополнительные пулы GitHub
     185.199.108.0/22      # CDN-сети (raw.githubusercontent.com, githubassets.com)
-} tcp dport { 80, 443 } ct state new accept
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
 
 # === Debian Infrastructure (официальные сервера и зеркала) ===
 ip daddr {
@@ -93,18 +103,26 @@ ip daddr {
     199.232.0.0/16,       # Дополнительный пул Fastly для безопасности
     146.75.0.0/17,        # Резервные маршруты доставки пакетов Debian
     51.83.0.0/16          # Зеркала репозиториев обновлений deb.debian.org
-} tcp dport { 80, 443 } ct state new accept
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
+
+# === ⏰ Разрешаем синхронизацию системного времени (NTP) ===
+# Правило параноидальное: порт UDP 123 открыт ИСКЛЮЧИТЕЛЬНО для одного этого процесса.
+# Ни один бэкдор от имени root или nobody использовать эту лазейку не сможет.
+udp dport 123 meta skuid systemd-timesync ct state new accept
+
 
 # === Debian Project & Wiki (По доменным именам раздельными строками) ===
 # Раздельный синтаксис исключает конфликты парсера при разрешении имен.
 # Полностью открывает доступ к документации и руководствам системы.
-ip daddr "wiki.debian.org" tcp dport { 80, 443 } ct state new accept
+ip daddr {
+    209.87.16.81
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
 
 # === openSUSE / Zeek (инфраструктура openSUSE) ===
 ip daddr {
     195.135.220.0/22,     # Основной дата-центр openSUSE
     130.57.0.0/16         # Дополнительные серверные пулы Novell/SUSE
-} tcp dport { 80, 443 } ct state new accept
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
 
 # === LibreWolf (репозиторий обновлений) ===
 ip daddr {
@@ -128,28 +146,23 @@ ip daddr {
     111.170.168.113/32,   # Китайский провайдер (региональный доступ)
     20.150.95.164/32,     # Microsoft Azure (возможный бэкенд)
     34.107.243.93/32      # Google Cloud (возможный бэкенд)
-} tcp dport { 80, 443 } ct state new accept
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
 
 # === Википедия ===
 ip daddr {
-    wikipedia.org,
-    www.wikipedia.org,
-    en.wikipedia.org,
-    ru.wikipedia.org,
-    wikimedia.org,
-    upload.wikimedia.org
-} tcp dport { 443, 80 } ct state new accept
+    185.15.59.224
+} tcp dport { 443, 80 } meta skuid { user, _flatpak, _apt, root } ct state new accept
 
 # ===  Стихи.ру ===
 ip daddr {
-    stihi.ru
-} tcp dport { 443, 80 } ct state new accept
+    178.248.237.208
+} tcp dport { 443, 80 } meta skuid { user, _flatpak } meta skuid { user, _flatpak, _apt, root } ct state new accept
 
 # === Facebook / Meta ===
-ip daddr 57.144.0.0/14 tcp dport { 80, 443 } ct state new accept
+ip daddr 57.144.0.0/14 tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
 
 # === Hetzner Cloud (если используете) ===
-ip daddr 150.171.0.0/16 tcp dport { 80, 443 } ct state new accept
+ip daddr 150.171.0.0/16 tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
 
 # === Коммунальные службы (ДТЭК, КОЕЦ, Ясно) ===
 ip daddr {
@@ -158,18 +171,18 @@ ip daddr {
     193.19.141.134,       # Личный кабинет КОЕК
     193.19.141.137,       # Личный кабинет ДТЭК (старый)
     193.19.140.0/22      # Общая подсеть Cosmonova (КОЕК/ДТЭК) 
-} tcp dport { 80, 443 } ct state new accept
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
 
 # === Akamai (расширенный диапазон 23.32.0.0/11) ===
 ip daddr {
      23.32.0.0/11, 
      23.211.0.0/16, 
      23.64.0.0/16
-} tcp dport { 80, 443 } ct state new accept
+} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
 
  # === Резервный DNS Quad9 ===
- ip daddr  9.9.9.0/24 udp dport 53 accept
+ ip daddr  9.9.9.0/24 udp dport 53 meta skuid { user, _apt, root } accept
 
  # === Резервный DNS Quad9 (149.112.0.0/16) ===
- ip daddr 149.112.0.0/16 udp dport 53 accept
+ ip daddr 149.112.0.0/16 udp dport 53 meta skuid { user, _apt, root } accept 
 

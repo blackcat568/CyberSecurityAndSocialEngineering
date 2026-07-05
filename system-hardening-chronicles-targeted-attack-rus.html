@@ -3160,62 +3160,9 @@ ip saddr {
 
 <p>В конфигурации 3 было решенгие применить параметр <code>kernel.yama.ptrace_scope = 2</code>. До этого в конфигурациях 1 и 2 применялся параметр <code>kernel.yama.ptrace_scope = 1</code></p>
 
-<p><strong>Практическая польза параметра <code>kernel.yama.ptrace_scope = 2</code> и расшифровка всех его значений</strong></p>
+<p><strong>Практическая польза параметра <code>kernel.yama.ptrace_scope = 2</code> </strong></p>
 
-<p><code>ptrace</code> — это мощный системный вызов, используемый для отладки, трассировки и интроспекции процессов. Однако его широкая доступность создаёт серьёзную угрозу безопасности: скомпрометированный процесс (например, взломанный браузер) может применить <code>ptrace</code> к другим запущенным процессам того же пользователя, таким как SSH-сессия, GPG-агент или менеджер паролей, и извлечь из их памяти конфиденциальные данные, включая пароли и ключи.</p>
-
-<p>Модуль безопасности <strong>Yama</strong> (встроенный в ядро Linux) позволяет ограничить эту возможность, управляя параметром <code>kernel.yama.ptrace_scope</code>. Наиболее оптимальным для большинства пользователей и администраторов является значение <strong><code>2</code></strong>.</p>
-
-<p><strong>Почему именно <code>2</code>?</strong></p>
-<p>Значение <code>2</code> разрешает использование <code>ptrace</code> (и, следовательно, работу отладчиков) <strong>только процессам с привилегией <code>CAP_SYS_PTRACE</code></strong>, что обычно означает <code>root</code> или процессы, запущенные с соответствующими правами.</p>
-<p>Это обеспечивает идеальный баланс между безопасностью и функциональностью:</p>
-<ul>
-    <li><strong>Безопасность:</strong> эффективно закрывает критический вектор атаки, при котором один взломанный процесс пользователя может быть использован для компрометации всех остальных его процессов, блокируя межпроцессный шпионаж и инжекты кода в память.</li>
-    <li><strong>Функциональность:</strong> в отличие от полного отключения (значение 3), режим <code>2</code> позволяет разработчикам и системным администраторам выполнять отладку и трассировку процессов, если они имеют необходимые привилегии (например, <code>sudo gdb</code> или <code>sudo strace</code>.</li>
-</ul>
-<p>Это особенно важно для систем, где безопасность критична, но всё ещё требуется возможность диагностики и отладки.</p>
-
-<p><strong>Все допустимые значения параметра <code>kernel.yama.ptrace_scope</code> (от 0 до 3):</strong></p>
-
-<table style="width: 100%; border-collapse: collapse; margin-top: 0.8rem;">
-    <thead>
-        <tr style="background: #e9ecef;">
-            <th style="border: 1px solid #dee2e6; padding: 0.5rem; text-align: left;">Значение</th>
-            <th style="border: 1px solid #dee2e6; padding: 0.5rem; text-align: left;">Режим</th>
-            <th style="border: 1px solid #dee2e6; padding: 0.5rem; text-align: left;">Описание</th>
-            <th style="border: 1px solid #dee2e6; padding: 0.5rem; text-align: left;">Когда использовать</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><code>0</code></td>
-            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><strong>Классические права</strong></td>
-            <td style="border: 1px solid #dee2e6; padding: 0.5rem;">Нет дополнительных ограничений. Процесс может использовать <code>ptrace</code> к любому другому процессу того же пользователя.</td>
-            <td style="border: 1px solid #dee2e6; padding: 0.5rem;">Не рекомендуется для обычных систем. Подходит только для специализированных сред, где требуется широкая отладка.</td>
-        </tr>
-        <tr style="background: #f8f9fa;">
-            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><code>1</code></td>
-            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><strong>Ограниченный</strong> (обычно значение по умолчанию)</td>
-            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><code>ptrace</code> разрешён только для дочерних процессов (например, при запуске отладчика напрямую: <code>gdb ./program</code>) или для процессов, явно разрешённых через <code>prctl(PR_SET_PTRACER)</code> [citation:6][citation:7].</td>
-            <td style="border: 1px solid #dee2e6; padding: 0.5rem;">Лучший выбор для рабочих станций, где часто используется отладка дочерних процессов, но есть риск атак со стороны скомпрометированных приложений.</td>
-        </tr>
-        <tr>
-            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><strong><code>2</code></strong></td>
-            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><strong>Только для администратора</strong></td>
-            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><code>ptrace</code> разрешён <strong>только процессам с привилегией <code>CAP_SYS_PTRACE</code></strong> (обычно процессам от <code>root</code>).</td>
-            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><strong>☑️ Рекомендуется</strong> для систем с высокими требованиями к безопасности. Балансирует защиту и возможность отладки через <code>sudo</code>.</td>
-        </tr>
-        <tr style="background: #f8f9fa;">
-            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><code>3</code></td>
-            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><strong>Полный запрет</strong></td>
-            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><strong>Ни один процесс</strong> не может использовать <code>ptrace</code>. <strong>После установки этого значения его нельзя изменить до перезагрузки системы</strong>.</td>
-            <td style="border: 1px solid #dee2e6; padding: 0.5rem;">Для максимально изолированных систем, где отладка и трассировка не требуются никогда.</td>
-        </tr>
-    </tbody>
-</table>
-
-<p><strong>Важное замечание о User Namespaces:</strong></p>
-<p>Следует учитывать, что создание пользовательских пространств имён (User Namespaces) может ослабить защиту Yama для процессов внутри них, так как владелец пространства имён внутри него обладает <code>CAP_SYS_PTRACE</code> по отношению к своим членам. В некоторых случаях это может сделать процесс более доступным для <code>ptrace</code>, чем предполагалось, что стоит учитывать при настройке изоляции контейнеров и приложений [citation:9].</p>
+<p><strong>Изоляция памяти и блокировка инжектов (Yama ptrace_scope Hardening)</strong> — системный параметр <code>kernel.yama.ptrace_scope = 2</code> перекрывает критический вектор Process Injection. Это полностью лишает фоновое вредоносное ПО технической возможности использовать системный вызов <code>ptrace</code> для тайного внедрения шпионского кода или перехвата данных внутри оперативной памяти запущенного браузера LibreWolf или игровых клиентов.</p>
 			
 <div class="historical-fact">
     <strong>Конфигурация усиления защиты sysctl (2026-07-04):</strong>
@@ -3363,7 +3310,7 @@ kernel.randomize_va_space = 2
 # ⚠️ КРАСНАЯ МАРКИРОВКА ⚠️
 # Побочные эффекты: Ломает отладчики (gdb, strace), если вы пытаетесь прикрепиться к чужому PID. Не влияет на дочерние процессы (например, отладка из терминала работает).
 # Примечание: Для обычного пользователя - безопасно и нужно.
-kernel.yama.ptrace_scope = 1
+kernel.yama.ptrace_scope = 2
 
 # 20. ОТКЛЮЧЕНИЕ USER NAMESPACES
 # Эффект: Закрывает основной вектор локального повышения привилегий. Предотвращает контейнерную изоляцию для непривилегированных пользователей.
@@ -3413,13 +3360,6 @@ kernel.sysrq = 0
 #                   Не влияет на повседневную работу системы. Docker и современные приложения
 #                   продолжают работать штатно.
 net.core.bpf_jit_harden = 2
-
-# =====================================================================
-# 26. ИЗОЛЯЦИЯ ПАМЯТИ ПРОЦЕССОВ (Защита от инжектов и межпроцессного шпионажа)
-# =====================================================================
-# 2 = Блокирует вызовы ptrace для обычных пользователей. 
-# Внедряться в память процессов и читать её сможет только root.
-kernel.yama.ptrace_scope = 2
 
 
 # ========== КОНЕЦ КОНФИГА ==========

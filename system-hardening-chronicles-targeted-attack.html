@@ -3158,62 +3158,9 @@ ip saddr {
 
 <p>In Configuration 3, it was decided to apply the <code>kernel.yama.ptrace_scope = 2</code> parameter. Previously, in Configurations 1 and 2, the <code>kernel.yama.ptrace_scope = 1</code> parameter was used.</p>
 
-<p><strong>Practical benefits of the <code>kernel.yama.ptrace_scope = 2</code> parameter and explanation of all its values</strong></p>
+<p><strong>Practical benefits of the <code>kernel.yama.ptrace_scope = 2</code></strong></p>
 
-<p><code>ptrace</code> is a powerful system call used for debugging, tracing, and process introspection. However, its wide availability poses a serious security threat: a compromised process (e.g., a hacked browser) can use <code>ptrace</code> on other running processes of the same user, such as an SSH session, GPG agent, or password manager, and extract confidential data from their memory, including passwords and cryptographic keys.</p>
-
-<p>The <strong>Yama</strong> security module (built into the Linux kernel) allows restricting this capability by managing the <code>kernel.yama.ptrace_scope</code> parameter. The most optimal value for the majority of users and administrators is <strong><code>2</code></strong>.</p>
-
-<p><strong>Why <code>2</code>?</strong></p>
-<p>The value <code>2</code> allows the use of <code>ptrace</code> (and therefore debuggers) <strong>only for processes with the <code>CAP_SYS_PTRACE</code> capability</strong>, which typically means <code>root</code> or processes running with the appropriate privileges.</p>
-<p>This provides an ideal balance between security and functionality:</p>
-<ul>
-    <li><strong>Security:</strong> It effectively closes a critical attack vector where one compromised user process can be used to compromise all of the user's other processes, blocking inter-process spying and code injection into memory.</li>
-    <li><strong>Functionality:</strong> Unlike a complete disable (value 3), mode <code>2</code> allows developers and system administrators to perform debugging and tracing of processes if they have the necessary privileges (e.g., <code>sudo gdb</code> or <code>sudo strace</code>).</li>
-</ul>
-<p>This is especially important for systems where security is critical, but diagnostic and debugging capabilities are still required.</p>
-
-<p><strong>All valid values for the <code>kernel.yama.ptrace_scope</code> parameter (0 to 3):</strong></p>
-
-<table style="width: 100%; border-collapse: collapse; margin-top: 0.8rem;">
-    <thead>
-        <tr style="background: #e9ecef;">
-            <th style="border: 1px solid #dee2e6; padding: 0.5rem; text-align: left;">Value</th>
-            <th style="border: 1px solid #dee2e6; padding: 0.5rem; text-align: left;">Mode</th>
-            <th style="border: 1px solid #dee2e6; padding: 0.5rem; text-align: left;">Description</th>
-            <th style="border: 1px solid #dee2e6; padding: 0.5rem; text-align: left;">When to use</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><code>0</code></td>
-            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><strong>Classic permissions</strong></td>
-            <td style="border: 1px solid #dee2e6; padding: 0.5rem;">No additional restrictions. A process can use <code>ptrace</code> on any other process of the same user.</td>
-            <td style="border: 1px solid #dee2e6; padding: 0.5rem;">Not recommended for typical systems. Suitable only for specialized environments where extensive debugging is required.</td>
-        </tr>
-        <tr style="background: #f8f9fa;">
-            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><code>1</code></td>
-            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><strong>Restricted</strong> (usually the default)</td>
-            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><code>ptrace</code> is only allowed for child processes (e.g., when running a debugger directly: <code>gdb ./program</code>) or for processes explicitly allowed via <code>prctl(PR_SET_PTRACER)</code>.</td>
-            <td style="border: 1px solid #dee2e6; padding: 0.5rem;">A good choice for workstations where child process debugging is frequently used, but there is a risk of attacks from compromised applications.</td>
-        </tr>
-        <tr>
-            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><strong><code>2</code></strong></td>
-            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><strong>Admin only</strong></td>
-            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><code>ptrace</code> is allowed <strong>only for processes with the <code>CAP_SYS_PTRACE</code> capability</strong> (typically <code>root</code> processes).</td>
-            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><strong>☑️ Recommended</strong> for systems with high security requirements. Balances protection with the ability to debug via <code>sudo</code>.</td>
-        </tr>
-        <tr style="background: #f8f9fa;">
-            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><code>3</code></td>
-            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><strong>Complete prohibition</strong></td>
-            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><strong>No process</strong> can use <code>ptrace</code>. <strong>After setting this value, it cannot be changed until the system is rebooted</strong>.</td>
-            <td style="border: 1px solid #dee2e6; padding: 0.5rem;">For maximally isolated systems where debugging and tracing are never required.</td>
-        </tr>
-    </tbody>
-</table>
-
-<p><strong>Important note about User Namespaces:</strong></p>
-<p>It should be noted that the creation of user namespaces can weaken the Yama protection for processes inside them, as the owner of the namespace within it possesses <code>CAP_SYS_PTRACE</code> with respect to its members. In some cases, this can make a process more accessible to <code>ptrace</code> than intended, which should be taken into account when configuring container and application isolation.</p>
+<p><strong>Memory isolation and injection blocking (Yama ptrace_scope Hardening)</strong> — the <code>kernel.yama.ptrace_scope = 2</code> system parameter closes the critical Process Injection vector. This completely deprives background malware of the technical capability to use the <code>ptrace</code> system call for covertly injecting spy code or intercepting data within the RAM of a running LibreWolf browser or gaming clients.</p>
             
 <div class="historical-fact">
     <strong>sysctl hardening configuration (2026-07-04):</strong>
@@ -3361,7 +3308,7 @@ kernel.randomize_va_space = 2
 # ⚠️ RED MARK ⚠️
 # Side effects: Breaks debuggers (gdb, strace) when attaching to another PID. Does not affect child processes (e.g., terminal debugging still works).
 # Note: For regular users - safe and recommended.
-kernel.yama.ptrace_scope = 1
+kernel.yama.ptrace_scope = 2
 
 # 20. DISABLE USER NAMESPACES
 # Effect: Closes the main vector for local privilege escalation. Prevents container isolation for unprivileged users.
@@ -3411,13 +3358,6 @@ kernel.sysrq = 0
 #                   Does not affect daily system operation. Docker and modern applications
 #                   continue to work normally.
 net.core.bpf_jit_harden = 2
-
-# =====================================================================
-# 26. PROCESS MEMORY ISOLATION (Protection against injections and inter-process spying)
-# =====================================================================
-# 2 = Blocks ptrace calls for regular users.
-# Only root will be able to inject into process memory and read it.
-kernel.yama.ptrace_scope = 2
 
 
 # ========== END OF CONFIG ==========

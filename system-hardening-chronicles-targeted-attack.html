@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "A real-world chronicle of defending against a targeted attack: documenting vulnerabilities, configurations, responses, and system hardening. From zero security to resilient configurations. Covers Debian 12 & 13, nftables, AppArmor, OpenSnitch, Flatpak, USBGuard, sysctl. For cybersecurity and InfoSec professionals.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-07-03<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-07-05<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -353,7 +353,7 @@
 
 <div class="alert" style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 2rem 0;">
   <strong style="color: #856404;">⚠️ Notice!</strong>
-  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-07-03<!-- DATE_END --></span>
+  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-07-05<!-- DATE_END --></span>
 </div>
 
 <!-- КРУПНАЯ ГЛАВА H2 0- Оглавление -->
@@ -421,8 +421,9 @@
                                 <li style="margin-bottom: 0.1rem;"><a href="#config3-software-nftables" style="text-decoration: none;">2.4.2-C Changes in the nftables config</a></li>
                                 <li style="margin-bottom: 0.1rem;"><a href="#config3-nftables-fixes" style="text-decoration: none;">2.4.2-D Fixing the nftables configuration of Configuration 3</a></li>
                                 <li style="margin-bottom: 0.1rem;"><a href="#config3-nftables-enhancements" style="text-decoration: none;">2.4.2-E Enhancing the nftables configuration of Configuration 3</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config3-dns-quard9" style="text-decoration: none;">2.4.2-F Switching to the Quad9 DNS server (9.9.9.9)</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config3-app-nft-monitoring-script" style="text-decoration: none;">2.4.2-G Custom monitoring script for nftables and AppArmor</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config3-software-sysctl" style="text-decoration: none;">2.4.2-F Enhancing the sysctl configuration of Configuration 3</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config3-dns-quard9" style="text-decoration: none;">2.4.2-G Switching to the Quad9 DNS server (9.9.9.9)</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config3-app-nft-monitoring-script" style="text-decoration: none;">2.4.2-H Custom monitoring script for nftables and AppArmor</a></li>
                             </ul>
                         </li>
                         <li style="margin-bottom: 0.1rem;"><a href="#config3-experiment-results" style="text-decoration: none;">2.4.3 Observing the progress of the experiment with configuration 3</a></li>
@@ -3150,10 +3151,297 @@ ip saddr {
 
 <hr>
 
-<!-- Подсекция H5 2.4.2-F -->
-<section id="config3-dns-quard9" aria-label="2.4.2-F Switching to the Quad9 DNS server (9.9.9.9)">
+<!-- Subsection H5 2.4.2-F  -->
+<section id="config3-software-sysctl" aria-label="2.4.2-F Enhancing the sysctl configuration of Configuration 3">
+    
+<h5>2.3.2-F Enhancing the sysctl configuration of Configuration 3</h5>
+
+<p>In Configuration 3, it was decided to apply the <code>kernel.yama.ptrace_scope = 2</code> parameter. Previously, in Configurations 1 and 2, the <code>kernel.yama.ptrace_scope = 1</code> parameter was used.</p>
+
+<p><strong>Practical benefits of the <code>kernel.yama.ptrace_scope = 2</code> parameter and explanation of all its values</strong></p>
+
+<p><code>ptrace</code> is a powerful system call used for debugging, tracing, and process introspection. However, its wide availability poses a serious security threat: a compromised process (e.g., a hacked browser) can use <code>ptrace</code> on other running processes of the same user, such as an SSH session, GPG agent, or password manager, and extract confidential data from their memory, including passwords and cryptographic keys.</p>
+
+<p>The <strong>Yama</strong> security module (built into the Linux kernel) allows restricting this capability by managing the <code>kernel.yama.ptrace_scope</code> parameter. The most optimal value for the majority of users and administrators is <strong><code>2</code></strong>.</p>
+
+<p><strong>Why <code>2</code>?</strong></p>
+<p>The value <code>2</code> allows the use of <code>ptrace</code> (and therefore debuggers) <strong>only for processes with the <code>CAP_SYS_PTRACE</code> capability</strong>, which typically means <code>root</code> or processes running with the appropriate privileges.</p>
+<p>This provides an ideal balance between security and functionality:</p>
+<ul>
+    <li><strong>Security:</strong> It effectively closes a critical attack vector where one compromised user process can be used to compromise all of the user's other processes, blocking inter-process spying and code injection into memory.</li>
+    <li><strong>Functionality:</strong> Unlike a complete disable (value 3), mode <code>2</code> allows developers and system administrators to perform debugging and tracing of processes if they have the necessary privileges (e.g., <code>sudo gdb</code> or <code>sudo strace</code>).</li>
+</ul>
+<p>This is especially important for systems where security is critical, but diagnostic and debugging capabilities are still required.</p>
+
+<p><strong>All valid values for the <code>kernel.yama.ptrace_scope</code> parameter (0 to 3):</strong></p>
+
+<table style="width: 100%; border-collapse: collapse; margin-top: 0.8rem;">
+    <thead>
+        <tr style="background: #e9ecef;">
+            <th style="border: 1px solid #dee2e6; padding: 0.5rem; text-align: left;">Value</th>
+            <th style="border: 1px solid #dee2e6; padding: 0.5rem; text-align: left;">Mode</th>
+            <th style="border: 1px solid #dee2e6; padding: 0.5rem; text-align: left;">Description</th>
+            <th style="border: 1px solid #dee2e6; padding: 0.5rem; text-align: left;">When to use</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><code>0</code></td>
+            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><strong>Classic permissions</strong></td>
+            <td style="border: 1px solid #dee2e6; padding: 0.5rem;">No additional restrictions. A process can use <code>ptrace</code> on any other process of the same user.</td>
+            <td style="border: 1px solid #dee2e6; padding: 0.5rem;">Not recommended for typical systems. Suitable only for specialized environments where extensive debugging is required.</td>
+        </tr>
+        <tr style="background: #f8f9fa;">
+            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><code>1</code></td>
+            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><strong>Restricted</strong> (usually the default)</td>
+            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><code>ptrace</code> is only allowed for child processes (e.g., when running a debugger directly: <code>gdb ./program</code>) or for processes explicitly allowed via <code>prctl(PR_SET_PTRACER)</code>.</td>
+            <td style="border: 1px solid #dee2e6; padding: 0.5rem;">A good choice for workstations where child process debugging is frequently used, but there is a risk of attacks from compromised applications.</td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><strong><code>2</code></strong></td>
+            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><strong>Admin only</strong></td>
+            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><code>ptrace</code> is allowed <strong>only for processes with the <code>CAP_SYS_PTRACE</code> capability</strong> (typically <code>root</code> processes).</td>
+            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><strong>☑️ Recommended</strong> for systems with high security requirements. Balances protection with the ability to debug via <code>sudo</code>.</td>
+        </tr>
+        <tr style="background: #f8f9fa;">
+            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><code>3</code></td>
+            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><strong>Complete prohibition</strong></td>
+            <td style="border: 1px solid #dee2e6; padding: 0.5rem;"><strong>No process</strong> can use <code>ptrace</code>. <strong>After setting this value, it cannot be changed until the system is rebooted</strong>.</td>
+            <td style="border: 1px solid #dee2e6; padding: 0.5rem;">For maximally isolated systems where debugging and tracing are never required.</td>
+        </tr>
+    </tbody>
+</table>
+
+<p><strong>Important note about User Namespaces:</strong></p>
+<p>It should be noted that the creation of user namespaces can weaken the Yama protection for processes inside them, as the owner of the namespace within it possesses <code>CAP_SYS_PTRACE</code> with respect to its members. In some cases, this can make a process more accessible to <code>ptrace</code> than intended, which should be taken into account when configuring container and application isolation.</p>
+            
+<div class="historical-fact">
+    <strong>sysctl hardening configuration (2026-07-04):</strong>
+    <pre>
+        <code class="language-sysctl">
+    
+# ============================================
+# SYSTEM HARDENING CONFIG
+# Debian 13 (Trixie) / MATE
+# Version: v. 7.0 blackcat568
+# Date: 04.03.2026 16:31
+# ============================================
+# ATTENTION: Apply with: sudo sysctl --system
+# After applying, reboot the system to verify stability.
+# ============================================
+
+# ========== CORE NETWORK RULES ==========
+
+# 1. Complete ICMP Echo (ping) ignore - INCOMING REQUESTS ONLY
+# Effect: The system does not respond to incoming ping requests. Makes your PC "invisible"
+#         to simple network scanners and automated bots.
+# Important: This does NOT block outgoing ping requests from your system.
+#
+# Side effects:
+#   - Other hosts on the network will not be able to check your PC's availability via ping.
+#   - Some VPNs and tunnels may use ICMP for keepalive (rare).
+#
+# Suitable for:
+#   ✅ Home/office PC not providing public services — completely safe.
+#   ❌ Public server — comment this line out. In this case, item 16 
+#      (icmp_ignore_bogus_error_responses) will only filter out erroneous ICMP packets.
+#
+# Note: Since IPv6 is disabled (item 11), this rule only applies to ICMPv4.
+net.ipv4.icmp_echo_ignore_all = 1
+
+# 2. Ignore ICMP broadcast requests
+# Effect: Protection against Smurf attacks (traffic amplification via broadcast requests).
+# Side effects: None for a typical PC.
+net.ipv4.icmp_echo_ignore_broadcasts = 1
+
+# 3. Enable SYN Cookies
+# Effect: Protection against SYN flood attacks (DoS). When the SYN queue overflows, it enables cookie mechanism instead of dropping connections.
+# Side effects: Slight increase in load during an attack. May affect some high-load servers, but safe for desktops.
+net.ipv4.tcp_syncookies = 1
+
+# 4. Disable Source Routing
+# Effect: Prevents attackers from specifying packet routes through your system (spoofing protection).
+# Side effects: None for regular users.
+net.ipv4.conf.all.accept_source_route = 0
+net.ipv4.conf.default.accept_source_route = 0
+
+# 5. Log "martian" packets
+# Effect: Logs packets with impossible (obviously forged) source/destination addresses.
+# Side effects: May fill logs (journalctl) during network attacks or misconfiguration.
+net.ipv4.conf.all.log_martians = 1
+net.ipv4.conf.default.log_martians = 1
+
+# 6. Disable ICMP redirects
+# Effect: Prevents routing table modification via ICMP packets. Protection against man-in-the-middle attacks.
+# Side effects: In complex networks with dynamic routing may require enabling, but safe for stationary PCs.
+net.ipv4.conf.all.accept_redirects = 0
+net.ipv4.conf.default.accept_redirects = 0
+
+# 7. Disable packet forwarding
+# Effect: System does not act as a router (does not forward packets between interfaces).
+# Side effects: None (default value).
+net.ipv4.ip_forward = 0
+
+# 8. Protection against empty TCP window attacks
+# Effect: Enables RFC 1337 - protection against attacks using "empty" TCP segments to hold connections.
+# Side effects: None.
+net.ipv4.tcp_rfc1337 = 1
+
+# 9. ARP request filtering
+# Effect: Protects against ARP spoofing by forcing the kernel to filter ARP replies from multiple interfaces.
+# Side effects: May cause issues in complex load-balanced networks (requires configuration).
+net.ipv4.conf.all.arp_filter = 1
+net.ipv4.conf.default.arp_filter = 1
+
+# 10. TCP window limits
+# Effect: Sets minimum, default, and maximum receive/send buffer sizes.
+# Side effects: Too low values may reduce download speed, but the specified values are optimal.
+net.ipv4.tcp_rmem = 4096 87380 4194304
+net.ipv4.tcp_wmem = 4096 65536 4194304
+
+# 11. COMPLETE IPv6 DISABLE
+# Effect: Disables entire IPv6 stack. Eliminates a whole class of IPv6-related vulnerabilities.
+# ⚠️ RED MARK ⚠️
+# Side effects: Applications requiring IPv6 stop working (some torrents, Docker containers, some sites via IPv6).
+# Note: If using Docker or modern browsers with IPv6 preferences, localhost issues may occur.
+net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.default.disable_ipv6 = 1
+
+# 12. Reduce SYN-ACK retry attempts
+# Effect: Speeds up closing of "half-open" connections during attacks.
+# Side effects: Under poor connectivity, some legitimate connections may terminate faster.
+net.ipv4.tcp_synack_retries = 2
+
+# ========== NETWORK HARDENING ==========
+
+# 13. Disable sending ICMP redirects
+# Effect: Supplement to item 6 - prevents the system from sending redirects (system is not a router).
+# Side effects: None.
+net.ipv4.conf.all.send_redirects = 0
+net.ipv4.conf.default.send_redirects = 0
+
+# 14. Reverse Path Filtering
+# Effect: Strict protection against IP spoofing. Packet is dropped if it arrives on an interface it shouldn't have.
+# ⚠️ RED MARK ⚠️
+# Side effects: If you have a complex network with multiple interfaces (e.g., wired + Wi-Fi + VPN), strict mode (1) may disable internet on one of the interfaces.
+# Solution: If network issues occur, try value 2 (loose mode).
+# If that doesn't help - comment these lines out.
+net.ipv4.conf.all.rp_filter = 1
+net.ipv4.conf.default.rp_filter = 1
+net.ipv4.conf.*.rp_filter = 1
+
+# 15. Reduce TCP timeouts
+# This parameter only works for outgoing (client) connections. For incoming connections (if you were running a server), it's useless.
+# Effect: Fast resource release when connections are closed.
+# Side effects: In rare cases, may prematurely close "slow" connections.
+net.ipv4.tcp_fin_timeout = 15
+net.ipv4.tcp_tw_reuse = 1
+
+# 16. Ignore bogus ICMP error responses
+# Effect: Drops ICMP packets with invalid error codes.
+# Side effects: None.
+net.ipv4.icmp_ignore_bogus_error_responses = 1
+
+# ========== KERNEL HARDENING ==========
+
+# 17. Restrict access to kernel logs and addresses
+# Effect: dmesg_restrict - only root can see kernel message buffer.
+#         kptr_restrict=2 - kernel pointer addresses are hidden from all, including root.
+# Side effects: Makes debugging system issues harder for regular users.
+kernel.dmesg_restrict = 1
+kernel.kptr_restrict = 2
+
+# 18. Full Address Space Layout Randomization (ASLR)
+# Effect: Maximum protection against memory vulnerability exploitation (buffer overflow).
+# Side effects: May cause rare issues with legacy software not compiled with PIC/PIE support.
+kernel.randomize_va_space = 2
+
+# 19. Restrict ptrace (YAMA)
+# Effect: Prevents processes from tracing (debugging) other processes. Protects browser memory from being read by stealers.
+# ⚠️ RED MARK ⚠️
+# Side effects: Breaks debuggers (gdb, strace) when attaching to another PID. Does not affect child processes (e.g., terminal debugging still works).
+# Note: For regular users - safe and recommended.
+kernel.yama.ptrace_scope = 1
+
+# 20. DISABLE USER NAMESPACES
+# Effect: Closes the main vector for local privilege escalation. Prevents container isolation for unprivileged users.
+# ⚠️⚠️⚠️ RED MARK (HIGH COMPATIBILITY RISK) ⚠️⚠️⚠️
+# Side effects:
+#   - COMPLETELY breaks Flatpak/Snap applications
+#   - Breaks Docker/Podman for regular users
+#   - Breaks Chrome/Chromium sandbox (browser may crash or become unstable)
+#   - Some modern applications may fail to launch
+# Test: If browser or app store fails to start after reboot - comment these two lines out (commented by default, uncomment only if necessary).
+# kernel.unprivileged_userns_clone = 0
+# user.max_user_namespaces = 0
+
+# 21. Disable eBPF for unprivileged users
+# Effect: Prevents creation of eBPF programs (frequently used by rootkits and exploits).
+# Side effects: Breaks monitoring tools running via eBPF (e.g., bcc-tools) if not run as root.
+kernel.unprivileged_bpf_disabled = 1
+
+# 22. DISABLE AUTOMATIC TERMINAL LINE DISCIPLINE LOADING
+# Effect: Prevents automatic loading of line disciplines via serial ports (TTY).
+#         Closes attack vector related to terminal device manipulation.
+# Side effects: For typical desktops without specialized hardware — none.
+#                   Does not affect standard terminals, SSH, consoles.
+dev.tty.ldisc_autoload = 0
+
+# 23. PROTECTION OF FIFO FILES IN SHARED DIRECTORIES
+# Effect: Prevents creation of named pipes (FIFO) in sticky-bit directories (/tmp, /var/tmp).
+#         Prevents attacks using FIFO for privilege escalation or bypassing restrictions.
+# Side effects: Does not affect normal application operation, as they should not create FIFOs
+#                   in public temporary directories. Completely safe for desktops.
+fs.protected_fifos = 2
+
+# 24. COMPLETE DISABLE OF SYSREQ (MAGIC KEYS)
+# Effect: Disables Alt+SysRq+command combinations, which allow low-level commands
+#         even when the system freezes (reboot, sync, process termination).
+#         Prevents accidental or malicious system reset via physical keyboard.
+# Side effects: During actual system freeze, you won't be able to use SysRq for safe
+#                   reboot (reboot, sync). For home PCs — not critical, as usually
+#                   the power button or unplugging is used.
+kernel.sysrq = 0
+
+# 25. STRENGTHEN BPF JIT COMPILER PROTECTION
+# Effect: Enables additional checks and randomization in Berkeley Packet Filter JIT compiler.
+#         Hardens exploitation of vulnerabilities in eBPF programs that can be used by rootkits.
+#         Value 2 enables maximum hardening without disabling eBPF.
+# Side effects: Slight overhead when compiling BPF programs.
+#                   Does not affect daily system operation. Docker and modern applications
+#                   continue to work normally.
+net.core.bpf_jit_harden = 2
+
+# =====================================================================
+# 26. PROCESS MEMORY ISOLATION (Protection against injections and inter-process spying)
+# =====================================================================
+# 2 = Blocks ptrace calls for regular users.
+# Only root will be able to inject into process memory and read it.
+kernel.yama.ptrace_scope = 2
+
+
+# ========== END OF CONFIG ==========
+# After applying, check browser and Flatpak application operation.
+# For User Namespace issues - see item 20.
+
+        </code>
+    </pre>
+</div>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to top</a>
+</p>
+
+</section>
+
+<!-- End of subsection H5 2.3.2-F -->
+
+<hr>
+
+<!-- Подсекция H5 2.4.2-G -->
+<section id="config3-dns-quard9" aria-label="2.4.2-G Switching to the Quad9 DNS server (9.9.9.9)">
 	
-<h5>2.4.2-F Switching to the Quad9 DNS server (9.9.9.9)</h5>
+<h5>2.4.2-G Switching to the Quad9 DNS server (9.9.9.9)</h5>
 
 <p>The <code class="language-ini">/etc/resolv.conf</code> settings are hardcoded to 9.9.9.9. All contents of the file have been replaced with the line:</p>
 
@@ -3259,14 +3547,14 @@ ip saddr {
 
 </section>
 
-<!-- Конец подсекции H5 2.4.2-F -->
+<!-- Конец подсекции H5 2.4.2-G -->
 
 <hr>
 
-<!-- Subsection H5 2.4.2-G -->
-<section id="config3-app-nft-monitoring-script" aria-label="2.4.2-G Custom monitoring script for nftables and AppArmor">
+<!-- Subsection H5 2.4.2-H -->
+<section id="config3-app-nft-monitoring-script" aria-label="2.4.2-H Custom monitoring script for nftables and AppArmor">
 
-<h5>2.4.2-E Custom monitoring script for nftables and AppArmor status</h5>
+<h5>2.4.2-H Custom monitoring script for nftables and AppArmor status</h5>
 
 <p>During frequent configuration and reloading of nftables and AppArmor, as well as when they need to be disabled for testing, there is a risk of forgetting to re-enable the services or not noticing that they have failed.</p>
 
@@ -3431,7 +3719,7 @@ if __name__ == "__main__":
 </p>
 
 </section>
-<!-- End of subsection H5 2.4.2-G -->
+<!-- End of subsection H5 2.4.2-H -->
 
 </section> 
 

@@ -3428,13 +3428,6 @@ net.core.bpf_jit_harden = 2
     <pre>
         <code class="language-nftables">
 #!/usr/sbin/nft -f
-# = modification 26 =
-# 03.03.2026 19:52 Commented out outbound UDP port restrictions that interfered with ProtonVPN
-# 04.03.2026 19:53 Allowed necessary ports for Docker in the forward chain
-# 21.06.2026 08:24 Implemented outbound connection filtering by IP address
-# 28.06.2026 21:53 Set a limit on the number of connections per second
-# Added filtering of whitelisted IP access by user UID
-# Added filtering of invalid packets in the output chain
 
 flush ruleset
 

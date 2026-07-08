@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "A real-world chronicle of defending against a targeted attack: documenting vulnerabilities, configurations, responses, and system hardening. From zero security to resilient configurations. Covers Debian 12 & 13, nftables, AppArmor, OpenSnitch, Flatpak, USBGuard, sysctl. For cybersecurity and InfoSec professionals.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-07-07<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-07-08<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -385,7 +385,7 @@
 
 <div class="alert" style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 2rem 0;">
   <strong style="color: #856404;">⚠️ Notice!</strong>
-  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-07-07<!-- DATE_END --></span>
+  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-07-08<!-- DATE_END --></span>
 </div>
 
 <!-- КРУПНАЯ ГЛАВА H2 0- Оглавление -->
@@ -3945,6 +3945,20 @@ sudo crontab -e
 <p><strong>Note:</strong> The script automatically determines which domains should use /16 (Telegram, Facebook) and which should use /24 (the rest). This allows for optimal balancing between filtering precision and covering all IP addresses of the service.</p>
 
 <p>If you wish to add a new domain that also requires the use of <code>/16</code> (for example, Google, YouTube, or other large services with a broad pool of IP addresses), you will need to add the corresponding condition to the script. For example:</p>
+
+<p><strong>Abandoning dnsmasq in favor of a cron script:</strong></p>
+
+<p>During the experiment, an attempt was made to configure interactive IP address retrieval via <code>dnsmasq</code> using the <code>nftset</code> mechanism. However, this configuration was not successfully completed: the causes of the errors in the settings remained unresolved. It is assumed that this is due to specific peculiarities in the interaction between <code>dnsmasq</code> and <code>nftables</code> in the Debian 13 (Trixie) environment, or to limitations in the build of the <code>dnsmasq</code> package with <code>nftset</code> support.</p>
+
+<p>Consequently, it was decided to abandon <code>dnsmasq</code> in favor of a simpler, more predictable, and fault-tolerant method — periodically updating the whitelist via a script launched by cron. This approach provides:</p>
+<ul>
+    <li><strong>Deterministic behavior</strong> — the script runs on a fixed schedule, not at the moment of a DNS query;</li>
+    <li><strong>Independence from the DNS resolver state</strong> — updates occur separately from the name resolution process;</li>
+    <li><strong>Ease of debugging and modification</strong> — the script logic is transparent and easily adaptable for new domains;</li>
+    <li><strong>Minimal performance impact</strong> — updates are performed once every 10 minutes without placing load on the network stack.</li>
+</ul>
+
+<p>This solution is considered more reliable for long-term operation under conditions of a targeted attack, where system stability is of critical importance.</p>
 
 <div class="historical-fact">
     <pre>

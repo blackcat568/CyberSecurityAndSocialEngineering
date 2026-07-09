@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "A real-world chronicle of defending against a targeted attack: documenting vulnerabilities, configurations, responses, and system hardening. From zero security to resilient configurations. Covers Debian 12 & 13, nftables, AppArmor, OpenSnitch, Flatpak, USBGuard, sysctl. For cybersecurity and InfoSec professionals.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-07-08<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-07-09<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -387,7 +387,7 @@
 
 <div class="alert" style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 2rem 0;">
   <strong style="color: #856404;">⚠️ Notice!</strong>
-  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-07-08<!-- DATE_END --></span>
+  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-07-09<!-- DATE_END --></span>
 </div>
 
 <!-- КРУПНАЯ ГЛАВА H2 0- Оглавление -->
@@ -644,7 +644,7 @@ Achieve a configuration resilient to targeted attacks, followed by publication o
 
 </section> 
 
-<!-- /Конец основной главы H2 1 -->
+<!-- /Конец основной главы H2 1. Introduction: Analysis of the Initial Configuration and Prerequisites for Hardening -->
 
 <hr>
 
@@ -4267,6 +4267,21 @@ if __name__ == "__main__":
 </section>
 <!-- End of subsection H5 2.4.2-H -->
 
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — 2.4.2 Configuration 3 Software</summary>
+  <ul>
+    <li><strong>2.4.2-A Introduction:</strong> Dropped OpenSnitch due to conflicts with nftables (rule overwriting, priority conflicts, policy replacement). Focus on strengthening nftables as Debian 13's native mechanism.</li>
+    <li><strong>2.4.2-B Strategic logic:</strong> Blocking the maximum number of attack vectors as a deterrence method. Shift from port-based filtering to IP-based filtering to counter firmware malware that masks its traffic as legitimate.</li>
+    <li><strong>2.4.2-C Changes in nftables config:</strong> OUTPUT policy changed to DROP; IP whitelist added. Warning: do not use domain names in rules. Recommendation to use <code>dig</code> to obtain IP addresses.</li>
+    <li><strong>2.4.2-D Configuration fix:</strong> Fixed rate-limiting rule error (accept replaced with drop) in input, forward, and output chains. Fixed the config identified on an IT forum.</li>
+    <li><strong>2.4.2-E Configuration hardening:</strong> Added UID-based filtering, invalid packet protection, session hijacking protection, and a mandatory DNS shield with tunneling protection.</li>
+    <li><strong>2.4.2-F sysctl hardening:</strong> Applied <code>kernel.yama.ptrace_scope = 2</code> to block Process Injection. Full sysctl configuration v7.0.</li>
+    <li><strong>2.4.2-G Automating IP range selection:</strong> Added a cron script for dynamic whitelist updates via <code>dig</code>. Two logics used: static whitelist (<code>include</code>) and dynamic (cron). Abandoned dnsmasq in favor of the cron script.</li>
+    <li><strong>2.4.2-H Switching to Quad9 DNS:</strong> Hardcoded <code>/etc/resolv.conf</code> to 9.9.9.9 with <code>chattr +i</code> protection. Detailed comparison of Quad9 with Google and Cloudflare.</li>
+    <li><strong>2.4.2-I Custom monitoring script:</strong> Python script for monitoring nftables and AppArmor status with GNOME notifications (<code>notify-send</code>).</li>
+  </ul>
+</details>
+
 </section> 
 
 <!-- Конец подсекции H4 2.4.2-->
@@ -4308,7 +4323,7 @@ if __name__ == "__main__":
 
 </section> 
 
-<!-- /Конец основной главы H2 2-->
+<!-- /Конец основной главы H2 2. Chronicle of Hardening and Attacks-->
 
 <!-- Start of cross-reference block for "System Hardening Chronicles: In Search of a Configuration Resilient to Targeted Attacks" -->
 <hr>

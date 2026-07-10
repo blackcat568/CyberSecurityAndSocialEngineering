@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "Analysis of the cognitive bias 'rigidity of expectations' in threat modeling. Why expecting obvious attacks is dangerous, and how professional adversaries use stealth and non-standard methods.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-07-03<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-07-10<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -204,8 +204,9 @@
     <li><a href="#section3">An analogy from the offline world (for clarity)</a></li>
     <li><a href="#section4">How this looks in infrastructure</a></li>
     <li><a href="#section5">The user as a "well-fed cat"</a></li>
-    <li><a href="#section6">What to do about it</a></li>
-    <li><a href="#section7">The true sign of mature thinking</a></li>
+    <li><a href="#section6">Некомпетентность системных администрраторов. Пример из жизни автора</a></li>
+    <li><a href="#section7">What to do about it</a></li>
+    <li><a href="#section8">The true sign of mature thinking</a></li>
   </ul>
 </nav>
 
@@ -387,9 +388,66 @@
 
 <hr>
 
+<!-- MAIN CHAPTER (H2) -->
+<section id="system-administrators-incompetence" aria-label="System Administrators' Incompetence. An Example from the Author's Life">
+<h2 id="section6">System Administrators' Incompetence. An Example from the Author's Life</h2>
+
+<p><i>Real-world example: a system administrator and the rigidity of expectations</i></p>
+
+<p>In 2016, the author contacted his ISP's system administrator, who was on duty at the nearest server substation, to report a compromise of his workstation. In response, he received the following recommendations:</p>
+
+<ul>
+  <li>in a cynical manner, he was advised "not to visit adult websites, as they contain malware";</li>
+  <li>he was recommended to block port 8080;</li>
+  <li>he was told that Linux is a "hobbyist OS written by enthusiasts," while Windows was created by professionals and is therefore more secure.</li>
+</ul>
+
+<p>Such advice demonstrates a fundamental misunderstanding of basic cybersecurity principles and a complete lack of a systematic approach to protection.</p>
+
+<ul>
+  <li><strong>The initial attack vector does not depend on the type of content consumed; compromise can occur through social engineering, phishing links, or vulnerabilities in network services.</strong></li>
+  <li><strong>Modern malware and exploits can masquerade their traffic as legitimate, using standard ports 443 (HTTPS) and 80 (HTTP), making blocking port 8080 completely pointless for preventing a targeted attack.</strong></li>
+  <li><strong>Linux offers more extensive and flexible security configuration options compared to Windows, but these mechanisms require conscious administration. The "out-of-the-box" configuration does not provide an adequate level of protection and can be compromised under certain conditions.</strong></li>
+</ul>
+
+<p>The specialist did not mention the need to configure a firewall (iptables/nftables) with packet filtering, nor the use of mandatory access control (AppArmor/SELinux), nor process isolation (Sandbox), nor complex password policies. This characterizes the level of qualification of the person responsible for the information security of a group of settlements with a population of about 10,000 people.</p>
+
+<p>His colleague turned out to be somewhat more knowledgeable: he recommended using Linux as a more secure alternative to Windows and advised against playing computer games. However, when informed about the Mageia 5 compromise, he replied: "If you've been hacked on Linux — I'm powerless." He did not suggest a single practical step to strengthen security.</p>
+
+<p>It is noteworthy that the second administrator mentioned that he himself uses Linux and does not play games, but could not name the specific distribution. This indirectly indicates a superficial familiarity with the ecosystem.</p>
+
+<p>Both administrators proved incapable not only of providing basic firewall configuration recommendations (beyond blocking port 8080), but even of recommending educational materials on Linux or Windows hardening.</p>
+
+<p>The presence of specialists with this level of training explains why attackers can operate with impunity in the subnets they manage, remaining undetected.</p>
+
+<p>And this is despite the fact that ensuring user security is a direct responsibility of the system administrator.</p>
+
+<p>However, when a user reports a breach, administrators do not attempt to conduct an investigation; they merely try to dismiss the user — offering incompetent, superficial advice or even claiming that the breach is a figment of the user's imagination. They do everything possible to avoid conducting an investigation that would expose their incompetence in cybersecurity and reveal vulnerabilities that have long been exploited by attackers.</p>
+
+<p>Due to corruption and nepotism, such responsible positions are often occupied not by professionals, but by people appointed through family ties, personal friendships, or bribes. Their main task is to hold onto a lucrative position at any cost, conceal their incompetence, and cover up any hacking incidents until law enforcement officers arrive with a warrant. Only then does the need to testify become inevitable, and evading responsibility is no longer possible.</p>
+
+<p>It is also quite possible that there is no malicious intent in their actions at all — rather, it is the result of ordinary human stupidity, reinforced by a fundamental misunderstanding of how modern cyberattacks work and how to counter them.</p>
+
+<p>If you are a system administrator, you are, like a ship's captain, the first after God. On your shoulders rests the responsibility for the security of valuable information, as well as the privacy and safety of your users. Cybersecurity tasks are a priority for you — just like maintaining the overall system's operability. Do not emulate the administrators from the example above: demonstrate responsibility and competence.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to contents</a>
+</p>
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — System Administrators' Incompetence. An Example from the Author's Life</summary>
+  <ul>
+    <li>The ISP's system administrators demonstrated complete incompetence: instead of investigating a breach, they advised blocking port 8080, avoiding "adult" content, and claimed that Windows is more secure than Linux. Neither knew the basics of cybersecurity, offered no practical security measures, and tried to dismiss the problem. This is the real level of qualification of people responsible for the security of thousands of users.</li>
+  </ul>
+</details>
+
+</section> <!-- /End of main chapter H2 -->
+
+<hr>
+
 <!-- КРУПНАЯ ГЛАВА (H2) -->
 <section id="what-to-do" aria-label="What to do about it">
-<h2 id="section6">What to do about it</h2>
+<h2 id="section7">What to do about it</h2>
 
 <p>The conclusion is extremely simple:</p>
 
@@ -427,7 +485,7 @@ Do not expect attackers to act according to standard and familiar patterns.</p>
 
 <!-- КРУПНАЯ ГЛАВА (H2) -->
 <section id="mature-thinking" aria-label="The true sign of mature thinking">
-<h2 id="section7">The true sign of mature thinking</h2>
+<h2 id="section8">The true sign of mature thinking</h2>
 
 <p>The ability to see and analyze <strong>non-standard, complex threats</strong> is a sign of genuinely flexible, creative, and analytical thinking. In cybersecurity, this is not an abstract virtue, but a practical condition for survival.</p>
 

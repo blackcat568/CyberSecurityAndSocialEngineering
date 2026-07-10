@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "A real-world chronicle of defending against a targeted attack: documenting vulnerabilities, configurations, responses, and system hardening. From zero security to resilient configurations. Covers Debian 12 & 13, nftables, AppArmor, OpenSnitch, Flatpak, USBGuard, sysctl. For cybersecurity and InfoSec professionals.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-07-09<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-07-10<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -387,7 +387,7 @@
 
 <div class="alert" style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 2rem 0;">
   <strong style="color: #856404;">⚠️ Notice!</strong>
-  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-07-09<!-- DATE_END --></span>
+  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-07-10<!-- DATE_END --></span>
 </div>
 
 <!-- КРУПНАЯ ГЛАВА H2 0- Оглавление -->
@@ -3431,13 +3431,18 @@ net.core.bpf_jit_harden = 2
 
 <h5>2.4.2-G Automating IP range selection for the whitelist via a cron script</h5>
 
-<p><time datetime="2026-07-07">Created: 07.07.2026 21:34</time></p>
+<p><time datetime="2026-07-10">Created: 10.07.2026 </time></p>
 
-<p>This section presents a new nftables configuration that employs two methods for obtaining IP addresses and ranges for the whitelist: using the <code>include</code> function and using a cron script.</p>
+<p>This section presents a new main nftables configuration that employs two methods for obtaining IP addresses and ranges for the whitelist: using the <code>include</code> function and using a cron script.</p>
 
 <p>Use whichever method is more convenient for the specific websites you visit.</p>
 
-<p><strong>Main nftables configuration for Configuration 3 (dynamic update version):</strong></p>
+<p><strong>Main nftables configuration for Configuration 3. Dynamic update version with two generated whitelists:</strong></p>
+<ul>
+    <li><strong>First list (user):</strong> addresses are accessible only to the <code>user</code> and the <code>_flatpak</code> user, under which isolated Flatpak applications are executed.</li>
+    <li><strong>Second list (system):</strong> addresses of system repositories and updates, accessible to <code>user</code>, <code>_flatpak</code>, as well as <code>_apt</code> and <code>root</code> for package management tasks.</li>
+</ul>
+<p>Both lists are automatically updated via a cron script, allowing flexible separation of access to user and system resources.</p>
 
 <div class="historical-fact">
     <pre>
@@ -3448,11 +3453,18 @@ flush ruleset
 
 table inet filter { # Opening the ruleset
 
-    # === # === Adding a container for dynamic IP addresses of websites ===
+    # === Adding a container for dynamic IP addresses of websites ===
     set whitelist_fqdn {
         type ipv4_addr
         flags interval
     }
+
+    # === Adding a container for system dynamic IP addresses of websites ===
+    set whitelist_fqdn_system {
+        type ipv4_addr
+        flags interval
+    }
+    
   
   # ============================================
   # START OF INPUT CHAIN
@@ -3645,9 +3657,11 @@ table inet filter { # Opening the ruleset
     # by the policy drop. Explicit rules are not required for them.
     # =========================================================================
 
+
     # ⬇️ INSERT: Connect to the @whitelist_fqdn list content
     
         ip daddr @whitelist_fqdn tcp dport { 80, 443 } meta skuid { user, _flatpak } ct state new accept
+        ip daddr @whitelist_fqdn_system tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
         
     # ⬆️ END OF INSERT
     
@@ -3676,14 +3690,33 @@ table inet filter { # Opening the ruleset
 
 <p>Some domains have been moved to a list for dynamic IP range selection logic via the cron script. Provider IP ranges and the router IP address should be fixed statically in the whitelist.</p>
 
+<p><strong>Dynamic Surgery vs Giant Masks:</strong></p>
+
+<p>In the previous configuration file, giant masks were temporarily used to test the logic of this nftables configuration:</p>
+
+<ul>
+    <li>The single line <code>3.0.0.0/8</code> opened <strong>16.7 million IP addresses</strong>.</li>
+    <li>The line <code>54.0.0.0/8</code> opened another <strong>16.7 million addresses</strong>.</li>
+    <li>The Akamai pool <code>23.32.0.0/11</code> — <strong>2 million addresses</strong>.</li>
+</ul>
+
+<p>As a result, the firewall kept wide open gates for more than <strong>35 million random IP addresses</strong> worldwide.</p>
+
+<p><strong>How it is now (Dynamic Surgery):</strong></p>
+
+<p>On 10.07.2026, these temporary measures were eliminated, as the dynamic IP selection logic was successfully tested and optimized. The current dynamic <code>whitelist_fqdn</code> list contains only about <strong>50 elements</strong>.</p>
+
+<ul>
+    <li>About 45 of them are strict, surgically precise <strong>/24</strong> subnets. Each such subnet opens only <strong>254 addresses</strong>.</li>
+    <li>Only a few pools (for Telegram, GitHub, and Microsoft) are open with a <strong>/16</strong> mask (65,000 addresses). But these are not random clouds, but official autonomous systems of the technology giants themselves, where there are no and cannot be any third-party hacker servers.</li>
+</ul>
+
 <div class="historical-fact">
     <pre>
         <code class="language-nftables">
 # /etc/nftables.d/whitelist.nft
 # Whitelist of IP addresses for outbound connections
 # Also applies filtering by UID
-
-# List (for the provider and utility IPs)
 
 # === Router web interface ===
 ip daddr 192.168.0.1 tcp dport 80 meta skuid { user, _flatpak, root } ct state new accept
@@ -3701,144 +3734,10 @@ ip daddr {
     198.51.100.0/20       # Subscriber routing pool
 } tcp dport { 80, 443 } meta skuid { user, _flatpak, root } ct state new accept
 
-# === Cloudflare (global CDN and DDoS protection network) ===
-# Used by ChatGPT, DeepSeek, and many other services for
-# faster loading and attack protection. Main pool 104.16.0.0/12.
-ip daddr {
-    104.16.0.0/12,        # Main Cloudflare pool (104.16.0.0 – 104.31.255.255)
-    172.64.0.0/13,        # Additional Cloudflare pool
-    162.158.0.0/15,       # European Cloudflare pool
-    198.41.128.0/17       # American Cloudflare pool
-} tcp dport { 80, 443 } meta skuid { user, _flatpak } ct state new accept
-
-# === Fastly (content delivery network) ===
-# Used for loading static content, fonts, and scripts.
-ip daddr {
-    151.101.0.0/16,       # Main Fastly pool
-    199.232.0.0/16        # Additional Fastly pool
-} tcp dport { 80, 443 } meta skuid { user, _flatpak } ct state new accept
-
-# === Amazon CloudFront / AWS (cloud infrastructure) ===
-# Widely used for hosting APIs, backends, and CDN.
-ip daddr {
-    13.32.0.0/15,         # CloudFront US East
-    143.204.0.0/16,       # CloudFront EU
-    54.239.128.0/18,      # CloudFront Asia Pacific
-    13.224.0.0/14,        # CloudFront Edge (global)
-    18.160.0.0/13,        # CloudFront Edge (additional)
-    52.84.0.0/15,         # CloudFront authentication
-    3.173.0.0/16,         # AWS Edge (general pool)
-    23.211.0.0/16,        # AWS CloudFront (additional)
-    23.47.0.0/16          # AWS CloudFront (backup)
-} tcp dport { 80, 443 } meta skuid { user, _flatpak } ct state new accept
-
-# === Amazon Web Services (AWS CloudFront / EC2) ===
-ip daddr {
-    3.0.0.0/8,
-    54.0.0.0/8,
-    52.0.0.0/8,
-    18.66.233.0/24
- } tcp dport { 80, 443 } meta skuid { user, _flatpak } ct state new accept
-
-# === Google Cloud / YouTube (Google infrastructure, ASN 15169) ===
-ip daddr {
-    64.233.160.0/19,      # Main Google pool (Search, Accounts)
-    74.125.0.0/16,        # Google service pools, including Gmail and gstatic
-    142.250.0.0/15,       # Largest subnet for YouTube and Gemini API
-    172.217.0.0/16,       # Content delivery servers and googleusercontent
-    173.194.0.0/16,       # Additional routes for Google Drive and authorization
-    209.85.128.0/17,      # Regional Google Cloud/API data centers
-    216.58.192.0/19,      # Old but active Google DNS and frontend pools
-    35.190.0.0/16,        # Google Cloud (general pool)
-    35.191.0.0/16         # Google Cloud (additional)
-} tcp dport { 80, 443 } meta skuid { user, _flatpak} ct state new accept
-
-# === Google (AS15169) - search, YouTube, Gmail, API ===
-ip daddr {
-    142.250.0.0/15,
-    172.217.0.0/16,
-    74.125.0.0/16 
-} tcp dport { 80, 443 } meta skuid { user, _flatpak } ct state new accept
-
-# === Proton AG (Mail, Drive, VPN) ===
-
-ip daddr {
-    # Your addresses (mail.proton.me, drive.proton.me)
-    185.70.42.0/24,        
-    185.70.40.0/24,
-    185.70.41.0/24,
-    185.70.43.0/24,
-    # Main Proton addresses, nearest servers
-    149.88.110.33,          # Via DataCamp 
-    130.195.241.20,         # Via M247 
-} tcp dport { 80, 443 } meta skuid { user, _flatpak } ct state new accept
-
-# === GitHub (development platform) ===
-ip daddr {
-    140.82.112.0/20,      # Main GitHub subnets
-    192.30.252.0/22,      # Additional GitHub pools
-    185.199.108.0/22      # CDN networks (raw.githubusercontent.com, githubassets.com)
-} tcp dport { 80, 443 } meta skuid { user, _flatpak } ct state new accept
-
-# === Debian Infrastructure (official servers and mirrors) ===
-ip daddr {
-    130.89.148.0/24,      # Physical ftp.debian.org servers (Netherlands)
-    128.31.0.0/16,        # Official Debian infrastructure networks (MIT/USA)
-    149.20.4.0/24,        # Technological gateways for mirroring and forums
-    206.12.19.0/24,       # SPI routing backup pools
-    151.101.0.0/16,       # Fastly CDN for deb.debian.org
-    199.232.0.0/16,       # Additional Fastly pool for security
-    146.75.0.0/17,        # Backup Debian package delivery routes
-    51.83.0.0/16,         # Mirror repositories for deb.debian.org updates
-    141.76.2.4/32         # Technical University of Dresden
-} tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
-
 # === ⏰ Allow system time synchronization (NTP) ===
 # This rule is paranoid: UDP port 123 is open EXCLUSIVELY for this process.
 # No backdoor running as root or nobody will be able to exploit this loophole.
 udp dport 123 meta skuid systemd-timesync ct state new accept
-
-# === openSUSE / Zeek (openSUSE infrastructure) ===
-ip daddr {
-    195.135.220.0/22,     # Main openSUSE data center
-    130.57.0.0/16         # Additional Novell/SUSE server pools
-} tcp dport { 80, 443 } meta skuid { user, _apt, root } ct state new accept
-
-# === LibreWolf (update repository) ===
-ip daddr {
-    179.61.251.0/24,      # repo.librewolf.net server (Frantech/BuyVM)
-    198.251.80.0/20,      # BuyVM range in Luxembourg/USA
-    209.141.32.0/19       # Additional LibreWolf hosting routes
-} tcp dport 443 meta skuid { user, _apt, root } ct state new accept
-
-# === DeepSeek (specific IP addresses and subnets) ===
-# Identified based on analysis of your list.
-ip daddr {
-    103.193.104.0/22,     # DeepSeek company's own technological routes
-    154.8.0.0/16,         # Asian and global DeepSeek hosting pools
-    159.69.48.177/32,     # Hetzner (Germany) - possible backend
-    150.171.109.51/32,    # Possible backend or partner server
-    43.109.10.32/27,      # Asian pool (range 43.109.10.32 - 43.109.10.63)
-    38.54.123.48/32,      # Cogent Communications (possible route)
-    95.101.61.198/32,     # Small range (Germany, possibly partner)
-    95.101.61.209/32,
-    95.101.61.218/32,
-    111.170.168.113/32,   # Chinese provider (regional access)
-    20.150.95.164/32,     # Microsoft Azure (possible backend)
-    34.107.243.93/32      # Google Cloud (possible backend)
-} tcp dport { 80, 443 } meta skuid { user, _flatpak } ct state new accept
-
-# === Hetzner Cloud (if you use it) ===
-ip daddr {
-    150.171.0.0/16 
-} tcp dport { 80, 443 } meta skuid { user, _flatpak } ct state new accept
-
-# === Akamai (extended range 23.32.0.0/11) ===
-ip daddr {
-     23.32.0.0/11, 
-     23.211.0.0/16, 
-     23.64.0.0/16
-} tcp dport { 80, 443 } meta skuid { user, _flatpak } ct state new accept
 
  # === Backup DNS Quad9 ===
  ip daddr  9.9.9.0/24 udp dport 53 meta skuid { user, _apt, root } accept
@@ -3861,23 +3760,89 @@ wiki.debian.org
 forums.debian.net
 cache.forums.debian.net
 
+# Authorization systems, DDoS protection and captcha
+recaptcha.net
+www.recaptcha.net
+gstatic.com
+hcaptcha.com
+
+# Code validators
+validator.w3.org
+
+# DeepSeek
+deepseek.com
+www.deepseek.com
+chat.deepseek.com
+api.deepseek.com
+deepseek.ch
+# Note: no login!
+
+# ChatGPT and DALL-E image generation
+openai.com
+www.openai.com
+chatgpt.com
+www.chatgpt.com
+chat.openai.com
+auth0.openai.com
+oaistatic.com
+oaiusercontent.com
+
+# GitHub development platform and GitHub Pages
+github.com
+www.github.com
+github.io
+www.github.io
+raw.githubusercontent.com
+githubassets.com
+objects.githubusercontent.com
+
 # Wikipedia
 wikipedia.org
 ru.wikipedia.org
 en.wikipedia.org
 
+# Google infrastructure and services
+google.com
+googleusercontent.com
+gstatic.com
+
+# YouTube video hosting
+youtube.com
+googlevideo.com
+ytimg.com
+
+# Akamai CDN (for websites that use it)
+akamai.net
+akamaiedge.net
+akamaihd.net
+
 # Social networks, diaries and messengers
 facebook.com
+dreamwidth.org
+www.dreamwidth.org
 t.me
 tx.me
 telegram.org
 api.telegram.org
 
-# Search engines
+# Bing search engine and Microsoft services
 bing.com
+www.bing.com
+microsoft.com
+s-microsoft.com
+
+# Secure Proton services (Mail, Drive, VPN)
+proton.me
+www.proton.me
+mail.proton.me
+account.proton.me
+api.proton.me
+drive.proton.me
+protonmail.com
+protonvpn.com
+api.protonvpn.ch
 
 # Media and photo hosting
-://imgbb.com
 imgbb.com
 ibb.co
 catbox.moe
@@ -3885,7 +3850,39 @@ catbox.moe
     </pre>
 </div>
 
-<p><strong>Bash script for cron execution:</strong></p>
+<p><strong>Whitelist of system domain names for dynamic updates:</strong></p>
+
+<p>File path: <code>/etc/nftables.d/nftables.domains-system</code></p>
+
+<div class="historical-fact">
+    <pre>
+        <code class="language-bash">
+# Official Debian infrastructure and update mirrors
+debian.org
+deb.debian.org
+ftp.debian.org
+security.debian.org
+incoming.debian.org
+snapshot.debian.org
+
+# OS and software update repositories
+repo.librewolf.net
+repo.protonvpn.com
+
+# openSUSE infrastructure (Zeek repository)
+opensuse.org
+download.opensuse.org
+mirrorcache-eu.opensuse.org
+        </code>
+    </pre>
+</div>
+
+<p><strong>Bash script for cron execution. Implements the logic of passing two independent whitelists to nftables:</strong></p>
+<ul>
+    <li><strong>First list (user):</strong> intended for addresses of social networks, media, and user services. Access to these addresses is available only to <code>user</code> and <code>_flatpak</code>.</li>
+    <li><strong>Second list (system):</strong> intended for addresses of system repositories and updates. Access to these addresses is available to <code>user</code>, <code>_flatpak</code>, as well as <code>_apt</code> and <code>root</code> for package management tasks.</li>
+</ul>
+<p>Both lists are updated automatically, allowing flexible separation of access to user and system resources.</p>
 
 <p>Script path: <code>/usr/local/bin/update_fqdn.sh</code></p>
 
@@ -3894,47 +3891,76 @@ catbox.moe
         <code class="language-bash">
 #!/bin/bash
 
-# Path variables
-DOMAIN_FILE="/etc/nftables.d/nftables.domains"
-SUBNET_FILE=$(mktemp)
+# Paths to utilities
+DIG="/usr/bin/dig"
+NFT="/usr/sbin/nft"
 
-# Check if domain file exists
-if [ ! -f "$DOMAIN_FILE" ]; then
-    exit 1
-fi
+# Paths to domain files
+USER_DOMAINS="/etc/nftables.d/nftables.domains"
+SYSTEM_DOMAINS="/etc/nftables.d/nftables.domains-system"
 
-# Hard pause of 15 seconds during system boot
+# Temporary files for collecting subnets
+TMP_USER=$(mktemp)
+TMP_SYSTEM=$(mktemp)
+
+# Hard pause of 15 seconds during automatic system boot via cron
 if [ "$1" != "manual" ]; then
     sleep 15
 fi
 
-# Read domains and query IPs via full path to dig
-while read -r domain; do
-    [[ -z "$domain" || "$domain" =~ ^# ]] &amp;&amp; continue
+# =====================================================================
+# BLOCK 1: USER LIST (Social networks, media, banks)
+# =====================================================================
+if [ -f "$USER_DOMAINS" ]; then
+    while read -r domain; do
+        [[ -z "$domain" || "$domain" =~ ^# ]] &amp;&amp; continue
 
-    ips=$(/usr/bin/dig +short "$domain" 2>/dev/null | grep -E '^[0-9.]+$')
-    
-    for ip in $ips; do
-        if [[ "$domain" =~ "telegram" || "$domain" == "t.me" || "$domain" =~ "facebook" ]]; then
-            subnet=$(echo "$ip" | cut -d'.' -f1-2)".0.0/16"
-        else
-            subnet=$(echo "$ip" | cut -d'.' -f1-3)".0/24"
-        fi
-        echo "$subnet" >> "$SUBNET_FILE"
-    done
-done &lt; "$DOMAIN_FILE"
+        ips=$($DIG +short "$domain" 2>/dev/null | grep -E '^[0-9.]+$')
+        for ip in $ips; do
+            if [[ "$domain" =~ "telegram" || "$domain" == "t.me" || "$domain" =~ "facebook" || "$domain" =~ "deviantart" || "$domain" =~ "wixmp" || "$domain" =~ "bing" || "$domain" =~ "microsoft" || "$domain" =~ "github" ]]; then
+                subnet=$(echo "$ip" | cut -d'.' -f1-2)".0.0/16"
+            else
+                subnet=$(echo "$ip" | cut -d'.' -f1-3)".0/24"
+            fi
+            echo "$subnet" >> "$TMP_USER"
+        done
+    done &lt; "$USER_DOMAINS"
 
-# If subnets found, load them into the firewall via full path to nft
-if [ -s "$SUBNET_FILE" ]; then
-    sort -u "$SUBNET_FILE" -o "$SUBNET_FILE"
-
-    /usr/sbin/nft flush set inet filter whitelist_fqdn
-    while read -r subnet; do
-        /usr/sbin/nft add element inet filter whitelist_fqdn { "$subnet" }
-    done &lt; "$SUBNET_FILE"
+    if [ -s "$TMP_USER" ]; then
+        sort -u "$TMP_USER" -o "$TMP_USER"
+        $NFT flush set inet filter whitelist_fqdn
+        while read -r sub; do
+            $NFT add element inet filter whitelist_fqdn { "$sub" }
+        done &lt; "$TMP_USER"
+    fi
 fi
 
-rm "$SUBNET_FILE"
+# =====================================================================
+# BLOCK 2: SYSTEM LIST (APT update repositories)
+# =====================================================================
+if [ -f "$SYSTEM_DOMAINS" ]; then
+    while read -r domain; do
+        [[ -z "$domain" || "$domain" =~ ^# ]] &amp;&amp; continue
+
+        ips=$($DIG +short "$domain" 2>/dev/null | grep -E '^[0-9.]+$')
+        for ip in $ips; do
+            # For system repositories, always use strict /24 mask for security
+            subnet=$(echo "$ip" | cut -d'.' -f1-3)".0/24"
+            echo "$subnet" >> "$TMP_SYSTEM"
+        done
+    done &lt; "$SYSTEM_DOMAINS"
+
+    if [ -s "$TMP_SYSTEM" ]; then
+        sort -u "$TMP_SYSTEM" -o "$TMP_SYSTEM"
+        $NFT flush set inet filter whitelist_fqdn_system
+        while read -r sub; do
+            $NFT add element inet filter whitelist_fqdn_system { "$sub" }
+        done &lt; "$TMP_SYSTEM"
+    fi
+fi
+
+# Cleanup temporary files
+rm "$TMP_USER" "$TMP_SYSTEM"
         </code>
     </pre>
 </div>
@@ -3961,20 +3987,6 @@ sudo crontab -e
 
 <p>If you wish to add a new domain that also requires the use of <code>/16</code> (for example, Google, YouTube, or other large services with a broad pool of IP addresses), you will need to add the corresponding condition to the script. For example:</p>
 
-<p><strong>Abandoning dnsmasq in favor of a cron script:</strong></p>
-
-<p>During the experiment, an attempt was made to configure interactive IP address retrieval via <code>dnsmasq</code> using the <code>nftset</code> mechanism. However, this configuration was not successfully completed: the causes of the errors in the settings remained unresolved. It is assumed that this is due to specific peculiarities in the interaction between <code>dnsmasq</code> and <code>nftables</code> in the Debian 13 (Trixie) environment, or to limitations in the build of the <code>dnsmasq</code> package with <code>nftset</code> support.</p>
-
-<p>Consequently, it was decided to abandon <code>dnsmasq</code> in favor of a simpler, more predictable, and fault-tolerant method — periodically updating the whitelist via a script launched by cron. This approach provides:</p>
-<ul>
-    <li><strong>Deterministic behavior</strong> — the script runs on a fixed schedule, not at the moment of a DNS query;</li>
-    <li><strong>Independence from the DNS resolver state</strong> — updates occur separately from the name resolution process;</li>
-    <li><strong>Ease of debugging and modification</strong> — the script logic is transparent and easily adaptable for new domains;</li>
-    <li><strong>Minimal performance impact</strong> — updates are performed once every 10 minutes without placing load on the network stack.</li>
-</ul>
-
-<p>This solution is considered more reliable for long-term operation under conditions of a targeted attack, where system stability is of critical importance.</p>
-
 <div class="historical-fact">
     <pre>
         <code class="language-bash">
@@ -3989,7 +4001,21 @@ fi
 
 <p>This allows you to flexibly customize the script to suit your needs, adding new domains as necessary.</p>
 
-<p>A single website may sometimes require more than one domain name to function correctly. Consult Gemini (Google's AI) about adding additional domain names and whether it is necessary to change the subnet mask for a domain name in the script from 24 to 16 if, after adding one primary domain name with the default /24 mask, the site does not load or loads with errors. Gemini has a good understanding of domain names, as it was trained on a vast amount of internet data, and Google operates one of the largest public DNS services (Google Public DNS).</p>
+<p><strong>Abandoning dnsmasq in favor of a cron script:</strong></p>
+
+<p>During the experiment, an attempt was made to configure interactive IP address retrieval via <code>dnsmasq</code> using the <code>nftset</code> mechanism. However, this configuration was not successfully completed: the causes of the errors in the settings remained unresolved. It is assumed that this is due to specific peculiarities in the interaction between <code>dnsmasq</code> and <code>nftables</code> in the Debian 13 (Trixie) environment, or to limitations in the build of the <code>dnsmasq</code> package with <code>nftset</code> support.</p>
+
+<p>Consequently, it was decided to abandon <code>dnsmasq</code> in favor of a simpler, more predictable, and fault-tolerant method — periodically updating the whitelist via a script launched by cron. This approach provides:</p>
+<ul>
+    <li><strong>Deterministic behavior</strong> — the script runs on a fixed schedule, not at the moment of a DNS query;</li>
+    <li><strong>Independence from the DNS resolver state</strong> — updates occur separately from the name resolution process;</li>
+    <li><strong>Ease of debugging and modification</strong> — the script logic is transparent and easily adaptable for new domains;</li>
+    <li><strong>Minimal performance impact</strong> — updates are performed once every 10 minutes without placing load on the network stack.</li>
+</ul>
+
+<p>This solution is considered more reliable for long-term operation under conditions of a targeted attack, where system stability is of critical importance.</p>
+
+<p>A single website sometimes requires not one, but several domain names for proper operation. Consult with Gemini (Google's AI) regarding adding additional domain names and whether it is necessary to change the mask for a domain name in the script from 24 to 16 if, after adding one main domain name with a default mask of 24, the site does not load or loads with errors. Gemini is well-versed in domain names, as it has been trained on a large volume of internet data, and Google manages one of the largest public DNS services (Google Public DNS).</p>
 
 </section>
 <!-- End of subsection H5 2.4.2-G -->

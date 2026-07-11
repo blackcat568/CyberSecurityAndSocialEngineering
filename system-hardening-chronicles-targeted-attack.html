@@ -3755,7 +3755,10 @@ udp dport 123 meta skuid systemd-timesync ct state new accept
 <div class="historical-fact">
     <pre>
         <code class="language-bash">
-# Debian browser services
+			
+# Official Debian web resources and forums
+debian.org
+www.debian.org
 wiki.debian.org
 forums.debian.net
 cache.forums.debian.net
@@ -3798,6 +3801,9 @@ objects.githubusercontent.com
 
 # Global CDN hubs for public libraries 
 # (Highlight.js code highlighting and Swiper carousel)
+# These domains should be added to the user-specific file 
+# (nftables.domains), not to the system one. 
+# These libraries are downloaded by your browser, which runs under the regular user account.
 cdnjs.cloudflare.com
 cdn.jsdelivr.net
 

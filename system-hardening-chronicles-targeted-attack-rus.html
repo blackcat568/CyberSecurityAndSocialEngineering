@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "Реальная хроника противостояния целевой атаке: документирование уязвимостей, конфигураций, реакций и хардеринга системы. От нулевой защиты к поиску устойчивых конфигураций. Технический отчет с анализом аппаратной части, ОС, AppArmor, nftables, OpenSnitch, Flatpak, USBGuard. Для специалистов по кибербезопасности и ИБ.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-07-11<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-07-12<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -386,7 +386,7 @@
 
 <div class="alert" style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 2rem 0;">
   <strong style="color: #856404;">⚠️ Внимание!</strong>
-  <span style="color: #856404;"> Статья находится в разработке. Уточнения и дополнения вносятся по мере получения новых данных об устойчивости новых конфигураций безопасности и активности хакера.<br>Последнее обновление контента: <!-- DATE_START -->2026-07-11<!-- DATE_END --></span>
+  <span style="color: #856404;"> Статья находится в разработке. Уточнения и дополнения вносятся по мере получения новых данных об устойчивости новых конфигураций безопасности и активности хакера.<br>Последнее обновление контента: <!-- DATE_START -->2026-07-12<!-- DATE_END --></span>
 </div>
 
 <!-- КРУПНАЯ ГЛАВА H2 0 - Оглавление -->
@@ -3938,7 +3938,7 @@ if [ -f "$USER_DOMAINS" ]; then
 
         ips=$($DIG +short "$domain" 2>/dev/null | grep -E '^[0-9.]+$')
         for ip in $ips; do
-            if [[ "$domain" =~ "telegram" || "$domain" == "t.me" || "$domain" =~ "facebook" || "$domain" =~ "deviantart" || "$domain" =~ "wixmp" || "$domain" =~ "bing" || "$domain" =~ "microsoft" || "$domain" =~ "github" ]]; then
+            if [[ "$domain" =~ "telegram" || "$domain" == "t.me" || "$domain" =~ "facebook" || "$domain" =~ "wixmp" || "$domain" =~ "bing" || "$domain" =~ "microsoft" ]]; then
                 subnet=$(echo "$ip" | cut -d'.' -f1-2)".0.0/16"
             else
                 subnet=$(echo "$ip" | cut -d'.' -f1-3)".0/24"

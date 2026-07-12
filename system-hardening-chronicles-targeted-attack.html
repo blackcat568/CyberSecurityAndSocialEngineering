@@ -3658,7 +3658,7 @@ table inet filter { # Opening the ruleset
     # =========================================================================
 
 
-    # ⬇️ INSERT: Connect to the @whitelist_fqdn list content
+    # ⬇️ INSERT: Connect to the @whitelist_fqdn list content and @whitelist_fqdn_system
     
         ip daddr @whitelist_fqdn tcp dport { 80, 443 } meta skuid { user, _flatpak } ct state new accept
         ip daddr @whitelist_fqdn_system tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept

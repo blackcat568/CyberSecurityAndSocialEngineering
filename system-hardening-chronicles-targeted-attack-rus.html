@@ -3660,7 +3660,7 @@ table inet filter { # Открытие листа правил
     # =========================================================================
 
 
-    # ⬇️ СЮДА ПОДКЛЮЧАЕМ СОДЕРЖИМОЕ СПИСКА @whitelist_fqdn
+    # ⬇️ СЮДА ПОДКЛЮЧАЕМ СОДЕРЖИМОЕ СПИСКА @whitelist_fqdn и @whitelist_fqdn_system
     
         ip daddr @whitelist_fqdn tcp dport { 80, 443 } meta skuid { user, _flatpak } ct state new accept
         ip daddr @whitelist_fqdn_system tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept

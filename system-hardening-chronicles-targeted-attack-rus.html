@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "Реальная хроника противостояния целевой атаке: документирование уязвимостей, конфигураций, реакций и хардеринга системы. От нулевой защиты к поиску устойчивых конфигураций. Технический отчет с анализом аппаратной части, ОС, AppArmor, nftables, OpenSnitch, Flatpak, USBGuard. Для специалистов по кибербезопасности и ИБ.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-07-20<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-07-21<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -386,7 +386,7 @@
 
 <div class="alert" style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 2rem 0;">
   <strong style="color: #856404;">⚠️ Внимание!</strong>
-  <span style="color: #856404;"> Статья находится в разработке. Уточнения и дополнения вносятся по мере получения новых данных об устойчивости новых конфигураций безопасности и активности хакера.<br>Последнее обновление контента: <!-- DATE_START -->2026-07-20<!-- DATE_END --></span>
+  <span style="color: #856404;"> Статья находится в разработке. Уточнения и дополнения вносятся по мере получения новых данных об устойчивости новых конфигураций безопасности и активности хакера.<br>Последнее обновление контента: <!-- DATE_START -->2026-07-21<!-- DATE_END --></span>
 </div>
 
 <!-- КРУПНАЯ ГЛАВА H2 0 - Оглавление -->
@@ -455,7 +455,7 @@
                                 <li style="margin-bottom: 0.1rem;"><a href="#config3-nftables-fixes" style="text-decoration: none;">2.4.2-D Исправление конфига nftables конфигурации 3</a></li>
                                 <li style="margin-bottom: 0.1rem;"><a href="#config3-nftables-enhancements" style="text-decoration: none;">2.4.2-E Усиление конфига nftables конфигурации 3</a></li>
                                 <li style="margin-bottom: 0.1rem;"><a href="#config3-software-sysctl" style="text-decoration: none;">2.4.2-F Усиление конфига sysctl конфигурации 3</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config3-automated-whitelist" style="text-decoration: none;">2.4.2-G Автоматизация подбора диапазонов разрешенных IP через скрипт, запускаемый cron</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config3-automated-whitelist" style="text-decoration: none;">2.4.2-G Автоматизация белого списка IP и прокси-фильтрация для user-sl</a></li>
                                 <li style="margin-bottom: 0.1rem;"><a href="#config3-dns-quard9" style="text-decoration: none;">2.4.2-H Переход на DNS-сервер Quad9 (9.9.9.9)</a></li>
                                 <li style="margin-bottom: 0.1rem;"><a href="#config3-app-nft-monitoring-script" style="text-decoration: none;">2.4.2-I Пользовательский скрипт мониторинга nftables и AppArmor</a></li>
                             </ul>
@@ -3427,9 +3427,9 @@ net.core.bpf_jit_harden = 2
 <!-- Конец подсекции H5 2.3.2-F -->
 
 <!-- Subsection H5 2.4.2-G -->
-<section id="config3-automated-whitelist" aria-label="2.4.2-G Автоматизация подбора диапазонов разрешенных IP через скрипт, запускаемый cron">
+<section id="config3-automated-whitelist" aria-label="2.4.2-G Автоматизация белого списка IP и прокси-фильтрация для user-sl">
 
-<h5>2.4.2-G Автоматизация подбора диапазонов разрешенных IP через скрипт, запускаемый cron</h5>
+<h5>2.4.2-G Автоматизация белого списка IP и прокси-фильтрация для user-sl</h5>
 
 <p><time datetime="2026-07-10">Создано: 10.07.2026</time></p>
 
@@ -3444,11 +3444,22 @@ net.core.bpf_jit_harden = 2
 </ul>
 <p>Оба списка обновляются автоматически через cron-скрипт, что позволяет гибко разделять доступ к пользовательским и системным ресурсам.</p>
 
+<p>Дополнительно к основному пользователю <code>user</code> было создано второе учётное пространство <code>user-sl</code>. Данное решение реализует альтернативную стратегию защиты, ориентированную на работу с мультимедийными сервисами. В таких сценариях применение динамического подбора IP-адресов через cron-скрипт оказывается неэффективным, поскольку целевые домены связаны с широкими пулами адресов, а использование фиксированных CIDR-диапазонов ведёт к избыточному расширению поверхности атаки (открытие миллионов IP-адресов).</p>
+
+<p>Для графической сессии пользователя <code>user-sl</code> в дополнение к <code>nftables</code> задействуется локальный прокси-сервер <code>Squid</code>, который выполняет фильтрацию исходящего трафика на уровне доменных имён из белого списка. При отсутствии запрашиваемого домена в разрешённом списке <code>Squid</code> блокирует соединение, обеспечивая дополнительный уровень контроля над исходящим трафиком.</p>
+
 <div class="historical-fact">
     <pre>
         <code class="language-nftables">
 
 #!/usr/sbin/nft -f
+# = модификация 26 =
+# 03.03.2026 19:52 Закомментирован запрет исходящих UDP портиов, что мешают работе ProtonVPN
+# 04.03.2026 19:53 Разрешены нужные для Doker  порты в цепочке  forward
+# 21.06.2026 08:24 Установлена фильтрация исходящих соединений по IP адресу
+# 28.06.2026 21:53 установлен лимит на количество соединений в секунду
+# Установлена фильтрация доступа к IP из белого списка по UID пользователя
+# Установлена фильтрация невалидных пакетов в chain output
 
 flush ruleset
 
@@ -3465,7 +3476,8 @@ table inet filter { # Открытие листа правил
         type ipv4_addr
         flags interval
     }
-    
+
+
   
   # ============================================
   # НАЧАЛО ЦЕПОЧКИ INPUT
@@ -3612,7 +3624,7 @@ table inet filter { # Открытие листа правил
     
     # Разрешаем продолжать сессии ТОЛЬКО если пакеты внутри них созданы Вами, вашим Браузером, APT или Root.
     # Системные призраки (nobody, daemon) отсюда полностью изгоняются.
-    ct state established,related meta skuid { user, _flatpak, _apt, root, systemd-timesync } accept
+    ct state established,related meta skuid { user, user-sl, _flatpak, _apt, root, systemd-timesync } accept
 
     # ⬇️ МОМЕНТАЛЬНЫЙ СРЕЗ: Если посторонний системный процесс попытался внедриться в вашу сессию
     ct state established,related log flags skuid prefix "🔥 HIJACK_ATTEMPT_DROP: " drop
@@ -3635,10 +3647,10 @@ table inet filter { # Открытие листа правил
     # =========================================================================
 
     # 2.1. По UDP пропускаем только короткие запросы (&lt;=150 байт) и строго от доверенных лиц
-    ip daddr { 9.9.9.9, 31.43.43.243, 31.43.43.143 } udp dport 53 meta length &lt;= 150 meta skuid { user, _apt, root, systemd-timesync } ct state new accept
+    ip daddr { 9.9.9.9, 31.43.43.243, 31.43.43.143 } udp dport 53 meta length &lt;= 150 meta skuid { user, user-sl, proxy, _apt, root, systemd-timesync } ct state new accept
 
     # 2.2. По TCP длину не ограничиваем (для тяжелых ответов DNSSEC), но пользователя проверяем железно
-    ip daddr { 9.9.9.9, 31.43.43.243, 31.43.43.143 } tcp dport 53 meta skuid { user, _apt, root, systemd-timesync } ct state new accept
+    ip daddr { 9.9.9.9, 31.43.43.243, 31.43.43.143 } tcp dport 53 meta skuid { user, user-sl, proxy, _apt, root, systemd-timesync } ct state new accept
 
     # 2.3. Все остальные попытки любых левых служб (или длинный UDP) — логируем и уничтожаем
     ip daddr { 9.9.9.9, 31.43.43.243, 31.43.43.143 } meta l4proto { tcp, udp } th dport 53 log flags skuid prefix "🔥 OUT_BLOCK_LEAK_DNS: " drop
@@ -3664,13 +3676,12 @@ table inet filter { # Открытие листа правил
     
         # Традиционный веб-трафик (TCP)
         ip daddr @whitelist_fqdn tcp dport { 80, 443 } meta skuid { user, _flatpak } ct state new accept
-
+        
         # Современный ускоренный веб-трафик QUIC / HTTP.3 (UDP) - БЕЗОПАСНО
         ip daddr @whitelist_fqdn udp dport 443 meta skuid { user, _flatpak } ct state new accept
 
-        # Список системных сервисов: Дебианб зеркала обновлений и прочие репозитории.
+        # Список системных сервисов: Debian, зеркала обновлений и прочие репозитории
         ip daddr @whitelist_fqdn_system tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
-        
         
     # ⬆️ ВСТАВКА ЗАКОНЧИЛАСЬ
     
@@ -3692,11 +3703,14 @@ table inet filter { # Открытие листа правил
   
 } #  Последняя скобка закрывает лист правил всего конфига. Не удалять!
 
+user@home:~$ 
+
+
         </code>
     </pre>
 </div>
 
-<p><strong>Новый файл <code>whitelist.nft</code> с фиксированными диапазонами IP:</strong></p>
+<p><strong>Новый файл <code>whitelist.nft</code> с фиксированными диапазонами IP и правилами для пользователя user-sl:</strong></p>
 
 <p>Часть доменов перенесена в список для динамической логики подбора IP-диапазонов через cron-скрипт. IP-диапазоны провайдера и IP-адрес роутера рекомендуется фиксировать стационарно в белом списке.</p>
 
@@ -3721,14 +3735,25 @@ table inet filter { # Открытие листа правил
     <li>И лишь единичные пулы (для Telegram, GitHub и Microsoft) открыты по маске <strong>/16</strong> (65 тысяч адресов). Но это не случайные облака, а официальные автономные системы самих технологических гигантов, где нет и не может быть посторонних хакерских серверов.</li>
 </ul>
 
+<p>Так же задействована логика связи nftables и Squid:</p>
+
+<p>В данном конфиге реализована гибридная схема фильтрации трафика для разных пользователей:</p>
+
+<p><strong>Для пользователя <code>user</code> (основная рабочая сессия):</strong> действует стандартная строгая политика — доступ разрешён только по белым спискам IP-адресов через <code>nftables</code>, что обеспечивает максимальный контроль над исходящими соединениями и минимизирует поверхность атаки.</p>
+
+<p><strong>Для пользователя <code>user-sl</code> (мультимедийная сессия):</strong> применена двухуровневая схема. Прямой веб-трафик (порты 80/443 TCP/UDP) для <code>user-sl</code> намертво заблокирован в <code>nftables</code>. Весь HTTP/HTTPS-трафик этого пользователя принудительно направляется через локальный прокси-сервер <code>Squid</code>, работающий от имени служебного пользователя <code>proxy</code>. При этом <code>Squid</code> имеет прямое разрешение на исходящие соединения (порты 80, 443), а также на специфические игровые порты <code>12043</code>, <code>12046</code> и <code>13000-13050</code> (используемые, например, клиентами Second Life). В свою очередь, пользователю <code>user-sl</code> разрешены только UDP-соединения на игровые порты (<code>13000-13050</code>) напрямую, без проксирования, для обеспечения минимальной задержки в мультимедийных приложениях.</p>
+
+<p>DNS-запросы для всех пользователей (<code>user</code>, <code>user-sl</code>, <code>proxy</code>) дополнительно разрешены через резервные серверы Quad9. Таким образом, достигается компромисс: жёсткая изоляция основного пользователя и гибкость с контролем для мультимедийного пользователя через прокси-сервер.</p>
+
 <div class="historical-fact">
     <pre>
         <code class="language-nftables">
 
-root@home:/home/user# cat /etc/nftables.d/whitelist.nft
 # /etc/nftables.d/whitelist.nft
 # Белый список IP-адресов для исходящих соединений
 # Так же перименяется фильтрация по UID
+
+# Список (для провайдера «Просто» и коммунальных IP)
 
 # === Веб-интерфейс роутера ===
 ip daddr 192.168.0.1 tcp dport 80 meta skuid { user, _flatpak, root } ct state new accept
@@ -3751,12 +3776,36 @@ ip daddr {
 # Ни один бэкдор от имени root или nobody использовать эту лазейку не сможет.
 udp dport 123 meta skuid systemd-timesync ct state new accept
 
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  🎮 БЛОК ПРАВИЛ ДЛЯ ПОЛЬЗОВАТЕЛЯ user-sl (Схема с Локальным Прокси Squid)
+# ═══════════════════════════════════════════════════════════════════════════
+
+# 1. Разрешаем прокси-серверу Squid выход в мир по HTTP/HTTPS и портам игры
+# Это правило работает от имени служебного пользователя proxy.
+tcp dport { 80, 443, 12043, 12046, 13000-13050 } meta skuid proxy ct state new accept
+
+# 2. Разрешаем исходящие TCP-соединения пользователя user-sl к локальному Squid
+ip daddr 127.0.0.1 tcp dport 3128 meta skuid user-sl ct state new accept
+
+# 3. Основной игровой поток симуляторов Second Life напрямую в мир (UDP)
+udp dport 13000-13050 meta skuid user-sl ct state new accept
+
+# 4. Намертво блокируем ПРЯМОЙ веб-серфинг для user-sl (чтобы не обошли прокси)
+# Исключаем порты инвентаря, блокируем строго стандартный HTTP/HTTPS.
+tcp dport { 80, 443 } meta skuid user-sl drop
+udp dport { 80, 443 } meta skuid user-sl drop
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  КОНЕЦ БЛОКА ПРАВИЛ ДЛЯ ПОЛЬЗОВАТЕЛЯ user-sl
+# ═══════════════════════════════════════════════════════════════════════════
+
+
  # === Резервный DNS Quad9 ===
- ip daddr  9.9.9.0/24 udp dport 53 meta skuid { user, _apt, root } accept
+ ip daddr  9.9.9.0/24 udp dport 53 meta skuid { user, user-sl, proxy, _apt, root } accept
 
  # === Резервный DNS Quad9 (149.112.0.0/16) ===
- ip daddr 149.112.0.0/16 udp dport 53 meta skuid { user, _apt, root } accept 
-root@home:/home/user# 
+ ip daddr 149.112.0.0/16 udp dport 53 meta skuid { user, user-sl, proxy, _apt, root } accept 
 
 
         </code>
@@ -3776,6 +3825,7 @@ debian.org
 www.debian.org
 wiki.debian.org
 forums.debian.net
+www.forums.debian.net
 cache.forums.debian.net
 
 # Системы авторизации, защиты от DDoS и капчи
@@ -3793,7 +3843,6 @@ www.deepseek.com
 chat.deepseek.com
 api.deepseek.com
 deepseek.ch
-# Внимание! нет залогинивания!
 
 # ChatGPT и генерация картинок DALL-E
 openai.com
@@ -3817,10 +3866,22 @@ objects.githubusercontent.com
 # Глобальные CDN-хабы публичных библиотек 
 # (Подсветка кода Highlight.js и карусель Swiper)
 # Прописываем эти домены именно в пользовательский файл 
-# (nftables.domains), а не в системный. 
+# (domains_user.list), а не в системный. 
 # Эти библиотеки скачивает ваш браузер, запущенный от имени обычного user
 cdnjs.cloudflare.com
 cdn.jsdelivr.net
+
+# Платформа Product Hunt (Поиск и запуск новых IT-продуктов и стартапов)
+producthunt.com
+ph-files.imgix.net
+
+# IT-сообщество Хабр (Статьи, новости и медиа-контент)
+habr.com
+www.habr.com
+account.habr.com
+habrastorage.org
+assets.habr.com
+dr.habr.com
 
 # Википедия
 wikipedia.org
@@ -3832,21 +3893,18 @@ google.com
 www.google.com
 accounts.google.com
 www.accounts.google.com
+play.google.com
+www.play.google.com
 googleusercontent.com
 gstatic.com
 fonts.googleapis.com
 ajax.googleapis.com
 
 # Публичный CDN для стилей и иконок Bootstrap (Необходим для дизайна старых сайтов)
-maxcdn.bootstrapcdn.coms
+maxcdn.bootstrapcdn.com
 
-# Видеохостинг YouTube
-youtube.com
-www.youtube.com
-googlevideo.com
-ytimg.com
-ggpht.com
-youtubei.googleapis.com
+# Bunny Fonts используется для безопасной и быстрой отдачи веб-шрифтов
+fonts.bunny.net
 
 # Соцсети, дневники и мессенджеры
 facebook.com
@@ -3870,8 +3928,8 @@ mail.proton.me
 account.proton.me
 api.proton.me
 drive.proton.me
-zrh-storage.proton.me
 protonmail.com
+zrh-storage.proton.me
 protonvpn.com
 api.protonvpn.ch
 
@@ -3879,6 +3937,7 @@ api.protonvpn.ch
 imgbb.com
 ibb.co
 catbox.moe
+
 
         </code>
     </pre>
@@ -4059,6 +4118,138 @@ fi
 <p>Данное решение признано более надёжным для долгосрочной эксплуатации в условиях целенаправленной атаки, где стабильность работы системы имеет критическое значение.</p>
 
 <p>Одному сайту для корректной работы иногда требуется не одно, а несколько доменных имён. Проконсультируйтесь с Gemini (ИИ от Google) по поводу добавления дополнительных доменных имён и необходимости сменить маску для доменного имени в скрипте с 24 на 16, если после добавления одного основного доменного имени с маской 24 по умолчанию сайт не загружается или загружается со сбоями. Gemini хорошо ориентируется в доменных именах, так как обучалась на большом объёме интернет-данных, а компания Google управляет одним из крупнейших публичных DNS-сервисов (Google Public DNS).</p>
+
+<p><strong>Настройка локального прокси-сервера Squid:</strong></p>
+
+<p>Основной конфигурационный файл сервера находится по пути: <code>/etc/squid/squid.conf</code></p>
+
+<p><strong>Логика работы конфигурации:</strong> Прокси-сервер Squid слушает на локальном интерфейсе (порт 3128) и принимает соединения только от пользователя user-sl. Он разрешает подключения только к безопасным портам (80, 443, 12043, 12046, 13000-13050). Доступ к сайтам ограничен строгим белым списком доменов. Все HTTPS-соединения (CONNECT) проверяются на соответствие этому списку портов; запросы к нестандартным портам блокируются. Всё, что не разрешено явно, — запрещается, обеспечивая контроль над исходящим трафиком пользователя user-sl.</p>
+
+<div class="historical-fact">
+    <pre>
+        <code class="language-bash">
+# ═══════════════════════════════════════════════════════════════════════════
+# 🖥️ ОСНОВНАЯ КОНФИГУРАЦИЯ SQUID PROXY (Debian 13 / user-sl)
+# ═══════════════════════════════════════════════════════════════════════════
+
+# Порт, который будет слушать прокси (строго на локальном интерфейсе)
+http_port 127.0.0.1:3128
+
+# Стандартные базовые ACL для безопасности сетевых портов
+acl Safe_ports port 80          # Стандартный HTTP
+acl Safe_ports port 443         # Стандартный HTTPS (SSL)
+acl Safe_ports port 12043       # HTTP для инвентаря Second Life
+acl Safe_ports port 12046       # HTTPS для инвентаря Second Life
+acl Safe_ports port 13000-13050 # Дополнительный игровой TCP трафик SL
+
+# КРИТИЧЕСКИ ВАЖНО: Разрешаем метод CONNECT (HTTPS туннель) на порты игры
+acl SSL_ports port 443
+acl SSL_ports port 12043        # ИСПРАВЛЕНО: Разрешаем Capabilities туннели симуляторов игры
+acl SSL_ports port 12046
+acl SSL_ports port 13000-13050
+acl CONNECT method CONNECT
+
+# Намертво блокируем запросы к нестандартным портам
+http_access deny !Safe_ports
+# ИСПРАВЛЕНО: Блокируем CONNECT только если порт НЕ входит в список SSL_ports
+http_access deny CONNECT !SSL_ports
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 🛡️ ФИЛЬТРАЦИЯ ПО БЕЛОМУ СПИСКУ ДОМЕНОВ
+# ═══════════════════════════════════════════════════════════════════════════
+
+# Описываем источник: белый список доменов из нашего переименованного внешнего файла
+acl squid_domains_whitelist dstdomain "/etc/squid/squid_domains_whitelist.txt"
+
+# Разрешаем доступ только к этим доменам
+http_access allow squid_domains_whitelist
+
+# Намертво блокируем всё остальное
+http_access deny all
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  КОНФИДЕНЦИАЛЬНОСТЬ И ЛОГИРОВАНИЕ
+# ═══════════════════════════════════════════════════════════════════════════
+
+# Отключаем отправку заголовков VIA и X-Forwarded-For ради конфиденциальности
+via on
+forwarded_for off
+
+# Логирование (чтобы вы могли видеть, что блокируется, а что пропускается)
+access_log daemon:/var/log/squid/access.log squid
+        </code>
+    </pre>
+</div>
+
+<p><strong>Белый список доменов для Squid:</strong></p>
+
+<p>Путь к файлу: <code>/etc/squid/squid_domains_whitelist.txt</code></p>
+
+<div class="historical-fact">
+    <pre>
+        <code class="language-bash">
+# ═══════════════════════════════════════════════════════════════════════════
+# 📱 ГРУППА 1: MESSENGER RAKUTEN VIBER
+# ═══════════════════════════════════════════════════════════════════════════
+.viber.com                 # Основной домен, авторизация, чаты, стикерпаки
+.viberout.com              # Телефония и звонки Viber Out на мобильные номера
+.aws.viber.com             # Облачная инфраструктура медиа-серверов в Amazon AWS
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 🎮 ГРУППА 2: FIRESTORM VIEWER / SECOND LIFE & VIVOX VOICE
+# ═══════════════════════════════════════════════════════════════════════════
+.lindenlab.com             # Разработчики игры, инфраструктура, загрузка аватаров
+.secondlife.com            # Сайт игры, авторизация, инвентарь, маркетплейс
+.secondlife.io             # Вспомогательные сервисы игры и инвентаря
+.vivox.com                 # Голосовой движок игры (сервер Vivox Voice, голос в SL)
+.firestormviewer.org       # Официальный сайт вьюера, автоапдейты, справочники
+.agni.lindenlab.com        # Главный серверный пул симуляторов Second Life (Agni)
+.secondlife.net            # Старый, но используемый для Capabilities внутренний домен игры
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 📺 ГРУППА 3: INFRASTRUCTURE GOOGLE (YouTube, Поиск, Gmail, API, Gemini)
+# ═══════════════════════════════════════════════════════════════════════════
+.google.com                # Базовый домен поисковика и учетных записей Google
+.youtube.com               # Главный домен видеохостинга YouTube
+.youtu.be                  # Короткие ссылки обмена видео YouTube
+.youtube-nocookie.com      # Встроенные видео на сторонних сайтах (без куки)
+.googlevideo.com           # Сервера доставки видеопотока (стриминг YouTube)
+.ytimg.com                 # Сервера статики YouTube (превью, значки, аватары)
+.googleusercontent.com     # Пользовательский контент (фото, файлы Google Диск)
+.gstatic.com               # Статические компоненты Google (шрифты, скрипты, стили)
+.googleapis.com            # API Google (авторизация, карты, библиотеки, Gemini API)
+
+# ═══════════════════════════════════════════════════════════════════════════
+# ☁️ ГРУППА 4: AMAZON WEB SERVICES & CLOUDFRONT CDN
+# ═══════════════════════════════════════════════════════════════════════════
+.amazonaws.com             # Общий домен инфраструктуры AWS (EC2/S3/Бэкенды)
+.cloudfront.net            # Сеть доставки контента Amazon (хостинг статики и API)
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 🌐 ГРУППА 5: КРУПНЕЙШИЕ CDN-МАГИСТРАЛИ (Cloudflare & Akamai Extended)
+# ═══════════════════════════════════════════════════════════════════════════
+.cloudflare.com            # Защита и кэширование веб-ресурсов Second Life и Viber
+.akamai.net                # Базовый домен распределенной сети Akamai Technologies
+.akamaihd.net              # Магистральный CDN Akamai (загрузка тяжелых текстур SL)
+.akamaized.net             # Дополнительные CDN зеркала Akamai для графики в игре
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 🔒 ГРУППА 6: СИСТЕМЫ АВТОРИЗАЦИИ, ЗАЩИТЫ ОТ DDOS И КАПЧИ
+# ═══════════════════════════════════════════════════════════════════════════
+.recaptcha.net             # Сервис защиты от ботов Google reCAPTCHA
+.hcaptcha.com              # Альтернативная система капчи и защиты от спама
+.gstatic.com
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 🤖 ГРУППА 7: ИСКУССТВЕННЫЙ ИНТЕЛЛЕКТ (DEEPSEEK AI)
+# ═══════════════════════════════════════════════════════════════════════════
+.deepseek.com              # Главный портал, веб-интерфейс чата и DeepSeek API
+.deepseek.ch               # Дополнительные зеркала и швейцарские домены DeepSeek
+        </code>
+    </pre>
+</div>
+
+<p><strong>Примечание:</strong> Конфигурация настроек Squid всё ещё тестируется для достижения максимальной стабильности и безопасности.</p>
 
 </section>
 <!-- End of subsection H5 2.4.2-G -->

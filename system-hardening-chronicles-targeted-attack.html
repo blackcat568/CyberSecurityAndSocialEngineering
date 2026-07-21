@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "A real-world chronicle of defending against a targeted attack: documenting vulnerabilities, configurations, responses, and system hardening. From zero security to resilient configurations. Covers Debian 12 & 13, nftables, AppArmor, OpenSnitch, Flatpak, USBGuard, sysctl. For cybersecurity and InfoSec professionals.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-07-20<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-07-21<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -387,7 +387,7 @@
 
 <div class="alert" style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 2rem 0;">
   <strong style="color: #856404;">⚠️ Notice!</strong>
-  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-07-20<!-- DATE_END --></span>
+  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-07-21<!-- DATE_END --></span>
 </div>
 
 <!-- КРУПНАЯ ГЛАВА H2 0- Оглавление -->
@@ -456,7 +456,7 @@
                                 <li style="margin-bottom: 0.1rem;"><a href="#config3-nftables-fixes" style="text-decoration: none;">2.4.2-D Fixing the nftables configuration of Configuration 3</a></li>
                                 <li style="margin-bottom: 0.1rem;"><a href="#config3-nftables-enhancements" style="text-decoration: none;">2.4.2-E Enhancing the nftables configuration of Configuration 3</a></li>
                                 <li style="margin-bottom: 0.1rem;"><a href="#config3-software-sysctl" style="text-decoration: none;">2.4.2-F Enhancing the sysctl configuration of Configuration 3</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config3-automated-whitelist" style="text-decoration: none;">2.4.2-G Automating IP range selection for the whitelist via a cron script</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config3-automated-whitelist" style="text-decoration: none;">2.4.2-G Automating IP Whitelist and Proxy Filtering for user-sl</a></li>
                                 <li style="margin-bottom: 0.1rem;"><a href="#config3-dns-quard9" style="text-decoration: none;">2.4.2-H Switching to the Quad9 DNS server (9.9.9.9)</a></li>
                                 <li style="margin-bottom: 0.1rem;"><a href="#config3-app-nft-monitoring-script" style="text-decoration: none;">2.4.2-I Custom monitoring script for nftables and AppArmor</a></li>
                             </ul>
@@ -3427,11 +3427,11 @@ net.core.bpf_jit_harden = 2
 <hr>
 
 <!-- Subsection H5 2.4.2-G -->
-<section id="config3-automated-whitelist" aria-label="2.4.2-G Automating IP range selection for the whitelist via a cron script">
+<section id="config3-automated-whitelist" aria-label="2.4.2-G Automating IP Whitelist and Proxy Filtering for user-sl">
 
-<h5>2.4.2-G Automating IP range selection for the whitelist via a cron script</h5>
+<h5>2.4.2-G Automating IP Whitelist and Proxy Filtering for user-sl</h5>
 
-<p><time datetime="2026-07-10">Created: 10.07.2026 </time></p>
+<p><time datetime="2026-07-10">Created: 10.07.2026</time></p>
 
 <p>This section presents a new main nftables configuration that employs two methods for obtaining IP addresses and ranges for the whitelist: using the <code>include</code> function and using a cron script.</p>
 
@@ -3444,10 +3444,22 @@ net.core.bpf_jit_harden = 2
 </ul>
 <p>Both lists are automatically updated via a cron script, allowing flexible separation of access to user and system resources.</p>
 
+<p>Additionally, a second user account <code>user-sl</code> was created alongside the main user <code>user</code>. This solution implements an alternative protection strategy tailored for multimedia services. In such scenarios, dynamic IP address selection via cron script proves inefficient, as target domains are associated with broad address pools, and using fixed CIDR ranges leads to excessive expansion of the attack surface (opening millions of IP addresses).</p>
+
+<p>For the graphical session of user <code>user-sl</code>, in addition to <code>nftables</code>, a local <code>Squid</code> proxy server is employed, which filters outgoing traffic at the domain name level using a whitelist. If the requested domain is not in the allowed list, <code>Squid</code> blocks the connection, providing an additional layer of control over outgoing traffic.</p>
+
 <div class="historical-fact">
     <pre>
         <code class="language-nftables">
+
 #!/usr/sbin/nft -f
+# = modification 26 =
+# 03.03.2026 19:52 Commented out outbound UDP port restrictions that interfered with ProtonVPN
+# 04.03.2026 19:53 Allowed necessary ports for Docker in the forward chain
+# 21.06.2026 08:24 Implemented outbound connection filtering by IP address
+# 28.06.2026 21:53 Set a limit on the number of connections per second
+# Added filtering of whitelisted IP access by user UID
+# Added filtering of invalid packets in the output chain
 
 flush ruleset
 
@@ -3464,7 +3476,8 @@ table inet filter { # Opening the ruleset
         type ipv4_addr
         flags interval
     }
-    
+
+
   
   # ============================================
   # START OF INPUT CHAIN
@@ -3610,7 +3623,7 @@ table inet filter { # Opening the ruleset
     
     # Allow established sessions ONLY if the packets within them originate from You, Your Browser, APT, or Root.
     # System ghosts (nobody, daemon) are completely exiled from here.
-    ct state established,related meta skuid { user, _flatpak, _apt, root, systemd-timesync } accept
+    ct state established,related meta skuid { user, user-sl, _flatpak, _apt, root, systemd-timesync } accept
 
     # ⬇️ INSTANT CUTOFF: If an unauthorized system process attempts to hijack your session
     ct state established,related log flags skuid prefix "🔥 HIJACK_ATTEMPT_DROP: " drop
@@ -3633,10 +3646,10 @@ table inet filter { # Opening the ruleset
     # =========================================================================
 
     # 2.1. For UDP, allow only short requests (&lt;=150 bytes) and strictly from trusted users
-    ip daddr { 9.9.9.9, 31.43.43.243, 31.43.43.143 } udp dport 53 meta length &lt;= 150 meta skuid { user, _apt, root, systemd-timesync } ct state new accept
+    ip daddr { 9.9.9.9, 31.43.43.243, 31.43.43.143 } udp dport 53 meta length &lt;= 150 meta skuid { user, user-sl, proxy, _apt, root, systemd-timesync } ct state new accept
 
     # 2.2. For TCP, no length limit (for heavy DNSSEC responses), but strictly check the user
-    ip daddr { 9.9.9.9, 31.43.43.243, 31.43.43.143 } tcp dport 53 meta skuid { user, _apt, root, systemd-timesync } ct state new accept
+    ip daddr { 9.9.9.9, 31.43.43.243, 31.43.43.143 } tcp dport 53 meta skuid { user, user-sl, proxy, _apt, root, systemd-timesync } ct state new accept
 
     # 2.3. All other attempts by any unauthorized services (or long UDP) — log and destroy
     ip daddr { 9.9.9.9, 31.43.43.243, 31.43.43.143 } meta l4proto { tcp, udp } th dport 53 log flags skuid prefix "🔥 OUT_BLOCK_LEAK_DNS: " drop
@@ -3658,15 +3671,15 @@ table inet filter { # Opening the ruleset
     # =========================================================================
 
 
-    # ⬇️ INSERT: Connect to the @whitelist_fqdn list content and @whitelist_fqdn_system
+    # ⬇️ INSERT: Connect to the @whitelist_fqdn and @whitelist_fqdn_system list content
     
         # Traditional web traffic (TCP)
         ip daddr @whitelist_fqdn tcp dport { 80, 443 } meta skuid { user, _flatpak } ct state new accept
-
+        
         # Modern accelerated QUIC / HTTP.3 web traffic (UDP) - SAFE
         ip daddr @whitelist_fqdn udp dport 443 meta skuid { user, _flatpak } ct state new accept
 
-        # System services list: Debian update mirrors and other repositories.
+        # System services list: Debian update mirrors and other repositories
         ip daddr @whitelist_fqdn_system tcp dport { 80, 443 } meta skuid { user, _flatpak, _apt, root } ct state new accept
         
     # ⬆️ END OF INSERT
@@ -3688,11 +3701,15 @@ table inet filter { # Opening the ruleset
   # ============================================
   
 } #  The last brace closes the entire configuration ruleset. Do not remove!
+
+user@home:~$ 
+
+
         </code>
     </pre>
 </div>
 
-<p><strong>New <code>whitelist.nft</code> file with fixed IP ranges:</strong></p>
+<p><strong>New <code>whitelist.nft</code> file with fixed IP ranges and rules for user-sl:</strong></p>
 
 <p>Some domains have been moved to a list for dynamic IP range selection logic via the cron script. Provider IP ranges and the router IP address should be fixed statically in the whitelist.</p>
 
@@ -3717,12 +3734,25 @@ table inet filter { # Opening the ruleset
     <li>Only a few pools (for Telegram, GitHub, and Microsoft) are open with a <strong>/16</strong> mask (65,000 addresses). But these are not random clouds, but official autonomous systems of the technology giants themselves, where there are no and cannot be any third-party hacker servers.</li>
 </ul>
 
+<p>The logic linking nftables and Squid is also employed:</p>
+
+<p>This configuration implements a hybrid traffic filtering scheme for different users:</p>
+
+<p><strong>For user <code>user</code> (main working session):</strong> a standard strict policy applies — access is allowed only through IP whitelists via <code>nftables</code>, providing maximum control over outgoing connections and minimizing the attack surface.</p>
+
+<p><strong>For user <code>user-sl</code> (multimedia session):</strong> a two-tier scheme is applied. Direct web traffic (ports 80/443 TCP/UDP) for <code>user-sl</code> is hard-blocked in <code>nftables</code>. All HTTP/HTTPS traffic from this user is forcibly routed through the local <code>Squid</code> proxy server, running under the <code>proxy</code> service user. <code>Squid</code> has direct permission for outgoing connections (ports 80, 443), as well as specific game ports <code>12043</code>, <code>12046</code>, and <code>13000-13050</code> (used, for example, by Second Life clients). In turn, user <code>user-sl</code> is allowed only UDP connections on game ports (<code>13000-13050</code>) directly, without proxying, to ensure minimal latency in multimedia applications.</p>
+
+<p>DNS queries for all users (<code>user</code>, <code>user-sl</code>, <code>proxy</code>) are additionally allowed through Quad9 backup servers. Thus, a compromise is achieved: strict isolation for the main user and flexibility with control for the multimedia user through the proxy server.</p>
+
 <div class="historical-fact">
     <pre>
         <code class="language-nftables">
+
 # /etc/nftables.d/whitelist.nft
 # Whitelist of IP addresses for outbound connections
 # Also applies filtering by UID
+
+# List (for the provider and utility IPs)
 
 # === Router web interface ===
 ip daddr 192.168.0.1 tcp dport 80 meta skuid { user, _flatpak, root } ct state new accept
@@ -3745,11 +3775,38 @@ ip daddr {
 # No backdoor running as root or nobody will be able to exploit this loophole.
 udp dport 123 meta skuid systemd-timesync ct state new accept
 
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  🎮 RULES BLOCK FOR USER user-sl (Local Squid Proxy Scheme)
+# ═══════════════════════════════════════════════════════════════════════════
+
+# 1. Allow Squid proxy server access to the internet via HTTP/HTTPS and game ports
+# This rule works under the proxy service user.
+tcp dport { 80, 443, 12043, 12046, 13000-13050 } meta skuid proxy ct state new accept
+
+# 2. Allow outgoing TCP connections from user-sl to local Squid
+ip daddr 127.0.0.1 tcp dport 3128 meta skuid user-sl ct state new accept
+
+# 3. Main game stream of Second Life simulators directly to the internet (UDP)
+udp dport 13000-13050 meta skuid user-sl ct state new accept
+
+# 4. Hard-block DIRECT web surfing for user-sl (to prevent bypassing the proxy)
+# Exclude inventory ports, strictly block standard HTTP/HTTPS.
+tcp dport { 80, 443 } meta skuid user-sl drop
+udp dport { 80, 443 } meta skuid user-sl drop
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  END OF RULES BLOCK FOR USER user-sl
+# ═══════════════════════════════════════════════════════════════════════════
+
+
  # === Backup DNS Quad9 ===
- ip daddr  9.9.9.0/24 udp dport 53 meta skuid { user, _apt, root } accept
+ ip daddr  9.9.9.0/24 udp dport 53 meta skuid { user, user-sl, proxy, _apt, root } accept
 
  # === Backup DNS Quad9 (149.112.0.0/16) ===
- ip daddr 149.112.0.0/16 udp dport 53 meta skuid { user, _apt, root } accept
+ ip daddr 149.112.0.0/16 udp dport 53 meta skuid { user, user-sl, proxy, _apt, root } accept 
+
+
         </code>
     </pre>
 </div>
@@ -3761,12 +3818,13 @@ udp dport 123 meta skuid systemd-timesync ct state new accept
 <div class="historical-fact">
     <pre>
         <code class="language-bash">
-			
+
 # Official Debian web resources and forums
 debian.org
 www.debian.org
 wiki.debian.org
 forums.debian.net
+www.forums.debian.net
 cache.forums.debian.net
 
 # Authorization systems, DDoS protection and captcha
@@ -3784,7 +3842,6 @@ www.deepseek.com
 chat.deepseek.com
 api.deepseek.com
 deepseek.ch
-# Note: no login!
 
 # ChatGPT and DALL-E image generation
 openai.com
@@ -3807,11 +3864,22 @@ objects.githubusercontent.com
 
 # Global CDN hubs for public libraries 
 # (Highlight.js code highlighting and Swiper carousel)
-# These domains should be added to the user-specific file 
-# (nftables.domains), not to the system one. 
+# These domains should be added to the user-specific file (domains_user.list), not to the system one. 
 # These libraries are downloaded by your browser, which runs under the regular user account.
 cdnjs.cloudflare.com
 cdn.jsdelivr.net
+
+# Product Hunt platform (Discovery and launches of new IT products and startups)
+producthunt.com
+ph-files.imgix.net
+
+# IT community Habr (Articles, news and media content)
+habr.com
+www.habr.com
+account.habr.com
+habrastorage.org
+assets.habr.com
+dr.habr.com
 
 # Wikipedia
 wikipedia.org
@@ -3823,6 +3891,8 @@ google.com
 www.google.com
 accounts.google.com
 www.accounts.google.com
+play.google.com
+www.play.google.com
 googleusercontent.com
 gstatic.com
 fonts.googleapis.com
@@ -3831,13 +3901,8 @@ ajax.googleapis.com
 # Public CDN for Bootstrap styles and icons (Required for the design of legacy websites)
 maxcdn.bootstrapcdn.com
 
-# YouTube video hosting
-youtube.com
-www.youtube.com
-googlevideo.com
-ytimg.com
-ggpht.com
-youtubei.googleapis.com
+# Bunny Fonts used for secure and fast delivery of web fonts
+fonts.bunny.net
 
 # Social networks, diaries and messengers
 facebook.com
@@ -3861,8 +3926,8 @@ mail.proton.me
 account.proton.me
 api.proton.me
 drive.proton.me
-zrh-storage.proton.me
 protonmail.com
+zrh-storage.proton.me
 protonvpn.com
 api.protonvpn.ch
 
@@ -3870,6 +3935,8 @@ api.protonvpn.ch
 imgbb.com
 ibb.co
 catbox.moe
+
+
         </code>
     </pre>
 </div>
@@ -3881,6 +3948,7 @@ catbox.moe
 <div class="historical-fact">
     <pre>
         <code class="language-bash">
+
 # Official Debian infrastructure and update mirrors
 debian.org
 deb.debian.org
@@ -3900,6 +3968,8 @@ repo.protonvpn.com
 opensuse.org
 download.opensuse.org
 mirrorcache-eu.opensuse.org
+
+
         </code>
     </pre>
 </div>
@@ -3916,6 +3986,7 @@ mirrorcache-eu.opensuse.org
 <div class="historical-fact">
     <pre>
         <code class="language-bash">
+
 #!/bin/bash
 
 # Paths to utilities
@@ -3988,6 +4059,8 @@ fi
 
 # Cleanup temporary files
 rm "$TMP_USER" "$TMP_SYSTEM"
+
+
         </code>
     </pre>
 </div>
@@ -4044,9 +4117,140 @@ fi
 
 <p>A single website sometimes requires not one, but several domain names for proper operation. Consult with Gemini (Google's AI) regarding adding additional domain names and whether it is necessary to change the mask for a domain name in the script from 24 to 16 if, after adding one main domain name with a default mask of 24, the site does not load or loads with errors. Gemini is well-versed in domain names, as it has been trained on a large volume of internet data, and Google manages one of the largest public DNS services (Google Public DNS).</p>
 
+<p><strong>Configuring the local Squid proxy server:</strong></p>
+
+<p>The main server configuration file is located at: <code>/etc/squid/squid.conf</code></p>
+
+<p><strong>Configuration logic:</strong> The Squid proxy server listens on the local interface (port 3128) and accepts connections only from user-sl. It allows connections only to safe ports (80, 443, 12043, 12046, 13000-13050). Access to websites is restricted by a strict domain whitelist. All HTTPS connections (CONNECT) are checked against this port list; requests to non-standard ports are blocked. Everything that is not explicitly allowed is denied, providing control over user-sl's outgoing traffic.</p>
+
+<div class="historical-fact">
+    <pre>
+        <code class="language-bash">
+# ═══════════════════════════════════════════════════════════════════════════
+# 🖥️ SQUID PROXY MAIN CONFIGURATION (Debian 13 / user-sl)
+# ═══════════════════════════════════════════════════════════════════════════
+
+# Port on which the proxy will listen (strictly on the local interface)
+http_port 127.0.0.1:3128
+
+# Standard basic ACLs for network port security
+acl Safe_ports port 80          # Standard HTTP
+acl Safe_ports port 443         # Standard HTTPS (SSL)
+acl Safe_ports port 12043       # HTTP for Second Life inventory
+acl Safe_ports port 12046       # HTTPS for Second Life inventory
+acl Safe_ports port 13000-13050 # Additional game TCP traffic SL
+
+# CRITICALLY IMPORTANT: Allow CONNECT method (HTTPS tunnel) on game ports
+acl SSL_ports port 443
+acl SSL_ports port 12043        # FIXED: Allow Capabilities tunnels of game simulators
+acl SSL_ports port 12046
+acl SSL_ports port 13000-13050
+acl CONNECT method CONNECT
+
+# Hard-block requests to non-standard ports
+http_access deny !Safe_ports
+# FIXED: Block CONNECT only if the port is NOT in the SSL_ports list
+http_access deny CONNECT !SSL_ports
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 🛡️ DOMAIN WHITELIST FILTERING
+# ═══════════════════════════════════════════════════════════════════════════
+
+# Define the source: domain whitelist from our renamed external file
+acl squid_domains_whitelist dstdomain "/etc/squid/squid_domains_whitelist.txt"
+
+# Allow access only to these domains
+http_access allow squid_domains_whitelist
+
+# Hard-block everything else
+http_access deny all
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  CONFIDENTIALITY AND LOGGING
+# ═══════════════════════════════════════════════════════════════════════════
+
+# Disable sending VIA and X-Forwarded-For headers for privacy
+via on
+forwarded_for off
+
+# Logging (so you can see what is being blocked and what is being allowed)
+access_log daemon:/var/log/squid/access.log squid
+        </code>
+    </pre>
+</div>
+
+<p><strong>Domain whitelist for Squid:</strong></p>
+
+<p>File path: <code>/etc/squid/squid_domains_whitelist.txt</code></p>
+
+<div class="historical-fact">
+    <pre>
+        <code class="language-bash">
+# ═══════════════════════════════════════════════════════════════════════════
+# 📱 GROUP 1: MESSENGER RAKUTEN VIBER
+# ═══════════════════════════════════════════════════════════════════════════
+.viber.com                 # Main domain, authorization, chats, sticker packs
+.viberout.com              # Telephony and Viber Out calls to mobile numbers
+.aws.viber.com             # Cloud infrastructure of media servers in Amazon AWS
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 🎮 GROUP 2: FIRESTORM VIEWER / SECOND LIFE & VIVOX VOICE
+# ═══════════════════════════════════════════════════════════════════════════
+.lindenlab.com             # Game developers, infrastructure, avatar loading
+.secondlife.com            # Game site, authorization, inventory, marketplace
+.secondlife.io             # Auxiliary game services and inventory
+.vivox.com                 # Game voice engine (Vivox Voice server, voice in SL)
+.firestormviewer.org       # Official viewer site, auto-updates, reference materials
+.agni.lindenlab.com        # Main server pool of Second Life simulators (Agni)
+.secondlife.net            # Old but still used for Capabilities internal game domain
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 📺 GROUP 3: INFRASTRUCTURE GOOGLE (YouTube, Search, Gmail, API, Gemini)
+# ═══════════════════════════════════════════════════════════════════════════
+.google.com                # Base domain of search engine and Google accounts
+.youtube.com               # Main domain of YouTube video hosting
+.youtu.be                  # Short video sharing links YouTube
+.youtube-nocookie.com      # Embedded videos on third-party sites (without cookies)
+.googlevideo.com           # Video stream delivery servers (YouTube streaming)
+.ytimg.com                 # YouTube static servers (thumbnails, icons, avatars)
+.googleusercontent.com     # User content (photos, Google Drive files)
+.gstatic.com               # Static Google components (fonts, scripts, styles)
+.googleapis.com            # Google API (authorization, maps, libraries, Gemini API)
+
+# ═══════════════════════════════════════════════════════════════════════════
+# ☁️ GROUP 4: AMAZON WEB SERVICES & CLOUDFRONT CDN
+# ═══════════════════════════════════════════════════════════════════════════
+.amazonaws.com             # General AWS infrastructure domain (EC2/S3/Backends)
+.cloudfront.net            # Amazon content delivery network (static hosting and API)
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 🌐 GROUP 5: LARGEST CDN BACKBONES (Cloudflare & Akamai Extended)
+# ═══════════════════════════════════════════════════════════════════════════
+.cloudflare.com            # Protection and caching of Second Life and Viber web resources
+.akamai.net                # Base domain of Akamai Technologies distributed network
+.akamaihd.net              # Akamai backbone CDN (loading heavy SL textures)
+.akamaized.net             # Additional Akamai CDN mirrors for in-game graphics
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 🔒 GROUP 6: AUTHORIZATION SYSTEMS, DDoS PROTECTION AND CAPTCHA
+# ═══════════════════════════════════════════════════════════════════════════
+.recaptcha.net             # Google bot protection service reCAPTCHA
+.hcaptcha.com              # Alternative captcha and spam protection system
+.gstatic.com
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 🤖 GROUP 7: ARTIFICIAL INTELLIGENCE (DEEPSEEK AI)
+# ═══════════════════════════════════════════════════════════════════════════
+.deepseek.com              # Main portal, web interface chat and DeepSeek API
+.deepseek.ch               # Additional mirrors and Swiss domains of DeepSeek
+        </code>
+    </pre>
+</div>
+
+<p><strong>Note:</strong> The Squid configuration is still being tested for maximum stability and security.</p>
+
 </section>
 <!-- End of subsection H5 2.4.2-G -->
-
 
 <hr>
 

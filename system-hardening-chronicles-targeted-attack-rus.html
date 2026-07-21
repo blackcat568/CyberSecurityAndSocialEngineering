@@ -3832,6 +3832,7 @@ cache.forums.debian.net
 recaptcha.net
 www.recaptcha.net
 gstatic.com
+www.gstatic.com
 hcaptcha.com
 
 # Валидаторы кода
@@ -3843,6 +3844,7 @@ www.deepseek.com
 chat.deepseek.com
 api.deepseek.com
 deepseek.ch
+
 
 # ChatGPT и генерация картинок DALL-E
 openai.com
@@ -4245,6 +4247,15 @@ access_log daemon:/var/log/squid/access.log squid
 # ═══════════════════════════════════════════════════════════════════════════
 .deepseek.com              # Главный портал, веб-интерфейс чата и DeepSeek API
 .deepseek.ch               # Дополнительные зеркала и швейцарские домены DeepSeek
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 🛡️ ГРУППА 8: ДИНАМИЧЕСКИЕ СЕРВИСЫ ЗАЩИТЫ AMAZON (AWS WAF BOT CONTROL)
+# Накрывают любые случайные поддомены токенов и проверок безопасности AWS
+# ═══════════════════════════════════════════════════════════════════════════
+.edge.sdk.awswaf.com       # Интеграция AWS WAF JS SDK (накрывает we34qqa43.edge.sdk.awswaf.com)
+.token.awswaf.com          # Генерация токенов защиты Amazon (накрывает eu-west-1.token.awswaf.com)
+
+
         </code>
     </pre>
 </div>

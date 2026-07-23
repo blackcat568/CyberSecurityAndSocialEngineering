@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "A foundational practical guide to digital, behavioral, and informational hygiene for personal computer users. Covers cybersecurity basics, social engineering defense, mental health protection online, ethical AI use, free software advocacy, mobile device hardening, and psychological manipulation countermeasures. Detailed manual for conscious and safe PC and internet use. CC0 license - free to use and share.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-07-20<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-07-23<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -455,6 +455,7 @@
                 <li style="margin: 0.4rem 0;"><a href="#section6-6">6.6. System Monitor Applet</a></li>
                 <li style="margin: 0.4rem 0;"><a href="#section6-7">6.7. Backup Using the Simple rsync Utility</a></li>
                 <li style="margin: 0.4rem 0;"><a href="#section6-8">6.8. Using Validators</a></li>
+                <li style="margin: 0.4rem 0;"><a href="#section6-9">6.9. Беспроводной локальный обмен данными (LocalSend)</a></li>
             </ul>
         </li>
         
@@ -2563,6 +2564,130 @@ fi</code></pre>
 <a href="#section6" style="text-decoration: none;"> ↑ Back to Chapter Start </a>
 
   </section> <!-- /Конец основной главы H3 -->
+  
+<!-- MAIN CHAPTER (H3) -->
+<section id="using-localsend" aria-label="Wireless Local File Sharing (LocalSend)">
+
+<h3 id="section6-9">6.9. Wireless Local File Sharing (LocalSend)</h3>
+
+<p><em>How to implement secure file sharing within your home, throwing away the crutches of USB cables and external cloud storage.</em></p>
+
+<p>A common everyday task often arises: quickly transfer a file from a tablet or smartphone to a PC and vice versa. Most users solve it in the most absurd way: they connect cables, set up heavy network folders, or — even worse — upload files to public cloud storage only to download them on the neighboring device, voluntarily handing over their data to third parties and corporate servers.</p>
+
+<p>Meanwhile, there is a native, elegant, and completely local solution — the <strong>LocalSend</strong> utility. It allows you to organize instant wireless data exchange between your PC and mobile devices within your home Wi-Fi network. The transfer goes directly from device to device over the secure HTTPS protocol, bypassing the internet and external servers.</p>
+
+<p><em>Tested in the field on a workstation: Linux Debian 13 (Trixie), GNOME desktop environment.</em></p>
+
+<hr>
+
+<p><strong><i>A. Installing the Application on Linux Debian 13</i></strong></p>
+
+<p>LocalSend for Linux is distributed as an isolated package through the Flathub repository. This ensures that the application runs in its own "sandbox" and does not have unnecessary access to system files.</p>
+
+<p>Before installation, make sure your nftables firewall or content filter correctly allows traffic to Flathub's CDN servers (for details on auditing and configuring rules for Fastly/Flathub, see the chapter <a href="#using-validators">6.8. Using Validators</a>).</p>
+
+<p>Run the installation command in the terminal as a regular user:</p>
+
+<pre><code>flatpak install flathub org.localsend.localsend_app</code></pre>
+
+<p>On mobile devices (Android/iOS), the application is installed similarly from official app stores or the F-Droid repository.</p>
+
+<hr>
+
+<p><strong><i>B. nftables Security Architecture for LocalSend</i></strong></p>
+
+<p>LocalSend uses a fixed port <strong>53317</strong> (for TCP and UDP) for device discovery and file transfer. Naturally, simply opening this port to the whole world is strategically exposing yourself to attack. Attackers from the internet or invalid processes should not have access to it.</p>
+
+<p>We will apply the tactic of maximum attack surface reduction, protecting the port with three hard locks simultaneously:</p>
+
+<ol>
+  <li><strong>Restriction by network interface:</strong> traffic is only accepted through your local network card (in this example, <code>enp2s0</code>).</li>
+  <li><strong>Minimal address pool (Mask /28):</strong> we do not open access to the entire standard subnet of 254 addresses (/24). If you have only a few devices at home (PC, tablet, smartphones), we tighten the firewall into the ultra-strict bounds of a /28 subnet. This allocates a pool of only 14 usable IP addresses (from 192.168.0.1 to 192.168.0.14), completely cutting off the rest of the router's space. <br> <strong><em>Important:</em></strong> if you have more devices, use a mask that corresponds to the number of your devices. Do not use a /28 mask if the number of devices exceeds 14. In that case, choose a mask one step higher (e.g., /27 — 30 addresses, /26 — 62 addresses, and so on) so that all your devices fall within the allowed pool.</li>
+  <li><strong>Filtering by system user (skuid):</strong> on outgoing traffic, the port is opened exclusively for your user account and the system processes of _flatpak itself. No system ghost (nobody, daemon) or hidden backdoor will be able to use this loophole.</li>
+</ol>
+
+<hr>
+
+<p><strong><i>C. Practical Configuration of /etc/nftables.conf</i></strong></p>
+
+<p>Make the following changes to your main firewall configuration file.</p>
+
+<p><strong><i>C.1. Incoming Circuit (INPUT Chain)</i></strong></p>
+
+<p>The rule must be placed strictly BEFORE your final anti-spoofing block (blocking fake IPs like <code>ip saddr 192.168.0.0/16 drop</code>) so that legitimate home devices have time to authenticate.</p>
+
+<p>Insert these lines immediately after the fragmented packet check block:</p>
+
+<pre><code># == 🚫 Blocking fragmented packets — often used to bypass filters ==
+ip frag-off & 0x1fff != 0 drop
+
+# == 📱 Allow incoming file exchange via LocalSend (Minimal /28 pool) ==
+# Allows traffic only from the home subnet 192.168.0.0/28 and only via interface enp2s0
+iifname "enp2s0" ip saddr 192.168.0.0/28 tcp dport 53317 accept
+iifname "enp2s0" ip saddr 192.168.0.0/28 udp dport 53317 accept
+
+# == 🔒 Blocking packets with fake IPs (spoofing) ==
+ip saddr 127.0.0.0/8 drop          # localhost
+ip saddr 192.168.0.0/16 drop       # private network (all other local IPs are dropped here)</code></pre>
+
+<p><strong><i>C.2. Outgoing Circuit (OUTPUT Chain)</i></strong></p>
+
+<p>The rule is placed at the very end of the output chain, immediately after the line including external includes. The <code>ct state new</code> parameter ensures that the firewall only processes new legitimate sessions created by you.</p>
+
+<pre><code># ⬇️ THE CONTENT OF THE FILE whitelist.nft IS INSERTED HERE
+include "/etc/nftables.d/whitelist.nft"
+# ⬆️ INSERTION ENDED
+
+# == 📱 Allow LocalSend outgoing only within the /28 pool and only for trusted parties ==
+# Port 53317 is opened OUTBOUND EXCLUSIVELY for you (user) and the application itself (_flatpak)
+oifname "enp2s0" ip daddr 192.168.0.0/28 tcp dport 53317 meta skuid { user, _flatpak } ct state new accept
+oifname "enp2s0" ip daddr 192.168.0.0/28 udp dport 53317 meta skuid { user, _flatpak } ct state new accept
+}</code></pre>
+
+<p>After editing, apply the rules with the command:</p>
+
+<pre><code>sudo systemctl restart nftables</code></pre>
+
+<figure style="margin: 1.5rem 0; text-align: center;">
+  <img src="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/pictures/LocalSend-Lenovo-tablet.png"
+       alt="Screenshot of LocalSend on an Android tablet: partner discovery interface for receiving or sending files"
+       width="500"
+       loading="lazy"
+       onclick="this.classList.toggle('zoomed')"
+       style="max-width: 100%; height: auto; border-radius: 4px; border: 1px solid #d0d0d0;">
+  <figcaption style="margin-top: 0.5rem; font-size: 0.85rem; color: #4a4a40;">
+    <strong>LocalSend on an Android tablet.</strong><br>
+    Partner device detected, ready to receive or send files. Transfer goes directly over HTTPS, bypassing external servers.
+  </figcaption>
+</figure>
+
+<figure style="margin: 1.5rem 0; text-align: center;">
+  <img src="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/pictures/LocalSend-Debian-13.png"
+       alt="Screenshot of LocalSend on a Debian 13 workstation: partner discovery and ready-to-exchange interface"
+       width="500"
+       loading="lazy"
+       onclick="this.classList.toggle('zoomed')"
+       style="max-width: 100%; height: auto; border-radius: 4px; border: 1px solid #d0d0d0;">
+  <figcaption style="margin-top: 0.5rem; font-size: 0.85rem; color: #4a4a40;">
+    <strong>LocalSend on Debian 13 (Trixie), GNOME.</strong><br>
+    Partner device detected, ready for file exchange. The application runs in an isolated Flatpak sandbox, with port 53317 protected by nftables rules.
+  </figcaption>
+</figure>
+
+<hr>
+
+<p><strong><i>D. Conclusions</i></strong></p>
+
+<p>This approach demonstrates the triumph of sensible technocratic pragmatism. We have not only solved the problem of convenient wireless file transfer but also deprived manipulators and external hacker structures of the very opportunity to scan or use this port.</p>
+
+<p>While an ordinary user spends minutes connecting cables, wearing out the USB port, or risking confidentiality by uploading personal documents to third-party clouds, the LocalSend system accomplishes this task in seconds within an isolated, mathematically calculated, and protected local circuit.</p>
+
+<p><strong>Remember:</strong> mechanical wear and tear on USB ports — both on PCs and on mobile devices — is a serious problem. A port may not just fail, losing functionality: damaged contacts can short-circuit, which can lead to serious malfunctions or even complete motherboard failure.</p>
+
+<a href="#section0" style="text-decoration: none;"> ↑ Back to Contents </a> | 
+<a href="#section6" style="text-decoration: none;"> ↑ Back to Chapter Start </a>
+
+</section> <!-- /End of main chapter H3 -->
 
 <hr>
 
@@ -2577,6 +2702,7 @@ fi</code></pre>
     <li><strong>6.6:</strong> The system monitor applet on the panel is like a car dashboard: it lets you see overloads and freezes.</li>
     <li><strong>6.7:</strong> Regularly back up your system using rsync, keep at least three copies (local, on a flash drive, and in the cloud), archive with tar, and verify checksums.</li>
     <li><strong>6.8:</strong> Use validators to check texts and code (HTML, bash, Python, SQL, etc.) — they save time, effort, and reputation. Validators catch syntax errors but do not replace testing. If you can't fix the error yourself — consult an AI assistant.</li>
+    <li><strong>6.9:</strong> Use LocalSend for secure local file sharing — transfer goes directly over HTTPS, without cables or clouds. Configure nftables so that the port is only accessible to your devices. And remember: frequent USB connections loosen ports and can lead to short circuits.</li>
   </ul>
 </details>
 

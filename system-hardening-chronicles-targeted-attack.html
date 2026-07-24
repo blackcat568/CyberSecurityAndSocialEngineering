@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "A real-world chronicle of defending against a targeted attack: documenting vulnerabilities, configurations, responses, and system hardening. From zero security to resilient configurations. Covers Debian 12 & 13, nftables, AppArmor, OpenSnitch, Flatpak, USBGuard, sysctl. For cybersecurity and InfoSec professionals.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-07-23<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-07-24<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -387,7 +387,7 @@
 
 <div class="alert" style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 2rem 0;">
   <strong style="color: #856404;">⚠️ Notice!</strong>
-  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-07-23<!-- DATE_END --></span>
+  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-07-24<!-- DATE_END --></span>
 </div>
 
 <!-- КРУПНАЯ ГЛАВА H2 0- Оглавление -->
@@ -4158,7 +4158,7 @@ acl CONNECT method CONNECT
 
 # Hard-block requests to non-standard ports
 http_access deny !Safe_ports
-# FIXED: Block CONNECT only if the port is NOT in the SSL_ports list
+# Block CONNECT only if the port is NOT in the SSL_ports list
 http_access deny CONNECT !SSL_ports
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -4178,12 +4178,24 @@ http_access deny all
 #  CONFIDENTIALITY AND LOGGING
 # ═══════════════════════════════════════════════════════════════════════════
 
-# Disable sending VIA and X-Forwarded-For headers for privacy
+# Disable X-Forwarded-For headers for privacy
 via on
 forwarded_for off
 
-# Logging (so you can see what is being blocked and what is being allowed)
-access_log daemon:/var/log/squid/access.log squid
+# Disable all logging to improve performance and minimize disk I/O
+access_log none
+cache_log /dev/null
+cache_store_log none
+logfile_rotate 0
+
+# Disable caching entirely:
+# Squid operates solely as a TCP traffic filter in this configuration,
+# therefore caching is not needed
+cache deny all
+
+# Accelerate shutdown process to avoid system conflicts during graceful termination
+shutdown_lifetime 5 seconds
+
         </code>
     </pre>
 </div>
@@ -4200,7 +4212,6 @@ access_log daemon:/var/log/squid/access.log squid
 # ═══════════════════════════════════════════════════════════════════════════
 .viber.com                 # Main domain, authorization, chats, sticker packs
 .viberout.com              # Telephony and Viber Out calls to mobile numbers
-.aws.viber.com             # Cloud infrastructure of media servers in Amazon AWS
 
 # ═══════════════════════════════════════════════════════════════════════════
 # 🎮 GROUP 2: FIRESTORM VIEWER / SECOND LIFE & VIVOX VOICE
@@ -4210,7 +4221,6 @@ access_log daemon:/var/log/squid/access.log squid
 .secondlife.io             # Auxiliary game services and inventory
 .vivox.com                 # Game voice engine (Vivox Voice server, voice in SL)
 .firestormviewer.org       # Official viewer site, auto-updates, reference materials
-.agni.lindenlab.com        # Main server pool of Second Life simulators (Agni)
 .secondlife.net            # Old but still used for Capabilities internal game domain
 
 # ═══════════════════════════════════════════════════════════════════════════

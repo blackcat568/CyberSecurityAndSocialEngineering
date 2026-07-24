@@ -3616,6 +3616,22 @@ table inet filter { # Opening the ruleset
     # This ensures immediate destruction of invalid packets
     # before the remaining filtering rules are applied.
     ct state invalid log prefix "🔥 INVALID_OUT_PACKET: " drop
+    
+    # =======================================================================
+    # 1. GENERAL PROTECTIVE SHIELD (Only rate limiting!)
+    # =======================================================================
+    
+    # ATTENTION: There is NO accept keyword here. This rule does NOT allow packets out to the internet.
+    # The "!" sign means: if the rate exceeds the limit, LOG and DROP the packet.
+    # If the rate is within limits, the packet silently passes below — to your IP whitelist.
+    # ATTENTION: meta l4proto { tcp, udp } and th dport cover both TCP and UDP (HTTP/3) with a single shield.
+    
+    # Shield A: Block excessive creation of NEW web sessions (TCP/UDP 80,443)
+    meta l4proto { tcp, udp } th dport { 80, 443 } ct state new limit rate over 100/second burst 200 packets log prefix "🔥 OUT_WEB_LIMIT_BURST: " drop
+    
+    # Shield B: Rate-limit high-speed UDP multimedia streams (for all states)
+    # Hard-cuts anomalous speed (e.g., hidden file exfiltration by malware)
+    udp dport 13000-13050 meta skuid user-sl limit rate over 150/second burst 300 packets log prefix "🔥 OUT_UDP_FLOOD_DROP: " drop
 
     # =========================================================================
     # 🔒 SMART INSPECTION OF ESTABLISHED SESSIONS (Protection against Connection Hijacking)
@@ -3627,17 +3643,6 @@ table inet filter { # Opening the ruleset
 
     # ⬇️ INSTANT CUTOFF: If an unauthorized system process attempts to hijack your session
     ct state established,related log flags skuid prefix "🔥 HIJACK_ATTEMPT_DROP: " drop
-
-    # =======================================================================
-    # 1. GENERAL PROTECTIVE SHIELD (Only rate limiting!)
-    # =======================================================================
-    
-    # ATTENTION: There is NO accept keyword here. This rule does NOT allow packets out to the internet.
-    # The "!" sign means: if the rate exceeds the limit, LOG and DROP the packet.
-    # If the rate is within limits, the packet silently passes below — to your IP whitelist.
-    # ATTENTION: meta l4proto { tcp, udp } and th dport cover both TCP and UDP (HTTP/3) with a single shield.
-    meta l4proto { tcp, udp } th dport { 80, 443 } ct state new limit rate over 100/second burst 200 packets log prefix "🔥 OUT_WEB_LIMIT_BURST: " drop
-    
     
     # =========================================================================
     # 2. DNS SERVICE

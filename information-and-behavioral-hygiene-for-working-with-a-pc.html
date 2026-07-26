@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "A foundational practical guide to digital, behavioral, and informational hygiene for personal computer users. Covers cybersecurity basics, social engineering defense, mental health protection online, ethical AI use, free software advocacy, mobile device hardening, and psychological manipulation countermeasures. Detailed manual for conscious and safe PC and internet use. CC0 license - free to use and share.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-07-25<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-07-26<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -2167,6 +2167,40 @@ Let me know if you need any adjustments to the translation.
 <p>In some cases, the SSH client can be configured to work via port <strong>TCP 443</strong> instead of the standard port 22 — for example, due to network or provider restrictions, or for increased security.</p>
 
 <p>For creating and maintaining websites, it is recommended to use the combination<br><strong>GitHub + Git (local utility)</strong>.<br>This is a reliable, fast, and efficient approach to working with web projects.</p>
+
+<hr>
+
+<p><strong><i>Automation tip: Git aliases</i></strong></p>
+
+<p>To quickly navigate to your working copy folder and push commits, you can create aliases. This saves time and eliminates the need to type long paths and commands each time.</p>
+
+<p>Perform the following steps <strong>as your standard user</strong> (not as root):</p>
+
+<ol>
+  <li>Open the <code>~/.bashrc</code> file in a text editor:</li>
+</ol>
+
+<pre><code>nano ~/.bashrc</code></pre>
+
+<ol start="2">
+  <li>Add the following lines to the very end of the file:</li>
+</ol>
+
+<pre><code># === GitHub aliases ===
+alias gitcsfolder='cd "/home/user/Desktop/commands-and-settings/GitHubRepArticles/CyberSecurityAndSocialEngineering-working"'
+
+alias gitcspush='git status &amp;&amp; git add . &amp;&amp; git commit -m "Update article" &amp;&amp; git push'</code></pre>
+
+<p><strong><em>Important:</em></strong> replace the path <code>/home/user/Desktop/commands-and-settings/GitHubRepArticles/CyberSecurityAndSocialEngineering-working</code> with the actual path to your working repository folder. You may also change <code>gitcspush</code> and <code>gitcsfolder</code> to any abbreviations you prefer, and replace the commit message <code>"Update article"</code> with your own.</p>
+
+<ol start="3">
+  <li>Save the file: <strong>Ctrl+O</strong>, <strong>Enter</strong>, then <strong>Ctrl+X</strong>.</li>
+  <li>Apply the changes in the current terminal session:</li>
+</ol>
+
+<pre><code>source ~/.bashrc</code></pre>
+
+<p>Now, to navigate to your repository folder, simply type <code>gitcsfolder</code>, and to push changes — type <code>gitcspush</code>. One alias will perform all necessary actions: show status, add changes, create a commit, and push them to the remote repository.</p>
 
 <a href="#section0" style="text-decoration: none;"> ↑ To Table of Contents </a> |
 

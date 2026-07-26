@@ -4544,7 +4544,7 @@ if __name__ == "__main__":
     <li><strong>2.4.2-D Configuration fix:</strong> Fixed rate-limiting rule error (accept replaced with drop) in input, forward, and output chains. Fixed the config identified on an IT forum.</li>
     <li><strong>2.4.2-E Configuration hardening:</strong> Added UID-based filtering, invalid packet protection, session hijacking protection, and a mandatory DNS shield with tunneling protection.</li>
     <li><strong>2.4.2-F sysctl hardening:</strong> Applied <code>kernel.yama.ptrace_scope = 2</code> to block Process Injection. Full sysctl configuration v7.0.</li>
-    <li><strong>2.4.2-G Automating IP range selection:</strong> Added a cron script for dynamic whitelist updates via <code>dig</code>. Two logics used: static whitelist (<code>include</code>) and dynamic (cron). Abandoned dnsmasq in favor of the cron script.</li>
+    <li><strong>2.4.2-G Automating IP range selection and proxy filtering:</strong> For user <code>user</code>, a two-tier system is implemented: a static IP whitelist (<code>include</code>) and dynamic updates via a cron script using <code>dig</code> (replacing <code>dnsmasq</code>). For user <code>user-sl</code>, a hybrid scheme is applied: a static IP whitelist combined with outbound TCP traffic filtering through a local <code>Squid</code> proxy server based on a domain whitelist.</li>
     <li><strong>2.4.2-H Switching to Quad9 DNS:</strong> Hardcoded <code>/etc/resolv.conf</code> to 9.9.9.9 with <code>chattr +i</code> protection. Detailed comparison of Quad9 with Google and Cloudflare.</li>
     <li><strong>2.4.2-I Custom monitoring script:</strong> Python script for monitoring nftables and AppArmor status with GNOME notifications (<code>notify-send</code>).</li>
   </ul>

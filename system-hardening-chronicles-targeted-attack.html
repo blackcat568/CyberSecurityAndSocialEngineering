@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "A real-world chronicle of defending against a targeted attack: documenting vulnerabilities, configurations, responses, and system hardening. From zero security to resilient configurations. Covers Debian 12 & 13, nftables, AppArmor, OpenSnitch, Flatpak, USBGuard, sysctl. For cybersecurity and InfoSec professionals.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-07-25<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-07-26<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -387,7 +387,7 @@
 
 <div class="alert" style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 2rem 0;">
   <strong style="color: #856404;">⚠️ Notice!</strong>
-  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-07-25<!-- DATE_END --></span>
+  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-07-26<!-- DATE_END --></span>
 </div>
 
 <!-- КРУПНАЯ ГЛАВА H2 0- Оглавление -->
@@ -3431,7 +3431,7 @@ net.core.bpf_jit_harden = 2
 
 <h5>2.4.2-G Automating IP Whitelist and Proxy Filtering for user-sl</h5>
 
-<p><time datetime="2026-07-10">Created: 10.07.2026</time></p>
+<p><time datetime="2026-07-26">Created: 26.07.2026</time></p>
 
 <p>This section presents a new main nftables configuration that employs two methods for obtaining IP addresses and ranges for the whitelist: using the <code>include</code> function and using a cron script.</p>
 
@@ -3448,18 +3448,17 @@ net.core.bpf_jit_harden = 2
 
 <p>For the graphical session of user <code>user-sl</code>, in addition to <code>nftables</code>, a local <code>Squid</code> proxy server is employed, which filters outgoing traffic at the domain name level using a whitelist. If the requested domain is not in the allowed list, <code>Squid</code> blocks the connection, providing an additional layer of control over outgoing traffic.</p>
 
+<p><strong>Removal of the forward chain from the main configuration:</strong></p>
+
+<p>The <code>forward</code> chain in the current configuration was used exclusively for Docker containers (specifically, OpenVAS installed via Docker). Since OpenVAS testing is not planned in the near future, and including this chain complicates the main configuration logic and creates excessive nesting, it was decided to temporarily remove it from the main <code>nftables</code> ruleset.</p>
+
+<p>In the future, prior to OpenVAS testing, the <code>forward</code> chain will be reintroduced in accordance with the <strong>Zero Trust</strong> principle: similar to the <code>input</code> and <code>output</code> chains, it will be set to a <code>drop</code> policy, and only connections strictly necessary for the trusted service to function will be allowed. This approach ensures that even when Docker containers are activated, the attack surface remains minimal.</p>
+
 <div class="historical-fact">
     <pre>
         <code class="language-nftables">
 
 #!/usr/sbin/nft -f
-# = modification 26 =
-# 03.03.2026 19:52 Commented out outbound UDP port restrictions that interfered with ProtonVPN
-# 04.03.2026 19:53 Allowed necessary ports for Docker in the forward chain
-# 21.06.2026 08:24 Implemented outbound connection filtering by IP address
-# 28.06.2026 21:53 Set a limit on the number of connections per second
-# Added filtering of whitelisted IP access by user UID
-# Added filtering of invalid packets in the output chain
 
 flush ruleset
 
@@ -3560,43 +3559,6 @@ table inet filter { # Opening the ruleset
   # END OF INPUT CHAIN
   # ============================================
 
-
-  # ============================================
-  # START OF FORWARD CHAIN
-  # ============================================
-
-  # = Main chain policy =
-  chain forward {
-    type filter hook forward priority 0;
-    policy accept;
-    
-    #  = Various attack restrictions =
-    # Only needed in chain forward if you have Docker, Oracle VirtualBox.
-    # Uncomment if needed.
-
-    # == 🔒 Proper protection against aggressive incoming traffic (anti-DDoS) ==
-    # We do NOT allow traffic, we only instantly destroy what exceeds the limit.
-    # If the rate exceeds 100 per second, the packet is logged and dropped right here.
-    # If the rate is within limits, the packet goes further down, where a reliable default DROP awaits it.
-    ip saddr 0.0.0.0/0 ct state new limit rate over 100/second burst 200 packets log prefix "🔥 BAN: too many conn " flags all drop
-
-    # == 🛡️ Rate-limit ICMP echo requests (ping) ==
-    # ip protocol icmp icmp type echo-request limit rate 1/second accept
-    # ip protocol icmp icmp type echo-request log prefix "🔥 BAN: ICMP flood " flags all
-    # ip protocol icmp icmp type echo-request drop
-
-    # ⬇️ INSERT: Forward chain port rules
-    # Blocked and allowed TCP/UDP ports and ranges
-    
-        include "/etc/nftables.d/forward-tcp-udp.nft"
-        
-    # ⬆️ END OF INSERT
-
-  }
-
-  # ============================================
-  # END OF FORWARD CHAIN
-  # ============================================
   
   # ============================================
   # START OF OUTPUT CHAIN
@@ -3910,6 +3872,10 @@ fonts.googleapis.com
 fonts.gstatic.com
 ajax.googleapis.com
 apis.google.com
+
+# DuckDuckGo infrastructure and services
+duckduckgo.com
+external-content.duckduckgo.com
 
 # Public CDN for Bootstrap styles and icons (Required for the design of legacy websites)
 maxcdn.bootstrapcdn.com

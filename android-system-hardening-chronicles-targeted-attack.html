@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "Analysis of targeted attacks on Android devices (ZTE Blade A522, Android 7.1.1 and Lenovo TB-8504X, Android 8.1.0). Attacker gains full remote access to microphone, camera, and network traffic. Partial tablet protection via NetGuard. Supplement to 'System Hardening Chronicles'.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-07-09<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-07-29<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -302,7 +302,7 @@
 <a href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/system-hardening-chronicles-targeted-attack.html">"System Hardening Chronicles: Seeking a Configuration Resilient to Targeted Attacks"</a>.<br>
 It describes the experience with Android mobile devices, which confirms and expands upon the conclusions drawn for desktop systems.</p>
 
-<p>Last updated: <!-- DATE_START -->2026-07-09<!-- DATE_END --></p>
+<p>Last updated: <!-- DATE_START -->2026-07-29<!-- DATE_END --></p>
 
 <!-- КРУПНАЯ ГЛАВА (H2) - Оглавление -->
 <section id="table-of-contents" aria-label="Table of Contents">
@@ -963,10 +963,291 @@ Due to limited available time, the priority remains the investigation of the att
 
 <!-- Конец подсекции 3.5 -->
 
+<hr>
+
+<!-- Subsection 3.6 -->
+<section id="device2-configuration-3" aria-label="3.6. Tablet - Configuration 3">
+<h3 id="section3-6">3.6. Tablet - Configuration 3</h3>
+
+<p><strong>Section created:</strong> 2026-07-29</p>
+
+<p><strong>Changes:</strong></p>
+<ul>
+  <li>Factory reset performed.</li>
+  <li>NetGuard removed and replaced with RethinkDNS — a fully-featured open-source solution with no free version limitations.</li>
+</ul>
+
+<p><strong>Identified issue:</strong></p>
+<ul>
+  <li>Gmail is not functioning. When attempting to sync, the following error appears: <em>"The Gmail app is trying to use an unavailable Google Play service. Please try again later."</em> Google Play, however, has network access under the current configuration and installs applications correctly. The cause requires separate investigation.</li>
+</ul>
+
+<p><strong>Status:</strong> configuration is currently in testing phase and is not final. Plans include transitioning more applications to isolated (Isolate) mode with access restricted via whitelisting of ports, domains, and IP addresses.</p>
+			
+<div class="historical-fact">
+    <strong>Tablet RethinkDNS configuration:</strong>
+    <pre>
+        <code class="language-ini">
+	
+==========================================
+RETHINKDNS CONFIGURATION (POST-RESET)
+==========================================
+
+==========================================
+GLOBAL MODE: BLOCK ALL BY DEFAULT
+==========================================
+All applications are blocked except those explicitly allowed.
+Exceptions (not blocked, but not isolated):
+ChatGPT, DeepSeek, Gmail, Google Play, Google Service Framework,
+Google Backup, Lumia, Google Play Services
+
+==========================================
+ALLOWED APPLICATIONS (UNRESTRICTED ACCESS)
+==========================================
+1. F-Droid (org.fdroid.fdroid)
+2. Google One Time Init (com.google.android.onetimeinitializer)
+3. LocalSend (org.localsend.localsend_app)
+4. VpnDialogs (com.android.vpndialogs)
+5. RethinkDNS
+
+==========================================
+ISOLATED APPLICATIONS (ACCESS ONLY BY WHITELIST)
+==========================================
+
+---------- Chrome ----------
+Domain rules:
+*.gstatic.com
+*.google.com
+*.dreamwidth.org
+IP and port rules:
+0:0:0:0:0:0:0:0 : 80
+0:0:0:0:0:0:0:0 : 443
+
+---------- Proton Pass ----------
+Domain rules:
+*.proton.me
+IP and port rules:
+0:0:0:0:0:0:0:0 : 80
+0:0:0:0:0:0:0:0 : 443
+
+---------- YouTube ----------
+Domain rules:
+*.youtube.com
+*.google.com
+*.googlevideo.com
+*.googleapis.com
+*.ytimg.com
+*.ggpht.com
+IP and port rules:
+0:0:0:0:0:0:0:0 : 80
+0:0:0:0:0:0:0:0 : 443
+
+==========================================
+BLOCKED APPLICATIONS (177)
+==========================================
+
+com.lenovo.ota
+com.android.storagemanager
+com.lenovo.csdkplatform
+com.android.printspooler
+com.qualcomm.svi
+com.qti.service.colorservice
+com.longcheertel.midtest
+com.android.defcontainer
+org.codeaurora.btmultisim
+com.qualcomm.qti.poweroffalarm
+android.media
+com.qualcomm.qti.StatsPollManager
+com.qualcomm.qti.simsettings
+org.videolan.vlc
+com.android.pacprocessor
+com.google.android.packageinstaller
+com.rhmsoft.edit
+com.qualcomm.qti.phonefeature
+com.wapi.wapicertmanage
+com.lenovo.tab4_8
+com.rarlab.rar
+com.qualcomm.cabl
+com.tblenovo.soundrecorder
+com.android.wallpaper.livepicker
+nobody
+com.android.providers.telephony
+com.android.contacts
+com.google.android.partnersetup
+com.google.android.talk
+com.qualcomm.qti.networksetting
+com.android.deskclock
+com.dti.lenovo.tablet
+com.google.android.tts
+com.android.dreams.phototable
+com.lenovo.lps.cloud.sync.row
+com.qualcomm.qti.qcom_accesslogkit
+com.google.android.ext.shared
+com.android.cts.ctsshim
+com.google.android.apps.photos
+com.android.providers.contacts
+com.lenovo.ue.device
+com.android.sharedstoragebackup
+com.android.mtp
+com.android.documentsui
+com.tblenovo.setup
+com.android.bookmarkprovider
+com.lenovo.weather.theme.dreamlandPad
+com.google.android.gsf
+com.google.android.apps.maps
+com.qualcomm.qti.autoregistration
+com.google.android.apps.tachyon
+com.android.emergency
+com.google.android.ims
+com.qualcomm.simcontacts
+com.android.carrierdefaultapp
+com.qualcomm.qti.auth.fidocryptoservice
+com.android.location.fused
+com.android.cellbroadcastreceiver
+com.lenovo.launcher
+com.google.android.googlequicksearchbox
+com.android.statementservice
+com.android.providers.settings
+com.android.systemui.theme.dark
+com.qti.qualcomm.datastatusnotification
+com.android.systemui
+com.dsi.ant.server
+org.codeaurora.ims
+com.android.bips
+com.qualcomm.location
+com.android.companiondevicemanager
+com.android.dreams.basic
+android.gps
+com.codeaurora.fmradio
+com.qualcomm.qcrilmsgtunnel
+com.lenovo.dsa
+com.chaozhuo.filemanager
+com.qualcomm.qti.appnetaccess
+com.android.mms
+com.kidoz.lenovo
+com.android.shell
+com.qualcomm.embms
+com.qti.xdivert
+com.android.backupconfirm
+com.qualcomm.timeservice
+com.android.settings
+com.android.providers.userdictionary
+com.google.android.feedback
+com.qualcomm.qti.ims
+com.lenovo.lsf
+com.qualcomm.qti.telephonyservice
+com.qualcomm.qti.confdialer
+com.android.wantjoin.settings
+com.qti.dpmserviceapp
+com.google.android.setupwizard
+com.android.bluetoothmidiservice
+com.qualcomm.wfd.service
+com.android.carrierconfig
+com.android.dialer
+com.google.android.webview
+com.android.phone
+com.goodix.test
+com.android.mms.service
+com.android.egg
+com.android.captiveportallogin
+com.google.android.printservice.recommendation
+com.android.timerswitch
+com.android.inputdevices
+com.qualcomm.qti.accesscache
+com.qualcomm.qti.auth.sampleauthenticatorservice
+com.kunzisoft.keepass.libre
+com.google.android.apps.work.oobconfig
+com.android.calllogbackup
+com.android.providers.partnerbookmarks
+com.tblenovo.whatsnewclient
+com.android.providers.calendar
+com.google.android.tag
+com.qti.confuridialer
+com.lenovo.wallpaper
+com.android.externalstorage
+org.codeaurora.bluetooth
+com.lenovo.agent0
+com.qualcomm.qti.callfeaturessetting
+com.android.server.telecom
+com.android.vending
+com.dolby.dax2appUI
+com.android.keychain
+com.android.wallpaperbackup
+com.lenovo.lsf.device
+com.android.managedprovisioning
+com.android.stk
+com.android.providers.media
+com.qualcomm.qti.auth.sampleextauthservice
+com.google.android.apps.docs
+com.lenovo.ocpl
+com.android.wallpapercropper
+android
+org.codeaurora.snapcam
+com.skype.raider
+com.google.android.gms
+com.google.android.backuptransport
+com.lenovo.launcher.provider
+com.motorola.demo
+com.google.android.videos
+com.tblenovo.lewea
+com.android.certinstaller
+com.qualcomm.qti.auth.securesampleauthservice
+com.qapp.secprotect
+com.google.android.marvin.talkback
+root
+com.qualcomm.qti.qtisystemservice
+com.android.proxyhandler
+com.android.poweronalert
+com.android.smspush
+com.wantjoin.safeBrowser
+com.android.providers.downloads
+com.longcheertel.modemlog
+com.qti.qualcomm.deviceinfo
+com.android.wantjoin.childmode.ctrl
+android.dns
+com.google.android.ext.services
+com.quicinc.cne.CNEService
+com.lenovo.dagent
+com.goodix.rawdata
+com.android.bluetooth
+app.olauncher
+com.android.calculator2
+com.android.cts.priv.ctsshim
+com.qualcomm.qti.auth.secureextauthservice
+com.qualcomm.qti.lpa
+com.google.android.syncadapters.contacts
+com.android.providers.downloads.ui
+com.android.providers.blockednumber
+com.qualcomm.qti.uceShimService
+com.qualcomm.qti.uim
+com.google.android.gm
+android.multicast
+com.qualcomm.qti.callenhancement
+com.android.partnerbrowsercustomizations.example
+com.google.android.inputmethod.latin
+com.google.android.music
+com.android.htmlviewer
+com.google.android.configupdater
+com.tblenovo.whatsnewhost
+com.google.android.calendar
+
+        </code>
+    </pre>
+</div>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to Table of Contents</a>
+</p>
+
+</section>
+
+<!-- End of subsection 3.6 -->
+
 <details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
   <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Device 2 (Tablet)</summary>
   <ul>
-    <li><strong>Lenovo TB-8504X (Android 8.1):</strong> Attack detected in April 2020. NetGuard blocked camera and microphone access but did not prevent reading files, AI conversations, or chat messages. Priority remains PC attack investigation.</li>
+    <li><strong>Lenovo TB-8504X (Android 8.1):</strong> Attack detected in April 2020. NetGuard blocked camera and microphone access but did not prevent reading files, AI conversations, and chat messages. Priority remains the investigation of the attack on the PC.</li>
+    <li><strong>Configuration 3 (RethinkDNS):</strong> After a factory reset, the tablet runs stably. NetGuard has been replaced with RethinkDNS. The configuration is currently being tested: an issue with Gmail has been identified (Google Play Services access error), and the cause is under analysis. Plans include isolating additional applications with access restricted via domain and port whitelisting.</li>
   </ul>
 </details>
 

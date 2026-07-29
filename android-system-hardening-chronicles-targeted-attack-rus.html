@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "Анализ целевой атаки на Android-устройства (ZTE Blade A522, Android 7.1.1 и Lenovo TB-8504X, Android 8.1.0). Получение хакером полного удалённого доступа к микрофону, камере и трафику. Частичная защита планшета через NetGuard. Дополнение к «Хроникам хардеринга системы».",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-07-09<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-07-29<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -301,7 +301,7 @@
 <a href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/system-hardening-chronicles-targeted-attack-rus.html">«Хроники хардеринга системы: поиск конфигурации, устойчивой к целевой атаке»</a>.<br>
 Здесь описывается опыт с мобильными устройствами под управлением Android, который подтверждает и расширяет выводы, сделанные для десктопных систем.</p>
 
-<p>Последнее обновление статьи: <!-- DATE_START -->2026-07-09<!-- DATE_END --></p>
+<p>Последнее обновление статьи: <!-- DATE_START -->2026-07-29<!-- DATE_END --></p>
 
 <!-- КРУПНАЯ ГЛАВА (H2) - Оглавление -->
 <section id="table-of-contents" aria-label="Table of Contents">
@@ -703,11 +703,13 @@
 <section id="device2-configuration-2" aria-label="3.5. Планшет - конфигурация 2">
 <h3 id="section3-5">3.5. Планшет - конфигурация 2</h3>
 
-Раздел создан: 29.06.2026
+<p><strong>Раздел создан:</strong> 29.06.2026</p>
 
-Изменения:
-- Shelter удален так как сильно замедляет и без того устаревшее устройство. Позитивный эффект от применения Shelter не выявлен.
-- Добавлен Гугл акаунт, так как влияние наличия или отсутствия Гугл акаунта на безопасность устройства не обнаружено. Данные об активности браузера (мои разговаоры с DeepSeek, просмотр YouTube) все равно доступны злоумышленику.
+<p><strong>Изменения:</strong></p>
+<ul>
+  <li>Shelter удален так как сильно замедляет и без того устаревшее устройство. Позитивный эффект от применения Shelter не выявлен.</li>
+  <li>Добавлен Гугл акаунт, так как влияние наличия или отсутствия Гугл акаунта на безопасность устройства не обнаружено. Данные об активности браузера (мои разговаоры с DeepSeek, просмотр YouTube) все равно доступны злоумышленику. </li>
+</ul>
 
 Неопределенные данные:
 - неизвестно, доступна ли злоумышленнику файловая система. 
@@ -1022,10 +1024,291 @@
 
 <!-- Конец подсекции 3.5 -->
 
+<hr>
+
+<!-- Подсекция 3.6 -->
+<section id="device2-configuration-3" aria-label="3.6. Планшет - конфигурация 2">
+<h3 id="section3-6">3.6. Планшет - конфигурация 3</h3>
+
+<p><strong>Раздел создан:</strong> 29.07.2026</p>
+
+<p><strong>Изменения:</strong></p>
+<ul>
+  <li>Выполнен сброс настроек до заводских (factory reset).</li>
+  <li>NetGuard удалён, вместо него установлен RethinkDNS — полнофункциональное OpenSource-решение без ограничений бесплатной версии.</li>
+</ul>
+
+<p><strong>Выявленная проблема:</strong></p>
+<ul>
+  <li>Gmail не работает. При попытке синхронизации отображается ошибка: <em>«Приложение Gmail пытается использовать недоступный сервис Google Play. Повторите попытку позже.»</em>. При этом Google Play в текущей конфигурации имеет доступ к сети и корректно устанавливает приложения. Причина требует отдельного анализа.</li>
+</ul>
+
+<p><strong>Статус:</strong> конфигурация находится в стадии тестирования и не является завершённой. В планах — перевод большего числа приложений в изолированный режим (Isolate) с ограничением доступа по белому списку портов, доменов и IP-адресов.</p>
+			
+<div class="historical-fact">
+    <strong>Конфигурация RethinckDNS планшета:</strong>
+    <pre>
+        <code class="language-ini">
+	
+==========================================
+КОНФИГУРАЦИЯ RethinkDNS (после сброса)
+==========================================
+
+==========================================
+ГЛОБАЛЬНЫЙ РЕЖИМ: БЛОКИРОВАТЬ ВСЕ ПО УМОЛЧАНИЮ
+==========================================
+Все приложения заблокированы, кроме явно разрешённых
+Исключения (не заблокированы, но не изолированы):
+ChatGPT, DeepSeek, Gmail, Google Play, Google Service Framework,
+Google резервное копирование, Lumia, Сервисы Google Play
+
+==========================================
+РАЗРЕШЁННЫЕ ПРИЛОЖЕНИЯ (ДОСТУП ВЕЗДЕ)
+==========================================
+1. F-Droid (org.fdroid.fdroid)
+2. Google One Time Init (com.google.android.onetimeinitializer)
+3. LocalSend (org.localsend.localsend_app)
+4. VpnDialogs (com.android.vpndialogs)
+5. RethinkDNS
+
+==========================================
+ИЗОЛИРОВАННЫЕ ПРИЛОЖЕНИЯ (ДОСТУП ТОЛЬКО ПО БЕЛОМУ СПИСКУ)
+==========================================
+
+---------- Chrome ----------
+Правила доменов:
+*.gstatic.com
+*.google.com
+*.dreamwidth.org
+Правила IP и портов:
+0:0:0:0:0:0:0:0 : 80
+0:0:0:0:0:0:0:0 : 443
+
+---------- Proton Pass ----------
+Правила доменов:
+*.proton.me
+Правила IP и портов:
+0:0:0:0:0:0:0:0 : 80
+0:0:0:0:0:0:0:0 : 443
+
+---------- YouTube ----------
+Правила доменов:
+*.youtube.com
+*.google.com
+*.googlevideo.com
+*.googleapis.com
+*.ytimg.com
+*.ggpht.com
+Правила IP и портов:
+0:0:0:0:0:0:0:0 : 80
+0:0:0:0:0:0:0:0 : 443
+
+==========================================
+ЗАБЛОКИРОВАННЫЕ ПРИЛОЖЕНИЯ (177)
+==========================================
+
+com.lenovo.ota
+com.android.storagemanager
+com.lenovo.csdkplatform
+com.android.printspooler
+com.qualcomm.svi
+com.qti.service.colorservice
+com.longcheertel.midtest
+com.android.defcontainer
+org.codeaurora.btmultisim
+com.qualcomm.qti.poweroffalarm
+android.media
+com.qualcomm.qti.StatsPollManager
+com.qualcomm.qti.simsettings
+org.videolan.vlc
+com.android.pacprocessor
+com.google.android.packageinstaller
+com.rhmsoft.edit
+com.qualcomm.qti.phonefeature
+com.wapi.wapicertmanage
+com.lenovo.tab4_8
+com.rarlab.rar
+com.qualcomm.cabl
+com.tblenovo.soundrecorder
+com.android.wallpaper.livepicker
+nobody
+com.android.providers.telephony
+com.android.contacts
+com.google.android.partnersetup
+com.google.android.talk
+com.qualcomm.qti.networksetting
+com.android.deskclock
+com.dti.lenovo.tablet
+com.google.android.tts
+com.android.dreams.phototable
+com.lenovo.lps.cloud.sync.row
+com.qualcomm.qti.qcom_accesslogkit
+com.google.android.ext.shared
+com.android.cts.ctsshim
+com.google.android.apps.photos
+com.android.providers.contacts
+com.lenovo.ue.device
+com.android.sharedstoragebackup
+com.android.mtp
+com.android.documentsui
+com.tblenovo.setup
+com.android.bookmarkprovider
+com.lenovo.weather.theme.dreamlandPad
+com.google.android.gsf
+com.google.android.apps.maps
+com.qualcomm.qti.autoregistration
+com.google.android.apps.tachyon
+com.android.emergency
+com.google.android.ims
+com.qualcomm.simcontacts
+com.android.carrierdefaultapp
+com.qualcomm.qti.auth.fidocryptoservice
+com.android.location.fused
+com.android.cellbroadcastreceiver
+com.lenovo.launcher
+com.google.android.googlequicksearchbox
+com.android.statementservice
+com.android.providers.settings
+com.android.systemui.theme.dark
+com.qti.qualcomm.datastatusnotification
+com.android.systemui
+com.dsi.ant.server
+org.codeaurora.ims
+com.android.bips
+com.qualcomm.location
+com.android.companiondevicemanager
+com.android.dreams.basic
+android.gps
+com.codeaurora.fmradio
+com.qualcomm.qcrilmsgtunnel
+com.lenovo.dsa
+com.chaozhuo.filemanager
+com.qualcomm.qti.appnetaccess
+com.android.mms
+com.kidoz.lenovo
+com.android.shell
+com.qualcomm.embms
+com.qti.xdivert
+com.android.backupconfirm
+com.qualcomm.timeservice
+com.android.settings
+com.android.providers.userdictionary
+com.google.android.feedback
+com.qualcomm.qti.ims
+com.lenovo.lsf
+com.qualcomm.qti.telephonyservice
+com.qualcomm.qti.confdialer
+com.android.wantjoin.settings
+com.qti.dpmserviceapp
+com.google.android.setupwizard
+com.android.bluetoothmidiservice
+com.qualcomm.wfd.service
+com.android.carrierconfig
+com.android.dialer
+com.google.android.webview
+com.android.phone
+com.goodix.test
+com.android.mms.service
+com.android.egg
+com.android.captiveportallogin
+com.google.android.printservice.recommendation
+com.android.timerswitch
+com.android.inputdevices
+com.qualcomm.qti.accesscache
+com.qualcomm.qti.auth.sampleauthenticatorservice
+com.kunzisoft.keepass.libre
+com.google.android.apps.work.oobconfig
+com.android.calllogbackup
+com.android.providers.partnerbookmarks
+com.tblenovo.whatsnewclient
+com.android.providers.calendar
+com.google.android.tag
+com.qti.confuridialer
+com.lenovo.wallpaper
+com.android.externalstorage
+org.codeaurora.bluetooth
+com.lenovo.agent0
+com.qualcomm.qti.callfeaturessetting
+com.android.server.telecom
+com.android.vending
+com.dolby.dax2appUI
+com.android.keychain
+com.android.wallpaperbackup
+com.lenovo.lsf.device
+com.android.managedprovisioning
+com.android.stk
+com.android.providers.media
+com.qualcomm.qti.auth.sampleextauthservice
+com.google.android.apps.docs
+com.lenovo.ocpl
+com.android.wallpapercropper
+android
+org.codeaurora.snapcam
+com.skype.raider
+com.google.android.gms
+com.google.android.backuptransport
+com.lenovo.launcher.provider
+com.motorola.demo
+com.google.android.videos
+com.tblenovo.lewea
+com.android.certinstaller
+com.qualcomm.qti.auth.securesampleauthservice
+com.qapp.secprotect
+com.google.android.marvin.talkback
+root
+com.qualcomm.qti.qtisystemservice
+com.android.proxyhandler
+com.android.poweronalert
+com.android.smspush
+com.wantjoin.safeBrowser
+com.android.providers.downloads
+com.longcheertel.modemlog
+com.qti.qualcomm.deviceinfo
+com.android.wantjoin.childmode.ctrl
+android.dns
+com.google.android.ext.services
+com.quicinc.cne.CNEService
+com.lenovo.dagent
+com.goodix.rawdata
+com.android.bluetooth
+app.olauncher
+com.android.calculator2
+com.android.cts.priv.ctsshim
+com.qualcomm.qti.auth.secureextauthservice
+com.qualcomm.qti.lpa
+com.google.android.syncadapters.contacts
+com.android.providers.downloads.ui
+com.android.providers.blockednumber
+com.qualcomm.qti.uceShimService
+com.qualcomm.qti.uim
+com.google.android.gm
+android.multicast
+com.qualcomm.qti.callenhancement
+com.android.partnerbrowsercustomizations.example
+com.google.android.inputmethod.latin
+com.google.android.music
+com.android.htmlviewer
+com.google.android.configupdater
+com.tblenovo.whatsnewhost
+com.google.android.calendar
+
+        </code>
+    </pre>
+</div>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+</section>
+
+<!-- Конец подсекции 3.6 -->
+
 <details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
   <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Устройство 2 (планшет)</summary>
   <ul>
     <li><strong>Lenovo TB-8504X (Android 8.1):</strong> Атака обнаружена в апреле 2020. NetGuard заблокировал доступ к камере и микрофону, но не перекрыл чтение файлов, диалогов с ИИ и сообщений в чатах. Приоритет — исследование атаки на ПК.</li>
+    <li><strong>Конфигурация 3 (RethinkDNS):</strong> После сброса до заводских настроек планшет работает стабильно. NetGuard заменён на RethinkDNS. Конфигурация тестируется: выявлена проблема с Gmail (ошибка доступа к Google Play Services), причины анализируются. В планах — изоляция дополнительных приложений с доступом только по белому списку доменов и портов.</li>
   </ul>
 </details>
 

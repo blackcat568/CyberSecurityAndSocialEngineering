@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "A real-world chronicle of defending against a targeted attack: documenting vulnerabilities, configurations, responses, and system hardening. From zero security to resilient configurations. Covers Debian 12 & 13, nftables, AppArmor, OpenSnitch, Flatpak, USBGuard, sysctl. For cybersecurity and InfoSec professionals.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-07-28<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-08-02<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -387,7 +387,7 @@
 
 <div class="alert" style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 2rem 0;">
   <strong style="color: #856404;">⚠️ Notice!</strong>
-  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-07-28<!-- DATE_END --></span>
+  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-08-02<!-- DATE_END --></span>
 </div>
 
 <!-- КРУПНАЯ ГЛАВА H2 0- Оглавление -->
@@ -4569,13 +4569,32 @@ if __name__ == "__main__":
     <li>🎯 Verification goal: to confirm or refute that blocking outbound traffic by an IP whitelist disrupts the communication channels of hypothetical malware.</li>
 </ul>
 
-</section> 
+<hr>
 
-<!-- Конец подсекции H4 2.4.3-->
+<p><strong>Suspected data leak (2026-08-01):</strong></p>
+
+<p>On 2026-08-01 at 23:22, a potential data leak was detected from the <code>user-sl</code> graphical session. Confirmation requires further monitoring.</p>
+
+<p><strong>Identified leak vector in user-sl session (2026-08-01):</strong></p>
+
+<p><strong>Assumed attack vector:</strong> a script injected into the browser that exfiltrates data over UDP channels, bypassing the <code>Squid</code> proxy (which only controls TCP traffic).</p>
+
+<p><strong>Countermeasures:</strong></p>
+<ul>
+    <li>Install and configure <strong>NoScript</strong> or similar extensions to control script execution.</li>
+    <li>Investigate UDP traffic filtering methods for the <code>user-sl</code> session (e.g., using nftables).</li>
+    <li>Consider dropping the proxy and switching to strict nftables filtering with support for multimedia services (<code>youtube.com</code>, <code>Second Life</code>, etc.).</li>
+</ul>
+
+<p>Experiments to establish a secure graphical session with multimedia service support are ongoing.</p>
 
 <p style="text-align: center; margin-top: 2rem;">
   <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to table of contents</a>
 </p>
+
+</section> 
+
+<!-- Конец подсекции H4 2.4.3-->
 
 </section> 
 
@@ -4589,6 +4608,8 @@ if __name__ == "__main__":
     <li><strong>CONFIGURATION 3 (Debian 13/GNOME/Wayland):</strong> Radical outbound control enhancement: OUTPUT policy changed to DROP, only trusted IP addresses allowed (whitelist), DNS forcibly switched to Quad9 (9.9.9.9) with changes locked via chattr. Status: testing, awaiting data on the effectiveness of C2 channel disruption.</li>
   </ul>
 </details>
+
+
 
 </section> 
 

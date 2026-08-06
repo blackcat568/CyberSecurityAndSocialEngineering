@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "A real-world chronicle of defending against a targeted attack: documenting vulnerabilities, configurations, responses, and system hardening. From zero security to resilient configurations. Covers Debian 12 & 13, nftables, AppArmor, OpenSnitch, Flatpak, USBGuard, sysctl. For cybersecurity and InfoSec professionals.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-08-03<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-08-07<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -387,7 +387,7 @@
 
 <div class="alert" style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 2rem 0;">
   <strong style="color: #856404;">⚠️ Notice!</strong>
-  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-08-03<!-- DATE_END --></span>
+  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-08-07<!-- DATE_END --></span>
 </div>
 
 <!-- КРУПНАЯ ГЛАВА H2 0- Оглавление -->
@@ -4574,6 +4574,16 @@ if __name__ == "__main__":
 <p><strong>Suspected data leak (2026-08-01):</strong></p>
 
 <p>On 2026-08-01 at 23:22, a potential data leak was detected from the <code>user</code> and/or <code>user-sl</code> graphical sessions. Confirmation requires further monitoring.</p>
+
+<p><strong>Conclusions (06.08.2026):</strong></p>
+
+<p>If we have locked down the operating system perimeter with <code>nftables</code> using absolute <code>OUTPUT DROP</code> rules based on UID, IP, and interfaces, yet leak detection continues, the hypothesis of an Out-of-Band (external-to-system) attack vector at the hardware-firmware level becomes applicable. At this point, we must acknowledge: the local OS firewall resources are completely exhausted. Further containment efforts within Debian 13 are pointless, as we are attempting to control the system from within an environment that is itself under the supervision of a lower-level abstraction. Low-level implants (in UEFI, Intel ME, or network card Option ROM) operate at protection rings <code>-2</code> / <code>-3</code>. They control the network chip directly, bypassing the Linux network stack entirely — for <code>nftables</code>, these packets simply do not exist. The only way to regain control is to move the filtering point to an external router (OpenWrt/RouterOS) or another hardware filter and verify legitimate OS traffic using dynamic markings (DSCP) or a local WireGuard tunnel whose keys are inaccessible to the hardware malware.</p>
+
+<p>Further efforts will be concentrated on analyzing outbound traffic at the PC-to-router boundary. Comparing traffic dumps will reveal packets originating from the compromised PC and destined for the attacker's command-and-control server that are absent from the local operating system logs. Detection and in-depth structural analysis of such packets will provide precise data on the covert exfiltration mechanisms and attack protocols in use.</p>
+
+<p>In parallel, focus will shift toward obtaining dumps of non-volatile memory from potentially compromised hardware components, with the goal of detecting signatures, artifacts, and signs of malicious code activity within low-level structures.</p>
+
+<p>The task of verifying the compromise vector — differentiating between OS-level and Out-of-Band/Firmware-level attack vectors through sequential elimination of software abstractions — is now complete.</p>
 
 <p style="text-align: center; margin-top: 2rem;">
   <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to table of contents</a>

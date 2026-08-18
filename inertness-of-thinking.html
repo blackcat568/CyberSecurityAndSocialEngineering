@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Rigidity of Thinking in System Administration and Cybersecurity</title>
+  
+  <link rel="icon" type="image/png" href="favicon.png">
+
+  <!-- JSON-LD structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "name": "Rigidity of Thinking in System Administration and Cybersecurity",
+    "url": "https://blackcat568.github.io/CyberSecurityAndSocialEngineering/rigidity-of-thinking.html",
+    "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "isAccessibleForFree": true,
+    "description": "Personal experience of the author: how rigidity of thinking prevented the use of password managers for twenty years. Why people continue to store passwords in notebooks and text files, ignoring obvious solutions. Transition to KeePassXC and a changed approach to security.",
+    "datePublished": "2026-08-18",
+    "dateModified": "<!-- DATE_START -->2026-08-18<!-- DATE_END -->",
+    "author": {
+      "@type": "Person",
+      "name": "blackcat568",
+      "url": "https://github.com/blackcat568"
+    }
+  }
+  </script>
+
+<!-- Meta tags for this page -->
+  <meta name="description" content="Personal experience of the author: how rigidity of thinking prevented the use of password managers for twenty years. Why people continue to store passwords in notebooks and text files, ignoring obvious solutions. Transition to KeePassXC and a changed approach to security.">
+  <meta name="keywords" content="rigidity of thinking, password manager, KeePassXC, password storage, cybersecurity, system administration, password security, digital hygiene, password notebook, 2FA, master password, transition to Linux">
+  <meta name="author" content="blackcat568">
+  <meta name="license" content="CC0 1.0 Universal (Public Domain Dedication)">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta property="og:title" content="Rigidity of Thinking in System Administration and Cybersecurity - CyberSecurity & Social Engineering">
+  <meta property="og:description" content="Personal experience of the author: how rigidity of thinking prevented the use of password managers for twenty years. Why people continue to store passwords in notebooks and text files, ignoring obvious solutions. Transition to KeePassXC and a changed approach to security.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/pictures/password-notebook-2011-2025.jpg">
+  <meta property="og:url" content="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/rigidity-of-thinking.html">
+  
+  <!-- ✅ CANONICAL LINK -->
+  <link rel="canonical" href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/rigidity-of-thinking.html">
+  
+  <!-- ✅ Hreflang (link between language versions) -->
+  <link rel="alternate" hreflang="en" href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/rigidity-of-thinking.html">
+  <link rel="alternate" hreflang="ru" href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/rigidity-of-thinking-rus.html">
+  <link rel="alternate" hreflang="x-default" href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/rigidity-of-thinking.html">
+  
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    body { font-family: "Segoe UI", Tahoma, Verdana, Arial, sans-serif; 
+          line-height:1.45; 
+          color:#111; 
+          max-width:860px; 
+          margin:26px auto; 
+          padding:0 18px; 
+          background:#fff;  
+          text-rendering: optimizeLegibility;}
+      
+    h1 { font-size:2rem; margin-bottom:0.3rem; }
+    
+    h2 {
+      font-size:1.35rem;
+      margin-top:1.8rem;
+      padding-bottom:0.2rem;
+    }
+
+    h3 {
+      font-size:1.15rem;
+      margin-top:1.2rem;
+      font-weight:700;
+    }
+
+    section {
+      margin-bottom: 2rem;
+    }
+
+    .subtitle { color:#555; margin-top:0; margin-bottom:1.0rem; font-size:0.95rem; }
+    hr { border:0; border-top:1px solid #ddd; margin:1.2rem 0; }
+    p { margin:0.8rem 0; }
+    ul, ol { padding-left:1.2rem; margin:0.6rem 0; }
+    li { margin:0.35rem 0; }
+
+    strong em { font-weight:700; font-style:italic; }
+    header { background:#f6f8fa;border-bottom:1px solid #e1e4e8;padding:12px 18px;margin-bottom:18px; }
+    footer { border-top:1px solid #ddd; margin-top:1.8rem; padding-top:1rem; font-size:0.85rem; color:#555; }
+    footer .ref { font-size:0.8rem; color:#666; margin-top:0.3rem; }
+    
+    /* === Semantic content blocks === */
+    .historical-fact {
+      margin: 1.5em 0 1.5em 1rem;
+      padding: 1em 1.2em;
+      background: #f7f7f7;
+      border-left: 4px solid #555;
+      color: #111;
+      font-size: 1em;
+    }
+
+    /* === Styles for historical notes === */
+    .historical-fact {
+      overflow-x: auto;
+      word-wrap: break-word;
+    }
+    
+    .historical-fact p {
+      margin: 0;
+    }
+      
+    .final-thesis {
+      background: linear-gradient(to right, #f7f7f7, transparent);
+      margin-top: 2em;
+      padding-left: 1em;
+      border-left: 5px solid #333;
+      font-size: 1.05em;
+      font-weight: 600;
+     color: #222;
+    }
+    
+    /* ===== Click-to-Zoom Images: BEGIN ===== */
+
+    .zoomed {
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+
+        width: auto !important;
+        height: auto !important;
+
+        max-width: 95vw !important;
+        max-height: 95vh !important;
+
+        z-index: 9999 !important;
+
+        cursor: zoom-out !important;
+    
+        box-shadow: 0 0 30px rgba(0,0,0,.6);
+        background: white;
+    }
+
+    /* ===== Click-to-Zoom Images: END ===== */
+    
+    /* ========== MOBILE ADAPTATION ========== */
+    /* Base font size */
+    html {
+      font-size: 16px;
+    }
+
+    /* Settings for phones (width up to 600px) */
+    @media (max-width: 600px) {
+      html {
+        font-size: 18px;
+      }
+      body {
+        padding: 0 16px;
+      }
+      h1 {
+        font-size: 1.8rem;
+      }
+      h2 {
+        font-size: 1.3rem;
+      }
+      p {
+        margin: 1rem 0;
+      }
+      a {
+        padding: 6px 0;
+        display: inline-block;
+      }
+    }
+    
+  </style>
+</head>
+<body>
+
+<a id="top"></a>
+
+<header>
+  <!-- Main site navigation -->
+  <nav aria-label="Main navigation" style="max-width:860px;margin:0 auto;display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+    <a href="/CyberSecurityAndSocialEngineering/" rel="prev" style="font-weight:700;color:#0366d6;text-decoration:none;font-size:1rem;">
+      ← Back to main page
+    </a>
+    <div style="color:#444;font-size:0.95rem;">
+      CyberSecurity &amp; Social Engineering — main page
+    </div>
+  </nav>
+  
+  <!-- Language navigation -->
+  <nav aria-label="Language alternation" style="max-width:860px;margin:0 auto;display:flex;align-items:center;gap:12px;">
+    <a href="/CyberSecurityAndSocialEngineering/rigidity-of-thinking-rus.html" hreflang="ru" rel="alternate" style="font-weight:700;color:#0366d6;text-decoration:none;font-size:1rem;">
+      ← Русская версия
+    </a>
+  </nav>
+</header>
+
+<main>
+
+<article>
+
+<h1>Rigidity of Thinking in System Administration and Cybersecurity</h1>
+
+<p><i>Or how it took me twenty years to get to a password manager</i></p>
+
+<p>I would like to share my story of how I came to use a password manager. Not only for storing passwords themselves, but also for all critically important information: recovery codes, backup keys, TOTP secrets, account data, key files, and other things whose loss is usually discovered at the most inconvenient moment. And also — about how rigidity of thinking prevented me from taking this, as it later turned out, completely obvious step for almost twenty years.</p>
+
+<h2>We live in the 21st century. But with passwords, it's still the Middle Ages</h2>
+
+<p>Despite the fact that the era of digital technology has long arrived, password storage still often looks both tragicomic and sad.</p>
+
+<p>A typical picture looks something like this:</p>
+
+<ul>
+<li>short and simple passwords are used, which modern cracking tools can guess in seconds or minutes;</li>
+<li>passwords are kept in memory, where they are successfully forgotten precisely when urgent access to an account is needed;</li>
+<li>passwords are written down in notebooks and notepads, which gradually wear out, tear, get dirty, and become practically unreadable;</li>
+<li>passwords are stored in plain text files on the desktop — to the delight of malware and anyone who gains access to the computer.</li>
+</ul>
+
+<p>At the same time, free and reliable password managers have existed for many years. There are hardware security keys (e.g., FIDO2/U2F), biometric unlocking, two-factor authentication. All of this has long ceased to be exotic.</p>
+
+<p>The problem is that a huge number of people simply do not use these tools.</p>
+
+  <hr>
+
+<h2>Why memory no longer works</h2>
+
+<p>Today, password requirements have grown significantly.</p>
+
+<p>For important services, it is recommended to use a unique password of at least 15–16 characters, containing letters of different cases, numbers, and special characters. Even better — to use randomly generated passwords of 20–30 characters, since there is no need for a person to remember them anyway.</p>
+
+<p>But here a logical question arises.</p>
+
+<p>How can you store a hundred such passwords in memory?</p>
+
+<p>The answer is obvious — no way.</p>
+
+<p>It is impossible to remember them.</p>
+
+<p>That is precisely why password managers exist.</p>
+
+<p>They allow you to store all secret data in an encrypted database protected by a single master password. Most modern password managers can:</p>
+
+<ul>
+<li>generate cryptographically strong random passwords;</li>
+<li>automatically clear the clipboard after a set time;</li>
+<li>perform autofill through the official browser extension;</li>
+<li>store not only logins and passwords, but also links, notes, key files, backup recovery codes, and much more.</li>
+</ul>
+
+<p>In effect, the user only needs to remember one master password.</p>
+
+  <hr>
+
+<h2>How I ignored the obvious for twenty years</h2>
+
+<p>My first computer appeared in 2006.</p>
+
+<p>Naturally, the first thing I did was go online.</p>
+
+<p>A friend who had been using a computer for a long time gave me a CD with useful programs and said:</p>
+
+<blockquote>
+<p>— Take a close look. There's a lot of good software there.</p>
+</blockquote>
+
+<p>I opened the disc.</p>
+
+<p>Among the many programs, I saw a folder with the mysterious name «Password Managers».</p>
+
+<p>I looked.</p>
+
+<p>Closed it.</p>
+
+<p>And never returned to it.</p>
+
+<p>A few years later, the disc was lost.</p>
+
+<p>Today it seems to me that the password manager quietly looked after me and sighed heavily.</p>
+
+<p>For the next few years, I continued to use simple short passwords.</p>
+
+<p>Until 2011.</p>
+
+<p>It was then that my accounts with important personal correspondence were hacked.</p>
+
+<p>After the thunder struck and the rooster finally did its job, I finally started using long complex passwords.</p>
+
+<p>True...</p>
+
+<p>...I wrote them down in an ordinary school notebook.</p>
+
+  <hr>
+
+<h2>The paper password manager</h2>
+
+<p>After a few months, the notebook looked as if it had survived several military campaigns.</p>
+
+<p>Old passwords were crossed out.</p>
+
+<p>New ones were written between the lines.</p>
+
+<p>The last entries had to be literally squeezed under the very bottom edge of the page in small handwriting.</p>
+
+<p>Then came my first great technological achievement.</p>
+
+<p>I bought a good notebook with a hard cover.</p>
+
+<p>Now, I thought, civilization had won.</p>
+
+<p>It hadn't.</p>
+
+<p>In 2012, I bought a new system unit.</p>
+
+<p>Along with it, I once again received a collection of useful programs.</p>
+
+<p>And once again I saw the «Password Managers» folder.</p>
+
+<p>And once again I walked past.</p>
+
+<p>The notebook faithfully served for more than ten years.</p>
+
+<p>By the end of its life, it resembled an archaeological artifact:</p>
+
+<figure style="margin: 1.5rem 0; text-align: center;">
+  <img src="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/pictures/password-notebook-2011-2025.jpg"
+       alt="Old password notebook with yellowed and worn pages, numerous corrections and crossed-out entries"
+       width="550"
+       loading="lazy"
+       onclick="this.classList.toggle('zoomed')"
+       style="max-width: 100%; height: auto; border-radius: 4px; border: 1px solid #d0d0c0;">
+  <figcaption style="margin-top: 0.5rem; font-size: 0.85rem; color: #4a4a40;">
+    <strong>Password notebook. 2011–2025.</strong> All data in the photo is no longer valid.
+  </figcaption>
+</figure>
+
+<p>The pages were yellowed, many of them covered in corrections, painted over with correction fluid, some barely bending.</p>
+
+<p>Finding the right password turned into a mini-quest.</p>
+
+  <hr>
+
+<h2>The second great achievement</h2>
+
+<p>In the spring of 2025, I began seriously studying cybersecurity.</p>
+
+<p>The first thing I did...</p>
+
+<p>...was buy a new notebook.</p>
+
+<p>For three evenings in a row, I carefully rewrote all my passwords into it.</p>
+
+<p>Neatly.</p>
+
+<p>Legibly.</p>
+
+<p>But — the same archaism:</p>
+
+<figure style="margin: 1.5rem 0; text-align: center;">
+  <img src="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/pictures/password-notebook-2025-2026.jpg"
+       alt="New password notebook with neat entries"
+       width="550"
+       loading="lazy"
+       onclick="this.classList.toggle('zoomed')"
+       style="max-width: 100%; height: auto; border-radius: 4px; border: 1px solid #d0d0c0;">
+  <figcaption style="margin-top: 0.5rem; font-size: 0.85rem; color: #4a4a40;">
+    <strong>Password notebook. 2025–2026.</strong> All data in the photo is no longer valid.
+  </figcaption>
+</figure>
+
+<p>In parallel, I finally switched from Windows to Debian and finally installed the KeePassXC password manager.</p>
+
+<p>Installed it.</p>
+
+<p>Looked at it.</p>
+
+<p>Closed it.</p>
+
+<p>Didn't start using it.</p>
+
+  <hr>
+
+<h2>The moment of epiphany</h2>
+
+<p>While I was studying cybersecurity, the number of my accounts gradually grew.</p>
+
+<p>At some point, there were 103 of them.</p>
+
+<p>And when the number of entries exceeded a hundred — it finally dawned on me:</p>
+
+<p>If I don't transfer all this to an electronic database, one day I'll just go crazy.</p>
+
+<p>I opened KeePassXC again.</p>
+
+<p>And finally started transferring the data there.</p>
+
+<p>When the work was done, I asked myself only one question.</p>
+
+<p>What the hell?</p>
+
+<p>Why didn't I do this back in 2006?</p>
+
+  <hr>
+
+<h2>What changed after the transition</h2>
+
+<p>After a few weeks of use, it became clear that there was no going back.</p>
+
+<figure style="margin: 1.5rem 0; text-align: center;">
+  <img src="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/pictures/keepassxc-groops-rus.png"
+       alt="KeePassXC main window with passwords organized into groups and subgroups"
+       width="550"
+       loading="lazy"
+       onclick="this.classList.toggle('zoomed')"
+       style="max-width: 100%; height: auto; border-radius: 4px; border: 1px solid #d0d0c0;">
+  <figcaption style="margin-top: 0.5rem; font-size: 0.85rem; color: #4a4a40;">
+    <strong>Passwords organized by groups.</strong> KeePassXC allows creating a hierarchical structure of groups with nested subgroups.
+  </figcaption>
+</figure>
+
+<p>Structured groups.</p>
+
+<p>Tags.</p>
+
+<p>Quick search.</p>
+
+<p>Attachments.</p>
+
+<p>Entry history.</p>
+
+<p>Storage of two-factor authentication backup codes (for restoring access in case of loss, damage, or theft of the device with the authenticator app).</p>
+
+<p>Random password generation.</p>
+
+<p>Automatic database locking after a few minutes of inactivity.</p>
+
+<p>Automatic clipboard clearing.</p>
+
+<p>All these small things together provide a colossal increase in convenience.</p>
+
+<p>And most importantly — it becomes possible to actually use long unique passwords for each site, rather than seeking a compromise between security and keyboard typing convenience.</p>
+
+  <hr>
+
+<h2>Why I personally chose an offline manager</h2>
+
+<p>Personally, I prefer offline managers like KeePassXC.</p>
+
+<p>In this case, the database is completely under my control.</p>
+
+<p>I choose where it is stored, how it is backed up, and how it is protected.</p>
+
+<p>This does not mean that cloud managers are bad. Many of them are built on an end-to-end encryption model and provide a high level of security.</p>
+
+<p>However, for myself, I decided that a local database is a better fit.</p>
+
+<p>The main rule with this approach is to regularly back up the database to external media.</p>
+
+<p>And remember only one thing.</p>
+
+<p>The master password.</p>
+
+<p>It becomes the only key to the entire vault, so it must be long, unique, and truly reliable.</p>
+
+<p>If desired, protection can be strengthened with a key file or a hardware token.</p>
+
+<figure style="margin: 1.5rem 0; text-align: center;">
+  <img src="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/pictures/KeePassXC-key-file-rus.png"
+       alt="KeePassXC login window using a master password and a key file"
+       width="550"
+       loading="lazy"
+       onclick="this.classList.toggle('zoomed')"
+       style="max-width: 100%; height: auto; border-radius: 4px; border: 1px solid #d0d0c0;">
+  <figcaption style="margin-top: 0.5rem; font-size: 0.85rem; color: #4a4a40;">
+    <strong>KeePassXC login using a master password and a key file.</strong>
+  </figcaption>
+</figure>
+
+<p>But that is a completely different story.</p>
+
+  <hr>
+
+<h2>Instead of a conclusion</h2>
+
+<p>The funniest thing about this story is that the technology that saved me a huge amount of time and made working with accounts much more secure was available to me twenty years ago. When I bought my first computer in 2006, password managers were not a new technology — KeePass, for example, had already existed for several years.</p>
+
+<p>I saw this technology.</p>
+
+<p>Three times.</p>
+
+<p>But all three times I decided I didn't need it.</p>
+
+<p>Sometimes the main problem in information security is not the lack of technology at all.</p>
+
+<p>The main problem is rigidity of thinking.</p>
+
+<p>That is, technologies that make work easier, increase security, and provide fundamentally new capabilities exist. They are available. But we either don't know about them, or we know but don't apply them, not understanding their importance and usefulness.</p>
+
+<p>AI, code validators, hardware firewalls and tokens, sandboxes and virtual machines, Linux with its capabilities that are either limited or absent in Windows — all of this is always before us. Just reach out, take it, and apply it.</p>
+
+<p>Why we don't do this, don't study the full range of modern technologies and don't implement them — that is the problem of rigidity of thinking.</p>
+
+<p>Many people seek the root of world problems in politics, economics, philosophy, in anything but where it actually is.</p>
+
+<p>And it lies in the inability to accept modern precise scientific knowledge about the most effective way to solve your problem.</p>
+
+<p>But this is just an example. The fact that in the 21st century I was digging through a worn-out notebook trying to find the right password — no one suffered from that.</p>
+
+<p>But what catastrophes happen because a person did not set a daily limit on withdrawals, transfers and spending in their banking app. Did not separate profiles on the smartphone into a personal one — with friends' numbers, and a banking one — with banking services, switching to it only as needed and immediately logging out and returning to the personal one after completing financial transactions. Did not use a reasonably priced hardware token or a completely free two-factor authentication app for generating six-digit codes. And so on.</p>
+
+<p>I hope my example will help someone not to repeat a twenty-year path, and perhaps even save them from far more dangerous incidents.</p>
+
+<!-- Start of cross-reference block for "Rigidity of Thinking in System Administration and Cybersecurity" -->
+<hr>
+<aside aria-label="Related materials">
+<p>Related pages:</p>
+<ul>
+
+    <li><a href="rigidity-of-expectations-in-threat-analysis.html">Rigidity of Expectations in Threat Analysis</a> — The problem of rigidity of expectations in cybersecurity threat analysis: why an experienced attacker acts in non-standard (non-obvious) ways.</li>
+	  
+    <li><a href="from-science-to-worldview.html">From Science to Worldview: Logic as a Foundation Against Delusion</a> — an essay on rationality, awareness, and the dangers of «intuition without critical grounding».</li>
+    
+    <li><a href="information-and-behavioral-hygiene-for-working-with-a-pc.html">Information and Behavioral Hygiene for Working with a PC</a> — A basic practical guide to digital, behavioral, and information hygiene for personal computer users.</li>
+
+    <li><a href="laws-of-resilience-an-essay-on-system-survival.html">Laws of Resilience: An Essay on System Survival</a> — This essay formulates the laws of system survival: the priority of technology and logistics over ideology, competence over cultural barriers, and management and efficiency over resources and showiness. A text about moving from illusions to the harsh discipline of results.</li>
+    
+    <li><a href="dialectical-law-and-intuitive-insight.html">The Dialectical Law and the Myth of «Intuitive Insight»</a> — philosophical analysis of the nature of inspiration and critical thinking.</li>
+
+    <li><a href="fragmented-giftedness-and-holistic-development.html">Fragmented Talent and Holistic Development</a> — an analysis of fragmented talent: why a hypertrophied talent destroys adaptation and how holistic development forms a resilient personality.</li>
+
+    <li><a href="great-pretenses-of-a-great-dictator.html">The Great Pretenses of a Great Dictator</a> — The article shows how the dictator's lack of self-criticism and narcissism, manifested in the pursuit of pretenses and showiness, undermine real efficiency, destroy technology, pragmatism, and defense capability, leading the system to strategic failure.</li>
+
+    <li><a href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/ecosystem-copy-error.html">Copying a Technological Object Without Building an Ecosystem. The Basic Error of the Authoritarian Approach</a> — An Analysis of the fundamental error of authoritarian structures when copying complex technological objects without building the necessary ecosystem. Using several examples from folklore, business, and military history, it shows why a base object without its environment is either limited in functionality or completely useless.</li>
+
+</ul>
+</aside>
+<!-- End of block -->
+
+<a href="#top" style="display: inline-block; padding: 8px 16px; background: #f5f5f0; border: 1px solid #d0d0c0; border-radius: 4px; text-decoration: none; color: #1a1a1a;">
+  ↑ Back to top
+</a>
+
+</article>
+
+  <footer>
+    <!-- Intent and safety manifesto -->
+    <section aria-label="Content purpose and safety disclaimer">
+      <p style="margin-bottom: 1rem;">The materials on this website are dedicated to the analysis of cyber, social, and psychological security issues, countering totalitarian regimes, destructive sects, and pseudoscientific cults, as well as resisting individual manipulation mechanisms. Special attention is given to psychology, philosophy, and the sustainable development of individuals capable of consciously and effectively confronting these threats.</p>
+      <p style="margin-bottom: 1rem;">The content is distributed freely and is intended exclusively for educational, defensive research, and conscious practical application. The author adheres to the principles of scientific integrity and critical thinking.</p>
+    </section>
+
+    <!-- Metadata and CC0 license -->
+    <p>Author: <strong>blackcat568</strong>. Date of creation: <time datetime="2026-08-18">18.08.2026</time>.</p>
+    <p>License: <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="license noopener external" target="_blank">CC0 1.0 Universal (Public Domain)</a></p>
+  </footer>
+
+
+</main>
+
+</body>
+</html>

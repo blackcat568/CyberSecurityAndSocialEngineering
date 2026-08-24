@@ -435,7 +435,7 @@
                                 <li style="margin-bottom: 0.1rem;"><a href="#config2-software-sysctl" style="text-decoration: none;">2.3.2-C CONFIGURATION 2 Software sysctl</a></li>
                                 <li style="margin-bottom: 0.1rem;"><a href="#config2-software-flatseal" style="text-decoration: none;">2.3.2-D CONFIGURATION 2 Software Flatseal overrides</a></li>
                                 <li style="margin-bottom: 0.1rem;"><a href="#config2-software-opensnitch" style="text-decoration: none;">2.3.2-E CONFIGURATION 2 Software OpenSnitch</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config2-software-other-prigrams" style="text-decoration: none;">2.3.2-F CONFIGURATION 2 Software Other Programs</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config2-software-other-programs" style="text-decoration: none;">2.3.2-F CONFIGURATION 2 Software Other Programs</a></li>
                                 <li style="margin-bottom: 0.1rem;"><a href="#config2-config1-key-changes" style="text-decoration: none;">Key changes in Configuration 2 compared to Configuration 1</a></li>
                             </ul>
                         </li>
@@ -467,23 +467,23 @@
                 </li>
                 <!-- H3 2.5 -->
                 <li style="margin-bottom: 0.1rem;">
-                    <a href="#section2-5" style="text-decoration: none;">2.5 КОНФИГУРАЦИЯ 4</a>
+                    <a href="#section2-5" style="text-decoration: none;">2.5 CONFIGURATION 4</a>
                     <ul style="list-style: none; padding-left: 1.5rem;">
                         <li style="margin-bottom: 0.1rem;">
-							<a href="#section2-5-1" style="text-decoration: none;">2.5.1 КОНФИГУРАЦИЯ 4 Hardware</a>
+							<a href="#section2-5-1" style="text-decoration: none;">2.5.1 CONFIGURATION 4 Hardware</a>
 							<ul style="list-style: none; padding-left: 1.5rem;">
-								<li style="margin-bottom: 0.1rem;"><a href="#config4-hardware-logic" style="text-decoration: none;">2.5.2-A Стратегическая логика Конфигурации 4: пояснить</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config4-hardware-yubikey-5c" style="text-decoration: none;">2.5.2-B Интеграция аппаратного ключа YubiKey 5C в систему</a></li>
+								<li style="margin-bottom: 0.1rem;"><a href="#config4-hardware-logic" style="text-decoration: none;">2.5.2-A Strategic logic of Configuration 4: Hardware</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config4-hardware-yubikey-5c" style="text-decoration: none;">2.5.2-B Integration of YubiKey 5C Hardware Token into the System</a></li>
                             </ul>
                         </li>
                         <li style="margin-bottom: 0.1rem;">
-                            <a href="#section2-5-2" style="text-decoration: none;">2.5.2 КОНФИГУРАЦИЯ 4 Software</a>
+                            <a href="#section2-5-2" style="text-decoration: none;">2.5.2 CONFIGURATION 4 Software</a>
                             <ul style="list-style: none; padding-left: 1.5rem;">
-								<li style="margin-bottom: 0.1rem;"><a href="#config4-software-logic" style="text-decoration: none;">2.5.2-A Стратегическая логика Конфигурации 4</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config4-software-добавить-текст" style="text-decoration: none;">2.5.2-B Отчет об установке инструментов</a></li>
+								<li style="margin-bottom: 0.1rem;"><a href="#config4-software-logic" style="text-decoration: none;">2.5.2-A СStrategic logic of Configuration 4: Software</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config4-software-tools-report" style="text-decoration: none;">2.5.2-B Tool Installation Report</a></li>
                             </ul>
                         </li>
-                        <li style="margin-bottom: 0.1rem;"><a href="#config4-experiment-results" style="text-decoration: none;">Наблюдаем за ходом эксперимента с конфигурацией 4</a></li>
+                        <li style="margin-bottom: 0.1rem;"><a href="#config4-experiment-results" style="text-decoration: none;">Observing the progress of the Configuration 4 experiment</a></li>
                     </ul>
                 </li>
             </ul>
@@ -4616,6 +4616,476 @@ if __name__ == "__main__":
 </section> 
 
 <!-- Конец подсекции H3 2.4-->
+
+<hr>
+
+<h3 id="section2-5">2.5 CONFIGURATION 4</h3>
+
+<p><strong>Date Created:</strong> 19.08.2026</p>
+
+<!-- Subsection H4 2.5.1 -->
+<section id="config4-hardware" aria-label="2.5.1 CONFIGURATION 4 Hardware">
+
+<h4 id="section2-5-1">2.5.1 CONFIGURATION 4 Hardware</h4>
+
+<!-- Subsection H5 2.5.1-A -->
+<section id="config4-hardware-logic" aria-label="2.5.1-A Strategic logic of Configuration 4: Add text">
+
+<h5>2.5.2-A Strategic Logic of Configuration 4</h5>
+
+<p class="chapter-date">August 21, 2026</p>
+
+<p>Software-oriented protection measures, including strict outbound traffic filtering at the <code>nftables</code> level (filtering by UID, interfaces, ports, and a whitelist of allowed domains), have proven insufficient in stopping the attack. This allows us to rule out, with a high degree of probability, a data exfiltration channel at the operating system level and indicates that the attack vector extends beyond user and kernel space.</p>
+
+<div style="border-left: 6px solid #dc3545; background-color: #fff3cd; padding: 16px 20px; margin: 24px 0; border-radius: 6px; color: #856404; font-weight: 500; box-shadow: 0 2px 6px rgba(0,0,0,0.08);">
+  <p style="margin: 0; font-size: 1.05rem;">
+    <span style="font-size: 1.4rem; margin-right: 10px;">⚠️</span>
+    <strong>Important Note:</strong> in a targeted APT attack, a highly skilled adversary may employ methods to bypass <code>nftables</code> filtering, including but not limited to: exploiting kernel vulnerabilities, manipulating routing at Layer 2, injecting malicious modules operating outside the Netfilter stack, using legitimate communication channels to disguise C&amp;C traffic, as well as exploiting firmware vulnerabilities in various system components (e.g., UEFI, Intel ME, network controllers). Therefore, software-based firewalls cannot be considered a sufficient security measure in high-threat scenarios and must be used exclusively in conjunction with network and hardware-based controls.
+  </p>
+</div>
+
+<p>Thus, the current phase of the investigation shifts toward validating the hypothesis of compromise at the hardware level (<i>firmware/hardware-level compromise</i>).</p>
+
+<p><strong>Rationale for the Hardware-Level Attack Hypothesis</strong><br>
+
+Suspicions of a low-level implant arose in the early stages of analysis. Specifically, a full reinstallation of the operating system (Windows 7) did not eliminate signs of surveillance, indicating persistent malicious presence independent of the state of disk partitions.</p>
+
+<p>In November 2025, during a discussion on a professional IT forum, experts also confirmed a high probability of a hardware-level attack vector. However, at that time, there was no direct evidence to distinguish a software implant from a hardware or combined attack.</p>
+
+<p><strong>Rationale for Systematic Elimination of the Software Component</strong><br>
+The primary objective was to confirm that the software layer is not the sole or primary exfiltration channel. This was necessary in order to:</p>
+<ul>
+  <li>avoid wasting resources on countermeasures against a non-existent hardware threat, if the attack is purely software-based;</li>
+  <li>justify the procurement of specialized equipment for subsequent analysis.</li>
+</ul>
+
+<p>To this end, a series of experiments were conducted, including traffic isolation using <code>nftables</code> with a strict <code>DROP</code> policy for all unauthorized connections. This configuration is guaranteed to block the callback channel of malware operating at the system level, provided the filtering is correctly configured.</p>
+
+<p><strong>Verification Results and Current Hypothesis</strong><br>
+Despite the application of these measures, the attack continued. This fact was established through active monitoring and Social Engineering techniques (provoking the adversary to repeat malicious activity). Based on this, one of two hypotheses is formed:</p>
+<ul>
+  <li>The attack is implemented <strong>exclusively at the hardware level</strong> — the malware resides outside the controlled OS (e.g., in UEFI, Intel ME, network card, or another device).</li>
+  <li>The attack is <strong>combined</strong> — the software component was neutralized by hardening measures, but the hardware implant continues to operate independently.</li>
+</ul>
+
+<p>The second scenario appears more likely, as it explains both the initial compromise and the persistence of the threat after the application of software-based defenses.</p>
+
+<p><strong>Next Phase Action Plan</strong><br>
+
+To actively investigate the hardware component of the attack and subsequently block exfiltration channels, the following steps are planned:</p>
+<ol>
+  <li>Deployment of a hardware authentication token (YubiKey 5C, firmware 5.4.3) — to strengthen access control and protect critical operations.</li>
+  <li>Acquisition of network equipment supporting custom firmware (OpenWrt / nftables) — to implement a full-featured firewall at the network perimeter. Preference is given to solutions that allow deep traffic analysis and control at L3/L4, with the capability to compare firmware versions for unauthorized modifications.</li>
+  <li>Deployment of additional hardware security measures, information about which is temporarily withheld for operational security reasons.</li>
+</ol>
+
+<p>Additionally, given that the adversary is monitoring the desktop and capturing the graphical component of the interface, a decision was made to purchase a power strip with five individually switched outlets. This allows, when working with sensitive information (e.g., when displaying, changing, or urgently entering passwords), to quickly cut power to the optical modem, Wi-Fi router, or both devices simultaneously, thereby physically preventing the adversary from remotely observing the graphical interface during critical moments.</p>
+
+<p>This solution is temporary and backup in nature, and does not replace the need to fully remediate the threat at the hardware or network level, but it does buy time to carry out defensive measures under active adversary engagement.</p>
+
+<p><strong>Additional Hypotheses and Verification Priorities</strong><br>
+
+The possibility of a 0-day vulnerability or an embedded exploit introduced during the software development phase and covertly cooperating with certain hacker groups is not ruled out. However, given that the system in use is an outdated budget-class unit, priority in the investigation is given to validating the hardware-level attack hypothesis as the most likely for this class of device.</p>
+
+<p><strong>Strategic Conclusion</strong><br>
+
+The use of a router with custom firmware and advanced network filtering capabilities will not only block unwanted traffic but also ensure integrity monitoring of the device itself. In the event of an attempted remote firmware modification, it will be possible to perform a comparative analysis with the reference version and identify signs of malicious code injection.</p>
+
+<p>This investigation confirms that the target is the subject of a sophisticated, targeted combined attack of high complexity, carried out by professional threat actors (APT groups). The work on identifying, analyzing, and blocking exfiltration channels continues, moving to a new technological level.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to Contents</a>
+</p>
+
+</section> 
+
+<!-- End of H5 subsection 2.5.1-A -->
+
+<hr>
+
+<!-- H5 Subsection 2.5.1-B -->
+<section id="config4-hardware-yubikey-5c" aria-label="2.5.1-B CONFIGURATION 4 Integration of YubiKey 5C Hardware Token into the System">
+
+<h5>2.5.1-B Integration of the YubiKey 5C Hardware Token into the System</h5>
+
+<p><strong>Date:</strong> August 19, 2026<br>
+<strong>Objective:</strong> Strengthening the system by implementing a hardware authentication factor to protect the password database, system login, and account access.</p>
+
+<strong><i> Procurement of the Hardware Security Key </i></strong>
+
+<p>A <strong>YubiKey 5C NFC</strong> with firmware <strong>5.4.3</strong> (USB-C) was purchased. Official Yubico documentation confirms that the 5C model with firmware version 5.4.3 fully supports the required protocols: FIDO2/WebAuthn (for passwordless login), Challenge-Response (for KeePassXC), FIDO U2F (for two-factor authentication), as well as PIV and OpenPGP. The key has no battery, connects via USB-C and includes an NFC chip for contactless interaction with mobile devices.</p>
+
+<figure style="margin: 1.5rem 0; text-align: center;">
+  <img src="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/pictures/Yubi-Key-5C-photo.jpg"
+       alt="YubiKey 5C NFC hardware security key with firmware 5.4.3"
+       width="500"
+       loading="lazy"
+       style="max-width: 100%; height: auto; border-radius: 4px; border: 1px solid #d0d0c0;">
+  <figcaption style="margin-top: 0.5rem; font-size: 0.85rem; color: #4a4a40;">
+    <strong>YubiKey 5C NFC</strong> — hardware security key with firmware <strong>5.4.3</strong> (August 2026). Supports FIDO2/WebAuthn, U2F, Challenge-Response, PIV and OpenPGP.
+  </figcaption>
+</figure>
+
+<figure style="margin: 1.5rem 0; text-align: center;">
+  <img src="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/pictures/Yubi-Key-Manager-Home.png"
+       alt="YubiKey Manager home page showing connected YubiKey 5C information"
+       width="500"
+       loading="lazy"
+       style="max-width: 100%; height: auto; border-radius: 4px; border: 1px solid #d0d0c0;">
+  <figcaption style="margin-top: 0.5rem; font-size: 0.85rem; color: #4a4a40;">
+    <strong>YubiKey Manager</strong> — home page of the utility for configuring the hardware key. The screenshot shows information about the connected <strong>YubiKey 5C</strong> with firmware <strong>5.4.3</strong>: serial number and firmware version.
+  </figcaption>
+</figure>
+
+<p><strong>Rationale for Selection:</strong> The model with firmware 5.4.3 is a current, mass-produced product that remains on the market alongside newer versions. For personal use within the scope of this experiment and for the listed tasks, this version is optimal in terms of price/functionality ratio.</p>
+
+<hr>
+
+<strong><i> Installation of Required Software Components (Debian 13, Trixie) </i></strong>
+
+<p>On Debian 13 (Trixie), with kernel 6.12.74 and GNOME 48.7 / Wayland, the following packages, current as of August 2026, were installed:</p>
+
+<ul>
+<li><code>yubikey-manager</code> — main utility for configuring and managing the key.</li>
+<li><code>yubikey-personalization</code> — tools for working with OTP slots.</li>
+<li><code>libpam-yubico</code> — PAM module for integrating YubiKey with the system authentication framework.</li>
+<li><code>libpam-u2f</code> and <code>pamu2fcfg</code> — for configuring passwordless login via FIDO U2F in the system.</li>
+</ul>
+
+<p><em>Note:</em></p>
+<ul>
+  <li>Key applications (e.g., KeePassXC, LibreWolf) were installed via Flatpak for isolation. To use the USB-connected hardware token, these applications must be granted USB access through Flatseal. If this does not resolve the issue, grant access to all devices.</li>
+  <li>If, after disconnecting the hardware token and connecting another USB device, then disconnecting it and reconnecting the token, applications (e.g., KeePassXC) do not detect the YubiKey — the issue lies in the fact that the system service <code>pcscd</code>, responsible for smart card and cryptographic token interaction, does not always correctly handle the reconnection event. In this case, the service must be forcibly restarted:</li>
+</ul>
+<pre><code>sudo systemctl restart pcscd</code></pre>
+
+<hr>
+
+<strong><i> Token Configuration on the Key </i></strong>
+
+<p>In the <code>YubiKey Manager</code> utility, <strong>Slot 2</strong> (OTP) was configured for use in <strong>Challenge-Response</strong> mode:</p>
+
+<ul>
+<li>A new secret key was generated.</li>
+<li>For convenience, the <strong>"Require touch"</strong> option was <strong>disabled</strong>. This allows the key to be used without physical contact when opening the database, which was determined to be a more convenient scenario.</li>
+</ul>
+
+<p>This slot is used to establish a cryptographic link between the YubiKey and KeePassXC, serving as a second factor.</p>
+
+<hr>
+
+<strong><i> Configuring KeePassXC: Hardware Key as Second Factor </i></strong>
+
+<p>The previously used key file was replaced by hardware token-based access to the password database:</p>
+
+<ol>
+<li>In the database security settings (<code>Database → Database Security</code>), <strong>"YubiKey Challenge-Response"</strong> protection was added.</li>
+<li>The database now requires, for unlocking, the simultaneous provision of:
+<ul>
+<li><strong>Master password</strong>.</li>
+<li><strong>YubiKey hardware key</strong> (connected to the computer).</li>
+</ul></li>
+</ol>
+
+<p><strong>Result:</strong> The key file was removed as an outdated and less secure method. Database security is now based on a combination of "something you know" (password) and "something you have" (YubiKey).</p>
+
+<p><strong>Current Issue:</strong> When unlocking the KeePassXC database (Flatpak), a brief "lag" is observed. This issue is related to the way the <code>pam_u2f</code> module works and is known in the community as a multithreading bug. The workaround used is the "minimize-restore" window method, which bypasses the freeze without loss of functionality.</p>
+
+<hr>
+
+<strong><i> Configuring Passwordless System Login (PAM) </i></strong>
+
+<p><strong>Selective</strong> (password <em>OR</em> YubiKey) GNOME (GDM) login was configured for users <code>user</code> and <code>user-sl</code>. This allows logging in and unlocking the screen without entering a password, simply by touching the key's sensor.</p>
+
+<p><strong>Steps Performed:</strong></p>
+
+<ol>
+<li><p><strong>Key Registration for Users:</strong><br>
+For each user, a file <code>~/.config/Yubico/u2f_keys</code> was created in their home directory. This was done by switching to user <code>user-sl</code>, then to <code>user</code>, and executing the command:</p>
+<pre><code>pamu2fcfg > ~/.config/Yubico/u2f_keys</code></pre>
+<p>The key was successfully registered for both users, confirmed by the absence of errors. A FIDO2 PIN was also set for additional protection.</p></li>
+
+<li><p><strong>PAM (Pluggable Authentication Modules) Configuration:</strong><br>
+In the login manager configuration file <code>/etc/pam.d/gdm-password</code>, before the line <code>@include common-auth</code>, the following line was added:</p>
+<pre><code>auth sufficient pam_u2f.so nouserok cue</code></pre>
+<p>The keyword <code>sufficient</code> in this line means that if authentication via YubiKey is successful, login will be granted. If the key is not connected or the user does not touch it, the system will fall back to the standard authentication method (<code>common-auth</code>), i.e., prompt for the regular password.</p></li>
+</ol>
+
+<p><strong>Result:</strong> The system now supports two equivalent login methods:</p>
+
+<ul>
+<li><strong>Using YubiKey:</strong> Insert the key into a USB port and touch its gold sensor on the login screen.</li>
+<li><strong>Using Password:</strong> Enter your regular password.</li>
+</ul>
+
+<p>This provides both a high level of security and flexibility of access, especially in situations where the key is not at hand.</p>
+
+<hr>
+
+<strong><i> Triple Redundancy Access System </i></strong>
+
+<p>Following the integration of the hardware token, a legitimate question arose: what if the key fails or is lost? Without it, access to the password database and many accounts would be lost. To avoid this, a redundancy system was implemented, built on three independent layers.</p>
+
+<p><strong>Layer 1: Backup Codes</strong><br>
+
+During the setup of two-factor authentication on each service (Google, Proton, GitHub), backup codes were generated and saved. They serve as the "last line of defense" and allow access to the account even if other methods are unavailable. All these codes are stored encrypted in the <strong>KeePassXC</strong> database.</p>
+
+<p><strong>Layer 2: TOTP Authenticator on Smartphone</strong><br>
+
+<strong>Proton Authenticator</strong> (or any other TOTP application) is installed on the smartphone. It generates six-digit codes that change every 30 seconds. This provides mobile access to accounts in cases where the hardware key is unavailable. TOTP is a convenient backup option that works even without an active internet connection.</p>
+
+<p><strong>Layer 3: YubiKey Hardware Token</strong><br>
+
+The primary and most phishing-resistant method. It is used as a second factor for logging into the Debian system, unlocking the KeePassXC database, and for authenticating to web services. By design, this key permanently remains at home, reducing the risk of loss.</p>
+
+<p><strong>Additional Redundancy for KeePassXC</strong></p>
+
+<p>For the password database, a separate backup plan is in place in case the primary YubiKey breaks:</p>
+<ol>
+  <li><strong>Current Solution:</strong> The password database (<code>*.kdbx</code>) was imported into the <strong>Bitwarden</strong> password manager. This ensures backup access to passwords via a cloud service.</li>
+  <li><strong>Planned:</strong> A <strong>second YubiKey hardware token</strong> (identical model) will be purchased in the near future and configured as a full duplicate of the first. This will allow both keys to be used for Challenge-Response in KeePassXC, ensuring uninterrupted access to the database even if one key is lost or damaged.</li>
+</ol>
+
+<p><strong>How It Works Together:</strong><br>
+
+This system is designed so that the failure of any single component does not lead to loss of access:</p>
+<ul>
+  <li><strong>Loss of Phone:</strong> Access is provided via YubiKey or backup codes.</li>
+  <li><strong>Breakage or Loss of YubiKey:</strong> Access is provided via TOTP from the phone or backup codes.</li>
+  <li><strong>Loss of Backup Codes:</strong> Access can be recovered via TOTP or YubiKey.</li>
+</ul>
+
+<p>Thus, a balance is achieved between high security and system reliability, where no single device is critical to maintaining access.</p>
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 650" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#555"/>
+    </marker>
+    <marker id="arrowhead-start" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto-start-reverse">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#555"/>
+    </marker>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+
+  <!-- Header -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1a1a">Triple Redundancy Access System</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#555">Failure of any single component does not result in loss of access</text>
+
+  <!-- ===== BLOCK 1: Backup Codes (stored in KeePassXC) ===== -->
+  <rect x="50" y="85" width="220" height="120" rx="10" fill="#e3f2fd" stroke="#1565c0" stroke-width="2" filter="url(#shadow)"/>
+  <text x="160" y="115" text-anchor="middle" font-size="16" font-weight="bold" fill="#0d47a1">🔑 Backup Codes</text>
+  <text x="160" y="140" text-anchor="middle" font-size="12" fill="#333">One-time recovery codes</text>
+  <text x="160" y="158" text-anchor="middle" font-size="12" fill="#333">for Google, Proton, GitHub</text>
+  <text x="160" y="180" text-anchor="middle" font-size="11" fill="#555">Stored in <tspan font-weight="bold">KeePassXC</tspan></text>
+
+  <!-- ===== BLOCK 2: TOTP on smartphone (Proton Authenticator) ===== -->
+  <rect x="340" y="85" width="220" height="120" rx="10" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2" filter="url(#shadow)"/>
+  <text x="450" y="115" text-anchor="middle" font-size="16" font-weight="bold" fill="#1b5e20">📱 TOTP Authenticator</text>
+  <text x="450" y="140" text-anchor="middle" font-size="12" fill="#333">Proton Authenticator</text>
+  <text x="450" y="158" text-anchor="middle" font-size="12" fill="#333">6-digit codes</text>
+  <text x="450" y="176" text-anchor="middle" font-size="12" fill="#333">(refresh every 30 s)</text>
+  <text x="450" y="194" text-anchor="middle" font-size="11" fill="#555">Works without internet</text>
+
+  <!-- ===== BLOCK 3: YubiKey Hardware Token ===== -->
+  <rect x="630" y="85" width="220" height="120" rx="10" fill="#fff3e0" stroke="#e65100" stroke-width="2" filter="url(#shadow)"/>
+  <text x="740" y="115" text-anchor="middle" font-size="16" font-weight="bold" fill="#bf360c">🔐 YubiKey 5C</text>
+  <text x="740" y="140" text-anchor="middle" font-size="12" fill="#333">Hardware security token</text>
+  <text x="740" y="158" text-anchor="middle" font-size="12" fill="#333">Tap-to-login (FIDO2)</text>
+  <text x="740" y="180" text-anchor="middle" font-size="11" fill="#555">Always stays at home</text>
+
+  <!-- Arrows: Layer 1 → Layer 2 → Layer 3 (connections) -->
+  <line x1="290" y1="145" x2="340" y2="145" stroke="#555" stroke-width="2" marker-start="url(#arrowhead-start)" marker-end="url(#arrowhead)"/>
+  <line x1="580" y1="145" x2="630" y2="145" stroke="#555" stroke-width="2" marker-start="url(#arrowhead-start)" marker-end="url(#arrowhead)"/>
+
+  <!-- ===== BLOCK: KeePassXC (additional redundancy) ===== -->
+  <rect x="50" y="250" width="800" height="90" rx="10" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2" filter="url(#shadow)"/>
+  <text x="450" y="282" text-anchor="middle" font-size="16" font-weight="bold" fill="#4a148c">🗄️ Additional Redundancy for KeePassXC Database</text>
+  <text x="230" y="312" text-anchor="middle" font-size="13" fill="#333">✅ Current: import into <tspan font-weight="bold">Bitwarden</tspan> (cloud access)</text>
+  <text x="630" y="312" text-anchor="middle" font-size="13" fill="#333">🔄 Planned: <tspan font-weight="bold">second YubiKey</tspan> as duplicate for Challenge-Response</text>
+
+  <!-- ===== Failure Schema: three pillars ===== -->
+  <rect x="50" y="380" width="800" height="230" rx="10" fill="#fafafa" stroke="#888" stroke-width="1" filter="url(#shadow)"/>
+  <text x="450" y="412" text-anchor="middle" font-size="16" font-weight="bold" fill="#1a1a1a">⚡ How the System Handles Component Failure</text>
+
+  <!-- Column "Loss of Phone" -->
+  <rect x="80" y="440" width="220" height="70" rx="8" fill="#ffebee" stroke="#c62828" stroke-width="1.5"/>
+  <text x="190" y="467" text-anchor="middle" font-size="14" font-weight="bold" fill="#b71c1c">📱 Loss of Phone</text>
+  <text x="190" y="488" text-anchor="middle" font-size="12" fill="#555">→ YubiKey or backup codes</text>
+
+  <!-- Column "YubiKey Failure" -->
+  <rect x="340" y="440" width="220" height="70" rx="8" fill="#fff8e1" stroke="#f57f17" stroke-width="1.5"/>
+  <text x="450" y="467" text-anchor="middle" font-size="14" font-weight="bold" fill="#e65100">🔐 YubiKey Failure</text>
+  <text x="450" y="488" text-anchor="middle" font-size="12" fill="#555">→ TOTP from phone</text>
+  <text x="450" y="504" text-anchor="middle" font-size="12" fill="#555">or backup codes</text>
+
+  <!-- Column "Loss of Backup Codes" -->
+  <rect x="600" y="440" width="220" height="70" rx="8" fill="#e8eaf6" stroke="#283593" stroke-width="1.5"/>
+  <text x="710" y="467" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a237e">📄 Loss of Backup Codes</text>
+  <text x="710" y="488" text-anchor="middle" font-size="12" fill="#555">→ TOTP or YubiKey</text>
+
+  <!-- Final arrow downward -->
+  <line x1="190" y1="510" x2="190" y2="535" stroke="#888" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="450" y1="510" x2="450" y2="535" stroke="#888" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="710" y1="510" x2="710" y2="535" stroke="#888" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Result -->
+  <rect x="165" y="535" width="570" height="55" rx="25" fill="#1a1a1a" filter="url(#shadow)"/>
+  <text x="450" y="558" text-anchor="middle" font-size="15" font-weight="bold" fill="#fff">✅ Access Preserved. No single device is critical.</text>
+  <text x="450" y="578" text-anchor="middle" font-size="12" fill="#ccc">Balance between security and reliability</text>
+
+  <!-- Legend -->
+  <rect x="50" y="620" width="12" height="12" fill="#e3f2fd" stroke="#1565c0" stroke-width="1"/>
+  <text x="68" y="631" font-size="11" fill="#333">Backup Codes</text>
+  <rect x="170" y="620" width="12" height="12" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1"/>
+  <text x="188" y="631" font-size="11" fill="#333">TOTP</text>
+  <rect x="260" y="620" width="12" height="12" fill="#fff3e0" stroke="#e65100" stroke-width="1"/>
+  <text x="278" y="631" font-size="11" fill="#333">YubiKey</text>
+  <rect x="370" y="620" width="12" height="12" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="1"/>
+  <text x="388" y="631" font-size="11" fill="#333">KeePassXC / Bitwarden</text>
+</svg>
+
+<hr>
+
+<strong><i> Final Conclusion </i></strong>
+
+<p>The system configuration has been supplemented with a reliable two-factor hardware key. YubiKey integration enabled the following:</p>
+
+<ul>
+<li>Strengthened password database protection by replacing the key file with a hardware token.</li>
+<li>Significantly simplified and accelerated system login and screen unlocking.</li>
+<li>Introduced an authentication method resistant to phishing attacks, consistent with the "attack vector coverage" logic described in the article.</li>
+</ul>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to Contents</a>
+</p>
+
+</section> 
+
+<!-- End of H5 subsection 2.5.1-B -->
+
+</section>
+
+<!-- End of H4 subsection 2.5.1 -->
+
+<hr>
+
+<!-- H4 Subsection 2.5.2 -->
+<section id="config4-software" aria-label="2.5.2 CONFIGURATION 4 Software">
+  
+<h4 id="section2-5-2">2.5.2 CONFIGURATION 4 Software</h4>
+
+<hr>
+
+<!-- H5 Subsection 2.5.2-A -->
+<section id="config4-software-logic" aria-label="2.5.2-A Strategic logic of Configuration 4: Add text">
+
+<h5>2.5.2-A Strategic Logic of Configuration 4: Add text</h5>
+
+<p><strong>Transition to the Next Phase</strong><br>
+
+Since the software-based protection capabilities at the host level have been exhausted, focus shifts to software-based protection measures at the network level, as well as to hardware component analysis — firmware, RAM, and other low-level system elements.</p>
+
+<p>In parallel, the use of advanced adversary behavior analysis tools from the Kali Linux, Black Arch Linux, and other specialized distributions is planned. Some of the tools and methods used in the course of further investigation will not be disclosed in the text for strategic reasons — either mentioned only in general terms, with final conclusions based on their results provided.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to Contents</a>
+</p>
+
+</section> 
+
+<!-- End of H5 subsection 2.5.2-A -->
+
+<hr>
+
+<!-- H5 Subsection 2.5.2-B -->
+<section id="config4-software-tools-report" aria-label="2.5.2-B CONFIGURATION 4 Tool Installation Report">
+
+<h5>2.5.2-B Tool Installation Report</h5>
+
+<p><strong>Installation Date:</strong> 2026-08-22</p>
+
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+    <thead>
+        <tr style="background-color: #f2f2f2;">
+            <th>Tool</th>
+            <th>Purpose</th>
+            <th>Key Capabilities</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Nmap</strong></td>
+            <td>Network scanner and inventory tool</td>
+            <td>Device discovery, open port detection, OS fingerprinting.</td>
+        </tr>
+        <tr>
+            <td><strong>Wireshark</strong></td>
+            <td>Deep network traffic analyzer</td>
+            <td>Real-time packet capture and interactive analysis.</td>
+        </tr>
+        <tr>
+            <td><strong>netsniff-ng</strong></td>
+            <td>High-performance packet processing toolkit</td>
+            <td>Zero-copy traffic capture, packet generation, network statistics.</td>
+        </tr>
+        <tr>
+            <td><strong>Binwalk</strong></td>
+            <td>Firmware analyzer and data extractor</td>
+            <td>Search for embedded filesystems and hidden data in binary images.</td>
+        </tr>
+        <tr>
+            <td><strong>Radare2</strong></td>
+            <td>Reverse engineering framework</td>
+            <td>Disassembly, debugging, binary file analysis.</td>
+        </tr>
+        <tr>
+            <td><strong>Zeek (Bro)</strong></td>
+            <td>Powerful network traffic analyzer</td>
+            <td>Transforms network traffic into structured event logs for security analysis.</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Brief Summary</h3>
+<p>All listed tools are installed on the system and ready for use. They provide a complete analysis cycle: from network scanning and traffic interception to deep reverse engineering of suspicious files.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to Contents</a>
+</p>
+
+</section> 
+
+<!-- End of H5 subsection 2.4.2-B -->
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — 2.4.2 Configuration 4 Software</summary>
+  <ul>
+    <li></li>
+  </ul>
+</details>
+
+</section> 
+
+<!-- End of H4 subsection 2.5.2 -->
+
+<hr>
+
+<!-- H4 Subsection 2.5.3 -->
+<section id="config4-experiment-results" aria-label="2.5.3 Observing the progress of the Configuration 4 experiment">
+
+<h4>Observing the progress of the Configuration 4 experiment</h4>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to Contents</a>
+</p>
+
+</section> 
+
+<!-- End of H4 subsection 2.5.3 -->
 
 <details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
   <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Hardening Chronicle and Attacks</summary>

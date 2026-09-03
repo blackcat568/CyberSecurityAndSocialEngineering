@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "A real-world chronicle of defending against a targeted attack: documenting vulnerabilities, configurations, responses, and system hardening. From zero security to resilient configurations. Covers Debian 12 & 13, nftables, AppArmor, OpenSnitch, Flatpak, USBGuard, sysctl. For cybersecurity and InfoSec professionals.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-08-26<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-09-03<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -387,7 +387,7 @@
 
 <div class="alert" style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 2rem 0;">
   <strong style="color: #856404;">⚠️ Notice!</strong>
-  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-08-26<!-- DATE_END --></span>
+  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-09-03<!-- DATE_END --></span>
 </div>
 
 <!-- КРУПНАЯ ГЛАВА H2 0- Оглавление -->
@@ -5047,10 +5047,50 @@ Since the software-based protection capabilities at the host level have been exh
             <td>Powerful network traffic analyzer</td>
             <td>Transforms network traffic into structured event logs for security analysis.</td>
         </tr>
+        <tr>
+            <td><strong>Suricata (Docker)</strong></td>
+            <td>High-performance intrusion detection system (IDS) with deep packet inspection (DPI) support.</td>
+            <td>
+                <p>Installation was performed via Docker using the <code>jasonish/suricata:6.0</code> image. The container is running in <code>--network host</code> mode, which provides full access to the host's network stack and allows traffic capture from the physical interface <code>enp0s7</code> as if Suricata were installed directly on the system.</p>
+                <p><strong>Installation and startup:</strong></p>
+                <pre><code>sudo docker pull jasonish/suricata:6.0
+sudo docker run -d \
+  --name suricata \
+  --restart=unless-stopped \
+  --network host \
+  --cap-add NET_RAW \
+  --cap-add NET_ADMIN \
+  --cap-add SYS_NICE \
+  -v /var/log/suricata:/var/log/suricata \
+  jasonish/suricata:6.0 \
+  -i enp0s7</code></pre>
+                <p>Version <strong>7.x and above</strong> is incompatible with the processor in use (AMD Athlon II X2 220) due to the <code>x86-64-v2</code> instruction set requirement, so the stable version <strong>6.0.20</strong> was selected, which works fully on this hardware.</p>
+                <p>Additional capabilities <code>NET_RAW</code>, <code>NET_ADMIN</code> and <code>SYS_NICE</code> were granted to the container for raw packet capture, network configuration management and engine performance optimization. Analysis logs are stored in the <code>/var/log/suricata</code> directory on the host system.</p>
+            </td>
+        </tr>
+
+        <tr>
+            <td><strong>OpenVAS (Docker)</strong></td>
+            <td>Open-source vulnerability scanner (Greenbone Vulnerability Management).</td>
+            <td>
+                <p>Installation was performed via Docker using the <code>immauss/openvas</code> image. The container is running in <code>--network host</code> mode, which allows the scanner to directly interact with the host's network for comprehensive vulnerability scanning.</p>
+                <p><strong>Installation and startup:</strong></p>
+                <pre><code>sudo docker run -d \
+  --name openvas \
+  --restart=unless-stopped \
+  --network host \
+  -e PASSWORD=admin \
+  immauss/openvas</code></pre>
+                <p>Using <code>--network host</code> is critical for proper OpenVAS operation, as scanning requires direct network access to send requests and receive responses from target hosts, bypassing Docker bridge isolation.</p>
+                <p>After container startup, OpenVAS automatically loads the latest vulnerability databases, which may take a considerable amount of time on the first run. The web interface is available at <code>https://localhost</code> (in my case <code>http://192.168.0.4:9392</code>) with the password specified in the <code>PASSWORD</code> environment variable.</p>
+            </td>
+        </tr>
     </tbody>
 </table>
 
-<h3>Brief Summary</h3>
+<p><strong>Important:</strong> After installation, verify that system security mechanisms (including AppArmor, SELinux, as well as kernel and network stack parameters) do not interfere with the operation of the installed components. If any blocking is detected, adjust the relevant settings to ensure the correct functioning of the analysis tools.</p>
+
+<p>Brief Summary</p>
 <p>All listed tools are installed on the system and ready for use. They provide a complete analysis cycle: from network scanning and traffic interception to deep reverse engineering of suspicious files.</p>
 
 <p style="text-align: center; margin-top: 2rem;">

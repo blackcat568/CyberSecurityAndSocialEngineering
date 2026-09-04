@@ -5080,6 +5080,7 @@ sudo docker run -d \
   --restart=unless-stopped \
   --network host \
   -e PASSWORD=admin \
+  -e PGVER=15 \
   immauss/openvas</code></pre>
                 <p>Using <code>--network host</code> is critical for proper OpenVAS operation, as scanning requires direct network access to send requests and receive responses from target hosts, bypassing Docker bridge isolation.</p>
                 <p>After container startup, OpenVAS automatically loads the latest vulnerability databases, which may take a considerable amount of time on the first run. The web interface is available at <code>https://localhost</code> (in my case <code>http://192.168.0.4:9392</code>) with the password specified in the <code>PASSWORD</code> environment variable.</p>

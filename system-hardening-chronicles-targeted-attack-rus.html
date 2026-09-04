@@ -5084,11 +5084,12 @@ sudo docker run -d \
             <td>
                 <p>Установка выполнена через Docker с использованием образа <code>immauss/openvas</code>. Контейнер запущен в режиме <code>--network host</code>, что позволяет сканеру напрямую взаимодействовать с сетью хоста для полного сканирования уязвимостей.</p>
                 <p><strong>Установка и запуск:</strong></p>
-                <pre><code>sudo docker run -d \
+                <pre><code>ssudo docker run -d \
   --name openvas \
   --restart=unless-stopped \
   --network host \
   -e PASSWORD=admin \
+  -e PGVER=15 \
   immauss/openvas</code></pre>
                 <p>Использование <code>--network host</code> критически важно для правильной работы OpenVAS, так как сканирование требует прямого доступа к сети для отправки запросов и получения ответов от целевых хостов, минуя изоляцию Docker-моста.</p>
                 <p>После запуска контейнера OpenVAS автоматически загружает актуальные базы данных уязвимостей, что может занять длительное время при первом запуске. Веб-интерфейс доступен по адресу <code>https://localhost</code> (в моем случае <code>http://192.168.0.4:9392</code>) с паролем, указанным в переменной <code>PASSWORD</code>.</p>

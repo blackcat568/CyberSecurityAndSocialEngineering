@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "A real-world chronicle of defending against a targeted attack: documenting vulnerabilities, configurations, responses, and system hardening. From zero security to resilient configurations. Covers Debian 12 & 13, nftables, AppArmor, OpenSnitch, Flatpak, USBGuard, sysctl. For cybersecurity and InfoSec professionals.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-09-07<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-09-19<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -396,7 +396,7 @@
 
 <div class="alert" style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 2rem 0;">
   <strong style="color: #856404;">⚠️ Notice!</strong>
-  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-09-07<!-- DATE_END --></span>
+  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-09-19<!-- DATE_END --></span>
 </div>
 
 <!-- КРУПНАЯ ГЛАВА H2 0- Оглавление -->
@@ -4828,6 +4828,16 @@ In the login manager configuration file <code>/etc/pam.d/gdm-password</code>, be
 </ul>
 
 <p>This provides both a high level of security and flexibility of access, especially in situations where the key is not at hand.</p>
+
+<p><strong>Note:</strong> With passwordless login (for example, using a YubiKey hardware token), some applications may request access to the system password store. In Debian 13 with the GNOME desktop environment, this store is called <strong>GNOME Keyring</strong>.</p>
+
+<p>Because the keyring is not unlocked automatically during passwordless login (the PAM module <code>pam_gnome_keyring.so</code> does not receive the account password), applications that use <code>libsecret</code> (such as Firestorm Viewer or Chromium) will trigger an unlock prompt.</p>
+
+<p>To resolve this issue, install the graphical keyring management utility — <strong>Seahorse</strong> (displayed in the GNOME menu as "Passwords and Keys"):</p>
+
+<pre><code>sudo apt install seahorse</code></pre>
+
+<p>Before launching the application that requests access to the system password store, start Seahorse, select the <strong>"Login"</strong> keyring, and enter your account password. This unlocks the keyring for the entire current session, and application prompts will stop until the next reboot or login.</p>
 
 <hr>
 

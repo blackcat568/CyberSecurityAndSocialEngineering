@@ -5133,11 +5133,26 @@ sudo docker run -d \
 
 <p>Данная конфигурация настраивается каждый раз вручную перед захватом. Было принято решение не делать эту конфигурацию устойчивой, чтобы после отключения USB-модема (смартфона) и включения конфигурации системы по умолчанию — все временные настройки были автоматически сброшены системой и не создавали путаницы в настройках системы. При необходимости настройки легко восстановить через терминал в течение нескольких минут.</p>
 
-<p><strong>1. Подключение смартфона как USB-модема</strong></p>
+<hr>
+
+<p><strong>Шаг 1. Проверка исходного состояния сети</strong></p>
+
+<p>Перед подключением USB-модема проверяем текущее состояние маршрутизации. Должен быть только один default-маршрут — через роутер.</p>
+
+<pre><code>ip route show</code></pre>
+
+<p>Ожидаемый результат:</p>
+<pre><code>default via 192.168.0.1 dev enp0s7 proto dhcp src 192.168.0.5 metric 100
+172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown
+192.168.0.0/24 dev enp0s7 proto kernel scope link src 192.168.0.5 metric 100</code></pre>
+
+<hr>
+
+<p><strong>Шаг 2. Подключение смартфона как USB-модема</strong></p>
 
 <p>Условия:</p>
 <ul>
-  <li>Смартфон подключён к Wi-Fi сети роутера (<code>Ozerna28</code>).</li>
+  <li>Смартфон подключён к Wi-Fi сети роутера (<code>MyHomeWiFi</code>).</li>
   <li>Мобильный интернет отключён (чтобы трафик шёл через Wi-Fi, а не через сотовую сеть).</li>
   <li>Смартфон подключён к ПК USB-кабелем (data-кабель).</li>
 </ul>
@@ -5152,41 +5167,74 @@ sudo docker run -d \
 
 <p><i>⚠️ Во избежание перегрева мобильного устройства рекомендуется снять чехол и положить его таким образом, чтобы во время исполнения функции USB-модема устройство максимально контактировало с воздухом со всех сторон. Не класть под прямые солнечные лучи или возле источников тепла.</i></p>
 
-<p>Проверка на ПК:</p>
+<p>Проверка появления USB-интерфейса на ПК:</p>
 <pre><code>ip link show</code></pre>
 
 <p>Ожидаемый результат: появляется новый интерфейс, например:</p>
-<pre><code>111: enp0s2f1u6: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; ...
+<pre><code>4: enp0s2f1u6: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; ...
     link/ether e6:51:6c:53:a5:77 brd ff:ff:ff:ff:ff:ff</code></pre>
-
-<p>Запрос IP на USB-интерфейсе:</p>
-<pre><code>sudo dhclient enp0s2f1u6</code></pre>
-
-<p>Проверка IP:</p>
-<pre><code>ip -4 addr show enp0s2f1u6 | grep inet</code></pre>
-
-<p>Ожидаемый результат:</p>
-<pre><code>inet 192.168.58.18/24 ...</code></pre>
 
 <hr>
 
-<p><strong>2. Настройка двух сетей с приоритетом USB</strong></p>
+<p><strong>Шаг 3. Проверка IP на USB-интерфейсе</strong></p>
 
-<p>Проверка текущих маршрутов:</p>
+<p>NetworkManager автоматически запрашивает IP для USB-интерфейса. Проверяем:</p>
+
+<pre><code>ip -4 addr show enp0s2f1u6</code></pre>
+
+<p>Ожидаемый результат:</p>
+<pre><code>inet 192.168.124.18/24 brd 192.168.124.255 scope global dynamic noprefixroute enp0s2f1u6
+       valid_lft 3477sec preferred_lft 3477sec</code></pre>
+
+<p>Если IP не получен — запросить вручную:</p>
+<pre><code>sudo dhclient enp0s2f1u6</code></pre>
+
+<hr>
+
+<p><strong>Шаг 4. Проверка маршрутов</strong></p>
+
+<p>После подключения USB-модема NetworkManager автоматически создаёт два default-маршрута:</p>
+
 <pre><code>ip route show</code></pre>
 
-<p>Ожидаемый результат (до настройки):</p>
-<pre><code>default via 192.168.0.1 dev enp0s7
-default via 192.168.58.34 dev enp0s2f1u6 metric 100</code></pre>
+<p>Ожидаемый результат:</p>
+<pre><code>default via 192.168.0.1 dev enp0s7 proto dhcp src 192.168.0.5 metric 100
+default via 192.168.124.212 dev enp0s2f1u6 proto dhcp src 192.168.124.18 metric 101
+172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown
+192.168.0.0/24 dev enp0s7 proto kernel scope link src 192.168.0.5 metric 100
+192.168.124.0/24 dev enp0s2f1u6 proto kernel scope link src 192.168.124.18 metric 101</code></pre>
 
-<p>Настройка приоритета USB:</p>
+<p>Обратите внимание: маршрут через роутер имеет метрику 100, через USB — 101. Это значит, что трафик по умолчанию идёт через роутер.</p>
+
+<hr>
+
+<p><strong>Шаг 5. Проверка внешнего IP</strong></p>
+
+<p>Проверяем, через какой интерфейс идёт трафик по умолчанию:</p>
+
+<pre><code>curl -s --max-time 5 ifconfig.me</code></pre>
+
+<p>Ожидаемый результат: IP провайдера (например, <code>176.98.8.198</code>).</p>
+
+<p>Проверяем, что USB-модем тоже работает:</p>
+
+<pre><code>curl -s --interface enp0s2f1u6 --max-time 5 ifconfig.me</code></pre>
+
+<p>Ожидаемый результат: тот же IP провайдера. Это означает, что смартфон, подключённый к Wi-Fi роутера, пересылает трафик через роутер к провайдеру — то есть USB-модем является промежуточным звеном, а не отдельным выходом в интернет. Это нормальное поведение для данной схемы.</p>
+
+<hr>
+
+<p><strong>Шаг 6. Настройка приоритета USB</strong></p>
+
+<p>Для того чтобы трафик ПК принудительно шёл через USB-модем (а не через роутер напрямую), нужно изменить метрики маршрутов. Это гарантирует, что весь трафик ПК пройдёт через смартфон → Wi-Fi → роутер → провайдер, и будет зеркалирован роутером обратно на ПК.</p>
+
 <pre><code># Удалить старые маршруты
-sudo ip route del default via 192.168.0.1 dev enp0s7
-sudo ip route del default via 192.168.58.34 dev enp0s2f1u6
+sudo ip route del default via 192.168.0.1 dev enp0s7 2>/dev/null
+sudo ip route del default via 192.168.124.212 dev enp0s2f1u6 2>/dev/null
 
 # Добавить новые маршруты
 # USB — приоритет (метрика 50)
-sudo ip route add default via 192.168.58.34 dev enp0s2f1u6 metric 50
+sudo ip route add default via 192.168.124.212 dev enp0s2f1u6 metric 50
 
 # Роутер — резерв (метрика 200)
 sudo ip route add default via 192.168.0.1 dev enp0s7 metric 200</code></pre>
@@ -5195,21 +5243,28 @@ sudo ip route add default via 192.168.0.1 dev enp0s7 metric 200</code></pre>
 <pre><code>ip route show | grep default</code></pre>
 
 <p>Ожидаемый результат:</p>
-<pre><code>default via 192.168.58.34 dev enp0s2f1u6 metric 50
+<pre><code>default via 192.168.124.212 dev enp0s2f1u6 metric 50
 default via 192.168.0.1 dev enp0s7 metric 200</code></pre>
-
-<p>Проверка внешнего IP через USB:</p>
-<pre><code>curl -s --interface enp0s2f1u6 --max-time 5 ifconfig.me</code></pre>
-
-<p>Проверка внешнего IP через роутер:</p>
-<pre><code>curl -s --interface enp0s7 --max-time 5 ifconfig.me</code></pre>
-
-<p>Проверка доступности роутера:</p>
-<pre><code>ping -I enp0s7 -c 3 192.168.0.1</code></pre>
 
 <hr>
 
-<p><strong>3. Включение режима зеркалирования на роутере</strong></p>
+<p><strong>Шаг 7. Проверка, что трафик идёт через USB</strong></p>
+
+<p>Выполняем проверку внешнего IP по умолчанию:</p>
+
+<pre><code>curl -s --max-time 5 ifconfig.me</code></pre>
+
+<p>Внешний IP остаётся тем же (провайдер), но теперь трафик идёт через USB-модем → Wi-Fi → роутер. Это подтверждается тем, что маршрут по умолчанию теперь через <code>enp0s2f1u6</code> с метрикой 50.</p>
+
+<p>Проверка доступности роутера через LAN:</p>
+
+<pre><code>ping -I enp0s7 -c 3 192.168.0.1</code></pre>
+
+<p>Ожидаемый результат: 0% потерь — роутер доступен.</p>
+
+<hr>
+
+<p><strong>Шаг 8. Включение режима зеркалирования на роутере</strong></p>
 
 <p>Шаги в веб-интерфейсе роутера (<code>192.168.0.1</code>):</p>
 <ol>
@@ -5217,29 +5272,29 @@ default via 192.168.0.1 dev enp0s7 metric 200</code></pre>
   <li>Настроить:</li>
 </ol>
 
-<table border="1" cellpadding="8" cellspacing="0">
+<table style="border-collapse: collapse; width: 100%;">
   <thead>
-    <tr>
-      <th>Параметр</th>
-      <th>Значение</th>
+    <tr style="background-color: #f2f2f2;">
+      <th style="border: 1px solid #ccc; padding: 8px; text-align: left;">Параметр</th>
+      <th style="border: 1px solid #ccc; padding: 8px; text-align: left;">Значение</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td><strong>Mirrored Port</strong></td>
-      <td>LAN-порт, куда подключён смартфон (Wi-Fi)</td>
+      <td style="border: 1px solid #ccc; padding: 8px;"><strong>Mirrored Port</strong></td>
+      <td style="border: 1px solid #ccc; padding: 8px;">LAN-порт, куда подключён смартфон (Wi-Fi)</td>
     </tr>
     <tr>
-      <td><strong>Mirroring Port</strong></td>
-      <td>LAN-порт, куда подключён ПК (LAN 2)</td>
+      <td style="border: 1px solid #ccc; padding: 8px;"><strong>Mirroring Port</strong></td>
+      <td style="border: 1px solid #ccc; padding: 8px;">LAN-порт, куда подключён ПК (LAN 2)</td>
     </tr>
     <tr>
-      <td><strong>Direction</strong></td>
-      <td>Both (входящий + исходящий)</td>
+      <td style="border: 1px solid #ccc; padding: 8px;"><strong>Direction</strong></td>
+      <td style="border: 1px solid #ccc; padding: 8px;">Both (входящий + исходящий)</td>
     </tr>
     <tr>
-      <td><strong>Статус</strong></td>
-      <td>Enable</td>
+      <td style="border: 1px solid #ccc; padding: 8px;"><strong>Статус</strong></td>
+      <td style="border: 1px solid #ccc; padding: 8px;">Enable</td>
     </tr>
   </tbody>
 </table>
@@ -5248,7 +5303,6 @@ default via 192.168.0.1 dev enp0s7 metric 200</code></pre>
   <li>Сохранить настройки.</li>
   <li>Перезагрузить роутер (если требуется).</li>
 </ol>
-
 <p>Схема подключения:</p>
 
 <svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; font-family: 'Segoe UI', Arial, sans-serif;">
@@ -5358,7 +5412,7 @@ default via 192.168.0.1 dev enp0s7 metric 200</code></pre>
 
 <hr>
 
-<p><strong>4. Захват зеркалированного трафика</strong></p>
+<p><strong>Шаг 9. Захват зеркалированного трафика</strong></p>
 
 <p>Запуск захвата на <code>enp0s7</code> (LAN-порт с зеркалом):</p>
 <pre><code>sudo tshark -i enp0s7 -w /var/log/tsharklogs/pc_capture_$(date +%Y%m%d_%H%M).pcapng</code></pre>
@@ -5367,7 +5421,7 @@ default via 192.168.0.1 dev enp0s7 metric 200</code></pre>
 
 <hr>
 
-<p><strong>5. Проверка захвата по уникальным маркерам</strong></p>
+<p><strong>Шаг 10. Проверка захвата по уникальным маркерам</strong></p>
 
 <p>Для подтверждения корректности захвата использовались уникальные доменные маркеры — сайты, которые открывались на ПК и других устройствах в сети. Если эти домены появляются в зеркалированном трафике, значит захват работает.</p>
 
@@ -5398,7 +5452,7 @@ echo "Файл: $PCAP"</code></pre>
 
 <hr>
 
-<p><strong>6. Результат</strong></p>
+<p><strong>Результат</strong></p>
 
 <p>Захват подтверждён:</p>
 <ul>

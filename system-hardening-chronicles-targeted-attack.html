@@ -5431,11 +5431,26 @@ echo "File: $PCAP"</code></pre>
 
 <p>This configuration is set up manually each time before capture. It was decided not to make this configuration persistent, so that after disconnecting the USB modem (smartphone) and enabling the system's default configuration, all temporary settings are automatically reset by the system and do not create confusion in the system settings. If needed, the settings can be easily restored via the terminal within a few minutes.</p>
 
-<p><strong>1. Connecting the smartphone as a USB modem</strong></p>
+<hr>
+
+<p><strong>Step 1. Checking the initial network state</strong></p>
+
+<p>Before connecting the USB modem, we check the current routing state. There should be only one default route — through the router.</p>
+
+<pre><code>ip route show</code></pre>
+
+<p>Expected result:</p>
+<pre><code>default via 192.168.0.1 dev enp0s7 proto dhcp src 192.168.0.5 metric 100
+172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown
+192.168.0.0/24 dev enp0s7 proto kernel scope link src 192.168.0.5 metric 100</code></pre>
+
+<hr>
+
+<p><strong>Step 2. Connecting the smartphone as a USB modem</strong></p>
 
 <p>Conditions:</p>
 <ul>
-  <li>The smartphone is connected to the router's Wi-Fi network (<code>Ozerna28</code>).</li>
+  <li>The smartphone is connected to the router's Wi-Fi network (<code>MyHomeWiFi</code>).</li>
   <li>Mobile internet is disabled (so that traffic goes through Wi-Fi, not the cellular network).</li>
   <li>The smartphone is connected to the PC via USB cable (data cable).</li>
 </ul>
@@ -5450,64 +5465,104 @@ echo "File: $PCAP"</code></pre>
 
 <p><i>⚠️ To avoid overheating of the mobile device, it is recommended to remove the case and position it so that during USB modem operation the device contacts air on all sides as much as possible. Do not place it under direct sunlight or near heat sources.</i></p>
 
-<p>Check on the PC:</p>
+<p>Checking that the USB interface appears on the PC:</p>
 <pre><code>ip link show</code></pre>
 
 <p>Expected result: a new interface appears, for example:</p>
-<pre><code>111: enp0s2f1u6: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; ...
+<pre><code>4: enp0s2f1u6: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; ...
     link/ether e6:51:6c:53:a5:77 brd ff:ff:ff:ff:ff:ff</code></pre>
-
-<p>Request an IP on the USB interface:</p>
-<pre><code>sudo dhclient enp0s2f1u6</code></pre>
-
-<p>Check the IP:</p>
-<pre><code>ip -4 addr show enp0s2f1u6 | grep inet</code></pre>
-
-<p>Expected result:</p>
-<pre><code>inet 192.168.58.18/24 ...</code></pre>
 
 <hr>
 
-<p><strong>2. Configuring two networks with USB priority</strong></p>
+<p><strong>Step 3. Checking the IP on the USB interface</strong></p>
 
-<p>Check current routes:</p>
+<p>NetworkManager automatically requests an IP for the USB interface. We check:</p>
+
+<pre><code>ip -4 addr show enp0s2f1u6</code></pre>
+
+<p>Expected result:</p>
+<pre><code>inet 192.168.124.18/24 brd 192.168.124.255 scope global dynamic noprefixroute enp0s2f1u6
+       valid_lft 3477sec preferred_lft 3477sec</code></pre>
+
+<p>If the IP was not obtained — request it manually:</p>
+<pre><code>sudo dhclient enp0s2f1u6</code></pre>
+
+<hr>
+
+<p><strong>Step 4. Checking the routes</strong></p>
+
+<p>After connecting the USB modem, NetworkManager automatically creates two default routes:</p>
+
 <pre><code>ip route show</code></pre>
 
-<p>Expected result (before configuration):</p>
-<pre><code>default via 192.168.0.1 dev enp0s7
-default via 192.168.58.34 dev enp0s2f1u6 metric 100</code></pre>
+<p>Expected result:</p>
+<pre><code>default via 192.168.0.1 dev enp0s7 proto dhcp src 192.168.0.5 metric 100
+default via 192.168.124.212 dev enp0s2f1u6 proto dhcp src 192.168.124.18 metric 101
+172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown
+192.168.0.0/24 dev enp0s7 proto kernel scope link src 192.168.0.5 metric 100
+192.168.124.0/24 dev enp0s2f1u6 proto kernel scope link src 192.168.124.18 metric 101</code></pre>
 
-<p>Configuring USB priority:</p>
+<p>Note: the route through the router has metric 100, through USB — 101. This means that by default traffic goes through the router.</p>
+
+<hr>
+
+<p><strong>Step 5. Checking the external IP</strong></p>
+
+<p>We check which interface the default traffic goes through:</p>
+
+<pre><code>curl -s --max-time 5 ifconfig.me</code></pre>
+
+<p>Expected result: the provider's IP (for example, <code>176.98.8.198</code>).</p>
+
+<p>We check that the USB modem also works:</p>
+
+<pre><code>curl -s --interface enp0s2f1u6 --max-time 5 ifconfig.me</code></pre>
+
+<p>Expected result: the same provider IP. This means that the smartphone, connected to the router's Wi-Fi, forwards traffic through the router to the provider — that is, the USB modem is an intermediate link, not a separate internet outlet. This is normal behavior for this scheme.</p>
+
+<hr>
+
+<p><strong>Step 6. Configuring USB priority</strong></p>
+
+<p>In order for PC traffic to be forcibly routed through the USB modem (and not directly through the router), we need to change the route metrics. This guarantees that all PC traffic passes through the smartphone → Wi-Fi → router → provider, and will be mirrored by the router back to the PC.</p>
+
 <pre><code># Remove old routes
-sudo ip route del default via 192.168.0.1 dev enp0s7
-sudo ip route del default via 192.168.58.34 dev enp0s2f1u6
+sudo ip route del default via 192.168.0.1 dev enp0s7 2>/dev/null
+sudo ip route del default via 192.168.124.212 dev enp0s2f1u6 2>/dev/null
 
 # Add new routes
 # USB — priority (metric 50)
-sudo ip route add default via 192.168.58.34 dev enp0s2f1u6 metric 50
+sudo ip route add default via 192.168.124.212 dev enp0s2f1u6 metric 50
 
 # Router — backup (metric 200)
 sudo ip route add default via 192.168.0.1 dev enp0s7 metric 200</code></pre>
 
-<p>Check routes:</p>
+<p>Checking the routes:</p>
 <pre><code>ip route show | grep default</code></pre>
 
 <p>Expected result:</p>
-<pre><code>default via 192.168.58.34 dev enp0s2f1u6 metric 50
+<pre><code>default via 192.168.124.212 dev enp0s2f1u6 metric 50
 default via 192.168.0.1 dev enp0s7 metric 200</code></pre>
-
-<p>Check external IP via USB:</p>
-<pre><code>curl -s --interface enp0s2f1u6 --max-time 5 ifconfig.me</code></pre>
-
-<p>Check external IP via router:</p>
-<pre><code>curl -s --interface enp0s7 --max-time 5 ifconfig.me</code></pre>
-
-<p>Check router availability:</p>
-<pre><code>ping -I enp0s7 -c 3 192.168.0.1</code></pre>
 
 <hr>
 
-<p><strong>3. Enabling mirroring mode on the router</strong></p>
+<p><strong>Step 7. Checking that traffic goes through USB</strong></p>
+
+<p>We check the default external IP:</p>
+
+<pre><code>curl -s --max-time 5 ifconfig.me</code></pre>
+
+<p>The external IP remains the same (provider), but now traffic goes through the USB modem → Wi-Fi → router. This is confirmed by the fact that the default route is now through <code>enp0s2f1u6</code> with metric 50.</p>
+
+<p>Checking router availability via LAN:</p>
+
+<pre><code>ping -I enp0s7 -c 3 192.168.0.1</code></pre>
+
+<p>Expected result: 0% packet loss — the router is reachable.</p>
+
+<hr>
+
+<p><strong>Step 8. Enabling mirroring mode on the router</strong></p>
 
 <p>Steps in the router web interface (<code>192.168.0.1</code>):</p>
 <ol>
@@ -5515,29 +5570,29 @@ default via 192.168.0.1 dev enp0s7 metric 200</code></pre>
   <li>Configure:</li>
 </ol>
 
-<table border="1" cellpadding="8" cellspacing="0">
+<table style="border-collapse: collapse; width: 100%;">
   <thead>
-    <tr>
-      <th>Parameter</th>
-      <th>Value</th>
+    <tr style="background-color: #f2f2f2;">
+      <th style="border: 1px solid #ccc; padding: 8px; text-align: left;">Parameter</th>
+      <th style="border: 1px solid #ccc; padding: 8px; text-align: left;">Value</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td><strong>Mirrored Port</strong></td>
-      <td>LAN port where the smartphone is connected (Wi-Fi)</td>
+      <td style="border: 1px solid #ccc; padding: 8px;"><strong>Mirrored Port</strong></td>
+      <td style="border: 1px solid #ccc; padding: 8px;">LAN port where the smartphone is connected (Wi-Fi)</td>
     </tr>
     <tr>
-      <td><strong>Mirroring Port</strong></td>
-      <td>LAN port where the PC is connected (LAN 2)</td>
+      <td style="border: 1px solid #ccc; padding: 8px;"><strong>Mirroring Port</strong></td>
+      <td style="border: 1px solid #ccc; padding: 8px;">LAN port where the PC is connected (LAN 2)</td>
     </tr>
     <tr>
-      <td><strong>Direction</strong></td>
-      <td>Both (incoming + outgoing)</td>
+      <td style="border: 1px solid #ccc; padding: 8px;"><strong>Direction</strong></td>
+      <td style="border: 1px solid #ccc; padding: 8px;">Both (incoming + outgoing)</td>
     </tr>
     <tr>
-      <td><strong>Status</strong></td>
-      <td>Enable</td>
+      <td style="border: 1px solid #ccc; padding: 8px;"><strong>Status</strong></td>
+      <td style="border: 1px solid #ccc; padding: 8px;">Enable</td>
     </tr>
   </tbody>
 </table>
@@ -5546,27 +5601,26 @@ default via 192.168.0.1 dev enp0s7 metric 200</code></pre>
   <li>Save the settings.</li>
   <li>Reboot the router (if required).</li>
 </ol>
-
 <p>Connection diagram:</p>
 
 <svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; font-family: 'Segoe UI', Arial, sans-serif;">
   <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+    <marker id="arrow1" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
       <path d="M0,0 L0,6 L9,3 z" fill="#37474f"/>
     </marker>
-    <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+    <marker id="arrow-blue1" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
       <path d="M0,0 L0,6 L9,3 z" fill="#1976d2"/>
     </marker>
-    <marker id="arrow-green" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+    <marker id="arrow-green1" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
       <path d="M0,0 L0,6 L9,3 z" fill="#2e7d32"/>
     </marker>
-    <marker id="arrow-purple" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+    <marker id="arrow-purple1" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
       <path d="M0,0 L0,6 L9,3 z" fill="#7b1fa2"/>
     </marker>
-    <marker id="arrow-pink" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+    <marker id="arrow-pink1" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
       <path d="M0,0 L0,6 L9,3 z" fill="#c2185b"/>
     </marker>
-    <filter id="shadow" x="-5%" y="-5%" width="115%" height="115%">
+    <filter id="shadow1" x="-5%" y="-5%" width="110%" height="110%">
       <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.15"/>
     </filter>
   </defs>
@@ -5576,37 +5630,37 @@ default via 192.168.0.1 dev enp0s7 metric 200</code></pre>
   <text x="450" y="58" text-anchor="middle" font-size="13" fill="#607d8b">Router mirroring + PC routing through USB modem</text>
 
   <!-- ========== PROVIDER ========== -->
-  <rect x="700" y="100" width="160" height="70" rx="12" fill="#eceff1" stroke="#546e7a" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="700" y="100" width="160" height="70" rx="12" fill="#eceff1" stroke="#546e7a" stroke-width="2" filter="url(#shadow1)"/>
   <text x="780" y="130" text-anchor="middle" font-size="15" font-weight="bold" fill="#37474f">🌐 Provider</text>
   <text x="780" y="150" text-anchor="middle" font-size="11" fill="#78909c">Internet</text>
 
   <!-- ========== ONT HUAWEI ========== -->
-  <rect x="500" y="100" width="160" height="70" rx="12" fill="#e3f2fd" stroke="#1976d2" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="500" y="100" width="160" height="70" rx="12" fill="#e3f2fd" stroke="#1976d2" stroke-width="2" filter="url(#shadow1)"/>
   <text x="580" y="130" text-anchor="middle" font-size="15" font-weight="bold" fill="#0d47a1">📡 ONT Huawei</text>
   <text x="580" y="150" text-anchor="middle" font-size="11" fill="#42a5f5">Optical modem</text>
 
   <!-- ========== ROUTER ========== -->
-  <rect x="280" y="100" width="180" height="80" rx="12" fill="#fff3e0" stroke="#e65100" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="280" y="100" width="180" height="80" rx="12" fill="#fff3e0" stroke="#e65100" stroke-width="2" filter="url(#shadow1)"/>
   <text x="370" y="130" text-anchor="middle" font-size="16" font-weight="bold" fill="#bf360c">📶 Router Netis</text>
   <text x="370" y="150" text-anchor="middle" font-size="11" fill="#f57c00">WAN + LAN 1 + LAN 2</text>
   <text x="370" y="168" text-anchor="middle" font-size="10" fill="#a1887f">Mirroring: ON</text>
 
   <!-- ========== PC ========== -->
-  <rect x="60" y="280" width="180" height="90" rx="12" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="60" y="280" width="180" height="90" rx="12" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2" filter="url(#shadow1)"/>
   <text x="150" y="310" text-anchor="middle" font-size="16" font-weight="bold" fill="#1b5e20">💻 PC (Debian)</text>
   <text x="150" y="330" text-anchor="middle" font-size="11" fill="#388e3c">Traffic analysis</text>
   <text x="150" y="348" text-anchor="middle" font-size="11" fill="#388e3c">tshark / Zeek / Suricata</text>
   <text x="150" y="364" text-anchor="middle" font-size="10" fill="#66bb6a">enp0s7 (LAN) + enp0s2f1u6 (USB)</text>
 
   <!-- ========== SMARTPHONE ========== -->
-  <rect x="280" y="420" width="180" height="90" rx="12" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="280" y="420" width="180" height="90" rx="12" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2" filter="url(#shadow1)"/>
   <text x="370" y="450" text-anchor="middle" font-size="16" font-weight="bold" fill="#4a148c">📱 Smartphone</text>
   <text x="370" y="470" text-anchor="middle" font-size="11" fill="#8e24aa">USB modem</text>
   <text x="370" y="488" text-anchor="middle" font-size="11" fill="#8e24aa">Wi-Fi: Ozerna28</text>
   <text x="370" y="504" text-anchor="middle" font-size="10" fill="#ab47bc">Mobile internet: OFF</text>
 
   <!-- ========== OTHER DEVICES ========== -->
-  <rect x="540" y="420" width="180" height="90" rx="12" fill="#fce4ec" stroke="#c2185b" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="540" y="420" width="180" height="90" rx="12" fill="#fce4ec" stroke="#c2185b" stroke-width="2" filter="url(#shadow1)"/>
   <text x="630" y="450" text-anchor="middle" font-size="15" font-weight="bold" fill="#880e4f">📱 Other devices</text>
   <text x="630" y="470" text-anchor="middle" font-size="11" fill="#c2185b">Tablet, phone</text>
   <text x="630" y="488" text-anchor="middle" font-size="11" fill="#c2185b">Connected to Wi-Fi</text>
@@ -5614,33 +5668,32 @@ default via 192.168.0.1 dev enp0s7 metric 200</code></pre>
   <!-- ========== CONNECTION LINES ========== -->
   
   <!-- Provider → ONT -->
-  <line x1="660" y1="135" x2="700" y2="135" stroke="#37474f" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="660" y1="135" x2="700" y2="135" stroke="#37474f" stroke-width="2.5" marker-end="url(#arrow1)"/>
   <text x="680" y="125" text-anchor="middle" font-size="10" fill="#607d8b">WAN</text>
 
   <!-- ONT → Router -->
-  <line x1="460" y1="135" x2="500" y2="135" stroke="#37474f" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="460" y1="135" x2="500" y2="135" stroke="#37474f" stroke-width="2.5" marker-end="url(#arrow1)"/>
   <text x="480" y="125" text-anchor="middle" font-size="10" fill="#607d8b">WAN</text>
 
   <!-- Router → PC (mirroring) -->
-  <path d="M 280 160 L 150 160 L 150 280" stroke="#2e7d32" stroke-width="2.5" fill="none" stroke-dasharray="6,4" marker-end="url(#arrow-green)"/>
+  <path d="M 280 160 L 150 160 L 150 280" stroke="#2e7d32" stroke-width="2.5" fill="none" stroke-dasharray="6,4" marker-end="url(#arrow-green1)"/>
   <text x="200" y="220" text-anchor="middle" font-size="11" font-weight="bold" fill="#2e7d32">🔍 Mirroring</text>
   <text x="200" y="238" text-anchor="middle" font-size="10" fill="#388e3c">LAN 2 → enp0s7</text>
 
   <!-- Smartphone → Router (Wi-Fi) -->
-  <path d="M 370 420 L 370 180" stroke="#7b1fa2" stroke-width="2.5" fill="none" stroke-dasharray="4,4" marker-end="url(#arrow-purple)"/>
+  <path d="M 370 420 L 370 180" stroke="#7b1fa2" stroke-width="2.5" fill="none" stroke-dasharray="4,4" marker-end="url(#arrow-purple1)"/>
   <text x="380" y="300" text-anchor="start" font-size="11" fill="#7b1fa2">Wi-Fi</text>
   <text x="380" y="318" text-anchor="start" font-size="10" fill="#9c27b0">MyHomeWiFi</text>
 
   <!-- PC → Smartphone (USB) -->
-  <path d="M 150 370 L 150 465 L 280 465" stroke="#1976d2" stroke-width="2.5" fill="none" marker-end="url(#arrow-blue)"/>
+  <path d="M 150 370 L 150 465 L 280 465" stroke="#1976d2" stroke-width="2.5" fill="none" marker-end="url(#arrow-blue1)"/>
   <text x="215" y="455" text-anchor="middle" font-size="11" font-weight="bold" fill="#1976d2">USB</text>
   <text x="215" y="478" text-anchor="middle" font-size="10" fill="#42a5f5">enp0s2f1u6</text>
 
   <!-- Other devices → Router (Wi-Fi) -->
-  <path d="M 630 420 L 630 180 L 460 180" stroke="#c2185b" stroke-width="2" fill="none" stroke-dasharray="4,4" marker-end="url(#arrow-pink)"/>
+  <path d="M 630 420 L 630 180 L 460 180" stroke="#c2185b" stroke-width="2" fill="none" stroke-dasharray="4,4" marker-end="url(#arrow-pink1)"/>
   <text x="640" y="300" text-anchor="start" font-size="11" fill="#c2185b">Wi-Fi</text>
   <text x="640" y="318" text-anchor="start" font-size="10" fill="#c2185b">MyHomeWiFi</text>
-  
 
   <!-- ========== LEGEND ========== -->
   <rect x="60" y="540" width="780" height="45" rx="8" fill="#fafafa" stroke="#e0e0e0" stroke-width="1"/>
@@ -5656,7 +5709,7 @@ default via 192.168.0.1 dev enp0s7 metric 200</code></pre>
 
 <hr>
 
-<p><strong>4. Capturing mirrored traffic</strong></p>
+<p><strong>Step 9. Capturing mirrored traffic</strong></p>
 
 <p>Start capture on <code>enp0s7</code> (LAN port with mirror):</p>
 <pre><code>sudo tshark -i enp0s7 -w /var/log/tsharklogs/pc_capture_$(date +%Y%m%d_%H%M).pcapng</code></pre>
@@ -5665,7 +5718,7 @@ default via 192.168.0.1 dev enp0s7 metric 200</code></pre>
 
 <hr>
 
-<p><strong>5. Verifying capture using unique markers</strong></p>
+<p><strong>Step 10. Verifying the capture using unique markers</strong></p>
 
 <p>To confirm the capture is correct, unique domain markers were used — sites that were opened on the PC and other devices on the network. If these domains appear in the mirrored traffic, the capture is working.</p>
 
@@ -5696,7 +5749,7 @@ echo "File: $PCAP"</code></pre>
 
 <hr>
 
-<p><strong>6. Result</strong></p>
+<p><strong>Result</strong></p>
 
 <p>Capture confirmed:</p>
 <ul>

@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "Реальная хроника противостояния целевой атаке: документирование уязвимостей, конфигураций, реакций и хардеринга системы. От нулевой защиты к поиску устойчивых конфигураций. Технический отчет с анализом аппаратной части, ОС, AppArmor, nftables, OpenSnitch, Flatpak, USBGuard. Для специалистов по кибербезопасности и ИБ.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-09-25<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-09-28<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -386,7 +386,7 @@
 
 <div class="alert" style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 2rem 0;">
   <strong style="color: #856404;">⚠️ Внимание!</strong>
-  <span style="color: #856404;"> Статья находится в разработке. Уточнения и дополнения вносятся по мере получения новых данных об устойчивости новых конфигураций безопасности и активности хакера.<br>Последнее обновление контента: <!-- DATE_START -->2026-09-25<!-- DATE_END --></span>
+  <span style="color: #856404;"> Статья находится в разработке. Уточнения и дополнения вносятся по мере получения новых данных об устойчивости новых конфигураций безопасности и активности хакера.<br>Последнее обновление контента: <!-- DATE_START -->2026-09-28<!-- DATE_END --></span>
 </div>
 
 <!-- КРУПНАЯ ГЛАВА H2 0 - Оглавление -->
@@ -5476,6 +5476,64 @@ echo "Файл: $PCAP"</code></pre>
   <li>Роутер Netis W1 не поддерживает IPv6, поэтому весь трафик идёт через IPv4.</li>
   <li>Проверка по маркерам — обязательный шаг для подтверждения корректности захвата.</li>
 </ol>
+
+<p><strong>Настройка постоянного приоритета USB-модема над проводным соединением</strong></p>
+
+<p>По умолчанию NetworkManager назначает метрики маршрутам автоматически, и приоритет может достаться проводному соединению. Для устойчивой работы схемы захвата (когда трафик ПК должен идти через USB-модем) необходимо вручную установить метрики маршрутов. Эти настройки сохраняются после перезагрузки и автоматически применяются при подключении интерфейсов.</p>
+
+<p><strong>1. Проверка текущих метрик</strong></p>
+
+<pre><code>nmcli connection show "Wired connection 1" | grep route-metric
+nmcli connection show "Wired connection 2" | grep route-metric</code></pre>
+
+<p>Ожидаемый результат (до настройки):</p>
+<pre><code>ipv4.route-metric:                      -1
+ipv6.route-metric:                      -1
+ipv4.route-metric:                      -1
+ipv6.route-metric:                      -1</code></pre>
+
+<p>Значение <code>-1</code> означает, что метрика назначается автоматически.</p>
+
+<p><strong>2. Установка метрик</strong></p>
+
+<pre><code># USB-модем (enp0s2f1u6) — приоритет
+sudo nmcli connection modify "Wired connection 2" ipv4.route-metric 50
+
+# Проводное соединение (enp0s7) — резерв
+sudo nmcli connection modify "Wired connection 1" ipv4.route-metric 200</code></pre>
+
+<p><strong>3. Применение настроек</strong></p>
+
+<pre><code>sudo nmcli connection up "Wired connection 2"
+sudo nmcli connection up "Wired connection 1"</code></pre>
+
+<p><strong>4. Проверка новых метрик</strong></p>
+
+<pre><code>nmcli connection show "Wired connection 1" | grep route-metric
+nmcli connection show "Wired connection 2" | grep route-metric</code></pre>
+
+<p>Ожидаемый результат:</p>
+<pre><code>ipv4.route-metric:                      200
+ipv6.route-metric:                      -1
+ipv4.route-metric:                      50
+ipv6.route-metric:                      -1</code></pre>
+
+<p><strong>5. Проверка маршрутов</strong></p>
+
+<pre><code>ip route show | grep default</code></pre>
+
+<p>Ожидаемый результат:</p>
+<pre><code>default via 192.168.3.6 dev enp0s2f1u6 proto dhcp src 192.168.3.18 metric 50
+default via 192.168.0.1 dev enp0s7 proto dhcp src 192.168.0.5 metric 200</code></pre>
+
+<p><strong>Результат:</strong></p>
+<ul>
+  <li>USB-модем (<code>enp0s2f1u6</code>) — метрика <strong>50</strong> → приоритет.</li>
+  <li>Проводное соединение (<code>enp0s7</code>) — метрика <strong>200</strong> → резерв.</li>
+  <li>Настройки устойчивые, сохраняются после перезагрузки.</li>
+  <li>При отключении USB-модема NetworkManager автоматически переключается на проводное соединение.</li>
+  <li>При подключении USB-модема — снова приоритет на USB.</li>
+</ul>
 
 <p style="text-align: center; margin-top: 2rem;">
   <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>

@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "Реальная хроника противостояния целевой атаке: документирование уязвимостей, конфигураций, реакций и хардеринга системы. От нулевой защиты к поиску устойчивых конфигураций. Технический отчет с анализом аппаратной части, ОС, AppArmor, nftables, OpenSnitch, Flatpak, USBGuard. Для специалистов по кибербезопасности и ИБ.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-10-10<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-10-11<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -386,7 +386,7 @@
 
 <div class="alert" style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 2rem 0;">
   <strong style="color: #856404;">⚠️ Внимание!</strong>
-  <span style="color: #856404;"> Статья находится в разработке. Уточнения и дополнения вносятся по мере получения новых данных об устойчивости новых конфигураций безопасности и активности хакера.<br>Последнее обновление контента: <!-- DATE_START -->2026-10-10<!-- DATE_END --></span>
+  <span style="color: #856404;"> Статья находится в разработке. Уточнения и дополнения вносятся по мере получения новых данных об устойчивости новых конфигураций безопасности и активности хакера.<br>Последнее обновление контента: <!-- DATE_START -->2026-10-11<!-- DATE_END --></span>
 </div>
 
 <!-- КРУПНАЯ ГЛАВА H2 0 - Оглавление -->
@@ -481,6 +481,7 @@
 								<li style="margin-bottom: 0.1rem;"><a href="#config4-software-logic" style="text-decoration: none;">2.5.2-A Стратегическая логика Конфигурации 4 Software</a></li>
                                 <li style="margin-bottom: 0.1rem;"><a href="#config4-software-tools-report" style="text-decoration: none;">2.5.2-B Отчет об установке инструментов</a></li>
                                 <li style="margin-bottom: 0.1rem;"><a href="#config4-software-traffic-capture-router-mirroring-usb-modem" style="text-decoration: none;">2.5.2-C Захват трафика всех устройств сети через зеркалирование роутера с маршрутизацией ПК через USB-модем</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config4-software-google-infrastructure-exclusion" style="text-decoration: none;">2.5.2-D Исключенние Google инфраструктуры из трафика</a></li>
                             </ul>
                         </li>
                         <li style="margin-bottom: 0.1rem;"><a href="#config4-experiment-results" style="text-decoration: none;">Наблюдаем за ходом эксперимента с конфигурацией 4</a></li>
@@ -5548,6 +5549,9 @@ default via 192.168.0.1 dev enp0s7 proto dhcp src 192.168.0.5 metric 200</code><
   <p style="margin: 12px 0 0 0; font-size: 1rem;">
     На начальном этапе допускается применение <strong>базовых политик межсетевого экрана</strong> (например, политика <code>DROP</code> по умолчанию). Однако <strong>не следует формировать детализированные правила фильтрации, основанные на неподтверждённых гипотезах</strong>. Такой подход приводит к ложному чувству защищённости и может блокировать легитимный трафик. Приоритет должен отдаваться <strong>сбору и корреляции данных</strong> о сетевой активности с целью идентификации типа угрозы (целевая APT-атака, вредоносное ПО, несанкционированный доступ) до принятия точечных мер противодействия.
   </p>
+  <p style="margin: 12px 0 0 0; font-size: 1rem;">
+    <p>Следует также учитывать, что регулярные длительные внезапные захваты трафика с последующим его тщательным анализом представляют собой <strong>психологическое оружие</strong>, способное оказать деморализующее воздействие на злоумышленника. Если в ходе такого захвата будет перехвачен хотя бы <strong>один или несколько пакетов</strong>, идущих от сервера злоумышленника к вашему устройству или от вашего устройства к серверу злоумышленника, и при последующем анализе они будут идентифицированы как вредоносная активность, — современные средства анализа позволяют даже из <strong>единственного пакета</strong> извлечь значительный объём информации о технических средствах и инфраструктуре злоумышленника. Кроме того, такие пакеты могут служить <strong>прямым доказательством</strong> факта хакерской активности.</p>
+  </p>
 </div>
 
 <p style="text-align: center; margin-top: 2rem;">
@@ -5558,7 +5562,538 @@ default via 192.168.0.1 dev enp0s7 proto dhcp src 192.168.0.5 metric 200</code><
 
 <!-- Конец подсекции H5 2.4.2-C -->
 
+<hr>
 
+<!-- Подсекция H5 2.5.2-D -->
+<section id="config4-software-google-infrastructure-exclusion" aria-label="2.5.2-C КОНФИГУРАЦИЯ 4 Исключение Google инфраструцктуры из трафика">
+
+<h5 id="google-infrastructure-exclusion">2.5.2-D Исключение Google инфраструцктуры из трафика</h5>
+
+<p><strong>Гипотеза о камуфляже вредоносного трафика под телеметрию Google</strong><br>
+Поскольку анализ трафика не выявил признаков активности злоумышленника, а сам факт этой активности достоверно установлен, выдвигается предположение о том, что трафик вредоносной активности <strong>камуфлируется под легитимный</strong> неизвестным на текущий момент способом. Учитывая, что инфраструктура Google активно собирает телеметрию, рассматриваются следующие гипотезы: трафик либо <strong>маскируется под сбор телеметрии Google</strong>, либо злоумышленник <strong>внедрился в инфраструктуру Google</strong>, либо иным образом <strong>паразитирует на ней</strong>, осуществляя агрессивный сбор телеметрии и/или перехватывая легитимный сбор телеметрии.</p>
+
+<p><strong>Текущая конфигурация фильтрации трафика</strong><br>
+В текущей конфигурации трафик пользователя <code>user</code> направляется через локальный прокси-сервер <strong>Squid</strong>, как и в предыдущих конфигурациях. Однако теперь добавлена <strong>фильтрация TCP-трафика по чёрному списку доменов инфраструктуры Google</strong>. <strong>UDP-трафик на данном этапе не фильтруется.</strong></p>
+
+<p>Для пользователя user-sl не применяются ограничения на доступ к инфраструктуре Google. Данный пользователь используется в отдельной графической сессии. Исключение сделано осознанно, в рамках текущей конфигурации эксперимента.</p>
+
+<p>В дальнейшем планируется углубить эксперимент: <strong>UDP-трафик также будет фильтроваться</strong> через локальный прокси-сервер <strong>SOCKS5</strong>. Рассматривается два варианта реализации: либо отдельный SOCKS5-сервер для UDP-трафика, либо единый SOCKS5-сервер, который будет фильтровать <strong>и TCP, и UDP трафик одновременно</strong>, исключая при этом обращения к инфраструктуре Google.</p>
+
+<p>Ниже приведены конфигурационные файлы данной конфигурации.</p>
+
+<p><strong>Конфигурация nftables</strong><br>
+В конфигурации <code>nftables</code> пользователь <code>root</code> продолжает использовать прежнюю модель разграничения доступа из Конфигурации 3. Для него разрешён доступ только к <strong>узкому белому списку инфраструктуры Debian</strong> и других репозиториев, относящихся к легитимному программному обеспечению, используемому в системе.</p>
+
+<div class="historical-fact">
+    <pre>
+        <code class="language-nftables">
+			
+#!/usr/sbin/nft -f
+
+flush ruleset
+
+table inet filter { # Открытие листа правил
+
+    # === Добавляем контейнер для системных динамических IP-адресов сайтов ===
+    set whitelist_fqdn_system {
+        type ipv4_addr
+        flags interval
+    }
+
+
+  
+  # ============================================
+  # НАЧАЛО ЦЕПОЧКИ INPUT
+  # ============================================
+  
+  # = Основная политика цепочки =
+  chain input {
+    type filter hook input priority 0;
+    policy drop;
+
+    # = Набор общих правил =
+    # 🌀 Разрешаем loopback-интерфейс (внутренние процессы)
+    iif "lo" accept
+
+    # == 🔁 Разрешаем установленные и связанные соединения ==
+    ct state established,related accept
+    
+    # == 🔒 Правильная защита от агрессивного входящего трафика (anti-DDoS) ==
+    # Мы НЕ разрешаем трафик, мы только на лету уничтожаем то, что превышает лимит.
+    # Если скорость превысила 100 в секунду, пакет логируется и дропается прямо здесь.
+    # Если скорость в норме — пакет идет ниже, где его встретит надежный дефолтный DROP.
+    ip saddr 0.0.0.0/0 ct state new limit rate over 100/second burst 200 packets log prefix "🔥 BAN: too many conn " flags all drop
+
+    # == 🛡️ Ограничение ping'ов ==
+    ip protocol icmp icmp type echo-request limit rate 1/second accept
+    ip protocol icmp icmp type echo-request log prefix "🔥 BAN: ICMP flood " flags all
+    ip protocol icmp icmp type echo-request drop
+
+    # == 🚫 Блокировка SSDP и mDNS (локальные протоколы вещания) ==
+    ip daddr 239.255.255.250 udp dport 1900 drop   # ❌ SSDP (UPnP/обнаружение устройств)
+    ip daddr 224.0.0.251 udp dport 5353 drop       # ❌ mDNS (Bonjour, Avahi)
+
+    # == 🛑 Блокировка NetBIOS и LLMNR (внутрисетевые протоколы Windows/systemd) ==
+    udp dport 137 drop    # ❌ NetBIOS Name Service (Windows сетевые имена)
+    udp dport 138 drop    # ❌ NetBIOS Datagram Service (распознавание в LAN)
+    udp dport 5355 drop   # ❌ LLMNR (Link-Local Multicast Name Resolution)
+
+    # = Набор правил блокировки IP адресов и диапазонов =
+    
+    # == 🧱 Блокировка известных бот-сетей и прокси ==
+    ip saddr {
+      45.9.20.0/24,
+      89.248.160.0/19,
+      185.220.100.0/22,
+      198.96.155.0/24,
+      185.107.56.0/24,
+      185.129.62.0/23
+    } log prefix "🔥 BAN: known bots " flags all
+    ip saddr {
+      45.9.20.0/24,
+      89.248.160.0/19,
+      185.220.100.0/22,
+      198.96.155.0/24,
+      185.107.56.0/24,
+      185.129.62.0/23
+    } drop
+
+    # == 🚫 Блокировка странных TCP-флагов (XMAS, NULL-скан и другие) ==
+    tcp flags &amp; (fin|syn|rst|psh|ack|urg) == 0 drop        # NULL scan
+    tcp flags &amp; (fin|psh|urg) == (fin|psh|urg) drop          # XMAS scan
+    tcp flags &amp; (fin|syn) == (fin|syn) drop                  # SYN-ACK scan
+    tcp flags &amp; (syn|rst|fin) == (syn|rst|fin) drop          # Xmas scan
+    tcp flags &amp; (syn|fin|rst|psh|ack) == (syn|rst|fin|ack) drop # Xmas scan
+
+    # == 🚫 Блокировка фрагментированных пакетов — часто используются в обходах фильтров ==
+    ip frag-off &amp; 0x1fff != 0 drop
+
+    # == 📱 Разрешаем обмен файлами через LocalSend внутри дома ==
+    # Правило стоит строго ДО анти-спуфинга, чтобы домашние IP успели авторизоваться
+    iifname "enp0s7" ip saddr 192.168.0.0/28 tcp dport 53317 accept
+    iifname "enp0s7" ip saddr 192.168.0.0/28 udp dport 53317 accept
+
+    # == 🔒 Блокировка пакетов с поддельными IP (спуфинг) ==
+    ip saddr 127.0.0.0/8 drop          # localhost
+    ip saddr 10.0.0.0/8 drop           # частная сеть
+    ip saddr 172.16.0.0/12 drop        # частная сеть
+    ip saddr 192.168.0.0/16 drop       # частная сеть
+    ip saddr 169.254.0.0/16 drop       # APIPA
+    ip saddr 0.0.0.0/8 drop            # недопустимый адрес
+    ip saddr 224.0.0.0/4 drop          # multicast
+    ip saddr 240.0.0.0/5 drop          # зарезервировано
+  }
+
+  # ============================================
+  # КОНЕЦ ЦЕПОЧКИ INPUT
+  # ============================================
+
+  
+  # ============================================
+  # НАЧАЛО ЦЕПОЧКИ OUTPUT
+  # ============================================
+
+  chain output {
+    # = Основная политика цепочки =
+    type filter hook output priority 0;
+    policy drop;
+
+    # === ЭШЕЛОН 0: АНТИ-ХАЙДЖЕКИНГ ИНТЕРФЕЙСОВ ===
+    # Уничтожаем любой трафик, идущий мимо физической карты enp0s7, петли lo и сети USB модема
+    oifname != { "lo", "enp0s7", "enp0s2f1u6" } counter drop comment "🔥 BLOCK_HIDDEN_INTERFACE"
+
+    # === ЭШЕЛОН 1: ЛОКАЛЬНАЯ ПЕТЛЯ И БАЗОВАЯ ЗАЩИТА ===
+    oifname "lo" accept
+    ct state invalid drop comment "🔥 INVALID_OUT_PACKET"
+    
+    # = САМЫЕ ПЕРВЫЕ - критически важные правила =
+    # пояснение
+    
+    ct state established,related accept
+    oif "lo" accept
+
+    # Дропаем любые исходящие пакеты, которые conntrack пометил как невалидные
+    # Это обеспечит немедленное уничтожение невалидных пакетов
+    # до начала применения остальных правил фильтрации.
+    ct state invalid log prefix "🔥 INVALID_OUT_PACKET: " drop
+
+    # =======================================================================
+    # 1. ОБЩИЙ ЗАЩИТНЫЙ КУПОЛ (Только блокировка превышения скорости!)
+    # =======================================================================
+    
+    # ВНИМАНИЕ: Здесь НЕТ слова accept. Это правило НЕ выпускает пакеты в интернет.
+    # Знак "!" означает: если скорость превысила лимит, то выполнить действие ЛОГ и ДРОП.
+    # Если скорость в норме, пакет просто молча пролетает ниже — в ваш белый список IP.
+    # ВНИМАНИЕ: meta l4proto { tcp, udp } и th dport накрывают куполом и TCP, и UDP (HTTP/3)
+    
+    # Купол А: Блокировка бешеного создания НОВЫХ веб-сессий (TCP/UDP 80,443)
+    meta l4proto { tcp, udp } th dport { 80, 443 } ct state new limit rate over 150/second burst 300 packets log prefix "🔥 OUT_WEB_LIMIT_BURST: " drop
+    
+    # Купол Б: Ограничение скорости скоростного UDP-потока мультимедиа (для всех состояний)
+    # Намертво срезает аномальную скорость (например, скрытый слив файлов малварью)
+    udp dport 13000-13050 meta skuid { user, user-sl } limit rate over 150/second burst 300 packets log prefix "🔥 OUT_UDP_FLOOD_DROP: " drop
+
+
+    # =========================================================================
+    # 🔒 УМНЫЙ ДОСМОТР УСТАНОВЛЕННЫХ СЕССИЙ (Защита от Connection Hijacking)
+    # =========================================================================
+    
+    # Разрешаем продолжать сессии ТОЛЬКО если пакеты внутри них созданы Вами, вашим Браузером, APT или Root.
+    # Системные призраки (nobody, daemon) отсюда полностью изгоняются.
+    ct state established,related meta skuid { user, proxy, user-sl, _flatpak, _apt, root, systemd-timesync } accept
+
+    # ⬇️ МОМЕНТАЛЬНЫЙ СРЕЗ: Если посторонний системный процесс попытался внедриться в вашу сессию
+    ct state established,related log flags skuid prefix "🔥 HIJACK_ATTEMPT_DROP: " drop
+    
+    # =========================================================================
+    # 2. DNS-СЕРВИС 
+    # Строгая привязка только к Quad9 на IP 9.9.9.9
+    # Контроль длины, пользователей и резервных серверов
+    # =========================================================================
+
+    # 2.1. По UDP пропускаем только короткие запросы (&lt;=150 байт) и строго от доверенных лиц
+    ip daddr { 9.9.9.9, 31.43.43.243, 31.43.43.143 } udp dport 53 meta length &lt;= 150 meta skuid { proxy, user-sl, _apt, root, systemd-timesync } ct state new accept
+
+    # 2.2. По TCP длину не ограничиваем (для тяжелых ответов DNSSEC), но пользователя проверяем железно
+    ip daddr { 9.9.9.9, 31.43.43.243, 31.43.43.143 } tcp dport 53 meta skuid { proxy, user-sl, _apt, root, systemd-timesync } ct state new accept
+    
+    # === Резервный DNS Quad9 (9.9.9.0/24) ===
+    ip daddr 9.9.9.0/24 udp dport 53 meta skuid { proxy, user-sl, _apt, root, systemd-timesync  } accept
+
+    # === Резервный DNS Quad9 (149.112.0.0/16) ===
+    ip daddr 149.112.0.0/16 udp dport 53 meta skuid { proxy, user-sl, _apt, root, systemd-timesync  } accept
+
+    # 2.3. Все остальные попытки любых левых служб (или длинный UDP) — логируем и уничтожаем
+    ip daddr { 9.9.9.9, 31.43.43.243, 31.43.43.143 } meta l4proto { tcp, udp } th dport 53 log flags skuid prefix "🔥 OUT_BLOCK_LEAK_DNS: " drop
+
+    # =========================================================================
+    # ПРАВИЛА ДЛЯ ICMP ПРОТОКОЛА
+    # =========================================================================
+
+    # == Критически важные ICMP для сети ==
+    ip protocol icmp icmp type { destination-unreachable, time-exceeded, parameter-problem } accept
+
+    # == Важные ICMPv6 для IPv6 ==
+    ip6 nexthdr icmpv6 icmpv6 type { 1, 2, 3, 4 } accept
+    ip6 nexthdr icmpv6 icmpv6 type { 135, 136 } accept  # NS/NA
+    ip6 nexthdr icmpv6 icmpv6 type { 133, 134 } accept  # RS/RA
+    
+    
+    # =========================================================================
+    # БЛОКИРОВКА РЕДКИХ ПРОТОКОЛОВ
+    # =========================================================================
+    # Все редкие протоколы (SCTP, DCCP и другие) автоматически блокируются
+    # политикой policy drop. Явные правила для них не требуются.
+    # =========================================================================
+
+
+    # ═══════════════════════════════════════════════════════════════════════════
+    # 🎮 БЛОК ПРАВИЛ ДЛЯ ПОЛЬЗОВАТЕЛЯ user (Схема с Локальным Прокси Squid)
+    # ═══════════════════════════════════════════════════════════════════════════
+
+    # 1. Разрешаем прокси-серверу Squid выход в мир по HTTP/HTTPS
+    tcp dport { 80, 443 } meta skuid proxy ct state new accept
+
+    # 2. Разрешаем исходящие TCP-соединения пользователя user к локальному Squid
+    ip daddr 127.0.0.1 tcp dport 3128 meta skuid user ct state new accept
+    
+
+    # =========================================================================
+    # ОСНОВНОЙ КОНТРОЛЬ TCP &amp; UDP ПРОТОКОЛОВ
+    # =========================================================================
+
+    # ⬇️ СЮДА ПОДКЛЮЧАЕМ СОДЕРЖИМОЕ СПИСКА @whitelist_fqdn_system
+    
+        # Традиционный веб-трафик (TCP)
+        tcp dport { 80, 443 } meta skuid { user-sl, _flatpak } ct state new accept
+        
+        # Современный ускоренный веб-трафик QUIC / HTTP.3 (UDP) - БЕЗОПАСНО
+        udp dport 443 meta skuid { user-sl, _flatpak } ct state new accept
+
+        # Список системных сервисов: Debian, зеркала обновлений и прочие репозитории
+        ip daddr @whitelist_fqdn_system tcp dport { 80, 443 } meta skuid { _flatpak, _apt, root } ct state new accept
+        
+    # ⬆️ ВСТАВКА ЗАКОНЧИЛАСЬ
+
+    # === Веб-интерфейс роутера ===
+    ip daddr 192.168.0.1 tcp dport 80 meta skuid { user, _flatpak, root } ct state new accept
+
+    # === ⏰ Разрешаем синхронизацию системного времени (NTP) ===
+    # Правило параноидальное: порт UDP 123 открыт ИСКЛЮЧИТЕЛЬНО для одного этого процесса.
+    # Ни один бэкдор от имени root или nobody использовать эту лазейку не сможет.
+    udp dport 123 meta skuid systemd-timesync ct state new accept
+
+
+    # ═══════════════════════════════════════════════════════════════════════════
+    #  Инфраструктура Second Life
+    # ═══════════════════════════════════════════════════════════════════════════
+
+    # 1. Основной игровой поток симуляторов Second Life в мир (TCP)
+    tcp dport { 12043, 12046, 13000-13050 } meta skuid user-sl ct state new accept
+    
+    # 2. Разрешаем порты 12043, 12046 и 13000-13050 для пользователя proxy
+    tcp dport { 80, 443, 12043, 12046, 13000-13050 } meta skuid proxy ct state new accept
+
+    # 3. Основной игровой поток симуляторов Second Life в мир (UDP)
+    udp dport 13000-13050 meta skuid { user, user-sl } ct state new accept
+    
+    
+    # ═══════════════════════════════════════════════════════════════════════════
+    #  Инфраструктура LocalSend
+    # ═══════════════════════════════════════════════════════════════════════════
+
+    # == 📱 Разрешаем отправку LocalSend только в пуле /28 и только для пользователя user ==
+    oifname "enp0s7" ip daddr 192.168.0.0/28 tcp dport 53317 meta skuid { user, user-sl } ct state new accept
+    oifname "enp0s7" ip daddr 192.168.0.0/28 udp dport 53317 meta skuid { user, user-sl } ct state new accept
+
+
+  } #  Предпоследняя скобка закрывает лист правил цепочки output. Не удалять!
+  
+  # ============================================
+  # КОНЕЦ ЦЕПОЧКИ OUTPUT
+  # ============================================
+  
+} #  Последняя скобка закрывает лист правил всего конфига. Не удалять!
+
+
+        </code>
+    </pre>
+</div>
+
+<hr>
+
+<p><strong>Скрипт разрешения IP-адресов из белого списка</strong><br>
+Скрипт выполняет резолвинг доменных имён из белого списка и формирует пулы разрешённых IP-адресов для дальнейшей передачи в <code>nftables</code>. Блок резолвинга несистемных IP-адресов для пользователя <code>user</code> <strong>закомментирован</strong>. Блок резолвинга системных IP-адресов для пользователя <code>root</code> оставлен <strong>без изменений</strong>.</p>
+
+<div class="historical-fact">
+    <pre>
+        <code class="language-bash">
+			
+#!/bin/bash
+
+# Пути к утилитам
+DIG="/usr/bin/dig"
+NFT="/usr/sbin/nft"
+
+# Пути к файлам доменов
+USER_DOMAINS="/etc/nftables.d/nftables.domains"
+SYSTEM_DOMAINS="/etc/nftables.d/nftables.domains-system"
+
+# Временные файлы для сбора подсетей
+TMP_USER=$(mktemp)
+TMP_SYSTEM=$(mktemp)
+
+# Жесткая пауза 15 секунд при автоматической загрузке системы через cron
+if [ "$1" != "manual" ]; then
+    sleep 15
+fi
+
+# =====================================================================
+# БЛОК 1: ПОЛЬЗОВАТЕЛЬСКИЙ СПИСОК (Социальные сети, медиа, банки)
+# =====================================================================
+# if [ -f "$USER_DOMAINS" ]; then
+#     while read -r domain; do
+#         [[ -z "$domain" || "$domain" =~ ^# ]] &amp;&amp; continue
+# 
+#         ips=$($DIG +short "$domain" 2>/dev/null | grep -E '^[0-9.]+$')
+#         for ip in $ips; do
+#             if [[ "$domain" =~ "telegram" || "$domain" == "t.me" || "$domain" =~ "facebook" || "$domain" =~ "wixmp" || "$domain" =~ "bing" || "$domain" =~ "microsoft" || "$domain" =~ "flathub" ]]; then
+#                 subnet=$(echo "$ip" | cut -d'.' -f1-2)".0.0/16"
+#             else
+#                 subnet=$(echo "$ip" | cut -d'.' -f1-3)".0/24"
+#             fi
+#             echo "$subnet" >> "$TMP_USER"
+#         done
+#     done &lt; "$USER_DOMAINS"
+# 
+#     if [ -s "$TMP_USER" ]; then
+#         sort -u "$TMP_USER" -o "$TMP_USER"
+#         $NFT flush set inet filter whitelist_fqdn
+#         while read -r sub; do
+#             $NFT add element inet filter whitelist_fqdn { "$sub" }
+#         done &lt; "$TMP_USER"
+#     fi
+# fi
+# 
+# =====================================================================
+# БЛОК 2: СИСТЕМНЫЙ СПИСОК (Репозитории обновлений apt)
+# =====================================================================
+if [ -f "$SYSTEM_DOMAINS" ]; then
+    while read -r domain; do
+        [[ -z "$domain" || "$domain" =~ ^# ]] &amp;&amp; continue
+
+        ips=$($DIG +short "$domain" 2>/dev/null | grep -E '^[0-9.]+$')
+        for ip in $ips; do
+            # Для системных репозиториев всегда используем строгую маску /24 для безопасности
+            subnet=$(echo "$ip" | cut -d'.' -f1-3)".0/24"
+            echo "$subnet" >> "$TMP_SYSTEM"
+        done
+    done &lt; "$SYSTEM_DOMAINS"
+
+    if [ -s "$TMP_SYSTEM" ]; then
+        sort -u "$TMP_SYSTEM" -o "$TMP_SYSTEM"
+        $NFT flush set inet filter whitelist_fqdn_system
+        while read -r sub; do
+            $NFT add element inet filter whitelist_fqdn_system { "$sub" }
+        done &lt; "$TMP_SYSTEM"
+    fi
+fi
+
+# Очистка временных файлов
+rm "$TMP_USER" "$TMP_SYSTEM"
+
+
+        </code>
+    </pre>
+</div>
+
+<hr>
+
+<p><strong>Белый список доменов</strong><br>
+В конфигурации используется <strong>белый список доменов</strong>, включающий инфраструктуру Debian и других легитимных репозиториев, необходимых для штатного обновления и функционирования системы.</p>
+
+<div class="historical-fact">
+    <pre>
+        <code class="language-bash">
+			
+# Официальная инфраструктура Debian и зеркала обновлений
+debian.org
+deb.debian.org
+ftp.debian.org
+security.debian.org
+incoming.debian.org
+snapshot.debian.org
+
+# Серверы для apt-listbugs (проверка ошибок пакетов)
+bugs.debian.org
+
+# Репозитории обновлений ОС и программ
+repo.librewolf.net
+repo.protonvpn.com
+
+# Инфраструктура openSUSE (Репозиторий Zeek)
+opensuse.org
+download.opensuse.org
+mirrorcache-eu.opensuse.org
+
+        </code>
+    </pre>
+</div>
+
+<hr>
+
+<p><strong>Конфигурация локального прокси-сервера Squid</strong><br>
+Файл конфигурации локального прокси-сервера <code>Squid</code>. Применяется фильтрация трафика по <strong>чёрному списку доменов</strong>.</p>
+
+<div class="historical-fact">
+    <pre>
+        <code class="language-bash">
+			
+# ═══════════════════════════════════════════════════════════════════════════
+# 🖥️ ОСНОВНАЯ КОНФИГУРАЦИЯ SQUID PROXY (Debian 13 / user-sl)
+# ═══════════════════════════════════════════════════════════════════════════
+
+# Порт, который будет слушать прокси (строго на локальном интерфейсе)
+http_port 127.0.0.1:3128
+
+# Стандартные базовые ACL для безопасности сетевых портов
+acl Safe_ports port 80          # Стандартный HTTP
+acl Safe_ports port 443         # Стандартный HTTPS (SSL)
+acl Safe_ports port 12043       # HTTP для инвентаря Second Life
+acl Safe_ports port 12046       # HTTPS для инвентаря Second Life
+acl Safe_ports port 13000-13050 # Дополнительный игровой TCP трафик SL
+
+# КРИТИЧЕСКИ ВАЖНО: Разрешаем метод CONNECT (HTTPS туннель) на порты игры
+acl SSL_ports port 443
+acl SSL_ports port 12043        # ИСПРАВЛЕНО: Разрешаем Capabilities туннели симуляторов игры
+acl SSL_ports port 12046
+acl SSL_ports port 13000-13050
+acl CONNECT method CONNECT
+
+# Намертво блокируем запросы к нестандартным портам
+http_access deny !Safe_ports
+# Блокируем CONNECT только если порт НЕ входит в список SSL_ports
+http_access deny CONNECT !SSL_ports
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 🛡️ ФИЛЬТРАЦИЯ ПО ЧЁРОМУ СПИСКУ ДОМЕНОВ
+# ═══════════════════════════════════════════════════════════════════════════
+
+# Описываем источник: черный список доменов из нашего внешнего файла
+acl squid_domains_blacklist dstdomain "/etc/squid/squid_domains_blacklist.txt"
+
+# Запрещаем доступ только к этим доменам
+http_access deny squid_domains_blacklist
+
+# Разрешаем всё остальное
+http_access allow all
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  КОНФИДЕНЦИАЛЬНОСТЬ И ЛОГИРОВАНИЕ
+# ═══════════════════════════════════════════════════════════════════════════
+
+# Отключаем отправку X-Forwarded-For ради конфиденциальности
+via on
+forwarded_for off
+
+# Полное отключение логов (ускорение работы и снижение нагрузки на диск)
+access_log none
+cache_log /dev/null
+cache_store_log none
+logfile_rotate 0
+
+# Отключаем кэширование полностью:
+# В данной схеме Squid используется как фильтр TCP трафика, 
+# в кешировании нет необходимости
+cache deny all
+
+# Ускорение завершения работы для предовращенипя конфликтов с системой при отключении
+shutdown_lifetime 5 seconds
+
+        </code>
+    </pre>
+</div>
+
+<hr>
+
+<p>Чёрный список доменов включает инфраструктуру Google и YouTube.</p>
+
+<div class="historical-fact">
+    <pre>
+        <code class="language-bash">
+			
+# ═══════════════════════════════════════════════════════════════════════════
+# ЧЁРНЫЙ СПИСОК СЕРВЕРОВ ДЛЯ ПРОКСИ СЕРВЕРА SQUID
+# ═══════════════════════════════════════════════════════════════════════════
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 📺 ГРУППА 1: INFRASTRUCTURE GOOGLE (YouTube, Поиск, Gmail, API, Gemini)
+# ═══════════════════════════════════════════════════════════════════════════
+.google.com                # Базовый домен поисковика и учетных записей Google
+.youtube.com               # Главный домен видеохостинга YouTube
+.youtu.be                  # Короткие ссылки обмена видео YouTube
+.youtube-nocookie.com      # Встроенные видео на сторонних сайтах (без куки)
+.googlevideo.com           # Сервера доставки видеопотока (стриминг YouTube)
+.ytimg.com                 # Сервера статики YouTube (превью, значки, аватары)
+.googleusercontent.com     # Пользовательский контент (фото, файлы Google Диск)
+.gstatic.com               # Статические компоненты Google (шрифты, скрипты, стили)
+.googleapis.com            # API Google (авторизация, карты, библиотеки, Gemini API)
+.doubleclick.net           # Рекламная сеть Google (отслеживание, показ объявлений)
+.app-measurement.com       # Firebase Analytics (телеметрия мобильных приложений)
+.crashlytics.com           # Firebase Crashlytics (отчёты о сбоях приложений)
+
+
+        </code>
+    </pre>
+</div>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+</section> 
+
+<!-- Конец подсекции H5 2.4.2-D -->
 
 <details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
   <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — 2.4.2 Конфигурация 4 Software</summary>

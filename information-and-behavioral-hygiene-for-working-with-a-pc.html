@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "A foundational practical guide to digital, behavioral, and informational hygiene for personal computer users. Covers cybersecurity basics, social engineering defense, mental health protection online, ethical AI use, free software advocacy, mobile device hardening, and psychological manipulation countermeasures. Detailed manual for conscious and safe PC and internet use. CC0 license - free to use and share.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-10-04<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-10-23<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -453,7 +453,7 @@
                 <li style="margin: 0.4rem 0;"><a href="#section6-4">6.4. Switching Between Workspaces</a></li>
                 <li style="margin: 0.4rem 0;"><a href="#section6-5">6.5. Terminal Logging</a></li>
                 <li style="margin: 0.4rem 0;"><a href="#section6-6">6.6. System Monitor Applet</a></li>
-                <li style="margin: 0.4rem 0;"><a href="#section6-7">6.7. Backup Using the Simple rsync Utility</a></li>
+                <li style="margin: 0.4rem 0;"><a href="#section6-7">6.7. Backup Using the Simple rsync and Timeshift Utilities</a></li>
                 <li style="margin: 0.4rem 0;"><a href="#section6-8">6.8. Using Validators</a></li>
                 <li style="margin: 0.4rem 0;"><a href="#section6-9">6.9. Wireless Local File Sharing (LocalSend)</a></li>
             </ul>
@@ -2543,6 +2543,40 @@ fi</code></pre>
 
 <hr>
 
+<p><strong>Timeshift</strong> is a utility for creating system snapshots that allows you to roll back changes if something goes wrong after an update or configuration change. It works on the same principle as "restore points" in Windows, but on Linux it uses <code>rsync</code> (file copying) or <code>BTRFS</code> (file system snapshots).</p>
+
+<p><strong>Important:</strong> by default, Timeshift <strong>does not save user files</strong> (your documents and photos in <code>/home</code>); it is intended specifically for system files and settings.</p>
+
+<p>In the context of this book, Timeshift serves as a fast alternative to <code>rsync</code> when you need to quickly save the changes made to the system with the ability to easily roll back to the previous snapshot, without performing a lengthy full-system copy using <code>rsync</code>.</p>
+
+<p>This does not replace a full <code>rsync</code> backup, which should be done at least once a month if changes are regularly made to the system, a large number of user changes and data have accumulated in the <code>/home/user</code> folder, or after the latest major system changes if no further changes will be made to the system for a long time afterward.</p>
+
+<p>Here is a simple command-line way to use the utility.</p>
+
+<h3>🛠️ 1. Create a snapshot</h3>
+<pre><code>sudo timeshift --create --comments "Snapshot description" --tags O</code></pre>
+<ul>
+<li><code>--comments</code>: your comment (for example, "After YubiKey setup").</li>
+<li><code>--tags O</code>: the "On demand" tag (created manually).</li>
+</ul>
+
+<h3>🔍 2. Verify that it was created correctly</h3>
+<pre><code>sudo timeshift --list</code></pre>
+<p>Make sure that the line for your snapshot shows <strong><code>Status : OK</code></strong> and that the description matches what you entered.</p>
+
+<h3>📋 3. Identify all snapshots (if any were made earlier)</h3>
+<p>The <code>--list</code> command from the previous step shows <strong>all</strong> existing snapshots. Find the number (<code>Num</code>) or name (<code>Name</code>) of the old snapshot you want to delete in the list.</p>
+
+<h3>🗑️ 4. Delete old snapshots if necessary</h3>
+<pre><code>sudo timeshift --delete --snapshot "2026-10-21_03-55-52"</code></pre>
+<p>Replace the string in quotes with the actual name of your old snapshot from step 3.</p>
+
+<h3>🗑️ 5. Roll back to a previous snapshot if necessary</h3>
+<pre><code>sudo timeshift --restore --snapshot "2026-10-22_04-28-38"</code></pre>
+<p>Replace the string in quotes with the name of the snapshot you want to return to. After execution, the system will ask for confirmation and reboot.</p>
+
+<hr>
+
 <p><strong><i>💡 The Bottom Line</i></strong></p>
 
 <p>Regular backups are not a whim — they are the only thing standing between you and disaster in the event of a disk failure or fatal error. <strong>Store at least three copies: locally, on a flash drive, and (ideally) in the cloud.</strong> Use <code>rsync</code> for synchronization, <code>tar</code> for archiving, and checksums to ensure archive integrity.</p>
@@ -2751,7 +2785,7 @@ oifname "enp2s0" ip daddr 192.168.0.0/28 udp dport 53317 meta skuid { user, _fla
     <li><strong>6.4:</strong> Multiple workspaces in Linux are not a curiosity, but a powerful tool against window chaos.</li>
     <li><strong>6.5:</strong> Log all your terminal actions with <code>script</code> — otherwise you won't remember what broke your system.</li>
     <li><strong>6.6:</strong> The system monitor applet on the panel is like a car dashboard: it lets you see overloads and freezes.</li>
-    <li><strong>6.7:</strong> Regularly back up your system using rsync, keep at least three copies (local, on a flash drive, and in the cloud), archive with tar, and verify checksums.</li>
+    <li><strong>6.7:</strong> Regularly back up your system using rsync and Timeshift, keep at least three copies (local, on a flash drive, and in the cloud), archive with tar, and verify checksums.</li>
     <li><strong>6.8:</strong> Use validators to check texts and code (HTML, bash, Python, SQL, etc.) — they save time, effort, and reputation. Validators catch syntax errors but do not replace testing. If you can't fix the error yourself — consult an AI assistant.</li>
     <li><strong>6.9:</strong> Use LocalSend for secure local file sharing — transfer goes directly over HTTPS, without cables or clouds. Configure nftables so that the port is only accessible to your devices. And remember: frequent USB connections loosen ports and can lead to short circuits.</li>
   </ul>

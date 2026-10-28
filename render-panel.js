@@ -49,10 +49,13 @@
   });
 
   panel.appendChild(container);
+  
+  // В render-panel.js после формирования списка
+  const lastGroup = container.lastElementChild;
+  if (lastGroup) {
+    lastGroup.style.marginBottom = '3rem';
+  }
+  
 })();
 
-// В render-panel.js после формирования списка
-const lastGroup = container.lastElementChild;
-if (lastGroup) {
-  lastGroup.style.marginBottom = '3rem';
-}
+

@@ -57,11 +57,6 @@
 
   panel.appendChild(container);
 
-  // Отступ в конце списка (2-3 пустые строки)
-  const spacer = document.createElement('div');
-  spacer.style.height = '3rem';   // примерно 3 строки текста
-  panel.appendChild(spacer);
-
 })();
 
 

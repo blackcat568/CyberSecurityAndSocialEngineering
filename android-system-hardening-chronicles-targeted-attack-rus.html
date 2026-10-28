@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "Анализ целевой атаки на Android-устройства (ZTE Blade A522, Android 7.1.1 и Lenovo TB-8504X, Android 8.1.0). Получение хакером полного удалённого доступа к микрофону, камере и трафику. Частичная защита планшета через NetGuard. Дополнение к «Хроникам хардеринга системы».",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-09-21<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-10-28<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -267,6 +267,51 @@
 </head>
 <body>
 
+<!-- Кнопка слева, не перекрывает контент -->
+<button id="panel-toggle" style="
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 10000;
+  padding: 8px 14px;
+  cursor: pointer;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  font-size: 0.9rem;
+">
+  📚 Статьи
+</button>
+
+<!-- Панель выезжает слева -->
+<div id="article-panel" style="
+  position: fixed;
+  top: 0;
+  left: -320px;
+  width: 300px;
+  height: 100vh;
+  background: #f8f9fa;
+  border-right: 1px solid #dee2e6;
+  padding: 3.5rem 1rem 1.5rem 1rem;
+  overflow-y: auto;
+  transition: left 0.3s ease;
+  z-index: 9999;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+"></div>
+
+<script src="articles-list-rus.js"></script>
+<script src="render-panel.js"></script>
+<script>
+  document.getElementById('panel-toggle').addEventListener('click', function() {
+    const panel = document.getElementById('article-panel');
+    if (panel.style.left === '0px') {
+      panel.style.left = '-320px';
+    } else {
+      panel.style.left = '0px';
+    }
+  });
+</script>
+
 <header>
   <!-- Главная навигация сайта -->
   <nav aria-label="Main navigation" style="max-width:860px;margin:0 auto;display:flex;align-items:center;gap:12px;margin-bottom:8px;">
@@ -294,14 +339,14 @@
 
 <div class="alert" style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 2rem 0;">
   <strong style="color: #856404;">⚠️ Внимание!</strong>
-  <span style="color: #856404;"> Статья находится в разработке. Уточнения и дополнения вносятся по мере получения новых данных об устойчивости новых конфигураций безопасности и активности хакера.<br>Последнее обновление контента: <!-- DATE_START -->2026-09-21<!-- DATE_END --></span>
+  <span style="color: #856404;"> Статья находится в разработке. Уточнения и дополнения вносятся по мере получения новых данных об устойчивости новых конфигураций безопасности и активности хакера.<br>Последнее обновление контента: <!-- DATE_START -->2026-10-28<!-- DATE_END --></span>
 </div>
 
 <p>Данный материал является прямым дополнением к основной статье:<br>
 <a href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/system-hardening-chronicles-targeted-attack-rus.html">«Хроники хардеринга системы: поиск конфигурации, устойчивой к целевой атаке»</a>.<br>
 Здесь описывается опыт с мобильными устройствами под управлением Android, который подтверждает и расширяет выводы, сделанные для десктопных систем.</p>
 
-<p>Последнее обновление статьи: <!-- DATE_START -->2026-09-21<!-- DATE_END --></p>
+<p>Последнее обновление статьи: <!-- DATE_START -->2026-10-28<!-- DATE_END --></p>
 
 <!-- КРУПНАЯ ГЛАВА (H2) - Оглавление -->
 <section id="table-of-contents" aria-label="Table of Contents">

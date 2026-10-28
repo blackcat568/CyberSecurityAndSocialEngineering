@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "Анализ техники манипуляции через апелляцию к «уникальности» и «внутреннему голосу». Как оккультно-гуманистическая риторика и подмена культурных символов (Йода, Джобс) ведут к духовной зависимости.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-07-19<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-10-28<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -148,6 +148,51 @@
   </style>
 </head>
 <body>
+	
+<!-- Кнопка слева, не перекрывает контент -->
+<button id="panel-toggle" style="
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 10000;
+  padding: 8px 14px;
+  cursor: pointer;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  font-size: 0.9rem;
+">
+  📚 Статьи
+</button>
+
+<!-- Панель выезжает слева -->
+<div id="article-panel" style="
+  position: fixed;
+  top: 0;
+  left: -320px;
+  width: 300px;
+  height: 100vh;
+  background: #f8f9fa;
+  border-right: 1px solid #dee2e6;
+  padding: 3.5rem 1rem 1.5rem 1rem;
+  overflow-y: auto;
+  transition: left 0.3s ease;
+  z-index: 9999;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+"></div>
+
+<script src="articles-list-rus.js"></script>
+<script src="render-panel.js"></script>
+<script>
+  document.getElementById('panel-toggle').addEventListener('click', function() {
+    const panel = document.getElementById('article-panel');
+    if (panel.style.left === '0px') {
+      panel.style.left = '-320px';
+    } else {
+      panel.style.left = '0px';
+    }
+  });
+</script>
 
 <a id="top"></a>
 

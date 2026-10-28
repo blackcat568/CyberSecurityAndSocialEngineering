@@ -184,14 +184,17 @@
 <script src="articles-list-rus.js"></script>
 <script src="render-panel.js"></script>
 <script>
-  document.getElementById('panel-toggle').addEventListener('click', function() {
-    const panel = document.getElementById('article-panel');
-    if (panel.style.left === '0px') {
-      panel.style.left = '-320px';
-    } else {
-      panel.style.left = '0px';
-    }
+(function() {
+  const panel = document.getElementById('article-panel');
+  const toggle = document.getElementById('panel-toggle');
+  let isOpen = false;
+
+  toggle.addEventListener('click', function() {
+    isOpen = !isOpen;
+    panel.style.left = isOpen ? '0px' : '-320px';
+    toggle.textContent = isOpen ? '📚 Свернуть' : '📚 Статьи';
   });
+})();
 </script>
 
 <a id="top"></a>

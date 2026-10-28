@@ -33,6 +33,12 @@
     visibleArticles.forEach(function(article) {
       const li = document.createElement('li');
       li.style.margin = '0.3rem 0';
+      
+      // Маркер-кружок
+      const marker = document.createElement('span');
+      marker.textContent = '• ';
+      marker.style.color = '#8b0000';     // красный, как акцент сайта
+      marker.style.fontWeight = 'bold';
 
       const a = document.createElement('a');
       a.href = article.url;

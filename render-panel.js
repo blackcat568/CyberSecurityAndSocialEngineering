@@ -47,7 +47,8 @@
       a.style.color = '#0366d6';
       a.style.fontSize = '0.85rem';
 
-      li.appendChild(a);
+      li.appendChild(marker);   // ← добавить маркер первым
+      li.appendChild(a);        // ← потом ссылку
       ul.appendChild(li);
     });
 

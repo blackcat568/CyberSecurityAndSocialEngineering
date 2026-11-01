@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "A foundational practical guide to digital, behavioral, and informational hygiene for personal computer users. Covers cybersecurity basics, social engineering defense, mental health protection online, ethical AI use, free software advocacy, mobile device hardening, and psychological manipulation countermeasures. Detailed manual for conscious and safe PC and internet use. CC0 license - free to use and share.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-10-28<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-11-01<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -2694,6 +2694,31 @@ fi</code></pre>
 <p>However, their drawback is that, while they are excellent at finding unclosed tags, extra or missing parentheses, and the like, they may be unable to detect complex errors in the logic and structure of a script — for example, in bash and Python scripts.</p>
 
 <p><strong>Therefore, validators do not replace the need for testing, but rather catch minor errors, allowing you to focus your attention on fixing truly complex and serious defects in logic and code structure.</strong></p>
+
+<hr>
+
+<p><strong><i>Offline HTML Validators: Checking the Entire Site with a Single Command</i></strong></p>
+
+<p>If you have many articles and work with an offline repository of the site synchronized with the live site (this is especially convenient when <a href="#git-website-automation">working with the git utility</a>), you can validate the entire repository folder with an offline validator — for example, <strong>vnu.jar</strong> (Nu Html Checker).</p>
+
+<p>To use it, simply navigate in the console to the desired folder and run a properly formulated command.</p>
+
+<p>Example: checking all HTML files of the site</p>
+
+<p>1. Navigate to the site folder:</p>
+<pre><code>cd "/home/user/Desktop/команды и настройки/GitHubRepArticles/CyberSecurityAndSocialEngineering-working/"</code></pre>
+
+<p>2. Run the check on all HTML files:</p>
+<pre><code>java -jar ~/vnu.jar --skip-non-html --errors-only .</code></pre>
+
+<p>Flags:</p>
+<ul>
+  <li><code>--skip-non-html</code> — check only <code>.html</code> files (skip images, scripts, and other files);</li>
+  <li><code>--errors-only</code> — show only errors, without warnings;</li>
+  <li><code>.</code> — the current folder (recursively all subfolders).</li>
+</ul>
+
+<p>Of course, you can also use any other settings convenient for you — depending on what exactly you want to check and how strict the validation should be.</p>
 
 <a href="#section0" style="text-decoration: none;"> ↑ Back to Contents </a> | 
 <a href="#section6" style="text-decoration: none;"> ↑ Back to Chapter Start </a>

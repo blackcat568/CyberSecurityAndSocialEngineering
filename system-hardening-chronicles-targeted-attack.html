@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "A real-world chronicle of defending against a targeted attack: documenting vulnerabilities, configurations, responses, and system hardening. From zero security to resilient configurations. Covers Debian 12 & 13, nftables, AppArmor, OpenSnitch, Flatpak, USBGuard, sysctl. For cybersecurity and InfoSec professionals.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-10-28<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-11-01<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -434,14 +434,13 @@
 
 <div class="alert" style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 2rem 0;">
   <strong style="color: #856404;">⚠️ Notice!</strong>
-  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-10-28<!-- DATE_END --></span>
+  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-11-01<!-- DATE_END --></span>
 </div>
 
-<!-- КРУПНАЯ ГЛАВА H2 0- Оглавление -->
-<section id="table-of-contents" aria-label="Table of Contents">
+<!-- ИНТЕРАКТИВНОЕ ОГЛАВЛЕНИЕ (начало) -->
 	
-<nav id="toc" style="margin: 2rem 0; padding: 1.2rem; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 6px;">
-    <h2 id="section0">Table of Content</h2>
+<nav id="table-of-contents" aria-labelledby="section0" style="margin: 2rem 0; padding: 1.2rem; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 6px;">
+    <h2 id="section0" style="margin-top: 0; color: #333;">Table of Contents</h2>
     <ul style="list-style: none; padding-left: 0; margin-bottom: 0;">
         <!-- H2 1 -->
         <li style="margin-bottom: 0.3rem;">
@@ -465,71 +464,71 @@
                     <ul style="list-style: none; padding-left: 1.5rem;">
                         <li style="margin-bottom: 0.1rem;"><a href="#section2-1-1" style="text-decoration: none;">2.1.1 CONFIGURATION 1 Hardware</a></li>
                         <li style="margin-bottom: 0.1rem;"><a href="#section2-1-2" style="text-decoration: none;">2.1.2 CONFIGURATION 1 Software</a></li>
+                        <li style="margin-bottom: 0.1rem;"><a href="#section2-1-3" style="text-decoration: none;">2.1.3 Attack on Configuration 1</a></li>
                     </ul>
                 </li>
+
                 <!-- H3 2.2 -->
-                <li style="margin-bottom: 0.1rem;"><a href="#section2-2" style="text-decoration: none;">2.2 Attack on Configuration 1</a></li>
-                <!-- H3 2.3 -->
                 <li style="margin-bottom: 0.1rem;">
-                    <a href="#section2-3" style="text-decoration: none;">2.3 Hardened Configuration Post-Attack: CONFIGURATION 2</a>
+                    <a href="#section2-2" style="text-decoration: none;">2.2 Hardened Configuration Post-Attack: CONFIGURATION 2</a>
                     <ul style="list-style: none; padding-left: 1.5rem;">
-                        <li style="margin-bottom: 0.1rem;"><a href="#section2-3-1" style="text-decoration: none;">2.3.1 CONFIGURATION 2 Hardware</a></li>
+                        <li style="margin-bottom: 0.1rem;"><a href="#section2-2-1" style="text-decoration: none;">2.2.1 CONFIGURATION 2 Hardware</a></li>
                         <li style="margin-bottom: 0.1rem;">
-                            <a href="#section2-3-2" style="text-decoration: none;">2.3.2 CONFIGURATION 2 Software</a>
+                            <a href="#section2-2-2" style="text-decoration: none;">2.2.2 CONFIGURATION 2 Software</a>
                             <ul style="list-style: none; padding-left: 1.5rem;">
-                                <li style="margin-bottom: 0.1rem;"><a href="#config2-software-main-parameters" style="text-decoration: none;">2.3.2-A CONFIGURATION 2 Software Main Parameters</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config2-software-nftables" style="text-decoration: none;">2.3.2-B CONFIGURATION 2 Software nftables</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config2-software-sysctl" style="text-decoration: none;">2.3.2-C CONFIGURATION 2 Software sysctl</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config2-software-flatseal" style="text-decoration: none;">2.3.2-D CONFIGURATION 2 Software Flatseal overrides</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config2-software-opensnitch" style="text-decoration: none;">2.3.2-E CONFIGURATION 2 Software OpenSnitch</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config2-software-other-programs" style="text-decoration: none;">2.3.2-F CONFIGURATION 2 Software Other Programs</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config2-software-main-parameters" style="text-decoration: none;">2.2.2-A CONFIGURATION 2 Software Main Parameters</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config2-software-nftables" style="text-decoration: none;">2.2.2-B CONFIGURATION 2 Software nftables</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config2-software-sysctl" style="text-decoration: none;">2.2.2-C CONFIGURATION 2 Software sysctl</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config2-software-flatseal" style="text-decoration: none;">2.2.2-D CONFIGURATION 2 Software Flatseal overrides</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config2-software-opensnitch" style="text-decoration: none;">2.2.2-E CONFIGURATION 2 Software OpenSnitch</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config2-software-other-programs" style="text-decoration: none;">2.2.2-F CONFIGURATION 2 Software Other Programs</a></li>
                                 <li style="margin-bottom: 0.1rem;"><a href="#config2-config1-key-changes" style="text-decoration: none;">Key changes in Configuration 2 compared to Configuration 1</a></li>
                             </ul>
                         </li>
                         <li style="margin-bottom: 0.1rem;"><a href="#config2-experiment-results" style="text-decoration: none;">Current status of Configuration 2 (as of 2026-04-10)</a></li>
                     </ul>
                 </li>
-                <!-- H3 2.4 -->
+                <!-- H3 2.3 -->
                 <li style="margin-bottom: 0.1rem;">
-                    <a href="#section2-4" style="text-decoration: none;">2.4 CONFIGURATION 3</a>
+                    <a href="#section2-3" style="text-decoration: none;">2.3 CONFIGURATION 3</a>
                     <ul style="list-style: none; padding-left: 1.5rem;">
                         <li style="margin-bottom: 0.1rem;">
-							<a href="#section2-4-1" style="text-decoration: none;">2.4.1 CONFIGURATION 3 Hardware</a></li>
+							<a href="#section2-3-1" style="text-decoration: none;">2.3.1 CONFIGURATION 3 Hardware</a></li>
                         <li style="margin-bottom: 0.1rem;">
-                            <a href="#section2-4-2" style="text-decoration: none;">2.4.2 CONFIGURATION 3 Software</a>
+                            <a href="#section2-3-2" style="text-decoration: none;">2.3.2 CONFIGURATION 3 Software</a>
                             <ul style="list-style: none; padding-left: 1.5rem;">
-								<li style="margin-bottom: 0.1rem;"><a href="#config3-intro" style="text-decoration: none;">2.4.2-A Introduction</a></li>
-								<li style="margin-bottom: 0.1rem;"><a href="#config3-logic" style="text-decoration: none;">2.4.2-B Strategic logic of Configuration 3: blocking vectors as a deterrence method</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config3-software-nftables" style="text-decoration: none;">2.4.2-C Changes in the nftables config</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config3-nftables-fixes" style="text-decoration: none;">2.4.2-D Fixing the nftables configuration of Configuration 3</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config3-nftables-enhancements" style="text-decoration: none;">2.4.2-E Enhancing the nftables configuration of Configuration 3</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config3-software-sysctl" style="text-decoration: none;">2.4.2-F Enhancing the sysctl configuration of Configuration 3</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config3-automated-whitelist" style="text-decoration: none;">2.4.2-G Automating IP Whitelist and Proxy Filtering for user-sl</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config3-dns-quard9" style="text-decoration: none;">2.4.2-H Switching to the Quad9 DNS server (9.9.9.9)</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config3-app-nft-monitoring-script" style="text-decoration: none;">2.4.2-I Custom monitoring script for nftables and AppArmor</a></li>
+								<li style="margin-bottom: 0.1rem;"><a href="#config3-intro" style="text-decoration: none;">2.3.2-A Introduction</a></li>
+								<li style="margin-bottom: 0.1rem;"><a href="#config3-logic" style="text-decoration: none;">2.3.2-B Strategic logic of Configuration 3: blocking vectors as a deterrence method</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config3-software-nftables" style="text-decoration: none;">2.3.2-C Changes in the nftables config</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config3-nftables-fixes" style="text-decoration: none;">2.3.2-D Fixing the nftables configuration of Configuration 3</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config3-nftables-enhancements" style="text-decoration: none;">2.3.2-E Enhancing the nftables configuration of Configuration 3</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config3-software-sysctl" style="text-decoration: none;">2.3.2-F Enhancing the sysctl configuration of Configuration 3</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config3-automated-whitelist" style="text-decoration: none;">2.3.2-G Automating IP Whitelist and Proxy Filtering for user-sl</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config3-dns-quad9" style="text-decoration: none;">2.3.2-H Switching to the Quad9 DNS server (9.9.9.9)</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config3-app-nft-monitoring-script" style="text-decoration: none;">2.3.2-I Custom monitoring script for nftables and AppArmor</a></li>
                             </ul>
                         </li>
-                        <li style="margin-bottom: 0.1rem;"><a href="#config3-experiment-results" style="text-decoration: none;">2.4.3 Observing the progress of the experiment with configuration 3</a></li>
+                        <li style="margin-bottom: 0.1rem;"><a href="#config3-experiment-results" style="text-decoration: none;">2.3.3 Observing the progress of the experiment with configuration 3</a></li>
                     </ul>
                 </li>
-                <!-- H3 2.5 -->
+                <!-- H3 2.4 -->
                 <li style="margin-bottom: 0.1rem;">
-                    <a href="#section2-5" style="text-decoration: none;">2.5 CONFIGURATION 4</a>
+                    <a href="#section2-4" style="text-decoration: none;">2.4 CONFIGURATION 4</a>
                     <ul style="list-style: none; padding-left: 1.5rem;">
                         <li style="margin-bottom: 0.1rem;">
-							<a href="#section2-5-1" style="text-decoration: none;">2.5.1 CONFIGURATION 4 Hardware</a>
+							<a href="#section2-4-1" style="text-decoration: none;">2.4.1 CONFIGURATION 4 Hardware</a>
 							<ul style="list-style: none; padding-left: 1.5rem;">
-								<li style="margin-bottom: 0.1rem;"><a href="#config4-hardware-logic" style="text-decoration: none;">2.5.2-A Strategic logic of Configuration 4: Hardware</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config4-hardware-yubikey-5c" style="text-decoration: none;">2.5.2-B Integration of YubiKey 5C Hardware Token into the System</a></li>
+								<li style="margin-bottom: 0.1rem;"><a href="#config4-hardware-logic" style="text-decoration: none;">2.4.2-A Strategic logic of Configuration 4: Hardware</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config4-hardware-yubikey-5c" style="text-decoration: none;">2.4.2-B Integration of YubiKey 5C Hardware Token into the System</a></li>
                             </ul>
                         </li>
                         <li style="margin-bottom: 0.1rem;">
-                            <a href="#section2-5-2" style="text-decoration: none;">2.5.2 CONFIGURATION 4 Software</a>
+                            <a href="#section2-4-2" style="text-decoration: none;">2.4.2 CONFIGURATION 4 Software</a>
                             <ul style="list-style: none; padding-left: 1.5rem;">
-								<li style="margin-bottom: 0.1rem;"><a href="#config4-software-logic" style="text-decoration: none;">2.5.2-A СStrategic logic of Configuration 4: Software</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config4-software-tools-report" style="text-decoration: none;">2.5.2-B Tool Installation Report</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config4-software-traffic-capture-router-mirroring-usb-modem" style="text-decoration: none;">2.5.2-C Capturing traffic of all network devices via router mirroring with PC routing through USB modem</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config4-software-google-infrastructure-exclusion" style="text-decoration: none;">2.5.2-D Exclusion of Google infrastructure from traffic</a></li>
+								<li style="margin-bottom: 0.1rem;"><a href="#config4-software-logic" style="text-decoration: none;">2.4.2-A СStrategic logic of Configuration 4: Software</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config4-software-tools-report" style="text-decoration: none;">2.4.2-B Tool Installation Report</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config4-software-traffic-capture-router-mirroring-usb-modem" style="text-decoration: none;">2.4.2-C Capturing traffic of all network devices via router mirroring with PC routing through USB modem</a></li>
+                                <li style="margin-bottom: 0.1rem;"><a href="#config4-software-google-infrastructure-exclusion" style="text-decoration: none;">2.4.2-D Exclusion of Google infrastructure from traffic</a></li>
                             </ul>
                         </li>
                         <li style="margin-bottom: 0.1rem;"><a href="#config4-experiment-results" style="text-decoration: none;">Observing the progress of the Configuration 4 experiment</a></li>
@@ -541,15 +540,11 @@
 </nav>
 
 <details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
-  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Article Summary</summary>
-  <ul>
-    <li><strong>What this article is about:</strong> A chronicle of system hardening in response to a targeted attack. Description of the initial configuration, the attack itself, and the enhanced configurations 2, 3 and 4 with detailed settings for nftables, sysctl, AppArmor, OpenSnitch, Flatpak, USBGuard, and Quad9 DNS. Status of configuration testing.</li>
-  </ul>
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Summary</summary>
+  <p><strong>What this article is about:</strong> A chronicle of system hardening in response to a targeted attack. Description of the initial configuration, the attack itself, and the enhanced configurations 2, 3 and 4 with detailed settings for nftables, sysctl, AppArmor, OpenSnitch, Flatpak, USBGuard, and Quad9 DNS. Status of configuration testing.</p>
 </details>
 
-</section> 
-
-<!-- /Конец основной главы H2 0 - Оглавление -->
+<!-- ИНТЕРАКТИВНОЕ ОГЛАВЛЕНИЕ (конец) -->
 
 <hr>
 
@@ -826,15 +821,11 @@ Capabilities: Power Management version 2, MSI (enabled)</p>
 
 <!-- Конец подсекции H4 2.1.2-->
 
-</section>
-
-<!-- Конец подсекции H3 2.1 -->
-
 <hr>
 
-<!-- Подсекция H3 2.2 -->
+<!-- Подсекция H3 2.1.3 -->
 <section id="attack-on-config1" aria-label="2.2 Attack on Configuration 1">
-<h3 id="section2-2">2.2 Attack on Configuration 1</h3>
+<h4 id="section2-1-3">2.1.3 Attack on Configuration 1</h4>
 
 <p><strong>Date of attack:</strong> 2026-12-26</p>
 
@@ -856,37 +847,42 @@ Capabilities: Power Management version 2, MSI (enabled)</p>
 
 </section>
 
-<!-- Конец подсекции H3 2.2 -->
+<!-- Конец подсекции H3 2.1.3 -->
+
+</section>
+
+<!-- Конец подсекции H3 2.1 -->
+
 
 <hr>
 
-<!-- Подсекция H3 2.3 -->
-<section id="config2" aria-label="2.3 Hardened Configuration Post-Attack: CONFIGURATION 2">
+<!-- Подсекция H3 2.2 -->
+<section id="config2" aria-label="2.2 Hardened Configuration Post-Attack: CONFIGURATION 2">
 	
-<h3 id="section2-3">2.3 Hardened Configuration Post-Attack: CONFIGURATION 2</h3>
+<h3 id="section2-2">2.2 Hardened Configuration Post-Attack: CONFIGURATION 2</h3>
 
-<!-- Подсекция H4 2.3.1 -->
-<section id="config2-hardware" aria-label="2.3.1 CONFIGURATION 2 Hardware">
+<!-- Подсекция H4 2.2.1 -->
+<section id="config2-hardware" aria-label="2.2.1 CONFIGURATION 2 Hardware">
 
-<h4 id="section2-3-1">2.3.1 CONFIGURATION 2 Hardware</h4>
+<h4 id="section2-2-1">2.2.1 CONFIGURATION 2 Hardware</h4>
 
 <p>Same system unit (no changes).</p>
 
 </section>
 
-<!-- Конец подсекции H4 2.3.1 -->
+<!-- Конец подсекции H4 2.2.1 -->
 
 <hr>
 
-<!-- Подсекция H4 2.3.2 -->
+<!-- Подсекция H4 2.2.2 -->
 <section id="config2-software" aria-label="2.3.2 CONFIGURATION 2 Software">
 
-<h4 id="section2-3-2">2.3.2 CONFIGURATION 2 Software</h4>
+<h4 id="section2-2-2">2.2.2 CONFIGURATION 2 Software</h4>
 
-<!-- Подсекция H5 2.3.2-A  -->
-<section id="config2-software-main-parameters" aria-label="2.3.2-A CONFIGURATION 2 Software Nain Parameters">
+<!-- Подсекция H5 2.2.2-A  -->
+<section id="config2-software-main-parameters" aria-label="2.2.2-A CONFIGURATION 2 Software Nain Parameters">
 	
-<h5>2.3.2-A CONFIGURATION 2 Software Main Parameters</h5>
+<h5>2.2.2-A CONFIGURATION 2 Software Main Parameters</h5>
 
 <p><strong>Operating System:</strong><br>
 Distributor ID: Debian<br>
@@ -908,12 +904,12 @@ tty (fallback access)</p>
 
 </section>
 
-<!-- Конец подсекции H5 2.3.2-A -->
+<!-- Конец подсекции H5 2.2.2-A -->
 
-<!-- Подсекция H5 2.3.2-B  -->
-<section id="config2-software-nftables" aria-label="2.3.2-B КОНФИГУРАЦИЯ 2 Software nftables">
+<!-- Подсекция H5 2.2.2-B  -->
+<section id="config2-software-nftables" aria-label="2.2.2-B КОНФИГУРАЦИЯ 2 Software nftables">
 	
-<h5>2.3.2-B КОНФИГУРАЦИЯ 2 Software nftables</h5>
+<h5>2.2.2-B КОНФИГУРАЦИЯ 2 Software nftables</h5>
 
 <p><strong>nftables version:</strong><br> 
 1.1.3 (Commodore Bullmoose #4)</p>
@@ -1330,12 +1326,12 @@ table inet filter {
 
 </section>
 
-<!-- Конец подсекции H5 2.3.2-B -->
+<!-- Конец подсекции H5 2.2.2-B -->
 
-<!-- Подсекция H5 2.3.2-C -->
-<section id="config2-software-sysctl" aria-label="2.3.2-C CONFIGURATION 2 Software sysctl">
+<!-- Подсекция H5 2.2.2-C -->
+<section id="config2-software-sysctl" aria-label="2.2.2-C CONFIGURATION 2 Software sysctl">
 	
-<h5>2.3.2-C CONFIGURATION 2 Software sysctl</h5>
+<h5>2.2.2-C CONFIGURATION 2 Software sysctl</h5>
 	
 <div class="historical-fact">
     <strong>sysctl hardening configuration (2026-03-03):</strong>
@@ -1408,14 +1404,14 @@ kernel.unprivileged_bpf_disabled = 1
 
 </section>
 
-<!-- Конец подсекции H5 2.3.2-C -->
+<!-- Конец подсекции H5 2.2.2-C -->
 
 <hr>
 
-<!-- Subsection: FLATSEAL CONFIGURATION H5 2.3.2-D -->
-<section id="config2-software-flatseal" aria-label="2.3.2-D CONFIGURATION 2 Software Flatseal overrides">
+<!-- Subsection: FLATSEAL CONFIGURATION H5 2.2.2-D -->
+<section id="config2-software-flatseal" aria-label="2.2.2-D CONFIGURATION 2 Software Flatseal overrides">
 	
-<h5>2.3.2-D CONFIGURATION 2 Software Flatseal overrides</h5>
+<h5>2.2.2-D CONFIGURATION 2 Software Flatseal overrides</h5>
 
 <div class="historical-fact">
     <strong>Flatpak application permission overrides (Flatseal):</strong>
@@ -1466,12 +1462,12 @@ filesystems=/home/user/Desktop/команды и настройки/Коды и 
 </p>
 
 </section>
-<!-- End of subsection H5 2.3.2-D -->
+<!-- End of subsection H5 2.2.2-D -->
 
-<!-- Подсекция H5 2.3.2-E -->
-<section id="config2-software-opensnitch" aria-label="2.3.2-E CONFIGURATION 2 Software OpenSnitch">
+<!-- Подсекция H5 2.2.2-E -->
+<section id="config2-software-opensnitch" aria-label="2.2.2-E CONFIGURATION 2 Software OpenSnitch">
 	
-<h5>2.3.2-E CONFIGURATION 2 Software OpenSnitch</h5>
+<h5>2.2.2-E CONFIGURATION 2 Software OpenSnitch</h5>
 
 <p><strong>OpenSnitch:</strong><br>
 GUI version: 1.6.9<br>
@@ -1690,14 +1686,14 @@ grpc: 1.51.1</p>
 
 </section>
 
-<!-- Конец подсекции H5 2.3.2-E -->
+<!-- Конец подсекции H5 2.2.2-E -->
 
 <hr>
 
-<!-- Подсекция H5 2.3.2-F -->
-<section id="config2-software-other-programs" aria-label="2.3.2-F CONFIGURATION 2 Software Other Programs">
+<!-- Подсекция H5 2.2.2-F -->
+<section id="config2-software-other-programs" aria-label="2.2.2-F CONFIGURATION 2 Software Other Programs">
 	
-<h5>2.3.2-F CONFIGURATION 2 Software Other Programs</h5>
+<h5>2.2.2-F CONFIGURATION 2 Software Other Programs</h5>
 
 <p><strong>AppArmor:</strong><br>
 Parser version: 4.1.0</p>
@@ -1724,12 +1720,12 @@ Compiled with support for: Linux audit, Libcapng, Seccomp, Systemd, Umockdev</p>
 
 </section>
 
-<!-- Конец подсекции H5 2.3.2-F -->
+<!-- Конец подсекции H5 2.2.2-F -->
 
 <hr>
 
-<!-- Подсекция H5 2.3.2-G -->
-<section id="config2-config1-key-changes" aria-label="2.3.2-G Key changes in Configuration 2 compared to Configuration 1">
+<!-- Подсекция H5 2.2.2-G -->
+<section id="config2-config1-key-changes" aria-label="2.2.2-G Key changes in Configuration 2 compared to Configuration 1">
 
 <h5>Key changes in Configuration 2 compared to Configuration 1</h5>
 
@@ -1756,29 +1752,29 @@ Compiled with support for: Linux audit, Libcapng, Seccomp, Systemd, Umockdev</p>
 
 </section>
 
-<!-- Конец подсекции H5 2.3.2-G -->
+<!-- Конец подсекции H5 2.2.2-G -->
 
 <details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
-  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — 2.3.2 Configuration 2 Software</summary>
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — 2.2.2 Configuration 2 Software</summary>
   <ul>
-    <li><strong>2.3.2-A Main parameters:</strong> Debian 13 (Trixie), kernel 6.12.74, GNOME 48.7 / Wayland.</li>
-    <li><strong>2.3.2-B nftables:</strong> Strict firewall configuration: INPUT and OUTPUT policies set to ACCEPT with limitations, FORWARD — ACCEPT. Blocking botnets, suspicious flags, spoofing. Only necessary ports allowed.</li>
-    <li><strong>2.3.2-C sysctl:</strong> Kernel hardening: disabling ICMP Echo, SYN flood protection, source routing prohibition, ptrace restriction (YAMA), IPv6 disabled.</li>
-    <li><strong>2.3.2-D Flatseal overrides:</strong> Flatpak application permission restrictions: LibreWolf, Geany, KeePassXC, Viber. Disabling X11, IPC, network, PCSC, SSH agent.</li>
-    <li><strong>2.3.2-E OpenSnitch:</strong> User-defined rules for allowing/denying outbound connections for applications (browsers, Python, Git, APT, Ruby, dig, LibreOffice).</li>
-    <li><strong>2.3.2-F Other programs:</strong> AppArmor 4.1.0, Flatpak 1.16.3, USBGuard 1.1.3 with audit, seccomp, systemd support.</li>
-    <li><strong>2.3.2-G Key changes:</strong> Migration to GNOME/Wayland, application isolation via Flatpak, strict AppArmor profiles, full inbound and partial outbound port blocking, OpenSnitch and USBGuard installation, removal of browser fingerprint masking.</li>
+    <li><strong>2.2.2-A Main parameters:</strong> Debian 13 (Trixie), kernel 6.12.74, GNOME 48.7 / Wayland.</li>
+    <li><strong>2.2.2-B nftables:</strong> Strict firewall configuration: INPUT and OUTPUT policies set to ACCEPT with limitations, FORWARD — ACCEPT. Blocking botnets, suspicious flags, spoofing. Only necessary ports allowed.</li>
+    <li><strong>2.2.2-C sysctl:</strong> Kernel hardening: disabling ICMP Echo, SYN flood protection, source routing prohibition, ptrace restriction (YAMA), IPv6 disabled.</li>
+    <li><strong>2.2.2-D Flatseal overrides:</strong> Flatpak application permission restrictions: LibreWolf, Geany, KeePassXC, Viber. Disabling X11, IPC, network, PCSC, SSH agent.</li>
+    <li><strong>2.2.2-E OpenSnitch:</strong> User-defined rules for allowing/denying outbound connections for applications (browsers, Python, Git, APT, Ruby, dig, LibreOffice).</li>
+    <li><strong>2.2.2-F Other programs:</strong> AppArmor 4.1.0, Flatpak 1.16.3, USBGuard 1.1.3 with audit, seccomp, systemd support.</li>
+    <li><strong>2.2.2-G Key changes:</strong> Migration to GNOME/Wayland, application isolation via Flatpak, strict AppArmor profiles, full inbound and partial outbound port blocking, OpenSnitch and USBGuard installation, removal of browser fingerprint masking.</li>
   </ul>
 </details>
 
 </section>
 
-<!-- Конец подсекции H4 2.3.2-->
+<!-- Конец подсекции H4 2.2.2-->
 
 <hr>
 
-<!-- Подсекция H4 2.3.3 -->
-<section id="config2-experiment-results" aria-label="2.3.3 Observing the progress of the experiment with configuration 2">
+<!-- Подсекция H4 2.2.3 -->
+<section id="config2-experiment-results" aria-label="2.2.3 Observing the progress of the experiment with configuration 2">
 
 <h4>Current status of Configuration 2 (as of 2026-04-10)</h4>
 
@@ -1801,44 +1797,44 @@ Compiled with support for: Linux audit, Libcapng, Seccomp, Systemd, Umockdev</p>
 
 </section>
 
-<!-- Конец подсекции H4 2.3.3-->
+<!-- Конец подсекции H4 2.2.3-->
 
 
 </section>
 
-<!-- Конец подсекции H3 2.3 -->
+<!-- Конец подсекции H3 2.2 -->
 
 <hr>
 
-<!-- Подсекция H3 2.4 -->
-<section id="config3" aria-label="2.4 CONFIGURATION 3">
+<!-- Подсекция H3 2.3 -->
+<section id="config3" aria-label="2.3 CONFIGURATION 3">
 	
-<h3 id="section2-4">2.4 CONFIGURATION 3</h3>
+<h3 id="section2-3">2.3 CONFIGURATION 3</h3>
 
 <p><strong>Date of formation:</strong> 22.06.2026</p>
 
-<!-- Подсекция H4 2.4.1 -->
-<section id="config3-hardware" aria-label="2.4.1 CONFIGURATION 3 Hardware">
+<!-- Подсекция H4 2.3.1 -->
+<section id="config3-hardware" aria-label="2.3.1 CONFIGURATION 3 Hardware">
 
-<h4 id="section2-4-1">2.4.1 CONFIGURATION 2 Hardware</h4>
+<h4 id="section2-3-1">2.3.1 CONFIGURATION 2 Hardware</h4>
 
 <p>Same system unit (no changes).</p>
 
 </section>
 
-<!-- Конец подсекции H4 2.4.1 -->
+<!-- Конец подсекции H4 2.3.1 -->
 
 <hr>
 
-<!-- Подсекция H4 2.4.2 -->
-<section id="config3-software" aria-label="2.4.2 CONFIGURATION 3 Software">
+<!-- Подсекция H4 2.3.2 -->
+<section id="config3-software" aria-label="2.3.2 CONFIGURATION 3 Software">
 
-<h4 id="section2-4-2">2.4.2 CONFIGURATION 3 Software</h4>
+<h4 id="section2-3-2">2.3.2 CONFIGURATION 3 Software</h4>
 
-<!-- Подсекция H5 2.4.2-A -->
-<section id="config3-intro" aria-label="2.4.2-A Introduction">
+<!-- Подсекция H5 2.3.2-A -->
+<section id="config3-intro" aria-label="2.3.2-A Introduction">
 	
-<h5>2.4.2-A Introduction</h5>
+<h5>2.3.2-A Introduction</h5>
 
 <p>Repeats configuration 2, except for changes to the nftables <code>output</code> chain and switching to the Quad9 DNS server (9.9.9.9).</p>
 
@@ -1864,14 +1860,14 @@ Compiled with support for: Linux audit, Libcapng, Seccomp, Systemd, Umockdev</p>
 
 </section> 
 
-<!-- Конец подсекции H5 2.4.2-A -->
+<!-- Конец подсекции H5 2.3.2-A -->
 
 <hr>
 
-<!-- Подсекция H5 2.4.2-B -->
-<section id="config3-logic" aria-label="2.4.2-B Strategic logic of Configuration 3: blocking vectors as a deterrence method">
+<!-- Подсекция H5 2.3.2-B -->
+<section id="config3-logic" aria-label="2.3.2-B Strategic logic of Configuration 3: blocking vectors as a deterrence method">
 
-<h5>2.4.2-B Strategic logic of Configuration 3: blocking vectors as a deterrence method</h5>
+<h5>2.3.2-B Strategic logic of Configuration 3: blocking vectors as a deterrence method</h5>
 
 <p>I suspect that configuration 2, like configuration 1, was attacked by firmware malware, some type of designer worm, or malicious software that is created individually and strictly for a specific system (in this case, the author's system).</p>
 
@@ -1908,14 +1904,14 @@ Compiled with support for: Linux audit, Libcapng, Seccomp, Systemd, Umockdev</p>
 
 </section> 
 
-<!-- Конец подсекции H5 2.4.2-B -->
+<!-- Конец подсекции H5 2.3.2-B -->
 
 <hr>
 
-<!-- Подсекция H5 2.4.2-C -->
-<section id="config3-nftables" aria-label="2.4.2-C Changes in the nftables config">
+<!-- Подсекция H5 2.3.2-C -->
+<section id="config3-nftables" aria-label="2.3.2-C Changes in the nftables config">
 
-<h5>2.4.2-C Changes in the nftables config</h5>
+<h5>2.3.2-C Changes in the nftables config</h5>
 <ul>
     <li>The <code>output</code> chain policy has been changed to <code>drop</code>.</li>
     <li>Global restrictions and permissions for ports and port ranges have been removed from the <code>output</code> chain.</li>
@@ -2400,15 +2396,15 @@ grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' /home/user/ai_traffic_
 
 </section> 
 
-<!-- Конец подсекции H5 2.4.2-C -->
+<!-- Конец подсекции H5 2.3.2-C -->
 
 <hr>
 
 
-<!-- Subsection H5 2.4.2-D -->
-<section id="config3-nftables-fixes" aria-label="2.4.2-D Fixing the nftables configuration of Configuration 3">
+<!-- Subsection H5 2.3.2-D -->
+<section id="config3-nftables-fixes" aria-label="2.3.2-D Fixing the nftables configuration of Configuration 3">
 
-<h5>2.4.2-D Fixing the nftables configuration of Configuration 3</h5>
+<h5>2.3.2-D Fixing the nftables configuration of Configuration 3</h5>
 
 <p><time datetime="2026-06-28">Created: 28 June 2026</time></p>
 
@@ -2675,14 +2671,14 @@ table inet filter { # Opening the ruleset
 </p>
 
 </section>
-<!-- End of subsection H5 2.4.2-D -->
+<!-- End of subsection H5 2.3.2-D -->
 
 <hr>
 
-<!-- Subsection H5 2.4.2-E -->
-<section id="config3-nftables-enhancements" aria-label="2.4.2-E Enhancing the nftables configuration of Configuration 3">
+<!-- Subsection H5 2.3.2-E -->
+<section id="config3-nftables-enhancements" aria-label="2.3.2-E Enhancing the nftables configuration of Configuration 3">
 
-<h5>2.4.2-E Enhancing the nftables configuration of Configuration 3</h5>
+<h5>2.3.2-E Enhancing the nftables configuration of Configuration 3</h5>
 
 <p><time datetime="2026-06-29">Created: 29 June 2026</time></p>
 
@@ -2698,7 +2694,7 @@ table inet filter { # Opening the ruleset
 
 <p>There is no such logic in nftables, but a somewhat different logic is applied: <strong>filtering by UID — username</strong>. This is what should be used.</p>
 
-<p>In addition to establishing outbound traffic filtering by IP and fixing the limit on allowed connections per second, made in sections <a href="#config3-software-nftables">"2.4.2-C Changes in the nftables config"</a> and <a href="#config3-nftables-fixes">"2.4.2-D Fixing the nftables configuration of Configuration 3"</a>, the following additional security features were added to the configuration and to the whitelist of allowed IPs for the <code>output</code> chain which was extracted from the main config:</p>
+<p>In addition to establishing outbound traffic filtering by IP and fixing the limit on allowed connections per second, made in sections <a href="#config3-software-nftables">"2.3.2-C Changes in the nftables config"</a> and <a href="#config3-nftables-fixes">"2.3.2-D Fixing the nftables configuration of Configuration 3"</a>, the following additional security features were added to the configuration and to the whitelist of allowed IPs for the <code>output</code> chain which was extracted from the main config:</p>
 
 <ul>
     <li><strong>Filtering access to IPs from the whitelist by user UID</strong> — even if an IP address is allowed, only specific users (e.g., <code>user</code>, <code>_apt</code>, <code>root</code>) are permitted to access it. This prevents malicious processes running under other UIDs from using allowed IP addresses.</li>
@@ -3266,12 +3262,12 @@ ip saddr {
 </p>
 
 </section>
-<!-- End of subsection H5 2.4.2-E -->
+<!-- End of subsection H5 2.3.2-E -->
 
 <hr>
 
-<!-- Subsection H5 2.4.2-F  -->
-<section id="config3-software-sysctl" aria-label="2.4.2-F Enhancing the sysctl configuration of Configuration 3">
+<!-- Subsection H5 2.3.2-F  -->
+<section id="config3-software-sysctl" aria-label="2.3.2-F Enhancing the sysctl configuration of Configuration 3">
     
 <h5>2.3.2-F Enhancing the sysctl configuration of Configuration 3</h5>
 
@@ -3497,10 +3493,10 @@ net.core.bpf_jit_harden = 2
 
 <hr>
 
-<!-- Subsection H5 2.4.2-G -->
-<section id="config3-automated-whitelist" aria-label="2.4.2-G Automating IP Whitelist and Proxy Filtering for user-sl">
+<!-- Subsection H5 2.3.2-G -->
+<section id="config3-automated-whitelist" aria-label="2.3.2-G Automating IP Whitelist and Proxy Filtering for user-sl">
 
-<h5>2.4.2-G Automating IP Whitelist and Proxy Filtering for user-sl</h5>
+<h5>2.3.2-G Automating IP Whitelist and Proxy Filtering for user-sl</h5>
 
 <p><time datetime="2026-07-26">Created: 26.07.2026</time></p>
 
@@ -4318,14 +4314,14 @@ shutdown_lifetime 5 seconds
 <p><strong>Note:</strong> The Squid configuration is still being tested for maximum stability and security.</p>
 
 </section>
-<!-- End of subsection H5 2.4.2-G -->
+<!-- End of subsection H5 2.3.2-G -->
 
 <hr>
 
-<!-- Подсекция H5 2.4.2-H -->
-<section id="config3-dns-quard9" aria-label="2.4.2-H Switching to the Quad9 DNS server (9.9.9.9)">
+<!-- Подсекция H5 2.3.2-H -->
+<section id="config3-dns-quad9" aria-label="2.3.2-H Switching to the Quad9 DNS server (9.9.9.9)">
 	
-<h5>2.4.2-H Switching to the Quad9 DNS server (9.9.9.9)</h5>
+<h5>2.3.2-H Switching to the Quad9 DNS server (9.9.9.9)</h5>
 
 <p>The <code class="language-ini">/etc/resolv.conf</code> settings are hardcoded to 9.9.9.9. All contents of the file have been replaced with the line:</p>
 
@@ -4431,14 +4427,14 @@ shutdown_lifetime 5 seconds
 
 </section>
 
-<!-- Конец подсекции H5 2.4.2-H -->
+<!-- Конец подсекции H5 2.3.2-H -->
 
 <hr>
 
-<!-- Subsection H5 2.4.2-I -->
-<section id="config3-app-nft-monitoring-script" aria-label="2.4.2-I Custom monitoring script for nftables and AppArmor">
+<!-- Subsection H5 2.3.2-I -->
+<section id="config3-app-nft-monitoring-script" aria-label="2.3.2-I Custom monitoring script for nftables and AppArmor">
 
-<h5>2.4.2-I Custom monitoring script for nftables and AppArmor status</h5>
+<h5>2.3.2-I Custom monitoring script for nftables and AppArmor status</h5>
 
 <p>During frequent configuration and reloading of nftables and AppArmor, as well as when they need to be disabled for testing, there is a risk of forgetting to re-enable the services or not noticing that they have failed.</p>
 
@@ -4603,33 +4599,33 @@ if __name__ == "__main__":
 </p>
 
 </section>
-<!-- End of subsection H5 2.4.2-H -->
+<!-- End of subsection H5 2.3.2-H -->
 
 <details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
   <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — 2.4.2 Configuration 3 Software</summary>
   <ul>
-    <li><strong>2.4.2-A Introduction:</strong> Dropped OpenSnitch due to conflicts with nftables (rule overwriting, priority conflicts, policy replacement). Focus on strengthening nftables as Debian 13's native mechanism.</li>
-    <li><strong>2.4.2-B Strategic logic:</strong> Blocking the maximum number of attack vectors as a deterrence method. Shift from port-based filtering to IP-based filtering to counter firmware malware that masks its traffic as legitimate.</li>
-    <li><strong>2.4.2-C Changes in nftables config:</strong> OUTPUT policy changed to DROP; IP whitelist added. Warning: do not use domain names in rules. Recommendation to use <code>dig</code> to obtain IP addresses.</li>
-    <li><strong>2.4.2-D Configuration fix:</strong> Fixed rate-limiting rule error (accept replaced with drop) in input, forward, and output chains. Fixed the config identified on an IT forum.</li>
-    <li><strong>2.4.2-E Configuration hardening:</strong> Added UID-based filtering, invalid packet protection, session hijacking protection, and a mandatory DNS shield with tunneling protection.</li>
-    <li><strong>2.4.2-F sysctl hardening:</strong> Applied <code>kernel.yama.ptrace_scope = 2</code> to block Process Injection. Full sysctl configuration v7.0.</li>
-    <li><strong>2.4.2-G Automating IP range selection and proxy filtering:</strong> For user <code>user</code>, a two-tier system is implemented: a static IP whitelist (<code>include</code>) and dynamic updates via a cron script using <code>dig</code> (replacing <code>dnsmasq</code>). For user <code>user-sl</code>, a hybrid scheme is applied: a static IP whitelist combined with outbound TCP traffic filtering through a local <code>Squid</code> proxy server based on a domain whitelist.</li>
-    <li><strong>2.4.2-H Switching to Quad9 DNS:</strong> Hardcoded <code>/etc/resolv.conf</code> to 9.9.9.9 with <code>chattr +i</code> protection. Detailed comparison of Quad9 with Google and Cloudflare.</li>
-    <li><strong>2.4.2-I Custom monitoring script:</strong> Python script for monitoring nftables and AppArmor status with GNOME notifications (<code>notify-send</code>).</li>
+    <li><strong>2.3.2-A Introduction:</strong> Dropped OpenSnitch due to conflicts with nftables (rule overwriting, priority conflicts, policy replacement). Focus on strengthening nftables as Debian 13's native mechanism.</li>
+    <li><strong>2.3.2-B Strategic logic:</strong> Blocking the maximum number of attack vectors as a deterrence method. Shift from port-based filtering to IP-based filtering to counter firmware malware that masks its traffic as legitimate.</li>
+    <li><strong>2.3.2-C Changes in nftables config:</strong> OUTPUT policy changed to DROP; IP whitelist added. Warning: do not use domain names in rules. Recommendation to use <code>dig</code> to obtain IP addresses.</li>
+    <li><strong>2.3.2-D Configuration fix:</strong> Fixed rate-limiting rule error (accept replaced with drop) in input, forward, and output chains. Fixed the config identified on an IT forum.</li>
+    <li><strong>2.3.2-E Configuration hardening:</strong> Added UID-based filtering, invalid packet protection, session hijacking protection, and a mandatory DNS shield with tunneling protection.</li>
+    <li><strong>2.3.2-F sysctl hardening:</strong> Applied <code>kernel.yama.ptrace_scope = 2</code> to block Process Injection. Full sysctl configuration v7.0.</li>
+    <li><strong>2.3.2-G Automating IP range selection and proxy filtering:</strong> For user <code>user</code>, a two-tier system is implemented: a static IP whitelist (<code>include</code>) and dynamic updates via a cron script using <code>dig</code> (replacing <code>dnsmasq</code>). For user <code>user-sl</code>, a hybrid scheme is applied: a static IP whitelist combined with outbound TCP traffic filtering through a local <code>Squid</code> proxy server based on a domain whitelist.</li>
+    <li><strong>2.3.2-H Switching to Quad9 DNS:</strong> Hardcoded <code>/etc/resolv.conf</code> to 9.9.9.9 with <code>chattr +i</code> protection. Detailed comparison of Quad9 with Google and Cloudflare.</li>
+    <li><strong>2.3.2-I Custom monitoring script:</strong> Python script for monitoring nftables and AppArmor status with GNOME notifications (<code>notify-send</code>).</li>
   </ul>
 </details>
 
 </section> 
 
-<!-- Конец подсекции H4 2.4.2-->
+<!-- Конец подсекции H4 2.3.2-->
 
 <hr>
 
-<!-- Подсекция H4 2.4.3 -->
-<section id="config3-experiment-results" aria-label="2.4.3 Observing the progress of the experiment with configuration 3">
+<!-- Подсекция H4 2.3.3 -->
+<section id="config3-experiment-results" aria-label="2.3.3 Observing the progress of the experiment with configuration 3">
 
-<h4>2.4.3 Observing the progress of the experiment with configuration 3</h4>
+<h4>2.3.3 Observing the progress of the experiment with configuration 3</h4>
 
 <p>Current status of configuration 3 (as of 22.06.2026):</p>
 <ul>
@@ -4660,27 +4656,30 @@ if __name__ == "__main__":
 
 </section> 
 
-<!-- Конец подсекции H4 2.4.3-->
+<!-- Конец подсекции H4 2.3.3-->
 
 </section> 
 
-<!-- Конец подсекции H3 2.4-->
+<!-- Конец подсекции H3 2.3-->
 
 <hr>
 
-<h3 id="section2-5">2.5 CONFIGURATION 4</h3>
+<!-- Подсекция H3 2.4 -->
+<section id="config4" aria-label="2.4 CONFIGURATION 4">
+	
+<h3 id="section2-4">2.4 CONFIGURATION 4</h3>
 
 <p><strong>Date Created:</strong> 19.08.2026</p>
 
-<!-- Subsection H4 2.5.1 -->
-<section id="config4-hardware" aria-label="2.5.1 CONFIGURATION 4 Hardware">
+<!-- Subsection H4 2.4.1 -->
+<section id="config4-hardware" aria-label="2.4.1 CONFIGURATION 4 Hardware">
 
-<h4 id="section2-5-1">2.5.1 CONFIGURATION 4 Hardware</h4>
+<h4 id="section2-4-1">2.4.1 CONFIGURATION 4 Hardware</h4>
 
-<!-- Subsection H5 2.5.1-A -->
-<section id="config4-hardware-logic" aria-label="2.5.1-A Strategic logic of Configuration 4 Hardware">
+<!-- Subsection H5 2.4.1-A -->
+<section id="config4-hardware-logic" aria-label="2.4.1-A Strategic logic of Configuration 4 Hardware">
 
-<h5>2.5.2-A Strategic Logic of Configuration 4 Hardware</h5>
+<h5>2.4.2-A Strategic Logic of Configuration 4 Hardware</h5>
 
 <p class="chapter-date">August 21, 2026</p>
 
@@ -4748,14 +4747,14 @@ The use of a router with custom firmware and advanced network filtering capabili
 
 </section> 
 
-<!-- End of H5 subsection 2.5.1-A -->
+<!-- End of H5 subsection 2.4.1-A -->
 
 <hr>
 
-<!-- H5 Subsection 2.5.1-B -->
-<section id="config4-hardware-yubikey-5c" aria-label="2.5.1-B CONFIGURATION 4 Integration of YubiKey 5C Hardware Token into the System">
+<!-- H5 Subsection 2.4.1-B -->
+<section id="config4-hardware-yubikey-5c" aria-label="2.4.1-B CONFIGURATION 4 Integration of YubiKey 5C Hardware Token into the System">
 
-<h5>2.5.1-B Integration of the YubiKey 5C Hardware Token into the System</h5>
+<h5>2.4.1-B Integration of the YubiKey 5C Hardware Token into the System</h5>
 
 <p><strong>Date:</strong> August 19, 2026<br>
 <strong>Objective:</strong> Strengthening the system by implementing a hardware authentication factor to protect the password database, system login, and account access.</p>
@@ -5024,25 +5023,25 @@ This system is designed so that the failure of any single component does not lea
 
 </section> 
 
-<!-- End of H5 subsection 2.5.1-B -->
+<!-- End of H5 subsection 2.4.1-B -->
 
 </section>
 
-<!-- End of H4 subsection 2.5.1 -->
+<!-- End of H4 subsection 2.4.1 -->
 
 <hr>
 
-<!-- H4 Subsection 2.5.2 -->
-<section id="config4-software" aria-label="2.5.2 CONFIGURATION 4 Software">
+<!-- H4 Subsection 2.4.2 -->
+<section id="config4-software" aria-label="2.4.2 CONFIGURATION 4 Software">
   
-<h4 id="section2-5-2">2.5.2 CONFIGURATION 4 Software</h4>
+<h4 id="section2-4-2">2.4.2 CONFIGURATION 4 Software</h4>
 
 <hr>
 
-<!-- H5 Subsection 2.5.2-A -->
-<section id="config4-software-logic" aria-label="2.5.2-A Strategic logic of Configuration 4 Software">
+<!-- H5 Subsection 2.4.2-A -->
+<section id="config4-software-logic" aria-label="2.4.2-A Strategic logic of Configuration 4 Software">
 
-<h5>2.5.2-A Strategic Logic of Configuration 4 Software</h5>
+<h5>2.4.2-A Strategic Logic of Configuration 4 Software</h5>
 
 <p><strong>Transition to the Next Phase</strong><br>
 
@@ -5056,14 +5055,14 @@ Since the software-based protection capabilities at the host level have been exh
 
 </section> 
 
-<!-- End of H5 subsection 2.5.2-A -->
+<!-- End of H5 subsection 2.4.2-A -->
 
 <hr>
 
-<!-- H5 Subsection 2.5.2-B -->
-<section id="config4-software-tools-report" aria-label="2.5.2-B CONFIGURATION 4 Tool Installation Report">
+<!-- H5 Subsection 2.4.2-B -->
+<section id="config4-software-tools-report" aria-label="2.4.2-B CONFIGURATION 4 Tool Installation Report">
 
-<h5>2.5.2-B Tool Installation Report</h5>
+<h5>2.4.2-B Tool Installation Report</h5>
 
 <p><strong>Installation Date:</strong> 2026-08-22</p>
 
@@ -5163,10 +5162,10 @@ sudo docker run -d \
 
 <hr>
 
-<!-- Subsection H5 2.5.2-C -->
-<section id="config4-software-traffic-capture-router-mirroring-usb-modem" aria-label="2.5.2-C CONFIGURATION 4 Capturing traffic of all network devices via router mirroring with PC routing through USB modem">
+<!-- Subsection H5 2.4.2-C -->
+<section id="config4-software-traffic-capture-router-mirroring-usb-modem" aria-label="2.4.2-C CONFIGURATION 4 Capturing traffic of all network devices via router mirroring with PC routing through USB modem">
 
-<h5 id="network-traffic-capture-router-mirroring-usb-modem">2.5.2-C Capturing traffic of all network devices via router mirroring with PC routing through USB modem</h5>
+<h5 id="network-traffic-capture-router-mirroring-usb-modem">2.4.2-C Capturing traffic of all network devices via router mirroring with PC routing through USB modem</h5>
 
 <p>This chapter describes a method for complete control over the network traffic of all devices in the local network, including hidden traffic that cannot be detected by the analyzed system's own means. The key idea of the method: all traffic from the PC is forcibly routed through a smartphone (USB modem) connected to the router's Wi-Fi, and the router mirrors all traffic passing through it back to the PC via a LAN cable → PC network card. The router also mirrors to the PC all traffic from other devices connected to the router. Thus, traffic cannot bypass the router and always reaches the capture point.</p>
 
@@ -5599,10 +5598,10 @@ default via 192.168.0.1 dev enp0s7 proto dhcp src 192.168.0.5 metric 200</code><
 
 <!-- End of H5 subsection 2.4.2-C -->
 
-<!-- Подсекция H5 2.5.2-D -->
-<section id="config4-software-google-infrastructure-exclusion" aria-label="2.5.2-C CONFIGURATION 4 Exclusion of Google infrastructure from traffic">
+<!-- Подсекция H5 2.4.2-D -->
+<section id="config4-software-google-infrastructure-exclusion" aria-label="2.4.2-C CONFIGURATION 4 Exclusion of Google infrastructure from traffic">
 
-<h5 id="google-infrastructure-exclusion">2.5.2-D Exclusion of Google infrastructure from traffic</h5>
+<h5 id="google-infrastructure-exclusion">2.4.2-D Exclusion of Google infrastructure from traffic</h5>
 
 <p><strong>Hypothesis about camouflaging malicious traffic as Google telemetry</strong><br>
 Since traffic analysis did not reveal any signs of the attacker's activity, while the fact of this activity itself has been reliably established, an assumption is put forward that the malicious activity traffic is <strong>camouflaged as legitimate</strong> in a manner unknown at present. Given that Google's infrastructure actively collects telemetry, the following hypotheses are being considered: the traffic is either <strong>masked as Google telemetry collection</strong>, or the attacker has <strong>infiltrated Google's infrastructure</strong>, or is in some other way <strong>parasitizing it</strong>, carrying out aggressive telemetry collection and/or intercepting legitimate telemetry collection.</p>
@@ -6148,14 +6147,14 @@ shutdown_lifetime 5 seconds
 
 </section> 
 
-<!-- End of H4 subsection 2.5.2 -->
+<!-- End of H4 subsection 2.4.2 -->
 
 <hr>
 
-<!-- H4 Subsection 2.5.3 -->
-<section id="config4-experiment-results" aria-label="2.5.3 Observing the progress of the Configuration 4 experiment">
+<!-- H4 Subsection 2.4.3 -->
+<section id="config4-experiment-results" aria-label="2.4.3 Observing the progress of the Configuration 4 experiment">
 
-<h4>Observing the progress of the Configuration 4 experiment</h4>
+<h4>2.4.3 Observing the progress of the Configuration 4 experiment</h4>
 
 <p style="text-align: center; margin-top: 2rem;">
   <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to Contents</a>
@@ -6163,7 +6162,11 @@ shutdown_lifetime 5 seconds
 
 </section> 
 
-<!-- End of H4 subsection 2.5.3 -->
+<!-- End of H4 subsection 2.4.3 -->
+
+</section> 
+
+<!-- End of H4 subsection 2.4 -->
 
 <details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
   <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Hardening Chronicle and Attacks</summary>
@@ -6173,7 +6176,6 @@ shutdown_lifetime 5 seconds
     <li><strong>CONFIGURATION 3 (Debian 13/GNOME/Wayland):</strong> Radical outbound control enhancement: OUTPUT policy changed to DROP, only trusted IP addresses allowed (whitelist), DNS forcibly switched to Quad9 (9.9.9.9) with changes locked via chattr. Status: testing, awaiting data on the effectiveness of C2 channel disruption.</li>
   </ul>
 </details>
-
 
 
 </section> 

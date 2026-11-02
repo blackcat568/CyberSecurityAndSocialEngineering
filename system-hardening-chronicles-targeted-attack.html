@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "A real-world chronicle of defending against a targeted attack: documenting vulnerabilities, configurations, responses, and system hardening. From zero security to resilient configurations. Covers Debian 12 & 13, nftables, AppArmor, OpenSnitch, Flatpak, USBGuard, sysctl. For cybersecurity and InfoSec professionals.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-11-01<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-11-02<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -434,7 +434,7 @@
 
 <div class="alert" style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 2rem 0;">
   <strong style="color: #856404;">⚠️ Notice!</strong>
-  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-11-01<!-- DATE_END --></span>
+  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-11-02<!-- DATE_END --></span>
 </div>
 
 <!-- ИНТЕРАКТИВНОЕ ОГЛАВЛЕНИЕ (начало) -->
@@ -4877,6 +4877,27 @@ In the login manager configuration file <code>/etc/pam.d/gdm-password</code>, be
 <pre><code>sudo apt install seahorse</code></pre>
 
 <p>Before launching the application that requests access to the system password store, start Seahorse, select the <strong>"Login"</strong> keyring, and enter your account password. This unlocks the keyring for the entire current session, and application prompts will stop until the next reboot or login.</p>
+
+<p><strong>Alternative way to eliminate the keyring unlock window</strong><br> Besides entering the password in the graphical keyring shell "Keys and Passwords" (GNOME Keyring / Seahorse), the problem of the keyring window appearing can be solved by modifying the launcher shortcut of the program that triggers the keyring — so that it stops triggering it. An example of a modified shortcut:</p>
+
+<div class="historical-fact"> <pre> <code class="language-bash">
+[Desktop Entry]
+Name=Firestorm Viewer
+Comment=Client for accessing 3D virtual worlds
+# Full isolation of Firestorm from disk keyrings (Modified: 01.11.2026)
+Exec=dbus-run-session -- /opt/firestorm-install/etc/../firestorm
+Icon=/opt/firestorm-install/etc/../firestorm_icon.png
+Terminal=false
+Type=Application
+Categories=Application;Internet;Network;
+StartupNotify=true
+X-Desktop-File-Install-Version=3.0
+StartupWMClass=do-not-directly-run-firestorm-bin
+</code> </pre> </div>
+
+<p><strong>What was done and why it works</strong><br> The key change is the <code>dbus-run-session --</code> prefix in the <code>Exec=</code> line. It launches the program in a <strong>separate, isolated D-Bus session</strong> instead of the shared desktop session. The keyring (GNOME Keyring) communicates with applications precisely via D-Bus: when an application requests access to the secret store, it contacts the <code>org.freedesktop.secrets</code> service on the session bus. In an isolated bus this service does not exist, so the application does not find the keyring, does not initiate an unlock request — and the intrusive window does not appear. Side effect: a program in such a session will not be able to use the system secret store, but for applications that do not use it (like Firestorm Viewer), this does not matter.</p>
+
+<p>This method is convenient because it is <strong>local</strong>: it disables keyring integration only for a specific program, without affecting the rest of the system and other applications. At the same time, it does not require editing the PAM configuration and does not depend on the correct password transmission when logging in via a hardware key.</p>
 
 <hr>
 

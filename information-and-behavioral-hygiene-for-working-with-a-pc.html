@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "A foundational practical guide to digital, behavioral, and informational hygiene for personal computer users. Covers cybersecurity basics, social engineering defense, mental health protection online, ethical AI use, free software advocacy, mobile device hardening, and psychological manipulation countermeasures. Detailed manual for conscious and safe PC and internet use. CC0 license - free to use and share.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-11-10<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-11-14<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -504,6 +504,7 @@
                 <li style="margin: 0.4rem 0;"><a href="#section6-7">6.7. Backup Using the Simple rsync and Timeshift Utilities</a></li>
                 <li style="margin: 0.4rem 0;"><a href="#section6-8">6.8. Using Validators</a></li>
                 <li style="margin: 0.4rem 0;"><a href="#section6-9">6.9. Wireless Local File Sharing (LocalSend)</a></li>
+                <li style="margin: 0.4rem 0;"><a href="#section6-10">6.10. The Technical Passport of Your System: An Underrated User Tool</a></li>
             </ul>
         </li>
         
@@ -2727,6 +2728,8 @@ fi</code></pre>
 
   </section> <!-- /Конец основной главы H3 -->
   
+<hr>
+  
 <!-- MAIN CHAPTER (H3) -->
 <section id="using-localsend" aria-label="Wireless Local File Sharing (LocalSend)">
 
@@ -2851,6 +2854,40 @@ oifname "enp2s0" ip daddr 192.168.0.0/28 udp dport 53317 meta skuid { user, _fla
 
 </section> <!-- /End of main chapter H3 -->
 
+<!-- MAIN CHAPTER (H3) -->
+<section id="technical-passport" aria-label="The Technical Passport of Your System: An Underrated User Tool">
+
+<h3 id="section6-10">6.10. The Technical Passport of Your System: An Underrated User Tool</h3>
+
+<p>Creating a technical passport of your system — describing all components of the system unit and, preferably, the peripherals that make up your PC or laptop — is an important and greatly underrated practice.</p>
+
+<p>Such a technical passport is useful for understanding your PC's capabilities: which software will run on it, and which will either not run at all or will run with lag. In addition, when repairing or upgrading, you will be able to accurately tell a technician all the components that make up your system unit or laptop.</p>
+
+<p>Create a simple text file in which you list, one by one, the exact full names of the motherboard, processor, RAM modules, graphics card (if any), network card (list it separately, even if it is integrated into the motherboard), and so on.</p>
+
+<p>It is also worth specifying the model of the power supply, case fans (if any), and CPU cooler. Optionally — serial numbers of components (for warranty tracking).</p>
+
+<p>Be sure to indicate when the PC was purchased and when a particular component was replaced.</p>
+
+<p>Everything should be described as thoroughly and clearly as possible.</p>
+
+<p>Next, you can describe the peripherals: optical modem, router, monitor, printer — down to the keyboard and mouse, обязательно с указанием модели и даты покупки.</p>
+
+<p>Then separately describe the OS, the exact full build number, and the installation date on your PC.</p>
+
+<p>The file can be kept as a separate text document stored in a folder, or included in an electronic database such as CherryTree (see the chapter <a href="#keeping-notes-data-organization">on note-taking and data organization</a>). If necessary — print it out.</p>
+
+<p>Unfortunately, it is not uncommon for users to be unable to answer the question of what processor they have and when their OS was installed or reinstalled. When consulting a specialist involved in PC repair or upgrade, this creates additional difficulties: time and effort must be spent clarifying these questions. It is far better if the necessary file with a detailed list of your PC's specifications is available to you and/or the specialist — or if a fragment of the file that does not touch on data irrelevant to the current task can be promptly passed along.</p>
+
+<p>Likewise, when discussing with AI various aspects of PC operation, repair, upgrade, or OS settings, it is far more convenient to provide accurate, complete data in the chat than to try to recall and/or search for "what exactly do I have installed?"</p>
+
+<p><strong>Attention:</strong> do not include personal data in your PC's technical passport. List only hardware and OS specifications that have been produced and distributed in tens of thousands or millions of copies and are not unique personal data.</p>
+
+<a href="#section0" style="text-decoration: none;"> ↑ Back to Contents </a> | 
+<a href="#section6" style="text-decoration: none;"> ↑ Back to Chapter Start </a>
+
+</section> <!-- /End of main chapter H3 -->
+
 <hr>
 
 <details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
@@ -2865,6 +2902,7 @@ oifname "enp2s0" ip daddr 192.168.0.0/28 udp dport 53317 meta skuid { user, _fla
     <li><strong>6.7:</strong> Regularly back up your system using rsync and Timeshift, keep at least three copies (local, on a flash drive, and in the cloud), archive with tar, and verify checksums.</li>
     <li><strong>6.8:</strong> Use validators to check texts and code (HTML, bash, Python, SQL, etc.) — they save time, effort, and reputation. Validators catch syntax errors but do not replace testing. If you can't fix the error yourself — consult an AI assistant.</li>
     <li><strong>6.9:</strong> Use LocalSend for secure local file sharing — transfer goes directly over HTTPS, without cables or clouds. Configure nftables so that the port is only accessible to your devices. And remember: frequent USB connections loosen ports and can lead to short circuits.</li>
+    <li><strong>6.10:</strong> Create a PC technical passport — a file listing all component models, peripherals, and OS. Store it in CherryTree or a folder. It speeds up repairs, upgrades, and AI consultations. No personal data.</li>
   </ul>
 </details>
 
@@ -5771,6 +5809,23 @@ Cybersecurity, countering social engineering, countering psychological manipulat
 
 <p>You spend hours <em>with a safe device not connected to the internet</em>.</p>
 
+<hr>
+
+<p><strong><i>Electronic Phone Book</i></strong></p>
+
+<p>Store phone numbers in an electronic phone book — in the native app on your smartphone or tablet, or, if necessary, in a third-party contact database app. Locally or on a cloud server.</p>
+
+<p>Strange as it may seem, even today the author has encountered people who, despite owning a smartphone, kept numbers in a paper notebook. For example, one of the author's friends has a paper notebook with phone numbers so worn out that its cover came off long ago, and some pages were already falling onto the floor.</p>
+
+<p>When this person lost the notebook, he wept desperately for a long time over having lost priceless data with the phone numbers of friends and partners, and begged the higher powers to return the notebook.</p>
+
+<p>That day, the higher powers turned out to be favorable to him — and the notebook was found.</p>
+
+<p>With all due respect to the higher powers, the author nevertheless convinced his friend to transfer all the data from the notebook into the smartphone's phone book and back it up to a cloud server.</p>
+
+<p>Nowadays, electronic databases of various types should be the primary means of storing data. Storing data on paper media is also important, but it should be a backup or emergency option — not the primary one — in case access to the electronic database is lost.</p>
+
+<p>For example, if necessary, you can rewrite all your contacts into a notebook, but do not carry it with you; keep it at home — in case your smartphone is lost or stolen and the cloud backup server fails at the same time.</p>
 
 <a href="#section0" style="text-decoration: none;"> ↑ To Table of Contents </a> |
 

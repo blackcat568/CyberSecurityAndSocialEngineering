@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "A foundational practical guide to digital, behavioral, and informational hygiene for personal computer users. Covers cybersecurity basics, social engineering defense, mental health protection online, ethical AI use, free software advocacy, mobile device hardening, and psychological manipulation countermeasures. Detailed manual for conscious and safe PC and internet use. CC0 license - free to use and share.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-11-14<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-11-15<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -1062,6 +1062,8 @@
 <p>And large corporations operating quite legally also do not always disdain the abuse of informational power.</p>
 
 <p><strong>Therefore: do not feed them with dumps of your psyche.</strong><br>Either don't feed them at all. Or give the minimum. Or fake.</p>
+
+<p>For more on the danger of exposing your behavioral profile (psycho-profile) on social media and other public platforms, see the article <a href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/oculus-boar-monitoring-systems.html">"Oculus" and "Boar" — Neural Network Monitoring Systems of Russian Security Forces</a> (this article illustrates the operation of an open-source analysis technology system and is not political criticism).</p>
 
 <a href="#section0" style="text-decoration: none;"> ↑ To Table of Contents </a> |
 
@@ -2799,9 +2801,7 @@ ip saddr 192.168.0.0/16 drop       # private network (all other local IPs are dr
 
 <p>The rule is placed at the very end of the output chain, immediately after the line including external includes. The <code>ct state new</code> parameter ensures that the firewall only processes new legitimate sessions created by you.</p>
 
-<pre><code># ⬇️ THE CONTENT OF THE FILE whitelist.nft IS INSERTED HERE
-include "/etc/nftables.d/whitelist.nft"
-# ⬆️ INSERTION ENDED
+<pre><code>
 
 # == 📱 Allow LocalSend outgoing only within the /28 pool and only for trusted parties ==
 # Port 53317 is opened OUTBOUND EXCLUSIVELY for you (user) and the application itself (_flatpak)
@@ -2838,6 +2838,28 @@ oifname "enp2s0" ip daddr 192.168.0.0/28 udp dport 53317 meta skuid { user, _fla
     Partner device detected, ready for file exchange. The application runs in an isolated Flatpak sandbox, with port 53317 protected by nftables rules.
   </figcaption>
 </figure>
+
+<p>For Linux PCs, <strong>KDE Connect</strong> can serve as an alternative to LocalSend. As of November 2026, the application is available in the repositories of most Linux distributions and in the F-Droid repository for Android-based devices.</p>
+
+<p><strong><i>Configuring the nftables Firewall for KDE Connect</i></strong></p>
+
+<p>Unlike LocalSend, KDE Connect does not use a single fixed port. For device discovery and data transfer, the application uses a <strong>dynamic port range of 1714–1764</strong> for both TCP and UDP [citation:1][citation:10]. Therefore, firewall rules must open this entire range, not a single port.</p>
+
+<p>Add the following rules to the <code>input</code> and <code>output</code> chains, restricting access to your trusted subnet (in this example, <code>192.168.0.0/28</code>) and your network interface (<code>enp2s0</code>):</p>
+
+<pre><code># == 📱 Allow KDE Connect (dynamic range 1714–1764) ==
+# Incoming: only from the trusted subnet and only via enp2s0
+iifname "enp2s0" ip saddr 192.168.0.0/28 tcp dport 1714-1764 accept
+iifname "enp2s0" ip saddr 192.168.0.0/28 udp dport 1714-1764 accept
+
+# Outgoing: only to the trusted subnet
+oifname "enp2s0" ip daddr 192.168.0.0/28 tcp sport 1714-1764 accept
+oifname "enp2s0" ip daddr 192.168.0.0/28 udp sport 1714-1764 accept</code></pre>
+
+<p><strong><em>Note:</em></strong> if you are using <code>ufw</code>, the equivalent commands would be:</p>
+
+<pre><code>sudo ufw allow from 192.168.0.0/28 to any port 1714:1764 proto tcp
+sudo ufw allow from 192.168.0.0/28 to any port 1714:1764 proto udp</code></pre>
 
 <hr>
 
@@ -2882,6 +2904,179 @@ oifname "enp2s0" ip daddr 192.168.0.0/28 udp dport 53317 meta skuid { user, _fla
 <p>Likewise, when discussing with AI various aspects of PC operation, repair, upgrade, or OS settings, it is far more convenient to provide accurate, complete data in the chat than to try to recall and/or search for "what exactly do I have installed?"</p>
 
 <p><strong>Attention:</strong> do not include personal data in your PC's technical passport. List only hardware and OS specifications that have been produced and distributed in tens of thousands or millions of copies and are not unique personal data.</p>
+
+<div class="book-quote" style="margin: 1.5rem 0;">
+  <p style="margin-bottom: 0.75rem; font-weight: bold;">Example of a system technical passport (the author's technical passport):</p>
+  
+  <div style="background: #f5f5f0; border-left: 4px solid #8b0000; border-radius: 0 8px 8px 0; padding: 1rem 1.25rem; font-family: Georgia, 'Times New Roman', Times, serif; font-size: 0.9rem; line-height: 1.6; color: #2c2c20; max-height: 300px; overflow-y: auto;">
+    
+================================================================
+===  SYSTEM TECHNICAL PASSPORT 
+================================================================
+
+Hardware specifications (System unit and peripherals)
+
+================================================================
+===  SYSTEM UNIT    
+================================================================
+
+Motherboard:
+        Manufacturer: BIOSTAR Group
+        Product Name: N68S3B
+________________________________________________________________
+
+CMOS Battery:
+        Replaced: 2026-10-10
+        Model: GP CR2032
+        Reason: BIOS reset (date/time reset, memory settings returned to defaults)
+        Note: after replacement, date/time were entered manually,
+              memory settings (XMP/frequency) were not touched,
+              since the platform does not support XMP.  
+________________________________________________________________
+
+Processor:
+
+        Model: AMD Athlon II X4 645 (3.1 GHz, Socket AM3, TDP 95 W)
+        Revision: E0
+        Installed: 2026-10-30
+        Thermal paste: GD900
+        Cooler: CIA-123W2C (4-pin PWM, 2 copper heat pipes, 123 mm fan)
+        Note: used processor, purchased 2026-10-20
+________________________________________________________________
+   
+Hard Drive:
+        Device Model:     Apacer AS350 256GB
+        Serial Number:    2021030170003F69
+        Firmware Version: S0413A0
+        User Capacity:    256,060,514,304 bytes [256 GB]
+        Rotation Rate:    Solid State Device
+        
+        SSD (interface):
+        Apacer AS350 256GB, SATA III (6 Gbit/s) for the drive itself
+        But the board only has SATA II (3 Gbit/s) — real ceiling ~300 MB/s
+        
+        Endurance (TBW): 180 TB 
+        Installation date: November 2021
+        Power-on hours as of 2026-10-21: 11,059 hours (Power_On_Hours)
+        Total written (Total_LBAs_Written): ~696,510 units
+        Converted to TB: ~0.36 TB (696510 * 512 / 10^12) 
+        Remaining endurance: ~179.64 TB (practically new)
+________________________________________________________________
+
+Network Card:
+        Model and manufacturer                                                                                                                        
+        00:07.0 Bridge: NVIDIA Corporation MCP61 Ethernet (rev a2)
+       
+        Driver and version                                                                                                                              
+        driver: forcedeth
+        version: 0.64
+        firmware-version: 
+        expansion-rom-version: 
+        bus-info: 0000:00:07.0
+        supports-statistics: yes
+        supports-test: yes
+        supports-eeprom-access: no
+        supports-register-dump: yes
+        supports-priv-flags: no
+
+        Speed and mode (Full/Half Duplex)                                                                                                           
+        Speed: 100Mb/s
+        Duplex: Full
+        Link detected: yes
+        
+        Hardware limit:
+        Realtek RTL8201CL, 10/100 Mbit/s (maximum per board specification)
+________________________________________________________________
+
+Memory:
+        Modules: Hyundai HMT351U6CFR8C-PB, 2 × 4 GB
+        Serial Number: 363D1D1E, 383D3D1E
+        Rated speed (per dmidecode): 667 MT/s (DDR3-1333)
+        Actual operating speed (per lshw): 667 MHz (DDR3-1333)
+        Operating mode: DDR3-1333, standard for Athlon II X4 645
+        Note: dmidecode in SMBIOS 2.6 does not show
+              Configured Memory Speed, so lshw was used to verify
+              the actual frequency.
+        Conclusion: memory is running at full rated speed (1333).
+________________________________________________________________
+        
+BIOS:
+        Vendor: American Megatrends Inc.
+        Version: 080015 
+        Release Date: 11/12/2010
+________________________________________________________________       
+
+Graphics Card:
+        02:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Cedar [Radeon HD 5000/6000/7350/8350 Series]
+________________________________________________________________  
+
+Case Fan:
+        Model: Arctic P9 Silent
+        Installed: 2026-10-22
+        Purpose: exhaust hot air from the case (rear panel)
+        Note: cable secured with nylon cord (knots glued with glue 88),
+              does not touch the blades or hot components
+________________________________________________________________ 
+
+================================================================
+===  PERIPHERALS     
+================================================================
+
+Monitor:
+        Model: Acer G196HQLb
+        Diagonal: 18.5"
+        Resolution: 1366x768
+        Panel: TN
+        Interface: VGA (D-Sub)
+        Manufacturer: Acer
+________________________________________________________________   
+        
+Router:
+        Model: Netis W1
+        Wi-Fi standard: 802.11n (Wi-Fi 4), 2.4 GHz, up to 300 Mbit/s
+        Wired ports: 1x WAN + 2x LAN, all 100 Mbit/s (Fast Ethernet)
+        Antennas: 2x 5 dBi (non-removable)
+________________________________________________________________   
+
+Optical Modem (ONT):
+        Model: Huawei EchoLife HG8310M
+        Type: GPON ONT (bridge, no Wi-Fi)
+        Ports: 1x GPON (SC/UPC), 1x GE Ethernet (10/100/1000)
+        Speed: up to 2.5 Gbit/s (down) / 1.25 Gbit/s (up)
+
+________________________________________________________________   
+
+YubiKey:
+        Model: YubiKey 5C (USB-C)
+        Firmware: 5.4.3
+        Serial Number: 12345678
+        Interfaces: OTP, FIDO, CCID
+        Applications: FIDO2, U2F, OATH, PIV, OpenPGP, YubiHSM Auth
+        PIN: FIDO2 PIN recorded in a paper journal
+        Setup date: 2026-10-22
+  
+________________________________________________________________ 
+  
+================================================================
+===  DEFECTS AND FIXES     
+================================================================
+
+Graphics card port (right screw):
+        Defect: the right screw securing the graphics card port has
+                loosened and is loosely tightened.
+        Action: carefully tighten during the next case disassembly.
+        Date detected: 2026-10-22
+        
+Lesson (2026-10-23):
+        Cause of accelerated PSU fan wear — clogged dust mesh on the
+        rear panel of the case. The fan operated with increased
+        resistance, which accelerated bearing wear.
+        Solution: clean the mesh more often (e.g., every 3-6 months),
+        especially if the room is dusty or there are pets.
+
+
+  </div>
+</div>
 
 <a href="#section0" style="text-decoration: none;"> ↑ Back to Contents </a> | 
 <a href="#section6" style="text-decoration: none;"> ↑ Back to Chapter Start </a>

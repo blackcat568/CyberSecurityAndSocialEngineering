@@ -64,7 +64,9 @@ const articlesGroups = [
   {
     group: "Прочие статьи",
     articles: [
-      { title: "Технические задачи", url: "technical-tasks-rus.html" }
+      { title: "Технические задачи", url: "technical-tasks-rus.html" },
+      { title: "Экспериментальная статья с очень длинным заголовком для проверки переноса строк и поведения панели при переполнении", url: "experimental-article-with-a-very-long-title-to-test-line-wrapping-and-panel-overflow-behavior-rus.html" },
+      { title: "Вторая тестовая статья с длинным названием и длинным URL-слагом для проверки прокрутки и обрезки текста в узкой панели", url: "second-test-article-with-a-long-title-and-long-url-slug-to-test-scrolling-and-text-truncation-in-a-narrow-panel-rus.html" }
     ]
   }
 ];

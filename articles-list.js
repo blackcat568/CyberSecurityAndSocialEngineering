@@ -64,7 +64,7 @@ const articlesGroups = [
   {
     group: "Other articles",
     articles: [
-      { title: "Technical tasks", url: "technical-tasks" }
+      { title: "Technical tasks", url: "technical-tasks.html" }
     ]
   }
 ];

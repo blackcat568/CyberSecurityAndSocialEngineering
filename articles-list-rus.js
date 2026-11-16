@@ -64,8 +64,7 @@ const articlesGroups = [
   {
     group: "Прочие статьи",
     articles: [
-      { title: "Технические задачи", url: "technical-tasks-rus" },
-      { title: "Технические задачи", url: "technical-tasks-rus" }
+      { title: "Технические задачи", url: "technical-tasks-rus.html" }
     ]
   }
 ];

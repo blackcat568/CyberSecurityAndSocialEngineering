@@ -46,9 +46,10 @@
   <link rel="alternate" hreflang="ru" href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/trust-the-manipulators-main-weapon-rus.html">
   <link rel="alternate" hreflang="x-default" href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/trust-the-manipulators-main-weapon.html">
   
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  
   <link rel="stylesheet" href="panel.css">
   
-  <meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
     body { font-family: "Segoe UI", Tahoma, Verdana, Arial, sans-serif; 
 		  line-height:1.45; 
@@ -152,14 +153,39 @@
 <body>
 
 <!-- Кнопка слева, не перекрывает контент -->
-<button id="panel-toggle">📚 Articles</button>
+<button id="panel-toggle" style="
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 10000;
+  padding: 8px 14px;
+  cursor: pointer;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  font-size: 0.9rem;
+">
+  📚 Статьи
+</button>
 
 <!-- Панель выезжает слева -->
 <div id="article-panel"></div>
 
-<script src="articles-list.js"></script>
+<script src="articles-list-rus.js"></script>
 <script src="render-panel.js"></script>
-<script src="panel.js"></script>
+<script>
+(function() {
+  const panel = document.getElementById('article-panel');
+  const toggle = document.getElementById('panel-toggle');
+  let isOpen = false;
+
+  toggle.addEventListener('click', function() {
+    isOpen = !isOpen;
+    panel.style.left = isOpen ? '0px' : '-320px';
+    toggle.textContent = isOpen ? '📚 Свернуть' : '📚 Статьи';
+  });
+})();
+</script>
 
 <a id="top"></a>
 

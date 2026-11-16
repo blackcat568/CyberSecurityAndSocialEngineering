@@ -1,0 +1,48 @@
+(function() {
+  const panel = document.getElementById('article-panel');
+  const toggle = document.getElementById('panel-toggle');
+  if (!panel || !toggle) return;   // защита: если разметки нет — тихо выходим
+
+  // Определяем язык: сначала <html lang="...">, затем fallback по URL
+  function detectLang() {
+    const htmlLang = (document.documentElement.lang || '').toLowerCase();
+    if (htmlLang.startsWith('ru')) return 'ru';
+    if (htmlLang.startsWith('en')) return 'en';
+
+    // fallback: если lang не задан — смотрим на URL
+    const path = window.location.pathname.toLowerCase();
+    if (path.includes('-rus')) return 'ru';
+    return 'en';
+  }
+
+  const lang = detectLang();
+
+  const labels = {
+    ru: { open: '📚 Статьи',   close: '📚 Свернуть' },
+    en: { open: '📚 Articles', close: '📚 Collapse' }
+  };
+
+  // Ставим стартовый текст кнопки (на случай, если в HTML стоит что-то другое)
+  toggle.textContent = labels[lang].open;
+
+  let isOpen = false;
+
+  toggle.addEventListener('click', function() {
+    isOpen = !isOpen;
+    panel.style.left = isOpen ? '0px' : '-320px';
+    toggle.textContent = isOpen ? labels[lang].close : labels[lang].open;
+
+    // Блокируем прокрутку страницы под открытой панелью (опционально, но полезно)
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  });
+
+  // Закрытие по Escape — удобно и безопасно
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && isOpen) {
+      isOpen = false;
+      panel.style.left = '-320px';
+      toggle.textContent = labels[lang].open;
+      document.body.style.overflow = '';
+    }
+  });
+})();

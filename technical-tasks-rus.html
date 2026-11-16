@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Технические задачи</title>
+
+  <link rel="icon" type="image/png" href="favicon.png">
+
+  <!-- JSON-LD структурированные данные -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "name": "Технические задачи",
+    "url": "https://blackcat568.github.io/CyberSecurityAndSocialEngineering/technical-tasks-rus.html",
+    "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "isAccessibleForFree": true,
+    "description": "Практические кейсы по настройке софта и железа: разбор сложных конфигурационных задач, нестандартных ситуаций и решений, выходящих за рамки обзорных материалов сайта.",
+    "datePublished": "2026-11-16",
+    "dateModified": "<!-- DATE_START -->2026-11-16<!-- DATE_END -->",
+    "author": {
+      "@type": "Person",
+      "name": "blackcat568",
+      "url": "https://github.com/blackcat568"
+    }
+  }
+  </script>
+
+<!-- Мета-теги для этой страницы -->
+  <meta name="description" content="Практические кейсы по настройке софта и железа: разбор сложных конфигурационных задач, нестандартных ситуаций и решений, выходящих за рамки обзорных материалов сайта.">
+  <meta name="keywords" content="технические задачи, настройка софта, настройка железа, конфигурация, troubleshooting, системное администрирование, практические кейсы, разбор задач">
+  <meta name="author" content="blackcat568">
+  <meta name="license" content="CC0 1.0 Universal (Public Domain Dedication)">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta property="og:title" content="Технические задачи">
+  <meta property="og:description" content="Практические кейсы по настройке софта и железа: разбор сложных конфигурационных задач, нестандартных ситуаций и решений, выходящих за рамки обзорных материалов сайта.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/pictures/wrench-and-gear.jpg">
+  <meta property="og:url" content="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/technical-tasks.html">
+
+  <!-- ✅ CANONICAL ССЫЛКА (ставим сюда) -->
+  <link rel="canonical" href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/technical-tasks.html">
+
+  <!-- ✅ Hreflang (связь между языковыми версиями) -->
+  <link rel="alternate" hreflang="en" href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/technical-tasks.html">
+  <link rel="alternate" hreflang="ru" href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/technical-tasks-rus.html">
+  <link rel="alternate" hreflang="x-default" href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/technical-tasks.html">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    body { font-family: "Segoe UI", Tahoma, Verdana, Arial, sans-serif; 
+		  line-height:1.45; 
+		  color:#111; 
+		  max-width:860px; 
+		  margin:26px auto; 
+		  padding:0 18px; 
+		  background:#fff;  
+		  text-rendering: optimizeLegibility;}
+	  
+    h1 { font-size:2rem; margin-bottom:0.3rem; }
+    
+    h2 {
+      font-size:1.35rem;
+      margin-top:1.8rem;
+      padding-bottom:0.2rem;
+    }
+
+    h3 {
+      font-size:1.15rem;
+      margin-top:1.2rem;
+      font-weight:700;
+    }
+
+    section {
+      margin-bottom: 2rem;
+    }
+
+    .subtitle { color:#555; margin-top:0; margin-bottom:1.0rem; font-size:0.95rem; }
+    hr { border:0; border-top:1px solid #ddd; margin:1.2rem 0; }
+    p { margin:0.8rem 0; }
+    ul, ol { padding-left:1.2rem; margin:0.6rem 0; }
+    li { margin:0.35rem 0; }
+
+    strong em { font-weight:700; font-style:italic; }
+    header { background:#f6f8fa;border-bottom:1px solid #e1e4e8;padding:12px 18px;margin-bottom:18px; }
+    footer { border-top:1px solid #ddd; margin-top:1.8rem; padding-top:1rem; font-size:0.85rem; color:#555; }
+    footer .ref { font-size:0.8rem; color:#666; margin-top:0.3rem; }
+    
+    /* === Semantic content blocks === */
+    .historical-fact {
+      margin: 1.5em 0 1.5em 1rem;
+      padding: 1em 1.2em;
+      background: #f7f7f7;
+      border-left: 4px solid #555;
+      color: #111;
+      font-size: 1em;
+    }
+
+    /* === Стили для исторических справок === */
+    .historical-fact {
+      overflow-x: auto;
+      word-wrap: break-word;
+    }
+    
+    .historical-fact p {
+      margin: 0;
+    }
+	  
+    .final-thesis {
+  	  background: linear-gradient(to right, #f7f7f7, transparent);
+      margin-top: 2em;
+      padding-left: 1em;
+      border-left: 5px solid #333;
+      font-size: 1.05em;
+      font-weight: 600;
+     color: #222;
+    }
+    
+    /* ========== МОБИЛЬНАЯ АДАПТАЦИЯ ========== */
+    /* Базовый размер шрифта */
+    html {
+      font-size: 16px;
+    }
+
+    /* Настройки для телефонов (ширина до 600px) */
+    @media (max-width: 600px) {
+      html {
+        font-size: 18px;
+      }
+      body {
+        padding: 0 16px;
+      }
+      h1 {
+        font-size: 1.8rem;
+      }
+      h2 {
+        font-size: 1.3rem;
+      }
+      p {
+        margin: 1rem 0;
+      }
+      a {
+        padding: 6px 0;
+        display: inline-block;
+      }
+    }
+    
+  </style>
+</head>
+<body>
+
+<!-- Кнопка слева, не перекрывает контент -->
+<button id="panel-toggle" style="
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 10000;
+  padding: 8px 14px;
+  cursor: pointer;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  font-size: 0.9rem;
+">
+  📚 Статьи
+</button>
+
+<!-- Панель выезжает слева -->
+<div id="article-panel" style="
+  position: fixed;
+  top: 0;
+  left: -320px;
+  width: 300px;
+  height: 100vh;
+  background: #f8f9fa;
+  border-right: 1px solid #dee2e6;
+  padding: 3.5rem 1rem 1.5rem 1rem;
+  overflow-y: auto;
+  transition: left 0.3s ease;
+  z-index: 9999;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+"></div>
+
+<script src="articles-list-rus.js"></script>
+<script src="render-panel.js"></script>
+<script>
+(function() {
+  const panel = document.getElementById('article-panel');
+  const toggle = document.getElementById('panel-toggle');
+  let isOpen = false;
+
+  toggle.addEventListener('click', function() {
+    isOpen = !isOpen;
+    panel.style.left = isOpen ? '0px' : '-320px';
+    toggle.textContent = isOpen ? '📚 Свернуть' : '📚 Статьи';
+  });
+})();
+</script>
+
+<a id="top"></a>
+
+<header>
+  <!-- Главная навигация сайта -->
+  <nav aria-label="Main navigation" style="max-width:860px;margin:0 auto;display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+    <a href="/CyberSecurityAndSocialEngineering/index-rus.html" rel="prev" style="font-weight:700;color:#0366d6;text-decoration:none;font-size:1rem;">
+      ← Вернуться на главную
+    </a>
+    <div style="color:#444;font-size:0.95rem;">
+      CyberSecurity &amp; Social Engineering — главная страница
+    </div>
+  </nav>
+  
+  <!-- Языковая навигация -->
+  <nav aria-label="Language alternation" style="max-width:860px;margin:0 auto;display:flex;align-items:center;gap:12px;">
+    <a href="/CyberSecurityAndSocialEngineering/technical-tasks.html" hreflang="en" rel="alternate" style="font-weight:700;color:#0366d6;text-decoration:none;font-size:1rem;">
+      ← English version
+    </a>
+  </nav>
+</header>
+
+<main>
+<article>
+
+<h1>Технические задачи</h1>
+
+Добавить текст статьи
+
+<a href="#top" style="display: inline-block; padding: 8px 16px; background: #f5f5f0; border: 1px solid #d0d0c0; border-radius: 4px; text-decoration: none; color: #1a1a1a;">
+  ↑ Вернуться в начало страницы
+</a>
+
+<!-- Начало блока перекрестных ссылок для статьи "Доверие — главное оружие манипулятора" -->
+<hr>
+<aside aria-label="Связанные материалы">
+<p>Связанные страницы:</p>
+<ul>
+
+   <li>Добавить страинцы</li>
+
+</ul>
+</aside>
+
+<!-- Конец блока -->
+
+</article>
+
+  <footer>
+    <!-- Смысловой манифест и дисклеймер безопасности -->
+    <section aria-label="О целях контента и безопасности">
+      <p style="margin-bottom: 1rem;">Материалы сайта посвящены анализу проблем кибернетической, социальной и психологической безопасности, противодействию тоталитарным режимам, деструктивным сектам и псевдонаучным культам, а также противодействию механизмам индивидуальных манипуляций. Отдельное внимание уделяется вопросам психологии, философии и устойчивого развития личности, способной осознанно и эффективно противостоять данным угрозам.</p>
+      <p style="margin-bottom: 1rem;">Контент распространяется свободно и предназначен исключительно для обучения, защитных исследований и осмысленного практического использования. Автор придерживается принципов научной добросовестности и критического мышления.</p>
+    </section>
+
+    <!-- Метаданные и лицензия CC0 -->
+    <p>Автор: <strong>blackcat568</strong>. Дата составления: <time datetime="2026-11-16">16.11.2026</time>.</p>
+    <p>Лицензия: <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="license noopener external" target="_blank">CC0 1.0 Universal (Public Domain)</a></p>
+  </footer>
+
+
+</main>
+
+</body>
+</html>

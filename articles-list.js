@@ -60,5 +60,11 @@ const articlesGroups = [
       { title: "Fighting AI and the Don Quixotes of the 21st Century 2", url: "fighting-ai-and-the-don-quixotes-of-the-21st-century-2.html" },
       { title: "Fraudulent Manipulations of the Romanticized Image of Ancient China and Modern China: The Triumph of Science and Technology", url: "fraudulent-manipulations-romanticized-ancient-china.html" }
     ]
+  },
+  {
+    group: "Other articles",
+    articles: [
+      { title: "Technical tasks", url: "technical-tasks" }
+    ]
   }
 ];

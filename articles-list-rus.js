@@ -60,5 +60,11 @@ const articlesGroups = [
       { title: "Борьба с искусственным интеллектом и Дон Кихоты XXI века 2", url: "fighting-ai-and-the-don-quixotes-of-the-21st-century-2-rus.html" },
       { title: "Мошеннические манипуляции романтизированным образом древнего Китая и современный Китай: торжество науки и техники", url: "fraudulent-manipulations-romanticized-ancient-china-rus.html" }
     ]
+  },
+  {
+    group: "Прочие статьи",
+    articles: [
+      { title: "Технические задачи", url: "technical-tasks-rus" }
+    ]
   }
 ];

@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "Why trust is the main weapon of a manipulator. Analysis of psychological control mechanisms: violation of boundaries, informal schemes, radicalism. A guide to recognizing and countering manipulative tactics.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-11-10<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-11-16<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -173,6 +173,8 @@
   left: -320px;
   width: 300px;
   height: 100vh;
+  height: 100dvh;              /* для мобильных: учитывает адресную строку */
+  box-sizing: border-box;      /* ← ключевое: padding входит в height */
   background: #f8f9fa;
   border-right: 1px solid #dee2e6;
   padding: 3.5rem 1rem 1.5rem 1rem;

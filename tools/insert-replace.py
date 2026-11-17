@@ -18,26 +18,23 @@ import re
 import sys
 
 # ==================== CONFIG ====================
-# Старый блок, который нужно заменить (задаём ЖЁСТКО, как есть).
-# Отступы в начале строк можно не соблюдать — они игнорируются.
-OLD_BLOCK = '''<button id="panel-toggle" style="
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  z-index: 10000;
-  padding: 8px 14px;
-  cursor: pointer;
-  background: #f8f9fa;
-  border: 1px solid #dee2e6;
-  border-radius: 6px;
-  font-size: 0.9rem;
-">
-  📚 Articles
-</button>'''
+OLD_BLOCK = '''<script>
+(function() {
+  const panel = document.getElementById('article-panel');
+  const toggle = document.getElementById('panel-toggle');
+  let isOpen = false;
 
-NEW_BLOCK = '''<button id="panel-toggle">📚 Articles</button>'''
+  toggle.addEventListener('click', function() {
+    isOpen = !isOpen;
+    panel.style.left = isOpen ? '0px' : '-320px';
+    toggle.textContent = isOpen ? '📚 Свернуть' : '📚 Статьи';
+  });
+})();
+</script>'''
 
-MARKER = '<button id="panel-toggle">📚 Articles</button>'
+NEW_BLOCK = '''<script src="assets/js/panel-init.js"></script>'''
+
+MARKER = '<script src="assets/js/panel-init.js"></script>'
 # ================================================
 
 ROOT = "."

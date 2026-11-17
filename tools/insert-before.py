@@ -13,10 +13,8 @@ import os
 import sys
 
 # ==================== CONFIG ====================
-UNIQUE_LINE = '<link rel="stylesheet" href="assets/css/style-main.css">'
-INSERT_TEXT  = '<!-- подключение основных стилей страницы -->'
-# Если INSERT_TEXT должен быть HTML-комментарием, поставьте:
-# INSERT_TEXT = '    <!-- подключение основных стилей страницы -->'
+UNIQUE_LINE = '<script src="assets/js/articles-list.js"></script>'
+INSERT_TEXT  = '<!-- подключение скриптов панели статей -->'
 # ================================================
 
 # Корень, откуда искать .html (текущая папка по умолчанию)

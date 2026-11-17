@@ -46,10 +46,11 @@
   <link rel="alternate" hreflang="ru" href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/fraudulent-manipulations-romanticized-ancient-china-rus.html">
   <link rel="alternate" hreflang="x-default" href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/fraudulent-manipulations-romanticized-ancient-china.html">
   
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
->
+<!-- ===== НАЧАЛО: Подключение стилей Swiper ===== -->
+
+<link rel="stylesheet" href="assets/css/swiper-bundle.min.css">
+
+<!-- ===== КОНЕЦ: Подключение стилей Swiper ===== -->
   
   <meta name="viewport" content="width=device-width,initial-scale=1">
   
@@ -71,21 +72,11 @@
 <!-- Панель выезжает слева -->
 <div id="article-panel"></div>
 
+
+<!-- подключение скриптов панели статей -->
 <script src="assets/js/articles-list.js"></script>
 <script src="assets/js/render-panel.js"></script>
-<script>
-(function() {
-  const panel = document.getElementById('article-panel');
-  const toggle = document.getElementById('panel-toggle');
-  let isOpen = false;
-
-  toggle.addEventListener('click', function() {
-    isOpen = !isOpen;
-    panel.style.left = isOpen ? '0px' : '-320px';
-    toggle.textContent = isOpen ? '📚 Collapse' : '📚 Articles';
-  });
-})();
-</script>
+<script src="assets/js/panel-init.js"></script>
 
 <header>
   <!-- Главная навигация сайта -->
@@ -1436,42 +1427,9 @@ The long night lasted forty-eight years. Civilization Number 137 was destroyed b
 </main>
 
 <!-- ===== НАЧАЛО: Подключение библиотеки Swiper ===== -->
-
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-
+<script src="assets/js/swiper-bundle.min.js" defer></script>
+<script src="assets/js/swiper-init.js" defer></script>
 <!-- ===== КОНЕЦ: Подключение библиотеки Swiper ===== -->
-
-<!-- ===== НАЧАЛО: Настройка карусели ===== -->
-
-<script>
-
-const swiper = new Swiper('.swiper', {
-
-    loop:true,
-
-    centeredSlides:true,
-
-    spaceBetween:20,
-
-    grabCursor:true,
-
-    keyboard:true,
-
-    navigation:{
-        nextEl:'.swiper-button-next',
-        prevEl:'.swiper-button-prev'
-    },
-
-    pagination:{
-        el:'.swiper-pagination',
-        clickable:true
-    }
-
-});
-
-</script>
-
-<!-- ===== КОНЕЦ: Настройка карусели ===== -->
 
 </body>
 </html>

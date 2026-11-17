@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "Analysis of targeted attacks on Android devices (ZTE Blade A522, Android 7.1.1 and Lenovo TB-8504X, Android 8.1.0). Attacker gains full remote access to microphone, camera, and network traffic. Partial tablet protection via NetGuard. Supplement to 'System Hardening Chronicles'.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-11-01<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-11-17<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -125,145 +125,8 @@
     
   <!-- КОНЕЦ ПОДКЛЮЧЕНИЯ БИБЛИОТЕК ПОДСВЕТКИ КОДА -->
   
-  <style>
-    body { font-family: "Segoe UI", Tahoma, Verdana, Arial, sans-serif; 
-		  line-height:1.45; 
-		  color:#111; 
-		  max-width:860px; 
-		  margin:26px auto; 
-		  padding:0 18px; 
-		  background:#fff;  
-		  text-rendering: optimizeLegibility;}
-	  
-    h1 { font-size:2rem; margin-bottom:0.3rem; }
-    
-    h2 {
-      font-size:1.35rem;
-      margin-top:1.8rem;
-      padding-bottom:0.2rem;
-    }
+<link rel="stylesheet" href="assets/css/style-main.css">
 
-    h3 {
-      font-size:1.15rem;
-      margin-top:1.2rem;
-      font-weight:700;
-    }
-
-    section {
-      margin-bottom: 2rem;
-    }
-
-    .subtitle { color:#555; margin-top:0; margin-bottom:1.0rem; font-size:0.95rem; }
-    hr { border:0; border-top:1px solid #ddd; margin:1.2rem 0; }
-    p { margin:0.8rem 0; }
-    ul, ol { padding-left:1.2rem; margin:0.6rem 0; }
-    li { margin:0.35rem 0; }
-    
-    /* ===== SEPARATOR STYLES ===== */
-    /* Base style for ALL dividers (light, for subchapters) */
-    hr {
-        border: none;
-        height: 1px;
-        background-color: #e0e0e0; /* ПРОСТОЙ ЦВЕТ без градиента */
-        margin: 36px 0;
-        opacity: 0.7;
-    }
-    
-    /* Dark divider for MAIN CHAPTERS */
-    hr.divider--major {
-        border: 0;
-        height: 3px; /* Исходная толщина */
-        background: linear-gradient(to right, transparent, #000, transparent); /* Исходный градиент */
-        border-radius: 2px; /* Исходный радиус */
-        margin: 50px 0; /* Исходный отступ */
-    }
-    /* ===== END SEPARATOR STYLES ===== */
-
-    strong em { font-weight:700; font-style:italic; }
-    header { background:#f6f8fa;border-bottom:1px solid #e1e4e8;padding:12px 18px;margin-bottom:18px; }
-    footer { border-top:1px solid #ddd; margin-top:1.8rem; padding-top:1rem; font-size:0.85rem; color:#555; }
-    footer .ref { font-size:0.8rem; color:#666; margin-top:0.3rem; }
-    
-    /* === Semantic content blocks === */
-    .historical-fact {
-      margin: 1.5em 0 1.5em 1rem;
-      padding: 1em 1.2em;
-      background: #f7f7f7;
-      border-left: 4px solid #555;
-      color: #111;
-      font-size: 1em;
-    }
-
-    /* === Стили для исторических справок === */
-    .historical-fact {
-      overflow-x: auto;
-      word-wrap: break-word;
-    }
-    
-    .historical-fact p {
-      margin: 0;
-    }
-	  
-    .final-thesis {
-  	  background: linear-gradient(to right, #f7f7f7, transparent);
-      margin-top: 2em;
-      padding-left: 1em;
-      border-left: 5px solid #333;
-      font-size: 1.05em;
-      font-weight: 600;
-     color: #222;
-    }
-    
-    /* Стили для блоков кода */
-    .historical-fact pre {
-        max-height: 350px;
-        overflow-y: auto;
-        margin-top: 0.8rem;
-        background: #1e1e1e;
-        color: #d4d4d4;
-        padding: 0.8rem;
-        border-radius: 4px;
-        overflow-x: auto;
-        white-space: pre-wrap;
-        word-wrap: break-word;
-    }
-    
-    .historical-fact code {
-        color: #d4d4d4;
-        background: none;
-        padding: 0;
-    }
-    
-    /* ========== МОБИЛЬНАЯ АДАПТАЦИЯ ========== */
-    /* Базовый размер шрифта */
-    html {
-      font-size: 16px;
-    }
-
-    /* Настройки для телефонов (ширина до 600px) */
-    @media (max-width: 600px) {
-      html {
-        font-size: 18px;
-      }
-      body {
-        padding: 0 16px;
-      }
-      h1 {
-        font-size: 1.8rem;
-      }
-      h2 {
-        font-size: 1.3rem;
-      }
-      p {
-        margin: 1rem 0;
-      }
-      a {
-        padding: 6px 0;
-        display: inline-block;
-      }
-    }
-    
-  </style>
 </head>
 
 <body>
@@ -343,14 +206,14 @@
 
 <div class="alert" style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 2rem 0;">
   <strong style="color: #856404;">⚠️ Notice!</strong>
-  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-11-01<!-- DATE_END --></span>
+  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-11-17<!-- DATE_END --></span>
 </div>
 
 <p>This material is a direct supplement to the main article:<br>
 <a href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/system-hardening-chronicles-targeted-attack.html">"System Hardening Chronicles: Seeking a Configuration Resilient to Targeted Attacks"</a>.<br>
 It describes the experience with Android mobile devices, which confirms and expands upon the conclusions drawn for desktop systems.</p>
 
-<p>Last updated: <!-- DATE_START -->2026-11-01<!-- DATE_END --></p>
+<p>Last updated: <!-- DATE_START -->2026-11-17<!-- DATE_END --></p>
 
 <!-- ИНТЕРАКТИВНОЕ ОГЛАВЛЕНИЕ (начало) -->
 	

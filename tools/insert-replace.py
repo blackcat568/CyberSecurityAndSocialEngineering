@@ -20,15 +20,24 @@ import sys
 # ==================== CONFIG ====================
 # Старый блок, который нужно заменить (задаём ЖЁСТКО, как есть).
 # Отступы в начале строк можно не соблюдать — они игнорируются.
-OLD_BLOCK = '''<script src="articles-list-rus.js"></script>
-<script src="render-panel.js"></script>'''
+OLD_BLOCK = '''<button id="panel-toggle" style="
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 10000;
+  padding: 8px 14px;
+  cursor: pointer;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  font-size: 0.9rem;
+">
+  📚 Articles
+</button>'''
 
-# Что ставим вместо него
-NEW_BLOCK = '''<script src="assets/js/articles-list-rus.js"></script>
-<script src="assets/js/render-panel.js"></script>'''
+NEW_BLOCK = '''<button id="panel-toggle">📚 Articles</button>'''
 
-# Маркер идемпотентности: если эта строка уже есть — файл пропускается
-MARKER = '<script src="assets/js/articles-list-rus.js"></script>'
+MARKER = '<button id="panel-toggle">📚 Articles</button>'
 # ================================================
 
 ROOT = "."

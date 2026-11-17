@@ -46,82 +46,18 @@
   <link rel="alternate" hreflang="ru" href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/android-system-hardening-chronicles-targeted-attack-rus.html">
   <link rel="alternate" hreflang="x-default" href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/android-system-hardening-chronicles-targeted-attack.html">
   
-      <!-- НАЧАЛО ПОДКЛЮЧЕНИЯ БИБЛИОТЕК ПОДСВЕТКИ КОДА -->
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  
+  <!-- НАЧАЛО ПОДКЛЮЧЕНИЯ БИБЛИОТЕК ПОДСВЕТКИ КОДА -->
 
     <!-- 1. Подключаем CSS-тему оформления (тёмная тема) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="assets/css/atom-one-dark.min.css">
 
     <!-- 2. Подключаем саму библиотеку Highlight.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="assets/js/highlight.min.js" defer></script>
     
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    
-    <!-- Регистрируем синтаксис nftables в Highlight.js -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            if (typeof hljs !== 'undefined') {
-                hljs.registerLanguage('nftables', (hljs) => {
-                    return {
-                        name: 'nftables',
-                        aliases: ['nft'],
-                        keywords: 'table chain type hook priority policy accept drop reject log counter ip ip6 inet ether tcp udp icmp ct state established    related new invalid dport sport saddr daddr',
-                        contains: [
-                            hljs.HASH_COMMENT_MODE,
-                            hljs.QUOTE_STRING_MODE,
-                            hljs.NUMBER_MODE,
-                            {
-                                className: 'meta',
-                                begin: 'include\\b', end: '$'
-                            }
-                        ]
-                    };
-                });
-                // 2. ИСПРАВЛЕНО: Полноценное правило для sysctl, поддерживающее звёздочки *
-                hljs.registerLanguage('sysctl', (hljs) => {
-                    return {
-                        name: 'sysctl',
-                        contains: [
-                            hljs.HASH_COMMENT_MODE,
-                            hljs.NUMBER_MODE,
-                            {
-                                // Подсвечиваем всё имя параметра до знака «=», включая точки и звёздочки
-                                className: 'attr',
-                                begin: /^[a-zA-Z0-9_\.\-\*]+/
-                            },
-                            {
-                                // Подсвечиваем текстовые значения после знака «=»
-                                className: 'string',
-                                begin: /(?<==\s*)[a-zA-Z_/]+/
-                            }
-                        ]
-                    };
-                });
-
-            }
-        });
-    </script>
-
-
-    <!-- 3. Инициализация: говорим библиотеке подсветить все блоки <code> с классом language-* -->
-    <script>
-        function initHighlighting() {
-            if (typeof hljs !== 'undefined') {
-                // Сбрасываем состояние всех блоков
-                document.querySelectorAll('code[data-highlighted]').forEach(el => {
-                    delete el.dataset.highlighted;
-                });
-                // Запускаем подсветку
-                hljs.highlightAll();
-            }
-        }
-
-        // Запускаем после загрузки DOM
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initHighlighting);
-        } else {
-            initHighlighting();
-        }
-    </script>
+    <!-- 3. Регистрация языков и инициализация -->
+    <script src="assets/js/highlight-init.js" defer></script>
     
   <!-- КОНЕЦ ПОДКЛЮЧЕНИЯ БИБЛИОТЕК ПОДСВЕТКИ КОДА -->
 

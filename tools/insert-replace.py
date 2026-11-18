@@ -18,23 +18,18 @@ import re
 import sys
 
 # ==================== CONFIG ====================
-OLD_BLOCK = '''<script>
-(function() {
-  const panel = document.getElementById('article-panel');
-  const toggle = document.getElementById('panel-toggle');
-  let isOpen = false;
+OLD_BLOCK = '''<div style="color:#444;font-size:0.95rem;">
+      CyberSecurity &amp; Social Engineering — main page
+    </div>'''
 
-  toggle.addEventListener('click', function() {
-    isOpen = !isOpen;
-    panel.style.left = isOpen ? '0px' : '-320px';
-    toggle.textContent = isOpen ? '📚 Свернуть' : '📚 Статьи';
-  });
-})();
-</script>'''
+NEW_BLOCK = '''<div style="color:#444;font-size:0.95rem;">
+      CyberSecurity &amp; Social Engineering — main page
+    </div>
+    
+    <!-- Search button, aligned right -->
+    <pagefind-modal-trigger compact style="margin-left:auto;"></pagefind-modal-trigger>'''
 
-NEW_BLOCK = '''<script src="assets/js/panel-init.js"></script>'''
-
-MARKER = '<script src="assets/js/panel-init.js"></script>'
+MARKER = '<!-- Search button, aligned right -->'
 # ================================================
 
 ROOT = "."

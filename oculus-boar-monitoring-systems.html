@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "Analysis of the neural network monitoring systems «Oculus» (image analysis) and «Boar» (text monitoring and prediction) used by Russian security forces for automated detection of undesirable content. Examines the structure of Center E, covert surveillance methods, tailored expert assessments, and the system of total self-censorship.",
     "datePublished": "2026-06-20",
-    "dateModified": "<!-- DATE_START -->2026-11-17<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-11-18<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -56,6 +56,12 @@
 <link rel="stylesheet" href="assets/css/panel.css">
 
 
+
+<!-- Строка 1: Подключение стилей для компонентов Pagefind (кнопка, модальное окно, поле ввода) -->
+<link href="/CyberSecurityAndSocialEngineering/pagefind/pagefind-component-ui.css" rel="stylesheet">
+
+<!-- Строка 2: Подключение скрипта, который "оживляет" компоненты Pagefind -->
+<script src="/CyberSecurityAndSocialEngineering/pagefind/pagefind-component-ui.js" type="module"></script>
 </head>
 <body>
 	
@@ -80,6 +86,9 @@
     <div style="color:#444;font-size:0.95rem;">
       CyberSecurity &amp; Social Engineering — main page
     </div>
+    
+    <!-- Search button, aligned right -->
+    <pagefind-modal-trigger compact style="margin-left:auto;"></pagefind-modal-trigger>
   </nav>
   
   <!-- Language navigation -->
@@ -540,5 +549,9 @@
 
 </main>
 
+
+<!-- Модальное окно поиска. Связывается с кнопкой автоматически, если у обоих не указан атрибут instance -->
+<pagefind-config bundle-path="/CyberSecurityAndSocialEngineering/pagefind/"></pagefind-config>
+<pagefind-modal></pagefind-modal>
 </body>
 </html>

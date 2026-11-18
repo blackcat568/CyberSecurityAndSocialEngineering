@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "Analysis of the fundamental error of authoritarian structures when copying complex technological objects without building the necessary ecosystem. Using the examples of the 'axe porridge' parable, the Barbie commercial ecosystem, and the Soviet AWACS analogue, it is shown why a base object without its environment becomes a useless or degrading tool. Material for specialists in complex systems management, AI developers, and organizational behavior analysts.",
     "datePublished": "2026-06-16",
-    "dateModified": "<!-- DATE_START -->2026-11-17<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-11-18<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -58,6 +58,12 @@
   <link rel="stylesheet" href="assets/css/panel.css">
 
   
+
+<!-- Строка 1: Подключение стилей для компонентов Pagefind (кнопка, модальное окно, поле ввода) -->
+<link href="/CyberSecurityAndSocialEngineering/pagefind/pagefind-component-ui.css" rel="stylesheet">
+
+<!-- Строка 2: Подключение скрипта, который "оживляет" компоненты Pagefind -->
+<script src="/CyberSecurityAndSocialEngineering/pagefind/pagefind-component-ui.js" type="module"></script>
 </head>
 
 <body>
@@ -81,8 +87,11 @@
       ← Back to home
     </a>
     <div style="color:#444;font-size:0.95rem;">
-      CyberSecurity &amp; Social Engineering — analytical note
+      CyberSecurity &amp; Social Engineering — main page
     </div>
+    
+    <!-- Search button, aligned right -->
+    <pagefind-modal-trigger compact style="margin-left:auto;"></pagefind-modal-trigger>
   </nav>
   
   <!-- Language navigation -->
@@ -397,5 +406,9 @@
 
 </main>
 
+
+<!-- Модальное окно поиска. Связывается с кнопкой автоматически, если у обоих не указан атрибут instance -->
+<pagefind-config bundle-path="/CyberSecurityAndSocialEngineering/pagefind/"></pagefind-config>
+<pagefind-modal></pagefind-modal>
 </body>
 </html>

@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "Anatomy of the 'False-Friend Strategy': a detailed analysis of a hidden manipulative strike based on exploiting trust, its stages, camouflage techniques, and detection methods.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-11-17<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-11-18<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -62,6 +62,12 @@
 <link rel="stylesheet" href="assets/css/panel.css">
 
   
+
+<!-- Строка 1: Подключение стилей для компонентов Pagefind (кнопка, модальное окно, поле ввода) -->
+<link href="/CyberSecurityAndSocialEngineering/pagefind/pagefind-component-ui.css" rel="stylesheet">
+
+<!-- Строка 2: Подключение скрипта, который "оживляет" компоненты Pagefind -->
+<script src="/CyberSecurityAndSocialEngineering/pagefind/pagefind-component-ui.js" type="module"></script>
 </head>
 
 <body>
@@ -87,6 +93,9 @@
     <div style="color:#444;font-size:0.95rem;">
       CyberSecurity &amp; Social Engineering — main page
     </div>
+    
+    <!-- Search button, aligned right -->
+    <pagefind-modal-trigger compact style="margin-left:auto;"></pagefind-modal-trigger>
   </nav>
   
   <!-- Языковая навигация -->
@@ -578,5 +587,9 @@ And the false friend fears the light, direct questions and concreteness.</p>
 <script src="assets/js/swiper-init.js" defer></script>
 <!-- ===== КОНЕЦ: Подключение библиотеки Swiper ===== -->
 
+
+<!-- Модальное окно поиска. Связывается с кнопкой автоматически, если у обоих не указан атрибут instance -->
+<pagefind-config bundle-path="/CyberSecurityAndSocialEngineering/pagefind/"></pagefind-config>
+<pagefind-modal></pagefind-modal>
 </body>
 </html>

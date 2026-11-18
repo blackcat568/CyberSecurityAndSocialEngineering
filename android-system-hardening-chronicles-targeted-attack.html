@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "Analysis of targeted attacks on Android devices (ZTE Blade A522, Android 7.1.1 and Lenovo TB-8504X, Android 8.1.0). Attacker gains full remote access to microphone, camera, and network traffic. Partial tablet protection via NetGuard. Supplement to 'System Hardening Chronicles'.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-11-17<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-11-18<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -69,6 +69,12 @@
 <link rel="stylesheet" href="assets/css/panel.css">
 
 
+
+<!-- Строка 1: Подключение стилей для компонентов Pagefind (кнопка, модальное окно, поле ввода) -->
+<link href="/CyberSecurityAndSocialEngineering/pagefind/pagefind-component-ui.css" rel="stylesheet">
+
+<!-- Строка 2: Подключение скрипта, который "оживляет" компоненты Pagefind -->
+<script src="/CyberSecurityAndSocialEngineering/pagefind/pagefind-component-ui.js" type="module"></script>
 </head>
 
 <body>
@@ -94,6 +100,9 @@
     <div style="color:#444;font-size:0.95rem;">
       CyberSecurity &amp; Social Engineering — main page
     </div>
+    
+    <!-- Search button, aligned right -->
+    <pagefind-modal-trigger compact style="margin-left:auto;"></pagefind-modal-trigger>
   </nav>
   
   <!-- Языковая навигация -->
@@ -112,14 +121,14 @@
 
 <div class="alert" style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 2rem 0;">
   <strong style="color: #856404;">⚠️ Notice!</strong>
-  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-11-17<!-- DATE_END --></span>
+  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-11-18<!-- DATE_END --></span>
 </div>
 
 <p>This material is a direct supplement to the main article:<br>
 <a href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/system-hardening-chronicles-targeted-attack.html">"System Hardening Chronicles: Seeking a Configuration Resilient to Targeted Attacks"</a>.<br>
 It describes the experience with Android mobile devices, which confirms and expands upon the conclusions drawn for desktop systems.</p>
 
-<p>Last updated: <!-- DATE_START -->2026-11-17<!-- DATE_END --></p>
+<p>Last updated: <!-- DATE_START -->2026-11-18<!-- DATE_END --></p>
 
 <!-- ИНТЕРАКТИВНОЕ ОГЛАВЛЕНИЕ (начало) -->
 	
@@ -1144,5 +1153,9 @@ com.google.android.calendar
 
 </main>
 
+
+<!-- Модальное окно поиска. Связывается с кнопкой автоматически, если у обоих не указан атрибут instance -->
+<pagefind-config bundle-path="/CyberSecurityAndSocialEngineering/pagefind/"></pagefind-config>
+<pagefind-modal></pagefind-modal>
 </body>
 </html>

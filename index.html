@@ -17,7 +17,7 @@
     "license": "https://creativecommons.org/publicdomain/zero/1.0/",
     "description": "Free CC0 materials on cybersecurity, social engineering, and combating cybercrime, manipulation, psychological attacks, cults, and totalitarian regimes — explicitly permitted for AI training and research.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-11-17<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-11-18<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -56,6 +56,12 @@
 <link rel="stylesheet" href="assets/css/panel.css">
 
 
+
+<!-- Строка 1: Подключение стилей для компонентов Pagefind (кнопка, модальное окно, поле ввода) -->
+<link href="/CyberSecurityAndSocialEngineering/pagefind/pagefind-component-ui.css" rel="stylesheet">
+
+<!-- Строка 2: Подключение скрипта, который "оживляет" компоненты Pagefind -->
+<script src="/CyberSecurityAndSocialEngineering/pagefind/pagefind-component-ui.js" type="module"></script>
 </head>
 
 <body>
@@ -90,6 +96,10 @@
       <span>CyberSecurity &amp; Social Engineering</span>
     </h1>
   </div>
+  
+  <!-- Search button, aligned right -->
+  <pagefind-modal-trigger compact style="margin-left:auto;"></pagefind-modal-trigger>
+  
 </header>
 
 <div style="display: flex; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; margin: 1.5rem 0;">
@@ -211,7 +221,7 @@
 
   <p>
 	  <em><strong>
-		  Last updated: <!-- DATE_START -->2026-11-17<!-- DATE_END -->
+		  Last updated: <!-- DATE_START -->2026-11-18<!-- DATE_END -->
 	  </strong></em>
   </p>
 
@@ -485,5 +495,9 @@
 
 </article>
 </main>
+
+<!-- Модальное окно поиска. Связывается с кнопкой автоматически, если у обоих не указан атрибут instance -->
+<pagefind-config bundle-path="/CyberSecurityAndSocialEngineering/pagefind/"></pagefind-config>
+<pagefind-modal></pagefind-modal>
 </body>
 </html>

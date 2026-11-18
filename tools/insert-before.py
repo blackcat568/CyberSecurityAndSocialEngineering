@@ -13,8 +13,12 @@ import os
 import sys
 
 # ==================== CONFIG ====================
-UNIQUE_LINE = '<script src="assets/js/articles-list.js"></script>'
-INSERT_TEXT  = '<!-- подключение скриптов панели статей -->'
+UNIQUE_LINE = '</head>'
+INSERT_TEXT  = '''<!-- Строка 1: Подключение стилей для компонентов Pagefind (кнопка, модальное окно, поле ввода) -->
+<link href="/CyberSecurityAndSocialEngineering/pagefind/pagefind-component-ui.css" rel="stylesheet">
+
+<!-- Строка 2: Подключение скрипта, который "оживляет" компоненты Pagefind -->
+<script src="/CyberSecurityAndSocialEngineering/pagefind/pagefind-component-ui.js" type="module"></script>'''
 # ================================================
 
 # Корень, откуда искать .html (текущая папка по умолчанию)

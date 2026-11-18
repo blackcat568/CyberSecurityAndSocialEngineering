@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "An analytical article on how the romanticized image of ancient China is used by fraudsters and pseudo-orientalists to manipulate consciousness. The real achievements of modern China — aircraft carriers, space exploration, thermonuclear reactors — are the result of following science, not mysticism. The fight against superstition, support for science fiction as a state strategy. Exposure of a specific manipulator who, under the guise of 'ancient wisdom,' promotes divination and business decisions through the I Ching.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-11-17<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-11-18<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -62,6 +62,12 @@
 <link rel="stylesheet" href="assets/css/panel.css">
 
 
+
+<!-- Строка 1: Подключение стилей для компонентов Pagefind (кнопка, модальное окно, поле ввода) -->
+<link href="/CyberSecurityAndSocialEngineering/pagefind/pagefind-component-ui.css" rel="stylesheet">
+
+<!-- Строка 2: Подключение скрипта, который "оживляет" компоненты Pagefind -->
+<script src="/CyberSecurityAndSocialEngineering/pagefind/pagefind-component-ui.js" type="module"></script>
 </head>
 
 <body>
@@ -87,6 +93,9 @@
     <div style="color:#444;font-size:0.95rem;">
       CyberSecurity &amp; Social Engineering — main page
     </div>
+    
+    <!-- Search button, aligned right -->
+    <pagefind-modal-trigger compact style="margin-left:auto;"></pagefind-modal-trigger>
   </nav>
   
   <!-- Языковая навигация -->
@@ -1431,5 +1440,9 @@ The long night lasted forty-eight years. Civilization Number 137 was destroyed b
 <script src="assets/js/swiper-init.js" defer></script>
 <!-- ===== КОНЕЦ: Подключение библиотеки Swiper ===== -->
 
+
+<!-- Модальное окно поиска. Связывается с кнопкой автоматически, если у обоих не указан атрибут instance -->
+<pagefind-config bundle-path="/CyberSecurityAndSocialEngineering/pagefind/"></pagefind-config>
+<pagefind-modal></pagefind-modal>
 </body>
 </html>

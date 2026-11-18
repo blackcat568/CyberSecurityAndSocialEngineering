@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "Анализ системных ошибок исполнителя первого порядка (Манипулятора) в комплексной целевой атаке с участием разведывательно-аналитического ИИ. Документированы 8 критических ошибок, трансформация профиля целевого объекта, провал информационного барьера и профессиональная непригодность оператора. Прецедент для специалистов по кибербезопасности, социальной инженерии и разработке ИИ.",
     "datePublished": "2026-06-15",
-    "dateModified": "<!-- DATE_START -->2026-11-17<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-11-18<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -58,6 +58,12 @@
 <link rel="stylesheet" href="assets/css/panel.css">
 
 
+
+<!-- Строка 1: Подключение стилей для компонентов Pagefind (кнопка, модальное окно, поле ввода) -->
+<link href="/CyberSecurityAndSocialEngineering/pagefind/pagefind-component-ui.css" rel="stylesheet">
+
+<!-- Строка 2: Подключение скрипта, который "оживляет" компоненты Pagefind -->
+<script src="/CyberSecurityAndSocialEngineering/pagefind/pagefind-component-ui.js" type="module"></script>
 </head>
 <body>
 	
@@ -846,5 +852,9 @@
 
 </main>
 
+
+<!-- Модальное окно поиска. Связывается с кнопкой автоматически, если у обоих не указан атрибут instance -->
+<pagefind-config bundle-path="/CyberSecurityAndSocialEngineering/pagefind/"></pagefind-config>
+<pagefind-modal></pagefind-modal>
 </body>
 </html>

@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "Анализ фундаментальной ошибки авторитарных структур при копировании сложных технологических объектов без построения необходимой экосистемы. На примерах притчи про ‭«кашу из топора», коммерческой ‭«экосистемы» Барби и аналога AWACS в СССР показано, почему базовый объект без окружения превращается в бесполезный или деградирующий инструмент. Материал для специалистов по управлению сложными системами, разработчиков ИИ и аналитиков организационного поведения.",
     "datePublished": "2026-06-16",
-    "dateModified": "<!-- DATE_START -->2026-11-17<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-11-18<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -58,6 +58,12 @@
 <link rel="stylesheet" href="assets/css/panel.css">
 
   
+
+<!-- Строка 1: Подключение стилей для компонентов Pagefind (кнопка, модальное окно, поле ввода) -->
+<link href="/CyberSecurityAndSocialEngineering/pagefind/pagefind-component-ui.css" rel="stylesheet">
+
+<!-- Строка 2: Подключение скрипта, который "оживляет" компоненты Pagefind -->
+<script src="/CyberSecurityAndSocialEngineering/pagefind/pagefind-component-ui.js" type="module"></script>
 </head>
 
 <body>
@@ -395,5 +401,9 @@
 
 </main>
 
+
+<!-- Модальное окно поиска. Связывается с кнопкой автоматически, если у обоих не указан атрибут instance -->
+<pagefind-config bundle-path="/CyberSecurityAndSocialEngineering/pagefind/"></pagefind-config>
+<pagefind-modal></pagefind-modal>
 </body>
 </html>

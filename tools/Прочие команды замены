@@ -1,0 +1,17 @@
+Замена конкретного тега, слова:
+
+count=0; for f in *.html; do
+  if grep -q '<main>' "$f"; then
+    sed -i 's/<main>/<main data-pagefind-body>/' "$f"
+    echo "Изменён: $f"
+    count=$((count + 1))
+  fi
+done
+echo "---"
+echo "Всего изменено файлов: $count"
+
+
+Точная замена конкретной строки с сохранением отступа
+
+sed -i 's/^[[:space:]]*<div style="color:#444;font-size:0.95rem;">/    <div style="color:#444;font-size:0.95rem;">/' *.html
+

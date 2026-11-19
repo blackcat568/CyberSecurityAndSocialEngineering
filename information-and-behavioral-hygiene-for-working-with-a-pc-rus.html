@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "Базовое практическое руководство по цифровой, поведенческой и информационной гигиене для пользователей персональных компьютеров. Рассматривает основы кибербезопасности, защиту от социальной инженерии, охрану психического здоровья в сети, этичное использование ИИ, пропаганду свободного ПО, харденинг мобильных устройств и противодействие психологическим манипуляциям. Подробное руководство для осознанного и безопасного использования ПК и интернета. Лицензия CC0 - свободно для использования и распространения.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-11-18<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-11-19<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -2539,31 +2539,33 @@ oifname "enp2s0" ip daddr 192.168.0.0/28 udp dport 53317 meta skuid { user, _fla
 
 <pre><code>sudo systemctl restart nftables</code></pre>
 
-<figure style="margin: 1.5rem 0; text-align: center;">
-  <img src="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/pictures/LocalSend-Lenovo-tablet.png"
-       alt="Скриншот LocalSend на планшете Android: интерфейс обнаружения партнёра для приёма или отправки файлов"
-       width="300"
-       loading="lazy"
-       onclick="this.classList.toggle('zoomed')"
-       style="max-width: 100%; height: auto; border-radius: 4px; border: 1px solid #d0d0d0;">
-  <figcaption style="margin-top: 0.5rem; font-size: 0.85rem; color: #4a4a40;">
-    <strong>LocalSend на Android-планшете.</strong><br>
-    Устройство-партнёр обнаружено, интерфейс готов к приёму или передаче файлов. Обмен идёт напрямую по HTTPS, минуя внешние сервера.
-  </figcaption>
-</figure>
+<div class="figure-row">
+  <figure style="text-align: center;">
+    <img src="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/pictures/LocalSend-Lenovo-tablet.png"
+         alt="Скриншот LocalSend на планшете Android: интерфейс обнаружения партнёра для приёма или отправки файлов"
+         width="300"
+         loading="lazy"
+         onclick="this.classList.toggle('zoomed')"
+         style="max-width: 100%; height: auto; border-radius: 4px; border: 1px solid #d0d0d0;">
+    <figcaption style="margin-top: 0.5rem; font-size: 0.85rem; color: #4a4a40;">
+      <strong>LocalSend на Android-планшете.</strong><br>
+      Устройство-партнёр обнаружено, интерфейс готов к приёму или передаче файлов. Обмен идёт напрямую по HTTPS, минуя внешние сервера.
+    </figcaption>
+  </figure>
 
-<figure style="margin: 1.5rem 0; text-align: center;">
-  <img src="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/pictures/LocalSend-Debian-13.png"
-       alt="Скриншот LocalSend на рабочей станции Debian 13: интерфейс обнаружения партнёра и готовности к обмену"
-       width="600"
-       loading="lazy"
-       onclick="this.classList.toggle('zoomed')"
-       style="max-width: 100%; height: auto; border-radius: 4px; border: 1px solid #d0d0d0;">
-  <figcaption style="margin-top: 0.5rem; font-size: 0.85rem; color: #4a4a40;">
-    <strong>LocalSend на Debian 13 (Trixie), GNOME.</strong><br>
-    Устройство-партнёр обнаружено, интерфейс готов к обмену. Приложение работает изолированно через Flatpak, порт 53317 защищён правилами nftables.
-  </figcaption>
-</figure>
+  <figure style="text-align: center;">
+    <img src="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/pictures/LocalSend-Debian-13.png"
+         alt="Скриншот LocalSend на рабочей станции Debian 13: интерфейс обнаружения партнёра и готовности к обмену"
+         width="600"
+         loading="lazy"
+         onclick="this.classList.toggle('zoomed')"
+         style="max-width: 100%; height: auto; border-radius: 4px; border: 1px solid #d0d0d0;">
+    <figcaption style="margin-top: 0.5rem; font-size: 0.85rem; color: #4a4a40;">
+      <strong>LocalSend на Debian 13 (Trixie), GNOME.</strong><br>
+      Устройство-партнёр обнаружено, интерфейс готов к обмену. Приложение работает изолированно через Flatpak, порт 53317 защищён правилами nftables.
+    </figcaption>
+  </figure>
+</div>
 
 <p>Для Linux-ПК альтернативой LocalSend может быть <strong>KDE Connect</strong>. По состоянию на ноябрь 2026 года приложение присутствует в репозиториях большинства Linux-дистрибутивов и в репозитории F-Droid для устройств на базе Android.</p>
 
@@ -2587,32 +2589,33 @@ oifname "enp2s0" ip daddr 192.168.0.0/28 udp sport 1714-1764 accept</code></pre>
 <pre><code>sudo ufw allow from 192.168.0.0/28 to any port 1714:1764 proto tcp
 sudo ufw allow from 192.168.0.0/28 to any port 1714:1764 proto udp</code></pre>
 
-<figure style="margin: 1.5rem 0; text-align: center;">
-  <img src="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/pictures/KDE-Connect-tablet-rus.png"
-       alt="Скриншот KDE Connect на планшете Android: интерфейс обнаружения партнёра для приёма или отправки файлов"
-       width="300"
-       loading="lazy"
-       onclick="this.classList.toggle('zoomed')"
-       style="max-width: 100%; height: auto; border-radius: 4px; border: 1px solid #d0d0d0;">
-  <figcaption style="margin-top: 0.5rem; font-size: 0.85rem; color: #4a4a40;">
-    <strong>KDE Connect на Android-планшете.</strong><br>
-    Устройство-партнёр обнаружено, интерфейс готов к приёму или передаче файлов. Обмен идёт напрямую по HTTPS, минуя внешние сервера.
-  </figcaption>
-</figure>
+<div class="figure-row">
+  <figure style="text-align: center;">
+    <img src="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/pictures/KDE-Connect-tablet-rus.png"
+         alt="Скриншот KDE Connect на планшете Android: интерфейс обнаружения партнёра для приёма или отправки файлов"
+         width="300"
+         loading="lazy"
+         onclick="this.classList.toggle('zoomed')"
+         style="max-width: 100%; height: auto; border-radius: 4px; border: 1px solid #d0d0d0;">
+    <figcaption style="margin-top: 0.5rem; font-size: 0.85rem; color: #4a4a40;">
+      <strong>KDE Connect на Android-планшете.</strong><br>
+      Устройство-партнёр обнаружено, интерфейс готов к приёму или передаче файлов. Обмен идёт напрямую по HTTPS, минуя внешние сервера.
+    </figcaption>
+  </figure>
 
-<figure style="margin: 1.5rem 0; text-align: center;">
-  <img src="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/pictures/KDE-Connect-PC.png"
-       alt="Скриншот KDE Connect на рабочей станции Kali Linux: интерфейс обнаружения партнёра и готовности к обмену"
-       width="600"
-       loading="lazy"
-       onclick="this.classList.toggle('zoomed')"
-       style="max-width: 100%; height: auto; border-radius: 4px; border: 1px solid #d0d0d0;">
-  <figcaption style="margin-top: 0.5rem; font-size: 0.85rem; color: #4a4a40;">
-    <strong>KDE Connect на Kali Linux (xfce).</strong><br>
-    Устройство-партнёр обнаружено, интерфейс готов к обмену. Приложение установлено системно, необходимые порты 1714–1764 TCP и UDP защищены правилами nftables.
-  </figcaption>
-</figure>
-
+  <figure style="text-align: center;">
+    <img src="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/pictures/KDE-Connect-PC.png"
+         alt="Скриншот KDE Connect на рабочей станции Kali Linux: интерфейс обнаружения партнёра и готовности к обмену"
+         width="600"
+         loading="lazy"
+         onclick="this.classList.toggle('zoomed')"
+         style="max-width: 100%; height: auto; border-radius: 4px; border: 1px solid #d0d0d0;">
+    <figcaption style="margin-top: 0.5rem; font-size: 0.85rem; color: #4a4a40;">
+      <strong>KDE Connect на Kali Linux (xfce).</strong><br>
+      Устройство-партнёр обнаружено, интерфейс готов к обмену. Приложение установлено системно, необходимые порты 1714–1764 TCP и UDP защищены правилами nftables.
+    </figcaption>
+  </figure>
+</div>
 <hr>
 
 <p><strong><i>D. Выводы</i></strong></p>

@@ -290,6 +290,22 @@
         max-width: 100%;
         height: auto;
     }
+    
+    /* ===== Горизонтальный ряд фигур (картинок с подписями) ===== */
+    .figure-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        justify-content: center;
+        align-items: flex-start;
+        margin: 1.5rem 0;
+    }
+
+    .figure-row figure {
+        margin: 0;
+        flex: 1 1 300px;
+        max-width: 100%;
+    }
 
     /* ============================================================
        МОБИЛЬНАЯ АДАПТАЦИЯ
@@ -320,6 +336,15 @@
         a {
             padding: 6px 0;
             display: inline-block;
+        }
+        
+        .figure-row {
+            flex-direction: column;
+            align-items: center;
+        }
+        .figure-row figure {
+            flex: 1 1 auto;
+            width: 100%;
         }
     }
 

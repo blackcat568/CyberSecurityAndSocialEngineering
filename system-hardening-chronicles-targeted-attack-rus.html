@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "Реальная хроника противостояния целевой атаке: документирование уязвимостей, конфигураций, реакций и хардеринга системы. От нулевой защиты к поиску устойчивых конфигураций. Технический отчет с анализом аппаратной части, ОС, AppArmor, nftables, OpenSnitch, Flatpak, USBGuard. Для специалистов по кибербезопасности и ИБ.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-11-18<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-11-21<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -156,7 +156,7 @@
 
 <div class="alert" style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 2rem 0;">
   <strong style="color: #856404;">⚠️ Внимание!</strong>
-  <span style="color: #856404;"> Статья находится в разработке. Уточнения и дополнения вносятся по мере получения новых данных об устойчивости новых конфигураций безопасности и активности хакера.<br>Последнее обновление контента: <!-- DATE_START -->2026-11-18<!-- DATE_END --></span>
+  <span style="color: #856404;"> Статья находится в разработке. Уточнения и дополнения вносятся по мере получения новых данных об устойчивости новых конфигураций безопасности и активности хакера.<br>Последнее обновление контента: <!-- DATE_START -->2026-11-21<!-- DATE_END --></span>
 </div>
 
 <!-- ИНТЕРАКТИВНОЕ ОГЛАВЛЕНИЕ (начало) -->
@@ -268,7 +268,7 @@
 
 <!-- ИНТЕРАКТИВНОЕ ОГЛАВЛЕНИЕ (конец) -->
 
-<hr>
+<hr class="divider--major">
 
 <!-- КРУПНАЯ ГЛАВА (H2) -->
 <section id="introduction" aria-label="1. Вводная часть: анализ исходной конфигурации и предпосылки к хардерингу">
@@ -435,7 +435,7 @@
 
 <!-- /Конец основной главы H2 1. Вводная часть: анализ исходной конфигурации и предпосылки к хардерингу -->
 
-<hr>
+<hr class="divider--major">
 
 <!-- КРУПНАЯ ГЛАВА (H2) -->
 <section id="hardening-chronicle" aria-label="2. Непосредственно хроника хардеринга и атак">
@@ -577,8 +577,7 @@ Capabilities: Power Management version 2, MSI (включено)</p>
 <!-- Конец подсекции H3 2.1 -->
 
 
-
-<hr>
+<hr class="divider--major">
 
 <!-- Подсекция H3 2.2 -->
 <section id="config2" aria-label="2.2 Конфигурация системы после атаки с усилением защиты: КОНФИГУРАЦИЯ 2">
@@ -1527,7 +1526,7 @@ grpc: 1.51.1</p>
 
 <!-- Конец подсекции H3 2.2 -->
 
-<hr>
+<hr class="divider--major">
 
 <!-- Подсекция H3 2.3 -->
 <section id="config3" aria-label="2.3 КОНФИГУРАЦИЯ 3">
@@ -4163,7 +4162,7 @@ shutdown_lifetime 5 seconds
 <!-- Подсекция H5 2.3.2-I -->
 <section id="config3-app-nft-monitoring-script" aria-label="2.3.2-I Пользовательский скрипт мониторинга nftables и AppArmor">
 
-<h5>2.4.2-I Пользовательский скрипт мониторинга состояния nftables и AppArmor</h5>
+<h5>2.3.2-I Пользовательский скрипт мониторинга состояния nftables и AppArmor</h5>
 
 <p>В процессе частой настройки и перезагрузки nftables и AppArmor, а также при необходимости их отключения для тестирования, существует риск забыть включить службы обратно или не заметить их падение.</p>
 
@@ -4331,7 +4330,7 @@ if __name__ == "__main__":
 <!-- Конец подсекции H5 2.3.2-I -->
 
 <details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;">
-  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — 2.4.2 Конфигурация 3 Software</summary>
+  <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — 2.3.2 Конфигурация 3 Software</summary>
   <ul>
     <li><strong>2.3.2-A Вступление:</strong> Отказ от OpenSnitch из-за конфликта с nftables (перезапись правил, конфликт приоритетов, замена политик). Фокус на усиление nftables как нативного механизма Debian 13.</li>
     <li><strong>2.3.2-B Стратегическая логика:</strong> Перекрытие максимального числа векторов атаки как метод сдерживания. Переход от фильтрации по портам к фильтрации по IP-адресам для противодействия firmware-малвари, маскирующей трафик под легитимный.</li>
@@ -4391,7 +4390,7 @@ if __name__ == "__main__":
 
 <!-- Конец подсекции H3 2.3-->
 
-<hr>
+<hr class="divider--major">
 
 <!-- Подсекция H3 2.4 -->
 <section id="config4" aria-label="2.4 КОНФИГУРАЦИЯ 4">

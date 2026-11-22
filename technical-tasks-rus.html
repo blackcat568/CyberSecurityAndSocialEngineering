@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "Практические кейсы по настройке софта и железа: разбор сложных конфигурационных задач, нестандартных ситуаций и решений, выходящих за рамки обзорных материалов сайта.",
     "datePublished": "2026-11-16",
-    "dateModified": "<!-- DATE_START -->2026-11-18<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-11-22<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -48,14 +48,26 @@
 
   <meta name="viewport" content="width=device-width,initial-scale=1">
   
+  
+  <!-- НАЧАЛО ПОДКЛЮЧЕНИЯ БИБЛИОТЕК ПОДСВЕТКИ КОДА -->
+
+    <!-- 1. Подключаем CSS-тему оформления (тёмная тема) -->
+    <link rel="stylesheet" href="assets/css/atom-one-dark.min.css">
+
+    <!-- 2. Подключаем саму библиотеку Highlight.js -->
+    <script src="assets/js/highlight.min.js" defer></script>
+    
+    <!-- 3. Регистрация языков и инициализация -->
+    <script src="assets/js/highlight-init.js" defer></script>
+    
+  <!-- КОНЕЦ ПОДКЛЮЧЕНИЯ БИБЛИОТЕК ПОДСВЕТКИ КОДА -->
+  
 
 <!-- подключение основных стилей страницы -->
 <link rel="stylesheet" href="assets/css/style-main.css">
 
 <!-- вставка стилей выпадающей панели -->
 <link rel="stylesheet" href="assets/css/panel.css">
-
-
 
 <!-- Строка 1: Подключение стилей для компонентов Pagefind (кнопка, модальное окно, поле ввода) -->
 <link href="/CyberSecurityAndSocialEngineering/pagefind/pagefind-component-ui.css" rel="stylesheet">
@@ -107,13 +119,614 @@
 
 <h1>Технические задачи</h1>
 
-<p>Добавить текст статьи</p>
+<p class="author-note" style="font-style: italic; color: #666; margin-top: -0.5em; margin-bottom: 1.5em; padding: 0.5em; background-color: #f9f9f9; border-radius: 4px;">
+  <strong>Важно:</strong> Эта статья отражает личную позицию и умозаключения автора, сформированные на основе его личного опыта и сделанных из него выводов.</p>
+
+<!-- ИНТЕРАКТИВНОЕ ОГЛАВЛЕНИЕ (начало) -->
+
+<nav id="table-of-contents" aria-labelledby="section0" style="margin: 2rem 0; padding: 1.2rem; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 6px;">
+    <h2 id="section0" style="margin-top: 0; color: #333;">Содержание</h2>
+    <ul style="list-style: none; padding-left: 1rem; margin: 0;">
+        <li style="margin: 0.5rem 0;">
+            <a href="#section1">1. Попытка установки LineageOS 18.1 на Lenovo Tab 4 8 LTE (TB-8504X): ход работ, диагностика и выявленные проблемы</a>
+            <ul style="list-style: none; padding-left: 1.5rem; margin: 0.3rem 0;">
+                <li style="margin: 0.4rem 0;"><a href="#section1-1">1.1. Подготовка</a>
+                    <ul style="list-style: none; padding-left: 1.5rem; margin: 0.2rem 0;">
+                        <li style="margin: 0.3rem 0;"><a href="#section1-1-1">1.1.1. Цель проекта</a></li>
+                        <li style="margin: 0.3rem 0;"><a href="#section1-1-2">1.1.2. Информация об устройстве</a></li>
+                        <li style="margin: 0.3rem 0;"><a href="#section1-1-3">1.1.3. Выбор прошивки</a></li>
+                        <li style="margin: 0.3rem 0;"><a href="#section1-1-4">1.1.4. Подготовка TWRP</a></li>
+                        <li style="margin: 0.3rem 0;"><a href="#section1-1-5">1.1.5. Создание резервной копии</a></li>
+                        <li style="margin: 0.3rem 0;"><a href="#section1-1-6">1.1.6. Разметка внутренней памяти</a></li>
+                    </ul>
+                </li>
+                <li style="margin: 0.4rem 0;"><a href="#section1-2">1.2. Неудачная попытка перепрошивки</a>
+                    <ul style="list-style: none; padding-left: 1.5rem; margin: 0.2rem 0;">
+                        <li style="margin: 0.3rem 0;"><a href="#section1-2-1">1.2.1. Первые попытки установки и зависание установщика</a></li>
+                        <li style="margin: 0.3rem 0;"><a href="#section1-2-2">1.2.2. Проверка процесса updater</a></li>
+                        <li style="margin: 0.3rem 0;"><a href="#section1-2-3">1.2.3. Попытка завершить зависший процесс</a></li>
+                    </ul>
+                </li>
+                <li style="margin: 0.4rem 0;"><a href="#section1-3">1.3. Удачная перепрошивка планшета Lenovo Tab 4 8 (TB-8504) на LineageOS 18.1</a>
+                    <ul style="list-style: none; padding-left: 1.5rem; margin: 0.2rem 0;">
+                        <li style="margin: 0.3rem 0;"><a href="#section1-3-1">1.3.1. Описание проблемы (симптомы)</a></li>
+                        <li style="margin: 0.3rem 0;"><a href="#section1-3-2">1.3.2. Принятое решение</a></li>
+                        <li style="margin: 0.3rem 0;"><a href="#section1-3-3">1.3.3. Пошаговый алгоритм выполнения работ</a></li>
+                        <li style="margin: 0.3rem 0;"><a href="#section1-3-4">1.3.4. Выводы и рекомендации на будущее</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+<!-- ИНТЕРАКТИВНОЕ ОГЛАВЛЕНИЕ (конец) -->
+
+<hr class="divider--major">
+
+  <!-- КРУПНАЯ ГЛАВА (H2) -->
+  <section id="lineageos-attempt" aria-label="Попытка установки LineageOS 18.1 на Lenovo Tab 4 8 LTE (TB-8504X): ход работ, диагностика и выявленные проблемы">
+
+<h2 id="section1">1. Попытка установки LineageOS 18.1 на Lenovo Tab 4 8 LTE (TB-8504X): ход работ, диагностика и выявленные проблемы</h2>
+
+<p><strong>Дата работ:</strong> 10–12 ноября 2026 года</p>
+<p><strong>Устройство:</strong> Lenovo Tab 4 8 LTE, модель TB-8504X, кодовое имя TB8504</p>
+<p><strong>Исходная ОС:</strong> Android 8.1.0</p>
+<p><strong>Целевая ОС:</strong> LineageOS 18.1 (Android 11), неофициальная сборка</p>
+<p><strong>Результат:</strong> установка не завершена. Во время записи системного раздела установщик неоднократно зависал в состоянии непрерываемого ожидания операций ввода-вывода. В ходе диагностики обнаружены ошибки внутренней eMMC и отдельные ошибки обращения к microSD.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;"> <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Попытка установки LineageOS 18.1</summary> <ul> <li><strong>Попытка установки LineageOS 18.1:</strong> Установка не завершена. Установщик зависал в состоянии непрерываемого ожидания I/O на этапе записи системного раздела. В ходе диагностики обнаружены ошибки eMMC и microSD. Позже проблема решена методом прямой прошивки через fastboot (см. раздел 1.3).</li> </ul> </details>
+
+<hr>
+
+  <!-- КРУПНАЯ ГЛАВА (H3) -->
+  <section id="preparation" aria-label="Подготовка">
+
+<h3 id="section1-1"> 1.1. Подготовка</h3>
+
+<!-- ПОДГЛАВА (H4) -->
+  <section id="project-goal" aria-label="Цель проекта">
+
+<h4 id="section1-1-1">1.1.1. Цель проекта</h4>
+<p>Целью было заменить штатную Android 8.1 на более современную и лёгкую операционную систему без сервисов Google.</p>
+<p>В качестве целевой системы была выбрана LineageOS 18.1 на базе Android 11. Установка Google Apps (GApps) изначально не планировалась.</p>
+<p>Перед изменением системы было решено создать резервную копию внутреннего накопителя, проверить совместимость прошивки и использовать временную загрузку TWRP, не устанавливая кастомное recovery в постоянный раздел устройства.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+</section> <!-- /Конец подглавы H4 -->
+
+<hr>
+
+<!-- ПОДГЛАВА (H4) -->
+  <section id="device-info" aria-label="Информация об устройстве">
+
+<h4 id="section1-1-2">1.1.2. Информация об устройстве</h4>
+<ul>
+  <li>Производитель: Lenovo.</li>
+  <li>Модель: Lenovo TB-8504X.</li>
+  <li>Код устройства: TB8504.</li>
+  <li>Платформа: Qualcomm Snapdragon 425.</li>
+  <li>Оперативная память: 2 ГБ.</li>
+  <li>Встроенная память: 16 ГБ.</li>
+  <li>Исходная система: Android 8.1.0.</li>
+  <li>Уровень обновления безопасности исходной системы: 5 ноября 2019 года.</li>
+  <li>Загрузчик: разблокировка OEM была разрешена.</li>
+</ul>
+<p>Идентификаторы устройства, полученные через ADB:</p>
+<pre><code>adb shell getprop ro.product.device
+adb shell getprop ro.build.product
+adb shell getprop ro.product.model
+
+TB8504
+TB-8504X
+Lenovo TB-8504X</code></pre>
+<p>Устройство определялось компьютером как <code>HGAGWPMF</code>.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+</section> <!-- /Конец подглавы H4 -->
+
+<hr>
+
+<!-- ПОДГЛАВА (H4) -->
+  <section id="firmware-choice" aria-label="Выбор прошивки">
+
+<h4 id="section1-1-3">1.1.3. Выбор прошивки</h4>
+<p>Для установки был выбран архив:</p>
+<pre><code>lineage-18.1-20230227-UNOFFICIAL-TB8504.zip</code></pre>
+<ul>
+  <li>Размер: около 646 MiB (677 357 155 байт).</li>
+  <li>Версия Android: 11.</li>
+  <li>SDK/API: 30.</li>
+  <li>Дата сборки: 27 февраля 2023 года.</li>
+  <li>Уровень обновления безопасности: 5 февраля 2023 года.</li>
+  <li>Идентификатор сборки: eng.contro.20230227.053235.</li>
+  <li>Варианты устройств в метаданных: TB-8504X, TB-8504F и соответствующие варианты написания кодового имени.</li>
+  <li>GApps в архив не включены.</li>
+</ul>
+<p>В архиве обнаружены, в частности, <code>boot.img</code>, <code>system.new.dat.br</code> и пустой <code>system.patch.dat</code>. Всего в архиве было 11 файлов.</p>
+<p>Проверка структуры ZIP-архива завершилась успешно:</p>
+<pre><code>unzip -t lineage-18.1-20230227-UNOFFICIAL-TB8504.zip
+
+No errors detected in compressed data.</code></pre>
+<p>SHA-256 исходного архива:</p>
+<pre><code>c3da1a4eccc7dd8b541f21ec933a4aca585ada5c96c2533f79301d997753f36c</code></pre>
+<p>По анализу установочного скрипта архив предназначен для устройств семейства TB-8504X/TB-8504F. Скрипт использует механизм <code>block_image_update</code> для записи системного раздела и также устанавливает образ загрузки. По изученному скрипту разделы recovery и data не должны форматироваться.</p>
+<p>Таким образом, на этапе проверки архива явных ошибок структуры ZIP или несовпадения идентификатора устройства обнаружено не было.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+</section> <!-- /Конец подглавы H4 -->
+
+<hr>
+
+<!-- ПОДГЛАВА (H4) -->
+  <section id="twrp-preparation" aria-label="Подготовка TWRP">
+
+<h4 id="section1-1-4">1.1.4. Подготовка TWRP</h4>
+<p>Для установки использовалось кастомное recovery TWRP. Сначала применялся более старый образ <code>twrp.img</code>, затем был загружен более новый образ.</p>
+<p>Новый образ:</p>
+<pre><code>twrp-2025-07-01.img</code></pre>
+<ul>
+  <li>Версия TWRP после запуска: 3.7.1_12-0.</li>
+  <li>Размер файла: 52 180 992 байта.</li>
+  <li>SHA-256: <code>a1debef76b5b33675ea33aa3c9cc8cb54139faf60266bf4042d4262ebf7488c4</code>.</li>
+  <li>Тип файла: Android boot image, сигнатура <code>ANDROID!</code>.</li>
+</ul>
+<p>Образ был получен из каталога сборок для TB8504 на SourceForge:</p>
+<p><a href="https://sourceforge.net/projects/adazem009-builds/files/lenovo_TB8504/twrp/07-01-2025/twrp.img/download">TWRP для Lenovo TB8504, сборка от 01.07.2025</a></p>
+<p>Recovery запускалось временно, без постоянной прошивки в раздел recovery:</p>
+<pre><code>fastboot boot ~/Desktop/twrp-2025-07-01.img</code></pre>
+<p>Fastboot иногда сообщал:</p>
+<pre><code>Booting FAILED (Status read failed (No such device))
+fastboot: error: Command failed</code></pre>
+<p>При этом передача файла завершалась с результатом <code>OKAY</code>, а сам планшет фактически загружался в TWRP. Поэтому данное сообщение Fastboot не означало однозначного провала загрузки recovery: соединение с устройством обрывалось уже на этапе передачи управления.</p>
+<p>После запуска TWRP устройство определялось через ADB в режиме recovery:</p>
+<pre><code>adb devices
+
+HGAGWPMF recovery</code></pre>
+<p>При первом запуске TWRP было выбрано разрешение модификации системных разделов — <em>Swipe to Allow Modifications</em>, а не режим только для чтения.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+</section> <!-- /Конец подглавы H4 -->
+
+<hr>
+
+<!-- ПОДГЛАВА (H4) -->
+  <section id="backup-creation" aria-label="Создание резервной копии">
+
+<h4 id="section1-1-5">1.1.5. Создание резервной копии</h4>
+<p>Перед попытками установки была создана полная поблочная копия внутреннего накопителя на компьютере.</p>
+<p>Файл:</p>
+<pre><code>~/Desktop/TB8504X_Backup/mmcblk0.img</code></pre>
+<p>Копирование выполнялось через ADB:</p>
+<pre><code>adb exec-out "dd if=/dev/block/mmcblk0 bs=4M" | pv -s 15634268160 &gt; ~/Desktop/TB8504X_Backup/mmcblk0.img</code></pre>
+<p>Размер исходного блочного устройства и итогового файла:</p>
+<pre><code>15 634 268 160 байт</code></pre>
+<p>После копирования выяснилось, что в конец файла попали дополнительные 93 байта текстового вывода статистики <code>dd</code>. Размер файла был исправлен до размера исходного устройства:</p>
+<pre><code>truncate -s 15634268160 ~/Desktop/TB8504X_Backup/mmcblk0.img</code></pre>
+<p>С помощью <code>fdisk</code> было подтверждено наличие GPT и 49 разделов.</p>
+<p><strong>Ограничение резервной копии:</strong> побайтовое сравнение образа с исходным накопителем не выполнялось. Поэтому наличие файла полной копии подтверждено, но его абсолютная побайтовая достоверность не установлена. Образ не следует считать проверенным способом восстановления без дополнительных проверок.</p>
+<p>Файл резервной копии содержит не только пользовательские данные, но и системные разделы, загрузочные данные и разделы, связанные с модемом. Его нельзя бездумно записывать обратно на устройство целиком: восстановление полного образа требует отдельной проверки состояния накопителя и понимания последствий.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+</section> <!-- /Конец подглавы H4 -->
+
+<hr>
+
+<!-- ПОДГЛАВА (H4) -->
+  <section id="memory-layout" aria-label="Разметка внутренней памяти">
+
+<h4 id="section1-1-6">1.1.6. Разметка внутренней памяти</h4>
+<p>По результатам анализа GPT была установлена следующая разметка основных разделов:</p>
+<table style="width: 100%; border-collapse: collapse; margin: 1rem 0; background: #f5f5f0;">
+  <thead>
+    <tr style="background: #d0d0c0;">
+      <th style="padding: 0.75rem; border: 1px solid #c0c0b0; text-align: left;">Раздел</th>
+      <th style="padding: 0.75rem; border: 1px solid #c0c0b0; text-align: left;">Блочное устройство</th>
+      <th style="padding: 0.75rem; border: 1px solid #c0c0b0; text-align: left;">Размер / расположение</th>
+      <th style="padding: 0.75rem; border: 1px solid #c0c0b0; text-align: left;">Назначение</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding: 0.75rem; border: 1px solid #c0c0b0;">p25</td>
+      <td style="padding: 0.75rem; border: 1px solid #c0c0b0;"><code>/dev/block/mmcblk0p25</code></td>
+      <td style="padding: 0.75rem; border: 1px solid #c0c0b0;">4 080 218 112 байт</td>
+      <td style="padding: 0.75rem; border: 1px solid #c0c0b0;">system</td>
+    </tr>
+    <tr>
+      <td style="padding: 0.75rem; border: 1px solid #c0c0b0;">p26</td>
+      <td style="padding: 0.75rem; border: 1px solid #c0c0b0;"><code>/dev/block/mmcblk0p26</code></td>
+      <td style="padding: 0.75rem; border: 1px solid #c0c0b0;">256 MiB</td>
+      <td style="padding: 0.75rem; border: 1px solid #c0c0b0;">cache</td>
+    </tr>
+    <tr>
+      <td style="padding: 0.75rem; border: 1px solid #c0c0b0;">p49</td>
+      <td style="padding: 0.75rem; border: 1px solid #c0c0b0;"><code>/dev/block/mmcblk0p49</code></td>
+      <td style="padding: 0.75rem; border: 1px solid #c0c0b0;">около 9,2 GiB</td>
+      <td style="padding: 0.75rem; border: 1px solid #c0c0b0;">userdata</td>
+    </tr>
+  </tbody>
+</table>
+<p>Дополнительно были установлены соответствия:</p>
+<ul>
+  <li><code>system</code> → <code>/dev/block/mmcblk0p25</code>;</li>
+  <li><code>boot</code> → <code>/dev/block/mmcblk0p22</code>;</li>
+  <li><code>recovery</code> → <code>/dev/block/mmcblk0p23</code>.</li>
+</ul>
+<p>В TWRP системный раздел доступен также через символьную ссылку:</p>
+<pre><code>/dev/block/bootdevice/by-name/system</code></pre>
+<p>Она указывает на <code>/dev/block/mmcblk0p25</code>.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+</section> <!-- /Конец подглавы H4 -->
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+</section> <!-- /Конец главы H3 -->
+
+<hr class="divider--major">
+
+  <!-- КРУПНАЯ ГЛАВА (H3) -->
+  <section id="failed-flash" aria-label="Неудачная попытка перепрошивки">
+
+<h3 id="section1-2"> 1.2. Неудачная попытка перепрошивки</h3>
+
+<!-- ПОДГЛАВА (H4) -->
+  <section id="first-attempts" aria-label="Первые попытки установки и зависание установщика">
+
+<h4 id="section1-2-1">1.2.1. Первые попытки установки и зависание установщика</h4>
+<p>Первая установка выполнялась из ZIP-архива на карте microSD. Также предпринималась попытка установки через ADB sideload.</p>
+<p>В обоих случаях процесс не доходил до завершения. Установщик останавливался на этапе:</p>
+<pre><code>Patching system image unconditionally...</code></pre>
+<p>В установочном журнале присутствовали следующие сообщения:</p>
+<pre><code>block_image_update("/dev/block/bootdevice/by-name/system", ...)
+Patching system image unconditionally...
+performing update
+blockimg version is 4
+maximum stash entries 0
+Patching system image unconditionally...
+using existing stash /cache/recovery/2bdde8504898ccfcd2c59f20bb8c9c25f73bb524
+Skipping already executed command: 0, last executed command for previous update: 0
+writing 1024 blocks of new data</code></pre>
+<p>Прогресс установки прекращался. Полоса прогресса в TWRP не двигалась, а последняя строка журнала оставалась неизменной.</p>
+<p>Первоначально было необходимо установить, действительно ли установщик выполняет длительную операцию или полностью завис. Для этого были проверены состояние процесса, его системные счётчики и статистика блочного устройства.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+</section> <!-- /Конец подглавы H4 -->
+
+<hr>
+
+<!-- ПОДГЛАВА (H4) -->
+  <section id="updater-check" aria-label="Проверка процесса updater">
+
+<h4 id="section1-2-2">1.2.2. Проверка процесса updater</h4>
+<p>Процесс установщика был найден через:</p>
+<pre><code>adb shell 'ps -A | grep -iE "updater|update-binary|recovery" | grep -v grep'</code></pre>
+<p>Результат:</p>
+<pre><code>root  338  1   ...  poll_schedule_timeout ... S recovery
+root  377  338 ...  mtp_read              ... S recovery
+root  994  338 ...  wait_on_page_bit      ... D updater</code></pre>
+<p>Процесс <code>updater</code> находился в состоянии <code>D</code> — непрерываемом ожидании операции ввода-вывода. В качестве канала ожидания отображался <code>wait_on_page_bit</code>.</p>
+<p>Дополнительная проверка:</p>
+<pre><code>adb shell 'cat /proc/994/io; echo "--- WAIT CHANNEL ---"; cat /proc/994/wchan; echo "--- OPEN FILES ---"; ls -l /proc/994/fd'</code></pre>
+<p>Полученные счётчики:</p>
+<pre><code>rchar: 67815
+wchar: 4201133
+syscr: 29
+syscw: 167
+read_bytes: 569344
+write_bytes: 4194304
+cancelled_write_bytes: 0</code></pre>
+<p>Канал ожидания:</p>
+<pre><code>wait_on_page_bit</code></pre>
+<p>Среди открытых файлов был обнаружен дескриптор:</p>
+<pre><code>4 -> /dev/block/mmcblk0p25</code></pre>
+<p>Это подтверждает, что процесс установщика непосредственно работал с системным разделом внутреннего накопителя.</p>
+<p>Значение <code>write_bytes: 4194304</code> указывает на учтённые 4 MiB записи процессом. Оно не доказывает, что все эти данные успешно записаны на физический носитель.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+</section> <!-- /Конец подглавы H4 -->
+
+<hr>
+
+<!-- ПОДГЛАВА (H4) -->
+  <section id="kill-attempt" aria-label="Попытка завершить зависший процесс">
+
+<h4 id="section1-2-3">1.2.3. Попытка завершить зависший процесс</h4>
+<p>Была предпринята попытка штатно завершить установщик:</p>
+<pre><code>adb shell 'kill -TERM 994; echo "SIGTERM отправлен"'</code></pre>
+<p>Команда сообщила об отправке сигнала, однако процесс остался в состоянии <code>D</code>:</p>
+<pre><code>adb shell 'ps -A | grep updater | grep -v grep'
+
+root  994  338  ...  wait_on_page_bit  ...  D updater</code></pre>
+<p>Процессы в непрерываемом ожидании ввода-вывода не могут обработать сигнал завершения, пока ядро ожидает окончания соответствующей операции. Поэтому повторные попытки посылать сигналы не устраняют первопричину зависания.</p>
+<p>Аналогичная ситуация наблюдалась ранее при диагностике файловой системы: процессы <code>e2fsck</code> также зависали в состоянии <code>D</code>.</p>
+<p>Автор не видит целесообразности описывать длительный процесс диагностики, так как это растянуло бы статью и снизило бы ее пригодность для анализа. Целесообразне перейти к описанию удачного решения проблемы.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+</section> <!-- /Конец подглавы H4 -->
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+</section> <!-- /Конец главы H3 -->
+
+<hr class="divider--major">
+
+  <!-- КРУПНАЯ ГЛАВА (H3) -->
+  <section id="successful-flash" aria-label="Удачная перепрошивка планшета Lenovo Tab 4 8 (TB-8504) на LineageOS 18.1">
+
+<h3 id="section1-3">1.3. Удачная перепрошивка планшета Lenovo Tab 4 8 (TB-8504) на LineageOS 18.1</h3>
+
+<p><strong>Дата выполнения:</strong> 12.11.2026</p>
+<p><strong>Устройство:</strong> Lenovo Tab 4 8 (модель TB-8504, чипсет Qualcomm Snapdragon 425, 2 ГБ ОЗУ)</p>
+<p><strong>Установленная ОС:</strong> LineageOS 18.1 (Android 11) — сборка lineage-18.1-20230227-UNOFFICIAL-TB8504.zip</p>
+<p><strong>Хост-система (ПК):</strong> Kali Linux (x86_64)</p>
+<p><strong>Итоговый статус:</strong> Успешно. Система загружена и функционирует штатно.</p>
+
+<!-- ПОДГЛАВА (H4) -->
+  <section id="problem-description" aria-label="Описание проблемы (симптомы)">
+
+<h4 id="section1-3-1">1.3.1. Описание проблемы (симптомы)</h4>
+<p>При попытке стандартной установки кастомной прошивки через кастомное рекавери TWRP процесс намертво зависал на этапе "Patching system image unconditionally..." (индикатор прогресса не двигался более 30 минут).</p>
+<ul>
+  <li>Зависание происходило как при установке через кабель (adb sideload), так и при локальной установке с физической карты памяти MicroSD.</li>
+  <li>Контрольные суммы архива прошивки совпадали с оригиналом, что исключало повреждение файла.</li>
+</ul>
+<p><strong>Техническая причина сбоя:</strong></p>
+<p>На устройствах с небольшим объемом оперативной памяти (2 ГБ) при распаковке тяжелого образа system.new.dat.br (сжатие Brotli) внутри среды TWRP возникает нехватка ОЗУ (OOM) либо конфликт при монтировании раздела /system_root (ошибка: Failed to mount '/system_root' (Invalid argument)). В результате встроенный декодер TWRP уходит в бесконечный цикл.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+</section> <!-- /Конец подглавы H4 -->
+
+<hr>
+
+<!-- ПОДГЛАВА (H4) -->
+  <section id="solution" aria-label="Принятое решение">
+
+<h4 id="section1-3-2">1.3.2. Принятое решение</h4>
+<p>Полный отказ от распаковки и установки прошивки средствами TWRP. Вместо этого:</p>
+<ol>
+  <li>Архив прошивки был распакован и конвертирован в сырой образ диска (system.img) на стороне ПК под управлением Kali Linux.</li>
+  <li>Готовые образы ядра (boot.img) и системы (system.img) были записаны напрямую в разделы внутренней флеш-памяти (eMMC) планшета через низкоуровневый протокол Fastboot.</li>
+</ol>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+</section> <!-- /Конец подглавы H4 -->
+
+<hr>
+
+<!-- ПОДГЛАВА (H4) -->
+  <section id="step-by-step" aria-label="Пошаговый алгоритм выполнения работ">
+
+<h4 id="section1-3-3">1.3.3. Пошаговый алгоритм выполнения работ</h4>
+
+<p><strong><i>Этап 1. Распаковка архива прошивки на ПК</i></strong></p>
+<p>Создана рабочая директория и извлечено содержимое ZIP-архива:</p>
+<pre><code>mkdir -p ~/rom &amp;&amp; cd ~/rom
+unzip /home/user/Downloads/lineage-18.1-20230227-UNOFFICIAL-TB8504.zip</code></pre>
+<p>Результат: Извлечены ключевые файлы boot.img, system.new.dat.br и system.transfer.list (отдельный раздел vendor в данной сборке отсутствует).</p>
+
+<hr>
+
+<p><strong><i>Этап 2. Декомпрессия и сборка образа system.img</i></strong></p>
+<p>1. Установлен архиватор brotli и выполнена распаковка системного контейнера:</p>
+<pre><code>sudo apt update &amp;&amp; sudo apt install -y brotli python3
+brotli --decompress system.new.dat.br -o system.new.dat</code></pre>
+
+<p>2. Локально создан Python-скрипт sdat2img.py для преобразования бинарного списка передачи (system.transfer.list) и данных (system.new.dat) в монтируемый образ раздела:</p>
+<pre><code>python3 sdat2img.py system.transfer.list system.new.dat system.img</code></pre>
+
+<p><strong>Код скрипта sdat2img.py (Python):</strong></p>
+
+<div class="historical-fact">
+    <pre>
+        <code class="language-python">
+
+import sys, os, struct
+
+def rangeset(src):
+    src_set = src.split(',')
+    num_set = [int(item) for item in src_set]
+    if len(num_set) != num_set[0] + 1:
+        raise ValueError(f'Error parsing data: {src}')
+    return [(num_set[i], num_set[i+1]) for i in range(1, len(num_set), 2)]
+
+def parse_transfer_list_file(path):
+    with open(path, 'r') as trans_list:
+        version = int(trans_list.readline())
+        new_blocks = int(trans_list.readline())
+        if version >= 2:
+            trans_list.readline()
+            trans_list.readline()
+        commands = []
+        for line in trans_list:
+            line = line.split(' ')
+            cmd = line[0]
+            if cmd in ['erase', 'new', 'zero']:
+                commands.append([cmd, rangeset(line[1])])
+        return version, new_blocks, commands
+
+def main(TRANSFER_LIST_FILE, NEW_DATA_FILE, OUTPUT_IMAGE_FILE):
+    BLOCK_SIZE = 4096
+    version, new_blocks, commands = parse_transfer_list_file(TRANSFER_LIST_FILE)
+    with open(OUTPUT_IMAGE_FILE, 'wb') as output_img, open(NEW_DATA_FILE, 'rb') as new_data_file:
+        all_block_sets = [i for command in commands for i in command[1]]
+        max_file_size = max(pair[1] for pair in all_block_sets) * BLOCK_SIZE
+        for command in commands:
+            if command[0] == 'new':
+                for block in command[1]:
+                    begin, end = block[0], block[1]
+                    block_count = end - begin
+                    output_img.seek(begin * BLOCK_SIZE)
+                    while block_count > 0:
+                        output_img.write(new_data_file.read(BLOCK_SIZE))
+                        block_count -= 1
+        if output_img.tell() &lt; max_file_size:
+            output_img.truncate(max_file_size)
+    print(f'Done! Output image: {os.path.realpath(OUTPUT_IMAGE_FILE)}')
+
+if __name__ == '__main__':
+    main(sys.argv[1], sys.argv[2], sys.argv[3])
+    
+        </code>
+    </pre>
+</div>
+
+<p>Результат: Сформирован готовый образ /home/user/rom/system.img.</p>
+
+<hr>
+
+<p><strong><i>Этап 3. Перевод устройства в режим Fastboot</i></strong></p>
+<ol>
+  <li>Планшет принудительно выключен долгим удержанием кнопки питания (15 секунд).</li>
+  <li>Зажата комбинация кнопок Громкость вниз + Питание до появления экрана Fastboot mode.</li>
+  <li>Проверено подключение к ПК:</li>
+</ol>
+<pre><code>fastboot devices</code></pre>
+<p>Вывод: HGAGWPMF fastboot</p>
+
+<hr>
+
+<p><strong><i>Этап 4. Очистка разделов и прямая запись образов</i></strong></p>
+<ol>
+  <li>Стерты старые разделы ядра и системы:</li>
+</ol>
+<pre><code>fastboot erase boot
+fastboot erase system</code></pre>
+<ol start="2">
+  <li>Прошито новое ядро:</li>
+</ol>
+<pre><code>fastboot flash boot boot.img</code></pre>
+<ol start="3">
+  <li>Прошит системный раздел (утилита автоматически разбила образ на 4 sparse-сегмента, общее время записи составило ~311 секунд):</li>
+</ol>
+<pre><code>fastboot flash system system.img</code></pre>
+
+<hr>
+
+<p><strong><i>Этап 5. Сброс пользовательских данных и запуск</i></strong></p>
+<p><strong>Примечание:</strong> Стандартная команда "fastboot -w" завершилась ошибкой "mke2fs failed with status 1" (особенность сборки platform-tools в Kali Linux). Проблема решена прямой очисткой разделов, после чего новая ОС при первом старте сама инициализировала файловую систему ext4:</p>
+<pre><code>fastboot erase userdata
+fastboot erase cache
+fastboot reboot</code></pre>
+<p>Результат: Планшет успешно перезагрузился, прошел этап первичной инициализации LineageOS и вышел на экран приветствия.</p>
+
+<hr>
+
+<p><strong><i>Этап 6. Проверка работоспособности</i></strong></p>
+<p>Работоспособность LineageOS 18.1 была проверена — система работает корректно. С официального сайта было скачано приложение F-Droid и через него установлены необходимые приложения, в том числе и Aurora Store, с помощью которого в свою очередь были установлены необходимые приложения, отсутствующие в F-Droid репозитории.</p>
+<p>В итоге проверка выявила, что lineage-18.1-20230227-UNOFFICIAL-TB8504, основанная на Android 11, работает не хуже, а по многим параметрам даже лучше, чем заводская ОС Android 8.</p>
+<p>Установка LineageOS 18.1 без гугл-сервисов и прочих дополнительных сервисов (которые автор не считает для себя полезными и необходимыми) привела к существенному росту качества работы ОС планшета.</p>
+<p>Появилась возможность установить сервисы Proton, а также некоторые другие сервисы, несовместимые с Android 8.</p>
+<p>После двух недель тестирования — активной работы с браузерной версией DeepSeek, просмотра медиафайлов в VLC-плеере, набора текста в Quick Edit и решения прочих стандартных задач — сбоев и зависаний не выявлено, кроме отказа некоторых приложений работать по причине невозможности обнаружения ими гугл-сервисов.</p>
+
+<div class="figure-row">
+  <figure style="text-align: center;">
+    <img src="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/pictures/lineageos-18-no-google-services.png"
+         alt="Скриншот списка установленных на планшете приложений непосредственно после установки LineageOS 18.1"
+         width="350"
+         loading="lazy"
+         onclick="this.classList.toggle('zoomed')"
+         style="max-width: 100%; height: auto; border-radius: 4px; border: 1px solid #d0d0d0;">
+    <figcaption style="margin-top: 0.5rem; font-size: 0.85rem; color: #4a4a40;">
+      <strong>LineageOS 18.1 на Android-планшете.</strong><br>
+      Скриншот выпадающего списка установленных на планшете приложений непосредственно после установки LineageOS 18.1
+    </figcaption>
+  </figure>
+
+  <figure style="text-align: center;">
+    <img src="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/pictures/lineageos-18-about-system.png"
+         alt="Скриншот раздела Настройки - О планшете Android-планшета с LineageOS 18.1"
+         width="350"
+         loading="lazy"
+         onclick="this.classList.toggle('zoomed')"
+         style="max-width: 100%; height: auto; border-radius: 4px; border: 1px solid #d0d0d0;">
+    <figcaption style="margin-top: 0.5rem; font-size: 0.85rem; color: #4a4a40;">
+      <strong>LineageOS 18.1 на Android-планшете.</strong><br>
+      Скриншот раздела Настройки - О планшете Android-планшета с LineageOS 18.1.
+    </figcaption>
+  </figure>
+</div>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+</section> <!-- /Конец подглавы H4 -->
+
+<hr>
+
+<!-- ПОДГЛАВА (H4) -->
+  <section id="conclusions" aria-label="Выводы и рекомендации на будущее">
+
+<h4 id="section1-3-4">1.3.4. Выводы и рекомендации на будущее</h4>
+<p>Для устройств серии Lenovo Tab 4 (TB-8504) при установке кастомных прошивок Android 10/11 метод прямой прошивки через <code>fastboot flash</code> является наиболее стабильным и безопасным.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+</section> <!-- /Конец подглавы H4 -->
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+</section> <!-- /Конец главы H3 -->
+
+<hr>
 
 <a href="#top" style="display: inline-block; padding: 8px 16px; background: #f5f5f0; border: 1px solid #d0d0c0; border-radius: 4px; text-decoration: none; color: #1a1a1a;">
   ↑ Вернуться в начало страницы
 </a>
 
-<!-- Начало блока перекрестных ссылок для статьи "Доверие — главное оружие манипулятора" -->
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;"> <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Общий итог</summary> <ul> <li><strong>Итог:</strong> Установка LineageOS 18.1 через TWRP не удалась из-за зависания установщика в состоянии D (непрерываемое ожидание I/O). Проблема решена методом прямой прошивки boot.img и system.img через fastboot. Система работает стабильно, без GApps, с F-Droid и Aurora Store. Метод <code>fastboot flash</code> признан наиболее надёжным для Lenovo TB-8504.</li> </ul> </details>
+
+</section> <!-- /Конец основной главы H2 -->
+
+<hr class="divider--major">
+
+<!-- Начало блока перекрестных ссылок для статьи "Технические задачи" -->
 <hr>
 <aside aria-label="Связанные материалы">
 <p>Связанные страницы:</p>
@@ -140,9 +753,7 @@
     <p>Лицензия: <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="license noopener external" target="_blank">CC0 1.0 Universal (Public Domain)</a></p>
   </footer>
 
-
 </main>
-
 
 <!-- Модальное окно поиска. Связывается с кнопкой автоматически, если у обоих не указан атрибут instance -->
 <pagefind-config bundle-path="/CyberSecurityAndSocialEngineering/pagefind/"></pagefind-config>

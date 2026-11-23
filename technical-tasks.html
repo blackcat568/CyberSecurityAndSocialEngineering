@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "Practical cases on configuring software and hardware: analyses of complex configuration tasks, non-standard situations, and solutions that fall outside the scope of the site's overview materials.",
     "datePublished": "2026-11-16",
-    "dateModified": "<!-- DATE_START -->2026-11-22<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-11-23<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -115,15 +115,599 @@
 </header>
 
 <main data-pagefind-body>
+	
 <article>
 
 <h1>Technical tasks</h1>
 
-<p>Add text</p>
+<p class="author-note" style="font-style: italic; color: #666; margin-top: -0.5em; margin-bottom: 1.5em; padding: 0.5em; background-color: #f9f9f9; border-radius: 4px;">
+  <strong>Important:</strong> This article reflects the personal position and conclusions of the author, formed on the basis of his personal experience and the conclusions drawn from it.</p>
 
-<a href="#top" style="display: inline-block; padding: 8px 16px; background: #f5f5f0; border: 1px solid #d0d0c0; border-radius: 4px; text-decoration: none; color: #1a1a1a;">
-  ↑ Back to top
-</a>
+<!-- INTERACTIVE TABLE OF CONTENTS (start) -->
+
+<nav id="table-of-contents" aria-labelledby="section0" style="margin: 2rem 0; padding: 1.2rem; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 6px;">
+    <h2 id="section0" style="margin-top: 0; color: #333;">Contents</h2>
+    <ul style="list-style: none; padding-left: 1rem; margin: 0;">
+        <li style="margin: 0.5rem 0;">
+            <a href="#section1">1. Attempting to install LineageOS 18.1 on a Lenovo Tab 4 8 LTE (TB-8504X): work log, diagnostics and identified problems</a>
+            <ul style="list-style: none; padding-left: 1.5rem; margin: 0.3rem 0;">
+                <li style="margin: 0.4rem 0;"><a href="#section1-1">1.1. Preparation</a>
+                    <ul style="list-style: none; padding-left: 1.5rem; margin: 0.2rem 0;">
+                        <li style="margin: 0.3rem 0;"><a href="#section1-1-1">1.1.1. Project goal</a></li>
+                        <li style="margin: 0.3rem 0;"><a href="#section1-1-2">1.1.2. Device information</a></li>
+                        <li style="margin: 0.3rem 0;"><a href="#section1-1-3">1.1.3. Choosing the firmware</a></li>
+                        <li style="margin: 0.3rem 0;"><a href="#section1-1-4">1.1.4. Preparing TWRP</a></li>
+                        <li style="margin: 0.3rem 0;"><a href="#section1-1-5">1.1.5. Creating a backup</a></li>
+                        <li style="margin: 0.3rem 0;"><a href="#section1-1-6">1.1.6. Internal memory layout</a></li>
+                    </ul>
+                </li>
+                <li style="margin: 0.4rem 0;"><a href="#section1-2">1.2. Failed flashing attempt</a>
+                    <ul style="list-style: none; padding-left: 1.5rem; margin: 0.2rem 0;">
+                        <li style="margin: 0.3rem 0;"><a href="#section1-2-1">1.2.1. First installation attempts and installer hang</a></li>
+                        <li style="margin: 0.3rem 0;"><a href="#section1-2-2">1.2.2. Checking the updater process</a></li>
+                        <li style="margin: 0.3rem 0;"><a href="#section1-2-3">1.2.3. Attempt to terminate the hung process</a></li>
+                    </ul>
+                </li>
+                <li style="margin: 0.4rem 0;"><a href="#section1-3">1.3. Successful reflashing of the Lenovo Tab 4 8 (TB-8504) tablet to LineageOS 18.1</a>
+                    <ul style="list-style: none; padding-left: 1.5rem; margin: 0.2rem 0;">
+                        <li style="margin: 0.3rem 0;"><a href="#section1-3-1">1.3.1. Problem description (symptoms)</a></li>
+                        <li style="margin: 0.3rem 0;"><a href="#section1-3-2">1.3.2. Adopted solution</a></li>
+                        <li style="margin: 0.3rem 0;"><a href="#section1-3-3">1.3.3. Step-by-step procedure</a></li>
+                        <li style="margin: 0.3rem 0;"><a href="#section1-3-4">1.3.4. Conclusions and recommendations for the future</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+<!-- INTERACTIVE TABLE OF CONTENTS (end) -->
+
+<hr class="divider--major">
+
+  <!-- MAJOR CHAPTER (H2) -->
+  <section id="lineageos-attempt" aria-label="Attempting to install LineageOS 18.1 on a Lenovo Tab 4 8 LTE (TB-8504X): work log, diagnostics and identified problems">
+
+<h2 id="section1">1. Attempting to install LineageOS 18.1 on a Lenovo Tab 4 8 LTE (TB-8504X): work log, diagnostics and identified problems</h2>
+
+<p><strong>Work dates:</strong> 10–12 November 2026</p>
+<p><strong>Device:</strong> Lenovo Tab 4 8 LTE, model TB-8504X, codename TB8504</p>
+<p><strong>Original OS:</strong> Android 8.1.0</p>
+<p><strong>Target OS:</strong> LineageOS 18.1 (Android 11), unofficial build</p>
+
+<hr>
+
+  <!-- MAJOR CHAPTER (H3) -->
+  <section id="preparation" aria-label="Preparation">
+
+<h3 id="section1-1"> 1.1. Preparation</h3>
+
+<!-- SUBCHAPTER (H4) -->
+  <section id="project-goal" aria-label="Project goal">
+
+<h4 id="section1-1-1">1.1.1. Project goal</h4>
+<p>The goal was to replace the stock Android 8.1 with a more modern and lightweight operating system without Google services.</p>
+<p>LineageOS 18.1 based on Android 11 was chosen as the target system. Installing Google Apps (GApps) was not planned from the outset.</p>
+<p>Before modifying the system, it was decided to create a backup of the internal storage, verify firmware compatibility, and use a temporary TWRP boot without installing a custom recovery into the device's permanent partition.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to contents</a>
+</p>
+
+</section> <!-- /End of subchapter H4 -->
+
+<hr>
+
+<!-- SUBCHAPTER (H4) -->
+  <section id="device-info" aria-label="Device information">
+
+<h4 id="section1-1-2">1.1.2. Device information</h4>
+<ul>
+  <li>Manufacturer: Lenovo.</li>
+  <li>Model: Lenovo TB-8504X.</li>
+  <li>Device codename: TB8504.</li>
+  <li>Platform: Qualcomm Snapdragon 425.</li>
+  <li>RAM: 2 GB.</li>
+  <li>Internal storage: 16 GB.</li>
+  <li>Original system: Android 8.1.0.</li>
+  <li>Original system security patch level: 5 November 2019.</li>
+  <li>Bootloader: OEM unlocking was allowed.</li>
+</ul>
+<p>Device identifiers obtained via ADB:</p>
+<pre><code>adb shell getprop ro.product.device
+adb shell getprop ro.build.product
+adb shell getprop ro.product.model
+
+TB8504
+TB-8504X
+Lenovo TB-8504X</code></pre>
+<p>The device was recognized by the computer as <code>HGAGWPMF</code>.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to contents</a>
+</p>
+
+</section> <!-- /End of subchapter H4 -->
+
+<hr>
+
+<!-- SUBCHAPTER (H4) -->
+  <section id="firmware-choice" aria-label="Choosing the firmware">
+
+<h4 id="section1-1-3">1.1.3. Choosing the firmware</h4>
+<p>The following archive was selected for installation:</p>
+<pre><code>lineage-18.1-20230227-UNOFFICIAL-TB8504.zip</code></pre>
+<ul>
+  <li>Size: about 646 MiB (677,357,155 bytes).</li>
+  <li>Android version: 11.</li>
+  <li>SDK/API: 30.</li>
+  <li>Build date: 27 February 2023.</li>
+  <li>Security patch level: 5 February 2023.</li>
+  <li>Build ID: eng.contro.20230227.053235.</li>
+  <li>Device variants in the metadata: TB-8504X, TB-8504F and the corresponding variants of the codename spelling.</li>
+  <li>GApps are not included in the archive.</li>
+</ul>
+<p>The archive contained, in particular, <code>boot.img</code>, <code>system.new.dat.br</code> and an empty <code>system.patch.dat</code>. There were 11 files in total in the archive.</p>
+<p>Verification of the ZIP archive structure completed successfully:</p>
+<pre><code>unzip -t lineage-18.1-20230227-UNOFFICIAL-TB8504.zip
+
+No errors detected in compressed data.</code></pre>
+<p>SHA-256 of the original archive:</p>
+<pre><code>c3da1a4eccc7dd8b541f21ec933a4aca585ada5c96c2533f79301d997753f36c</code></pre>
+<p>Based on an analysis of the installation script, the archive is intended for devices of the TB-8504X/TB-8504F family. The script uses the <code>block_image_update</code> mechanism to write the system partition and also installs the boot image. According to the script examined, the recovery and data partitions should not be formatted.</p>
+<p>Thus, at the archive verification stage, no obvious ZIP structure errors or device identifier mismatches were found.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to contents</a>
+</p>
+
+</section> <!-- /End of subchapter H4 -->
+
+<hr>
+
+<!-- SUBCHAPTER (H4) -->
+  <section id="twrp-preparation" aria-label="Preparing TWRP">
+
+<h4 id="section1-1-4">1.1.4. Preparing TWRP</h4>
+<p>The custom recovery TWRP was used for installation. An older <code>twrp.img</code> image was used first, then a newer image was downloaded.</p>
+<p>The new image:</p>
+<pre><code>twrp-2025-07-01.img</code></pre>
+<ul>
+  <li>TWRP version after launch: 3.7.1_12-0.</li>
+  <li>File size: 52,180,992 bytes.</li>
+  <li>SHA-256: <code>a1debef76b5b33675ea33aa3c9cc8cb54139faf60266bf4042d4262ebf7488c4</code>.</li>
+  <li>File type: Android boot image, signature <code>ANDROID!</code>.</li>
+</ul>
+<p>The image was obtained from the build directory for TB8504 on SourceForge:</p>
+<p><a href="https://sourceforge.net/projects/adazem009-builds/files/lenovo_TB8504/twrp/07-01-2025/twrp.img/download">TWRP for Lenovo TB8504, build dated 01.07.2025</a></p>
+<p>Recovery was launched temporarily, without permanently flashing it into the recovery partition:</p>
+<pre><code>fastboot boot ~/Desktop/twrp-2025-07-01.img</code></pre>
+<p>Fastboot sometimes reported:</p>
+<pre><code>Booting FAILED (Status read failed (No such device))
+fastboot: error: Command failed</code></pre>
+<p>At the same time, the file transfer completed with a result of <code>OKAY</code>, and the tablet actually booted into TWRP. Therefore, this Fastboot message did not mean an unambiguous failure to boot recovery: the connection to the device was dropped already at the stage of transferring control.</p>
+<p>After TWRP launched, the device was detected via ADB in recovery mode:</p>
+<pre><code>adb devices
+
+HGAGWPMF recovery</code></pre>
+<p>On the first TWRP launch, permission to modify system partitions was selected — <em>Swipe to Allow Modifications</em>, rather than read-only mode.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to contents</a>
+</p>
+
+</section> <!-- /End of subchapter H4 -->
+
+<hr>
+
+<!-- SUBCHAPTER (H4) -->
+  <section id="backup-creation" aria-label="Creating a backup">
+
+<h4 id="section1-1-5">1.1.5. Creating a backup</h4>
+<p>Before the installation attempts, a full block-level copy of the internal storage was created on the computer.</p>
+<p>File:</p>
+<pre><code>~/Desktop/TB8504X_Backup/mmcblk0.img</code></pre>
+<p>The copy was performed via ADB:</p>
+<pre><code>adb exec-out "dd if=/dev/block/mmcblk0 bs=4M" | pv -s 15634268160 &gt; ~/Desktop/TB8504X_Backup/mmcblk0.img</code></pre>
+<p>Size of the source block device and the resulting file:</p>
+<pre><code>15,634,268,160 bytes</code></pre>
+<p>After copying, it turned out that 93 extra bytes of <code>dd</code> text statistics output had ended up at the end of the file. The file size was corrected to the size of the source device:</p>
+<pre><code>truncate -s 15634268160 ~/Desktop/TB8504X_Backup/mmcblk0.img</code></pre>
+<p>Using <code>fdisk</code>, the presence of a GPT and 49 partitions was confirmed.</p>
+<p><strong>Backup limitation:</strong> a byte-for-byte comparison of the image with the source storage was not performed. Therefore, the existence of a full copy file is confirmed, but its absolute byte-for-byte accuracy has not been established. The image should not be considered a verified recovery method without additional checks.</p>
+<p>The backup file contains not only user data but also system partitions, boot data and modem-related partitions. It cannot be blindly written back to the device as a whole: restoring a full image requires a separate assessment of the storage state and an understanding of the consequences.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to contents</a>
+</p>
+
+</section> <!-- /End of subchapter H4 -->
+
+<hr>
+
+<!-- SUBCHAPTER (H4) -->
+  <section id="memory-layout" aria-label="Internal memory layout">
+
+<h4 id="section1-1-6">1.1.6. Internal memory layout</h4>
+<p>Based on the GPT analysis, the following layout of the main partitions was established:</p>
+<table style="width: 100%; border-collapse: collapse; margin: 1rem 0; background: #f5f5f0;">
+  <thead>
+    <tr style="background: #d0d0c0;">
+      <th style="padding: 0.75rem; border: 1px solid #c0c0b0; text-align: left;">Partition</th>
+      <th style="padding: 0.75rem; border: 1px solid #c0c0b0; text-align: left;">Block device</th>
+      <th style="padding: 0.75rem; border: 1px solid #c0c0b0; text-align: left;">Size / location</th>
+      <th style="padding: 0.75rem; border: 1px solid #c0c0b0; text-align: left;">Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding: 0.75rem; border: 1px solid #c0c0b0;">p25</td>
+      <td style="padding: 0.75rem; border: 1px solid #c0c0b0;"><code>/dev/block/mmcblk0p25</code></td>
+      <td style="padding: 0.75rem; border: 1px solid #c0c0b0;">4,080,218,112 bytes</td>
+      <td style="padding: 0.75rem; border: 1px solid #c0c0b0;">system</td>
+    </tr>
+    <tr>
+      <td style="padding: 0.75rem; border: 1px solid #c0c0b0;">p26</td>
+      <td style="padding: 0.75rem; border: 1px solid #c0c0b0;"><code>/dev/block/mmcblk0p26</code></td>
+      <td style="padding: 0.75rem; border: 1px solid #c0c0b0;">256 MiB</td>
+      <td style="padding: 0.75rem; border: 1px solid #c0c0b0;">cache</td>
+    </tr>
+    <tr>
+      <td style="padding: 0.75rem; border: 1px solid #c0c0b0;">p49</td>
+      <td style="padding: 0.75rem; border: 1px solid #c0c0b0;"><code>/dev/block/mmcblk0p49</code></td>
+      <td style="padding: 0.75rem; border: 1px solid #c0c0b0;">about 9.2 GiB</td>
+      <td style="padding: 0.75rem; border: 1px solid #c0c0b0;">userdata</td>
+    </tr>
+  </tbody>
+</table>
+<p>Additionally, the following mappings were established:</p>
+<ul>
+  <li><code>system</code> → <code>/dev/block/mmcblk0p25</code>;</li>
+  <li><code>boot</code> → <code>/dev/block/mmcblk0p22</code>;</li>
+  <li><code>recovery</code> → <code>/dev/block/mmcblk0p23</code>.</li>
+</ul>
+<p>In TWRP, the system partition is also accessible via a symbolic link:</p>
+<pre><code>/dev/block/bootdevice/by-name/system</code></pre>
+<p>It points to <code>/dev/block/mmcblk0p25</code>.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to contents</a>
+</p>
+
+</section> <!-- /End of subchapter H4 -->
+
+</section> <!-- /End of chapter H3 -->
+
+<hr class="divider--major">
+
+  <!-- MAJOR CHAPTER (H3) -->
+  <section id="failed-flash" aria-label="Failed flashing attempt">
+
+<h3 id="section1-2"> 1.2. Failed flashing attempt</h3>
+
+<!-- SUBCHAPTER (H4) -->
+  <section id="first-attempts" aria-label="First installation attempts and installer hang">
+
+<h4 id="section1-2-1">1.2.1. First installation attempts and installer hang</h4>
+<p>The first installation was performed from a ZIP archive on a microSD card. An attempt to install via ADB sideload was also made.</p>
+<p>In both cases, the process did not reach completion. The installer stopped at the stage:</p>
+<pre><code>Patching system image unconditionally...</code></pre>
+<p>The installation log contained the following messages:</p>
+<pre><code>block_image_update("/dev/block/bootdevice/by-name/system", ...)
+Patching system image unconditionally...
+performing update
+blockimg version is 4
+maximum stash entries 0
+Patching system image unconditionally...
+using existing stash /cache/recovery/2bdde8504898ccfcd2c59f20bb8c9c25f73bb524
+Skipping already executed command: 0, last executed command for previous update: 0
+writing 1024 blocks of new data</code></pre>
+<p>Installation progress stopped. The progress bar in TWRP did not move, and the last line of the log remained unchanged.</p>
+<p>It was first necessary to establish whether the installer was actually performing a long operation or had hung completely. For this purpose, the state of the process, its system counters and the block device statistics were checked.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to contents</a>
+</p>
+
+</section> <!-- /End of subchapter H4 -->
+
+<hr>
+
+<!-- SUBCHAPTER (H4) -->
+  <section id="updater-check" aria-label="Checking the updater process">
+
+<h4 id="section1-2-2">1.2.2. Checking the updater process</h4>
+<p>The installer process was found via:</p>
+<pre><code>adb shell 'ps -A | grep -iE "updater|update-binary|recovery" | grep -v grep'</code></pre>
+<p>Result:</p>
+<pre><code>root  338  1   ...  poll_schedule_timeout ... S recovery
+root  377  338 ...  mtp_read              ... S recovery
+root  994  338 ...  wait_on_page_bit      ... D updater</code></pre>
+<p>The <code>updater</code> process was in state <code>D</code> — uninterruptible waiting for an I/O operation. The wait channel displayed was <code>wait_on_page_bit</code>.</p>
+<p>Additional check:</p>
+<pre><code>adb shell 'cat /proc/994/io; echo "--- WAIT CHANNEL ---"; cat /proc/994/wchan; echo "--- OPEN FILES ---"; ls -l /proc/994/fd'</code></pre>
+<p>Obtained counters:</p>
+<pre><code>rchar: 67815
+wchar: 4201133
+syscr: 29
+syscw: 167
+read_bytes: 569344
+write_bytes: 4194304
+cancelled_write_bytes: 0</code></pre>
+<p>Wait channel:</p>
+<pre><code>wait_on_page_bit</code></pre>
+<p>Among the open files, the following descriptor was found:</p>
+<pre><code>4 -> /dev/block/mmcblk0p25</code></pre>
+<p>This confirms that the installer process was directly working with the system partition of the internal storage.</p>
+<p>The value <code>write_bytes: 4194304</code> indicates 4 MiB of writes accounted for by the process. It does not prove that all of this data was successfully written to the physical medium.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to contents</a>
+</p>
+
+</section> <!-- /End of subchapter H4 -->
+
+<hr>
+
+<!-- SUBCHAPTER (H4) -->
+  <section id="kill-attempt" aria-label="Attempt to terminate the hung process">
+
+<h4 id="section1-2-3">1.2.3. Attempt to terminate the hung process</h4>
+<p>An attempt was made to gracefully terminate the installer:</p>
+<pre><code>adb shell 'kill -TERM 994; echo "SIGTERM sent"'</code></pre>
+<p>The command reported that the signal was sent, but the process remained in state <code>D</code>:</p>
+<pre><code>adb shell 'ps -A | grep updater | grep -v grep'
+
+root  994  338  ...  wait_on_page_bit  ...  D updater</code></pre>
+<p>Processes in uninterruptible I/O wait cannot handle a termination signal while the kernel is waiting for the corresponding operation to complete. Therefore, repeated attempts to send signals do not eliminate the root cause of the hang.</p>
+<p>A similar situation had been observed earlier during file system diagnostics: <code>e2fsck</code> processes also hung in state <code>D</code>.</p>
+<p>The author does not see the point in describing the lengthy diagnostic process, as this would stretch out the article and reduce its suitability for analysis. It is more appropriate to move on to describing the successful solution to the problem.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to contents</a>
+</p>
+
+</section> <!-- /End of subchapter H4 -->
+
+</section> <!-- /End of chapter H3 -->
+
+<hr class="divider--major">
+
+  <!-- MAJOR CHAPTER (H3) -->
+  <section id="successful-flash" aria-label="Successful reflashing of the Lenovo Tab 4 8 (TB-8504) tablet to LineageOS 18.1">
+
+<h3 id="section1-3">1.3. Successful reflashing of the Lenovo Tab 4 8 (TB-8504) tablet to LineageOS 18.1</h3>
+
+<p><strong>Date performed:</strong> 12.11.2026</p>
+<p><strong>Device:</strong> Lenovo Tab 4 8 (model TB-8504, Qualcomm Snapdragon 425 chipset, 2 GB RAM)</p>
+<p><strong>Installed OS:</strong> LineageOS 18.1 (Android 11) — build lineage-18.1-20230227-UNOFFICIAL-TB8504.zip</p>
+<p><strong>Host system (PC):</strong> Kali Linux (x86_64)</p>
+<p><strong>Final status:</strong> Successful. The system has booted and is functioning normally.</p>
+
+<!-- SUBCHAPTER (H4) -->
+  <section id="problem-description" aria-label="Problem description (symptoms)">
+
+<h4 id="section1-3-1">1.3.1. Problem description (symptoms)</h4>
+<p>When attempting a standard installation of the custom firmware via the custom recovery TWRP, the process hung completely at the stage "Patching system image unconditionally..." (the progress indicator did not move for more than 30 minutes).</p>
+<ul>
+  <li>The hang occurred both when installing via cable (adb sideload) and when installing locally from a physical MicroSD card.</li>
+  <li>The checksums of the firmware archive matched the original, which ruled out file corruption.</li>
+</ul>
+<p><strong>Technical cause of the failure:</strong></p>
+<p>On devices with a small amount of RAM (2 GB), when unpacking a heavy system.new.dat.br image (Brotli compression) inside the TWRP environment, an out-of-memory (OOM) condition occurs or a conflict arises when mounting the /system_root partition (error: Failed to mount '/system_root' (Invalid argument)). As a result, the built-in TWRP decoder enters an infinite loop.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to contents</a>
+</p>
+
+</section> <!-- /End of subchapter H4 -->
+
+<hr>
+
+<!-- SUBCHAPTER (H4) -->
+  <section id="solution" aria-label="Adopted solution">
+
+<h4 id="section1-3-2">1.3.2. Adopted solution</h4>
+<p>A complete abandonment of unpacking and installing the firmware by means of TWRP. Instead:</p>
+<ol>
+  <li>The firmware archive was unpacked and converted into a raw disk image (system.img) on the PC side under Kali Linux.</li>
+  <li>The ready-made kernel (boot.img) and system (system.img) images were written directly into the tablet's internal flash memory (eMMC) partitions via the low-level Fastboot protocol.</li>
+</ol>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to contents</a>
+</p>
+
+</section> <!-- /End of subchapter H4 -->
+
+<hr>
+
+<!-- SUBCHAPTER (H4) -->
+  <section id="step-by-step" aria-label="Step-by-step procedure">
+
+<h4 id="section1-3-3">1.3.3. Step-by-step procedure</h4>
+
+<p><strong><i>Stage 1. Unpacking the firmware archive on the PC</i></strong></p>
+<p>A working directory was created and the contents of the ZIP archive were extracted:</p>
+<pre><code>mkdir -p ~/rom &amp;&amp; cd ~/rom
+unzip /home/user/Downloads/lineage-18.1-20230227-UNOFFICIAL-TB8504.zip</code></pre>
+<p>Result: The key files boot.img, system.new.dat.br and system.transfer.list were extracted (there is no separate vendor partition in this build).</p>
+
+<hr>
+
+<p><strong><i>Stage 2. Decompression and assembly of the system.img image</i></strong></p>
+<p>1. The brotli archiver was installed and the system container was unpacked:</p>
+<pre><code>sudo apt update &amp;&amp; sudo apt install -y brotli python3
+brotli --decompress system.new.dat.br -o system.new.dat</code></pre>
+
+<p>2. A Python script, sdat2img.py, was created locally to convert the binary transfer list (system.transfer.list) and data (system.new.dat) into a mountable partition image:</p>
+<pre><code>python3 sdat2img.py system.transfer.list system.new.dat system.img</code></pre>
+
+<p><strong>Script code sdat2img.py (Python):</strong></p>
+
+<div class="historical-fact">
+    <pre>
+        <code class="language-python">
+
+import sys, os, struct
+
+def rangeset(src):
+    src_set = src.split(',')
+    num_set = [int(item) for item in src_set]
+    if len(num_set) != num_set[0] + 1:
+        raise ValueError(f'Error parsing data: {src}')
+    return [(num_set[i], num_set[i+1]) for i in range(1, len(num_set), 2)]
+
+def parse_transfer_list_file(path):
+    with open(path, 'r') as trans_list:
+        version = int(trans_list.readline())
+        new_blocks = int(trans_list.readline())
+        if version >= 2:
+            trans_list.readline()
+            trans_list.readline()
+        commands = []
+        for line in trans_list:
+            line = line.split(' ')
+            cmd = line[0]
+            if cmd in ['erase', 'new', 'zero']:
+                commands.append([cmd, rangeset(line[1])])
+        return version, new_blocks, commands
+
+def main(TRANSFER_LIST_FILE, NEW_DATA_FILE, OUTPUT_IMAGE_FILE):
+    BLOCK_SIZE = 4096
+    version, new_blocks, commands = parse_transfer_list_file(TRANSFER_LIST_FILE)
+    with open(OUTPUT_IMAGE_FILE, 'wb') as output_img, open(NEW_DATA_FILE, 'rb') as new_data_file:
+        all_block_sets = [i for command in commands for i in command[1]]
+        max_file_size = max(pair[1] for pair in all_block_sets) * BLOCK_SIZE
+        for command in commands:
+            if command[0] == 'new':
+                for block in command[1]:
+                    begin, end = block[0], block[1]
+                    block_count = end - begin
+                    output_img.seek(begin * BLOCK_SIZE)
+                    while block_count > 0:
+                        output_img.write(new_data_file.read(BLOCK_SIZE))
+                        block_count -= 1
+        if output_img.tell() &lt; max_file_size:
+            output_img.truncate(max_file_size)
+    print(f'Done! Output image: {os.path.realpath(OUTPUT_IMAGE_FILE)}')
+
+if __name__ == '__main__':
+    main(sys.argv[1], sys.argv[2], sys.argv[3])
+    
+        </code>
+    </pre>
+</div>
+
+<p>Result: A ready-made image /home/user/rom/system.img was produced.</p>
+
+<hr>
+
+<p><strong><i>Stage 3. Putting the device into Fastboot mode</i></strong></p>
+<ol>
+  <li>The tablet was forcibly powered off by long-pressing the power button (15 seconds).</li>
+  <li>The key combination Volume Down + Power was held until the Fastboot mode screen appeared.</li>
+  <li>The connection to the PC was checked:</li>
+</ol>
+<pre><code>fastboot devices</code></pre>
+<p>Output: HGAGWPMF fastboot</p>
+
+<hr>
+
+<p><strong><i>Stage 4. Wiping partitions and directly writing the images</i></strong></p>
+<ol>
+  <li>The old kernel and system partitions were erased:</li>
+</ol>
+<pre><code>fastboot erase boot
+fastboot erase system</code></pre>
+<ol start="2">
+  <li>The new kernel was flashed:</li>
+</ol>
+<pre><code>fastboot flash boot boot.img</code></pre>
+<ol start="3">
+  <li>The system partition was flashed (the utility automatically split the image into 4 sparse segments, with a total write time of ~311 seconds):</li>
+</ol>
+<pre><code>fastboot flash system system.img</code></pre>
+
+<hr>
+
+<p><strong><i>Stage 5. Resetting user data and booting</i></strong></p>
+<p><strong>Note:</strong> The standard command "fastboot -w" failed with the error "mke2fs failed with status 1" (a peculiarity of the platform-tools build in Kali Linux). The problem was solved by directly wiping the partitions, after which the new OS initialized the ext4 file system itself on first boot:</p>
+<pre><code>fastboot erase userdata
+fastboot erase cache
+fastboot reboot</code></pre>
+<p>Result: The tablet rebooted successfully, passed the initial LineageOS initialization stage and reached the welcome screen.</p>
+
+<hr>
+
+<p><strong><i>Stage 6. Performance check</i></strong></p>
+
+<p>The performance of LineageOS 18.1 was checked — the system works correctly. The F-Droid application was downloaded from the official website, through which the necessary applications were installed, including Aurora Store. In turn, Aurora Store was used to install applications that are absent from the F-Droid repository.</p>
+
+<p>As a result, the check showed that the build <code>lineage-18.1-20230227-UNOFFICIAL-TB8504</code>, based on Android 11, works no worse, and in many respects even better, than the factory Android 8 OS.</p>
+
+<p>Installing LineageOS 18.1 without Google services and other additional services (which the author does not consider useful or necessary for himself) led to a significant improvement in the quality of the tablet's OS performance.</p>
+
+<p>It became possible to install Proton services, as well as some other services incompatible with Android 8.</p>
+
+<p>After two weeks of testing — active work with the browser version of DeepSeek, watching media files in the VLC player, typing in Quick Edit and solving other standard tasks — no crashes or hangs were detected. The only exception was some applications refusing to work because they could not detect Google services.</p>
+
+<div class="figure-row">
+  <figure style="text-align: center;">
+    <img src="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/pictures/lineageos-18-no-google-services-rus.png"
+         alt="Screenshot of the list of applications installed on the tablet immediately after installing LineageOS 18.1"
+         width="300"
+         loading="lazy"
+         onclick="this.classList.toggle('zoomed')"
+         style="max-width: 100%; height: auto; border-radius: 4px; border: 1px solid #d0d0d0;">
+    <figcaption style="margin-top: 0.5rem; font-size: 0.85rem; color: #4a4a40;">
+      <strong>LineageOS 18.1 on an Android tablet.</strong><br>
+      Screenshot of the drop-down list of applications installed on the tablet immediately after installing LineageOS 18.1
+    </figcaption>
+  </figure>
+
+  <figure style="text-align: center;">
+    <img src="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/pictures/lineageos-18-about-system-rus.png"
+         alt="Screenshot of the Settings - About tablet section of an Android tablet with LineageOS 18.1"
+         width="300"
+         loading="lazy"
+         onclick="this.classList.toggle('zoomed')"
+         style="max-width: 100%; height: auto; border-radius: 4px; border: 1px solid #d0d0d0;">
+    <figcaption style="margin-top: 0.5rem; font-size: 0.85rem; color: #4a4a40;">
+      <strong>LineageOS 18.1 on an Android tablet.</strong><br>
+      Screenshot of the Settings - About tablet section of an Android tablet with LineageOS 18.1.
+    </figcaption>
+  </figure>
+</div>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to contents</a>
+</p>
+
+</section> <!-- /End of subchapter H4 -->
+
+<hr>
+
+<!-- SUBCHAPTER (H4) -->
+  <section id="conclusions" aria-label="Conclusions and recommendations for the future">
+
+<h4 id="section1-3-4">1.3.4. Conclusions and recommendations for the future</h4>
+<p>For devices of the Lenovo Tab 4 series (TB-8504), when installing custom Android 10/11 firmware, the direct flashing method via <code>fastboot flash</code> is the most stable and safe.</p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Back to contents</a>
+</p>
+
+</section> <!-- /End of subchapter H4 -->
+
+</section> <!-- /End of chapter H3 -->
+
+<hr>
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;"> <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Overall summary</summary> <ul> <li><strong>Outcome:</strong> Installing LineageOS 18.1 via TWRP failed due to the installer hanging in state D (uninterruptible I/O wait). The problem was solved by directly flashing boot.img and system.img via fastboot. The system works stably, without GApps, with F-Droid and Aurora Store. The <code>fastboot flash</code> method has been found to be the most reliable for the Lenovo TB-8504.</li> </ul> </details>
+
+</section> <!-- /End of main chapter H2 -->
+
+<hr class="divider--major">
 
 <!-- Start of cross-reference block for "Technical tasks" -->
 <hr>
@@ -131,7 +715,12 @@
 <p>Related pages:</p>
 <ul>
 
-   <li>Добавить страинцы</li>
+    <li>
+        <a href="information-and-behavioral-hygiene-for-working-with-a-pc.html">Information and Behavioral Hygiene for Working with a PC</a> — A basic practical guide to digital, behavioral, and information hygiene for personal computer users.
+    </li>
+    <li>
+		<a href="android-system-hardening-chronicles-targeted-attack.html">Android System Hardening Chronicles: In Search of a Configuration Resilient to Targeted Attacks</a> Analysis of targeted attacks on Android devices (smartphone, tablet). Attacker gains full remote access to microphone, camera, and network traffic. Partial tablet protection via NetGuard. Supplement to 'System Hardening Chronicles'.
+	</li>
 
 </ul>
 </aside>
@@ -151,8 +740,7 @@
     <p>Author: <strong>blackcat568</strong>. Date of creation: <time datetime="2026-11-16">16.11.2026</time>.</p>
     <p>License: <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="license noopener external" target="_blank">CC0 1.0 Universal (Public Domain)</a></p>
   </footer>
-
-
+  
 </main>
 
 

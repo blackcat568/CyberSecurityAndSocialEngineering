@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "Анализ целевой атаки на Android-устройства (ZTE Blade A522, Android 7.1.1 и Lenovo TB-8504X, Android 8.1.0). Получение хакером полного удалённого доступа к микрофону, камере и трафику. Частичная защита планшета через NetGuard. Дополнение к «Хроникам хардеринга системы».",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-11-18<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-11-24<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -121,14 +121,14 @@
 
 <div class="alert" style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 2rem 0;">
   <strong style="color: #856404;">⚠️ Внимание!</strong>
-  <span style="color: #856404;"> Статья находится в разработке. Уточнения и дополнения вносятся по мере получения новых данных об устойчивости новых конфигураций безопасности и активности хакера.<br>Последнее обновление контента: <!-- DATE_START -->2026-11-18<!-- DATE_END --></span>
+  <span style="color: #856404;"> Статья находится в разработке. Уточнения и дополнения вносятся по мере получения новых данных об устойчивости новых конфигураций безопасности и активности хакера.<br>Последнее обновление контента: <!-- DATE_START -->2026-11-24<!-- DATE_END --></span>
 </div>
 
 <p>Данный материал является прямым дополнением к основной статье:<br>
 <a href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/system-hardening-chronicles-targeted-attack-rus.html">«Хроники хардеринга системы: поиск конфигурации, устойчивой к целевой атаке»</a>.<br>
 Здесь описывается опыт с мобильными устройствами под управлением Android, который подтверждает и расширяет выводы, сделанные для десктопных систем.</p>
 
-<p>Последнее обновление статьи: <!-- DATE_START -->2026-11-18<!-- DATE_END --></p>
+<p>Последнее обновление статьи: <!-- DATE_START -->2026-11-24<!-- DATE_END --></p>
 
 <!-- ИНТЕРАКТИВНОЕ ОГЛАВЛЕНИЕ (начало) -->
 	
@@ -155,6 +155,8 @@
         <li><a href="#section3-3">3.3. Изменения после установки NetGuard</a></li>
         <li><a href="#section3-4">3.4. Статус исследования и приоритеты</a></li>
         <li><a href="#section3-5">3.5. Планшет - конфигурация 2</a></li>
+        <li><a href="#section3-6">3.6. Планшет - конфигурация 3</a></li>
+        <li><a href="#section3-7">3.7. Планшет - конфигурация 4</a></li>
       </ul>
     </li>
   </ul>
@@ -850,7 +852,7 @@
 <hr>
 
 <!-- Подсекция 3.6 -->
-<section id="device2-configuration-3" aria-label="3.6. Планшет - конфигурация 2">
+<section id="device2-configuration-3" aria-label="3.6. Планшет - конфигурация 3">
 <h3 id="section3-6">3.6. Планшет - конфигурация 3</h3>
 
 <p><strong>Раздел создан:</strong> 29.07.2026</p>
@@ -1118,6 +1120,30 @@ com.google.android.calendar
         </code>
     </pre>
 </div>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+</section>
+
+<!-- Конец подсекции 3.6 -->
+
+<hr>
+
+<!-- Подсекция 3.7 -->
+<section id="device2-configuration-4" aria-label="3.7. Планшет - конфигурация 4">
+<h3 id="section3-7">3.7. Планшет - конфигурация 4</h3>
+
+<p><strong>Раздел создан:</strong> 24.11.2026</p>
+
+<p>Наблюдения показали, что для защиты от исследуемого в статье типа атаки файерволы без root-прав (например, RethinkDNS и NetGuard) неэффективны.</p>
+
+<p>Злоумышленник в данном сценарии даже при жёстких настройках файерволов, блокирующих почти все приложения (в том числе системные, за исключением минимума необходимых), всё ещё может прослушивать телефонные переговоры, получать содержимое экрана, подслушивать разговоры пользователя вблизи планшета, а также прослушивать и просматривать медиапотоки (например, просмотр видео).</p>
+
+<p>Было принято решение перепрошить планшет на кастомную прошивку LineageOS 18.1 и в дальнейшем получить root-доступ для настройки iptables или nftables.</p>
+
+<p>Сведения о перепрошивке планшета на LineageOS доступны здесь: <a href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/technical-tasks-rus.html#lineageos-attempt" target="_blank" rel="noopener noreferrer">Попытка установки LineageOS 18.1 на Lenovo Tab 4 8 LTE (TB-8504X): ход работ, диагностика и выявленные проблемы</a></p>
 
 <p style="text-align: center; margin-top: 2rem;">
   <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>

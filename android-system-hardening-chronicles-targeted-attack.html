@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "Analysis of targeted attacks on Android devices (ZTE Blade A522, Android 7.1.1 and Lenovo TB-8504X, Android 8.1.0). Attacker gains full remote access to microphone, camera, and network traffic. Partial tablet protection via NetGuard. Supplement to 'System Hardening Chronicles'.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-11-18<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-11-24<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -121,14 +121,14 @@
 
 <div class="alert" style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 2rem 0;">
   <strong style="color: #856404;">⚠️ Notice!</strong>
-  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-11-18<!-- DATE_END --></span>
+  <span style="color: #856404;"> This article is a work in progress. Updates and additions are made as new data becomes available regarding the resilience of new security configurations and hacker activity.<br>Last content update: <!-- DATE_START -->2026-11-24<!-- DATE_END --></span>
 </div>
 
 <p>This material is a direct supplement to the main article:<br>
 <a href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/system-hardening-chronicles-targeted-attack.html">"System Hardening Chronicles: Seeking a Configuration Resilient to Targeted Attacks"</a>.<br>
 It describes the experience with Android mobile devices, which confirms and expands upon the conclusions drawn for desktop systems.</p>
 
-<p>Last updated: <!-- DATE_START -->2026-11-18<!-- DATE_END --></p>
+<p>Last updated: <!-- DATE_START -->2026-11-24<!-- DATE_END --></p>
 
 <!-- ИНТЕРАКТИВНОЕ ОГЛАВЛЕНИЕ (начало) -->
 	
@@ -155,6 +155,8 @@ It describes the experience with Android mobile devices, which confirms and expa
         <li><a href="#section3-3">3.3. Changes After Installing NetGuard</a></li>
         <li><a href="#section3-4">3.4. Research Status and Priorities</a></li>
         <li><a href="#section3-5">3.5. Tablet - Configuration 2</a></li>
+        <li><a href="#section3-6">3.6. Tablet - Configuration 3</a></li>
+        <li><a href="#section3-7">3.7. Tablet - Configuration 4</a></li>
       </ul>
     </li>
   </ul>
@@ -1075,6 +1077,30 @@ com.google.android.calendar
 </details>
 
 </section> <!-- /Конец основной главы H2 -->
+
+<hr>
+
+<!-- Подсекция 3.7 -->
+<section id="device2-configuration-4" aria-label="3.7. Tablet - configuration 4">
+<h3 id="section3-7">3.7. Tablet - configuration 4</h3>
+
+<p><strong>Section created:</strong> 24.11.2026</p>
+
+<p>Observations showed that to protect against the type of attack examined in this article, firewalls without root privileges (e.g., RethinkDNS and NetGuard) are ineffective.</p>
+
+<p>In this scenario, even with strict firewall settings that block almost all applications (including system ones, with the exception of the necessary minimum), the attacker can still listen to phone calls, capture screen contents, eavesdrop on the user's conversations near the tablet, and also listen to and view media streams (e.g., watching video).</p>
+
+<p>It was decided to reflash the tablet to the custom firmware LineageOS 18.1 and subsequently obtain root access to configure iptables or nftables.</p>
+
+<p>Information about reflashing the tablet to LineageOS is available here: <a href="https://blackcat568.github.io/CyberSecurityAndSocialEngineering/technical-tasks.html#lineageos-attempt" target="_blank" rel="noopener noreferrer">Attempting to install LineageOS 18.1 on a Lenovo Tab 4 8 LTE (TB-8504X): work log, diagnostics and identified problems</a></p>
+
+<p style="text-align: center; margin-top: 2rem;">
+  <a href="#section0" style="text-decoration: none; font-weight: bold;">↑ Вернуться к содержанию</a>
+</p>
+
+</section>
+
+<!-- End of subsection 3.6 -->
 
 <p><strong>Additional resources:</strong></p>
 <ul>

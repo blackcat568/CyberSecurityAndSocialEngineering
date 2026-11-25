@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "Practical cases on configuring software and hardware: analyses of complex configuration tasks, non-standard situations, and solutions that fall outside the scope of the site's overview materials.",
     "datePublished": "2026-11-16",
-    "dateModified": "<!-- DATE_START -->2026-11-23<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-11-25<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -706,6 +706,330 @@ fastboot reboot</code></pre>
 <details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;"> <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Overall summary</summary> <ul> <li><strong>Outcome:</strong> Installing LineageOS 18.1 via TWRP failed due to the installer hanging in state D (uninterruptible I/O wait). The problem was solved by directly flashing boot.img and system.img via fastboot. The system works stably, without GApps, with F-Droid and Aurora Store. The <code>fastboot flash</code> method has been found to be the most reliable for the Lenovo TB-8504.</li> </ul> </details>
 
 </section> <!-- /End of main chapter H2 -->
+
+<hr class="divider--major">
+
+<!-- КРУПНАЯ ГЛАВА (H2) -->
+<section id="upgrade-of-the-system-unit" aria-label="Upgrade of a system unit built on the BIOSTAR N68S3B motherboard">
+
+<h2 id="section2">2. Upgrade of a system unit built on the BIOSTAR N68S3B motherboard</h2>
+
+<p>To improve the performance of the old system unit, it was decided to upgrade it.</p>
+
+<p><i>The main goal of the upgrade was to squeeze the maximum possible out of the old platform.</i></p>
+
+<p>Originally, the system unit was assembled in a base (budget) configuration to reduce the final retail price. However, the BIOSTAR N68S3B motherboard itself is built on durable solid capacitors and has remained fully functional, so it was decided to replace the entry-level components with top-tier ones (new or used) from among those supported, in order to fully unlock its potential.</p>
+
+<p>Brief specifications of the BIOSTAR N68S3B motherboard</p>
+
+<p>🔧 Key parameters</p>
+<ul>
+  <li><strong>Socket:</strong> AM3</li>
+  <li><strong>Chipset:</strong> NVIDIA MCP68S / GeForce 7025</li>
+  <li><strong>Form factor:</strong> Micro ATX (235 mm × 170 mm)</li>
+  <li><strong>CPU support:</strong> AMD Phenom II / Athlon II / Sempron</li>
+  <li><strong>Max CPU TDP:</strong> 95 W</li>
+</ul>
+
+<p>💾 Memory and graphics</p>
+<ul>
+  <li><strong>Memory slots:</strong> 2 × DDR3 DIMM (dual-channel mode)</li>
+  <li><strong>Max memory capacity:</strong> 8 GB</li>
+  <li><strong>Integrated graphics:</strong> NVIDIA GeForce 7025 (up to 512 MB shared memory)</li>
+</ul>
+
+<p>🔌 Expansion slots and storage</p>
+<ul>
+  <li><strong>PCIe:</strong> 1 × PCIe x16</li>
+  <li><strong>PCI:</strong> 1 × PCI</li>
+  <li><strong>SATA:</strong> 2 × SATA II (3 Gbit/s), RAID 0/1 support</li>
+  <li><strong>IDE:</strong> 1 connector</li>
+</ul>
+
+<p>🌐 Network, audio and ports</p>
+<ul>
+  <li><strong>Network:</strong> Realtek RTL8201CL (10/100 Mbit/s)</li>
+  <li><strong>Audio:</strong> VIA VT1708B (6-channel HD audio)</li>
+  <li><strong>USB:</strong> 4 USB 2.0 ports on the rear panel + 2 internal headers (4 more ports)</li>
+  <li><strong>Video output:</strong> 1 × VGA</li>
+</ul>
+
+<div class="figure-row">
+  <figure style="text-align: center;">
+    <img src="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/pictures/BIOSTAR-N68S3B-photo.png"
+         alt="Photo of the BIOSTAR N68S3B motherboard"
+         width="300"
+         loading="lazy"
+         onclick="this.classList.toggle('zoomed')"
+         style="max-width: 100%; height: auto; border-radius: 4px; border: 1px solid #d0d0d0;">
+    <figcaption style="margin-top: 0.5rem; font-size: 0.85rem; color: #4a4a40;">
+      <strong>Photo of the BIOSTAR N68S3B motherboard</strong>
+    </figcaption>
+  </figure>
+
+  <figure style="text-align: center;">
+    <img src="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/pictures/BIOSTAR-N68S3B-plan.png"
+         alt="Diagram of the BIOSTAR N68S3B motherboard"
+         width="300"
+         loading="lazy"
+         onclick="this.classList.toggle('zoomed')"
+         style="max-width: 100%; height: auto; border-radius: 4px; border: 1px solid #d0d0d0;">
+    <figcaption style="margin-top: 0.5rem; font-size: 0.85rem; color: #4a4a40;">
+      <strong>Diagram of the BIOSTAR N68S3B motherboard</strong>
+    </figcaption>
+  </figure>
+</div>
+
+<p>The 2 GB memory module that was installed in the system unit at purchase was replaced with two Hyundai HMT351U6CFR8C-PB modules of 4 GB each.</p>
+
+<p>This was not difficult: all that was needed was to release the latch, remove the old memory module and install the two new ones, pressing on them gently and carefully until the slot latches clicked into place.</p>
+
+<p>A case fan, the Arctic P9 Silent, was installed in the system unit to improve air circulation and ventilation of all case components. At purchase, the power supply came without a case fan. But since it was decided to install a more powerful processor, it was also decided to install a case fan to improve overall case cooling.</p>
+
+<p>Next, the Athlon II X2 220 processor installed at purchase was replaced with an AMD Athlon II X4 645 processor.</p>
+
+<p>Advantages of the new <strong>Athlon II X4 645</strong> processor over the old <strong>Athlon II X2 220</strong>:</p>
+
+<h3>📊 Key differences in numbers</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Old Athlon II X2 220</th>
+      <th>New Athlon II X4 645</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Cores / Threads</strong></td>
+      <td>2 / 2</td>
+      <td><strong>4 / 4</strong></td>
+    </tr>
+    <tr>
+      <td><strong>Base clock</strong></td>
+      <td>2.8 GHz</td>
+      <td><strong>3.1 GHz</strong> (+0.3 GHz)</td>
+    </tr>
+    <tr>
+      <td><strong>TDP (thermal design power)</strong></td>
+      <td>65 W</td>
+      <td>95 W (higher, but the cooler handles it)</td>
+    </tr>
+    <tr>
+      <td><strong>L2 cache</strong></td>
+      <td>2 × 512 KB</td>
+      <td>4 × 512 KB (twice as much)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>That is, even a morally outdated system unit, having received such a processor, will perform significantly better.</p>
+
+<p>The BIOSTAR N68S3B motherboard is incompatible with processors with a TDP above 95 W, so the Athlon II X4 645 was chosen specifically — a processor of the same series as the old one and fully compatible with this motherboard.</p>
+
+<p>Also, whereas previously, with the old processor, the memory modules ran at an effective frequency of 533 MT/s despite being capable of 667 MT/s, after installing the new processor the memory modules rated for 667 MT/s are no longer limited by the old processor's inability to support a higher frequency. The new Athlon II X4 645 allows the memory modules to run at their rated 667 MT/s.</p>
+
+<p>An important point: when removing the old processor, the socket retention lever (the ZIF mechanism), after leaving the retaining notch in the horizontal position, did not rise to the standard 90 degrees relative to the motherboard plane. Due to long-term use without replacement — the processor had been in the socket for 14 years (from 2012 to 2026) — the mechanism had seized: the lever stopped in the 70–80 degree range.</p>
+
+<p>To avoid breaking the plastic socket body and bending the processor pins, brute force was not used. Instead, the mechanism was carefully worked loose with a series of light rocking movements of the lever within the 70–90 degree working range, with a smooth increase in force. At about the tenth repetition, the internal latch released, and the lever moved freely to a strictly vertical position (90 degrees). The old processor was removed without resistance, the new one was installed (aligning the keys on the package and the socket) and secured by smoothly returning the lever to its original notch.</p>
+
+<p>Since processors for this socket were discontinued long ago, the chip was purchased on the secondary market from a specialized store after pre-sale testing (buying such components privately from individuals without testing is strongly discouraged). At the same time, the CPU cooler and case fan were installed exclusively new and from reputable manufacturers. Skimping on the cooling system is unacceptable: effective heat dissipation is critical, since the stability and service life of all system unit components depend directly on the temperature regime.</p>
+
+<p>The CPU cooler chosen was the CIA-123W2C model (4-pin PWM, 2 copper heat pipes, 123 mm fan).</p>
+
+<div class="figure-row">
+  <figure style="text-align: center;">
+    <img src="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/pictures/CIA-123W2C-photo.png"
+         alt="Photo of the CIA-123W2C cooler"
+         width="300"
+         loading="lazy"
+         onclick="this.classList.toggle('zoomed')"
+         style="max-width: 100%; height: auto; border-radius: 4px; border: 1px solid #d0d0d0;">
+    <figcaption style="margin-top: 0.5rem; font-size: 0.85rem; color: #4a4a40;">
+      <strong>Photo of the CIA-123W2C cooler</strong>
+    </figcaption>
+  </figure>
+
+  <figure style="text-align: center;">
+    <img src="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/pictures/CIA-123W2C-plan.png"
+         alt="Diagram of the CIA-123W2C cooler"
+         width="300"
+         loading="lazy"
+         onclick="this.classList.toggle('zoomed')"
+         style="max-width: 100%; height: auto; border-radius: 4px; border: 1px solid #d0d0d0;">
+    <figcaption style="margin-top: 0.5rem; font-size: 0.85rem; color: #4a4a40;">
+      <strong>Diagram of the CIA-123W2C cooler</strong>
+    </figcaption>
+  </figure>
+</div>
+
+<p>Before choosing the cooler, the space inside the system unit was carefully measured and compared with the cooler's dimensions. It was established that the cooler would fit in the required position without touching other parts of the system unit and without obstructing the routing of various cables, with clearances of 6–7 millimetres and more, sufficient for safe and reliable operation.</p>
+
+<p>Advantages of this cooler: a 4-pin (4-pin PWM) cooler, unlike the 3-pin stock cooler installed at purchase with the system case, will perform much better, since its fan speed will be regulated by the motherboard via PWM, unlike the old 3-pin one, which runs constantly at maximum speed and creates noise even when the PC is idle and the processor is loaded at 2–3%. Also, the new cooler has a much larger fan diameter, which allows it to achieve the necessary cooling effect at a lower rotational speed. In addition, the new cooler is designed to dissipate heat from processors with a TDP of up to 110 W, while the new Athlon II X4 645 processor has a TDP of 95 W, meaning the cooler has a power headroom of about 15%, which guarantees reliable processor cooling. And overall, the copper-aluminium heatsink of the chosen cooler with copper heat pipes performs more efficiently than an aluminium heatsink.</p>
+
+<div class="figure-row">
+  <figure style="text-align: center;">
+    <img src="https://raw.githubusercontent.com/blackcat568/CyberSecurityAndSocialEngineering/main/pictures/CIA-123W2C-4-pin.png"
+         alt="CIA-123W2C cooler: 4-pin (4-pin PWM) fan connector"
+         width="300"
+         loading="lazy"
+         onclick="this.classList.toggle('zoomed')"
+         style="max-width: 100%; height: auto; border-radius: 4px; border: 1px solid #d0d0d0;">
+    <figcaption style="margin-top: 0.5rem; font-size: 0.85rem; color: #4a4a40;">
+      <strong>CIA-123W2C cooler: 4-pin (4-pin PWM) fan connector</strong>
+    </figcaption>
+  </figure>
+</div>
+  
+<p>It was decided to forgo a cheaper cooler of the classic design with radially arranged fins (the so-called "sunflower" type) for several reasons. Firstly, due to the dense layout of components on the motherboard, there could be difficulties with its dimensional compatibility. Secondly, the heatsinks of most budget models of this form factor are a solid aluminium profile without a copper core or heat pipes. Thirdly, such coolers are usually equipped with a 3-pin connector without PWM speed control support: due to the absence of a 4-pin connector, the fan runs constantly at maximum speed, which leads to increased noise levels even at idle.</p>
+
+<p>During installation, the fan was first removed from the cooler heatsink to make it easier to handle the heatsink by hand and to avoid damaging the fan when securing the heatsink mounts.</p>
+
+<p>Next, a test fit was performed: the heatsink was placed in the required position on the processor without securing. As a result, it was decided to remove the power supply from the case for more convenient heatsink installation.</p>
+
+<p>The most important thing: the BIOSTAR N68S3B motherboard has a specific AMD cooler mounting frame (a "retention bracket") with a lower position of the hooks for engaging the cooler clips than the universal round frame supplied with the cooler. Due to the specific layout of the motherboard, it was not possible to replace the stock retention bracket with the universal one — the round base would simply have run into the capacitors and memory modules.</p>
+
+<p>During the preliminary installation of the cooler, it turned out that the retention clip had excessive stiffness: even with considerable force, its eyelets did not reach the tabs (teeth) of the stock mounting frame. Further increases in pressure could have led to deformation or breakage of the heatsink, chipping of the processor die, as well as damage to the socket and the motherboard PCB.</p>
+
+<p>To avoid damage, installation was paused to adjust the retention mechanism. The clip was carefully bent open and released in several stages, gradually reducing its stiffness. The goal was to achieve a compromise: reduce the compression range to a level allowing the eyelets to engage the mounting frame, while still maintaining strong retention necessary for tight contact between the heatsink base and the processor heat spreader.</p>
+
+<p>After a series of test fits and adjustments, the clip engaged the mounting slots with noticeable but safe force. Thermal interface GD900 was applied to the processor heat spreader and the cooler was secured. The heatsink fan was positioned to blow towards the rear case fan. This scheme creates a single through airflow that effectively exhausts hot air from the system unit and improves overall cooling of the components.</p>
+
+<p>Recommendation: it is better to buy a small syringe of thermal paste separately, since the thermal paste supplied with the cooler may not be enough, especially if the first attempt to install the heatsink is unsuccessful and you have to wipe off the thermal paste and reapply it, repeating the attempt.</p>
+
+<p><strong>Attention!</strong> If you need to loosen the heatsink retention clip, do so as carefully as possible. It is important to find the balance: the clip eyelets must reach the tabs (teeth) of the mounting frame, but the clip itself must retain sufficient stiffness for tight pressure of the cooler base against the processor heat spreader. When using the supplied universal adapter ring, the clip will most likely latch in place as intended. Do not bend it open unless absolutely necessary.</p>
+
+<p>Next, the 4-pin connector was cleaned of dust with a fine brush, since the fourth contact, not used by the 3-pin fan connector of the old cooler, was heavily dusted, which could have prevented correct connection of the connector. After that, the 4-pin fan plug of the new cooler was connected to the connector.</p>
+
+<p>After that, the power supply was returned to its original position.</p>
+
+<p>Next, the computer was started, and two 20-minute stress tests were performed: first at medium load, then at maximum. The tests showed high-quality processor cooling.</p>
+
+<p>As the software platform, the latest version of the Kali Linux distribution with all the latest updates and the lightweight XFCE desktop environment was installed on the upgraded PC. To visually verify the correct detection of components, the amount of RAM and the temperature regime, the final configuration was output in the terminal using the <code>inxi -Fxzs</code> utility:</p>
+
+<ul>
+  <li><strong>Operating system:</strong> Kali GNU/Linux 2026.3 (kali-rolling), kernel Linux <code>7.1.5+kali-amd64</code> (x86_64)</li>
+  <li><strong>Desktop environment:</strong> Xfce 4.20.2 (X.Org 21.1.24)</li>
+  <li><strong>Motherboard:</strong> BIOSTAR N68S3B (BIOS American Megatrends v. 080015 dated 12.11.2010)</li>
+  <li><strong>Processor:</strong> 4-core AMD Athlon II X4 645 (K10 architecture, 800–3100 MHz)</li>
+  <li><strong>RAM:</strong> 8 GB DDR3 (7.76 GB available, 2.53 GB in use)</li>
+  <li><strong>Graphics card:</strong> Gigabyte AMD Radeon HD 5000/6000 Series (Cedar chip, <code>radeon</code> driver)</li>
+  <li><strong>Storage:</strong> Apacer AS350 256 GB SSD (SATA)</li>
+</ul>
+
+<section>
+  <p><strong>System status report after the upgrade</strong></p>
+  <ul>
+    <li><strong>Date and time of capture:</strong> 17.11.2026, 20:50</li>
+    <li><strong>Data source:</strong> BIOS hardware monitoring (idle mode, no load)</li>
+    <li><strong>Platform:</strong> BIOSTAR N68S3B / AMD Athlon II X4 645 (E0 stepping, TDP 95 W)</li>
+  </ul>
+
+  <p>1. Temperatures and fan speeds</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Parameter</th>
+        <th>Reading</th>
+        <th>Status assessment</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>CPU Temperature</strong></td>
+        <td>30 °C</td>
+        <td>Excellent figure for a 95 W Athlon II X4 645 at idle. The CIA-123W2C cooler retention is tight, and the GD900 thermal paste works effectively.</td>
+      </tr>
+      <tr>
+        <td><strong>SYS Temperature</strong></td>
+        <td>25 °C</td>
+        <td>The MCP61 chipset temperature is normal; through-case airflow (Arctic P9 Silent) handles heat dissipation.</td>
+      </tr>
+      <tr>
+        <td><strong>CPU Fan</strong></td>
+        <td>1771 RPM</td>
+        <td>Medium operating mode, PWM regulation functioning properly.</td>
+      </tr>
+      <tr>
+        <td><strong>System 1 Fan</strong></td>
+        <td>2064 RPM</td>
+        <td>The case fan spins close to maximum speed (creates moderate noise, but not critical).</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>2. Power supply voltages</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Rail / node</th>
+        <th>Reading</th>
+        <th>Compliance with norm</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>CPU Voltage</strong></td>
+        <td>1.320 V</td>
+        <td>Standard value for E0 stepping at idle (nominal under load — 1.35–1.40 V).</td>
+      </tr>
+      <tr>
+        <td><strong>Memory Voltage</strong></td>
+        <td>1.500 V</td>
+        <td>Exact compliance with the DDR3-1333 standard; Hyundai modules run in rated mode.</td>
+      </tr>
+      <tr>
+        <td><strong>+12.0 V</strong></td>
+        <td>12.424 V</td>
+        <td>Deviation of +3.5% falls within the standard ATX tolerance (±5%), no drops.</td>
+      </tr>
+      <tr>
+        <td><strong>+5.00 V</strong></td>
+        <td>5.077 V</td>
+        <td>Excellent figure (deviation +1.5% at ±5% tolerance).</td>
+      </tr>
+      <tr>
+        <td><strong>Chipset Voltage</strong></td>
+        <td>1.200 V</td>
+        <td>Standard voltage of the NVIDIA MCP61 chipset.</td>
+      </tr>
+      <tr>
+        <td><strong>HT Voltage</strong></td>
+        <td>1.260 V</td>
+        <td>Standard HyperTransport bus voltage.</td>
+      </tr>
+      <tr>
+        <td><strong>NB Voltage</strong></td>
+        <td>1.248 V</td>
+        <td>Standard north bridge (memory controller) voltage.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>3. Final conclusions</p>
+  <ul>
+    <li>All temperature and voltage readings are within technical tolerances.</li>
+    <li>The power supply operates stably at idle, with no critical deviations on the main rails (it is recommended to additionally monitor the +12 V rail under stress load).</li>
+    <li>The RAM operates at the rated DDR3-1333 frequency at 1.5 V.</li>
+    <li>The processor cooling system works effectively, with a significant margin to critical temperatures.</li>
+    <li><strong>Notes:</strong> the case fan runs at ~2064 RPM, which creates increased acoustic background (if necessary, the speed can be reduced via BIOS settings or a resistor adapter).</li>
+  </ul>
+
+  <p><strong>Status:</strong> the system is in good technical condition for its platform and fully ready for operation.</p>
+</section>
+
+<p>Thus, even if you do not have the opportunity to buy a new system unit, an independent upgrade (or one performed by a service centre) of your own old or purchased used system unit can help you get a working PC for a much lower cost. In turn, installing a modern Linux distribution with a lightweight desktop environment (e.g., XFCE) combined with a hardware upgrade ensures smooth operation without delays even on an outdated platform.</p>
+
+<details style="margin: 1.5rem 0; padding: 0.5rem; background: #f5f5f0; border-radius: 4px;"> <summary style="cursor: pointer; font-weight: bold; padding: 0.5rem;">📋 TL;DR — Overall summary</summary> 
+  <ul>
+    <li><strong>Result:</strong> The upgrade of the BIOSTAR N68S3B platform (Socket AM3) was performed with maximum unlocking of its hardware potential: a 4-core AMD Athlon II X4 645 processor (TDP 95 W) and 8 GB of DDR3-1333 RAM (2 × 4 GB Hyundai) in dual-channel mode were installed.</li>
+    <li><strong>Cooling and mounting:</strong> A tower cooler CIA-123W2C (4-pin PWM) was installed with manual adjustment of the retention clip stiffness for the board's low-profile stock mounting frame, complemented by an Arctic P9 Silent case fan for exhaust.</li>
+    <li><strong>Outcome:</strong> According to BIOS data and stress tests, the system runs stably without voltage drops, the CPU temperature at idle does not exceed 30 °C, and the current Kali Linux distribution with the XFCE desktop environment runs smoothly and without delays.</li>
+  </ul>
+</details>
+
+</section> <!-- /End of main H2 chapter -->
 
 <hr class="divider--major">
 

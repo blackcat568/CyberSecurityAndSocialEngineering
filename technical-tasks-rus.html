@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "Практические кейсы по настройке софта и железа: разбор сложных конфигурационных задач, нестандартных ситуаций и решений, выходящих за рамки обзорных материалов сайта.",
     "datePublished": "2026-11-16",
-    "dateModified": "<!-- DATE_START -->2026-11-26<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-11-28<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -68,6 +68,10 @@
 
 <!-- вставка стилей выпадающей панели -->
 <link rel="stylesheet" href="assets/css/panel.css">
+
+<!-- стили оглавления -->
+<link rel="stylesheet" href="assets/css/table-of-contents.css">
+
 
 <!-- Строка 1: Подключение стилей для компонентов Pagefind (кнопка, модальное окно, поле ввода) -->
 <link href="/CyberSecurityAndSocialEngineering/pagefind/pagefind-component-ui.css" rel="stylesheet">
@@ -123,44 +127,45 @@
 
 <!-- ИНТЕРАКТИВНОЕ ОГЛАВЛЕНИЕ (начало) -->
 
-<nav id="table-of-contents" aria-labelledby="section0" style="margin: 2rem 0; padding: 1.2rem; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 6px;">
-    <h2 id="section0" style="margin-top: 0; color: #333;">Содержание</h2>
-    <ul style="list-style: none; padding-left: 1rem; margin: 0;">
-        <li style="margin: 0.5rem 0;">
+<nav id="table-of-contents" aria-labelledby="section0">
+    <h2 id="section0">Содержание</h2>
+    <ul>
+        <li>
             <a href="#section1">1. Попытка установки LineageOS 18.1 на Lenovo Tab 4 8 LTE (TB-8504X): ход работ, диагностика и выявленные проблемы</a>
-            <ul style="list-style: none; padding-left: 1.5rem; margin: 0.3rem 0;">
-                <li style="margin: 0.4rem 0;"><a href="#section1-1">1.1. Подготовка</a>
-                    <ul style="list-style: none; padding-left: 1.5rem; margin: 0.2rem 0;">
-                        <li style="margin: 0.3rem 0;"><a href="#section1-1-1">1.1.1. Цель проекта</a></li>
-                        <li style="margin: 0.3rem 0;"><a href="#section1-1-2">1.1.2. Информация об устройстве</a></li>
-                        <li style="margin: 0.3rem 0;"><a href="#section1-1-3">1.1.3. Выбор прошивки</a></li>
-                        <li style="margin: 0.3rem 0;"><a href="#section1-1-4">1.1.4. Подготовка TWRP</a></li>
-                        <li style="margin: 0.3rem 0;"><a href="#section1-1-5">1.1.5. Создание резервной копии</a></li>
-                        <li style="margin: 0.3rem 0;"><a href="#section1-1-6">1.1.6. Разметка внутренней памяти</a></li>
+            <ul>
+                <li><a href="#section1-1">1.1. Подготовка</a>
+                    <ul>
+                        <li><a href="#section1-1-1">1.1.1. Цель проекта</a></li>
+                        <li><a href="#section1-1-2">1.1.2. Информация об устройстве</a></li>
+                        <li><a href="#section1-1-3">1.1.3. Выбор прошивки</a></li>
+                        <li><a href="#section1-1-4">1.1.4. Подготовка TWRP</a></li>
+                        <li><a href="#section1-1-5">1.1.5. Создание резервной копии</a></li>
+                        <li><a href="#section1-1-6">1.1.6. Разметка внутренней памяти</a></li>
                     </ul>
                 </li>
-                <li style="margin: 0.4rem 0;"><a href="#section1-2">1.2. Неудачная попытка перепрошивки</a>
-                    <ul style="list-style: none; padding-left: 1.5rem; margin: 0.2rem 0;">
-                        <li style="margin: 0.3rem 0;"><a href="#section1-2-1">1.2.1. Первые попытки установки и зависание установщика</a></li>
-                        <li style="margin: 0.3rem 0;"><a href="#section1-2-2">1.2.2. Проверка процесса updater</a></li>
-                        <li style="margin: 0.3rem 0;"><a href="#section1-2-3">1.2.3. Попытка завершить зависший процесс</a></li>
+                <li><a href="#section1-2">1.2. Неудачная попытка перепрошивки</a>
+                    <ul>
+                        <li><a href="#section1-2-1">1.2.1. Первые попытки установки и зависание установщика</a></li>
+                        <li><a href="#section1-2-2">1.2.2. Проверка процесса updater</a></li>
+                        <li><a href="#section1-2-3">1.2.3. Попытка завершить зависший процесс</a></li>
                     </ul>
                 </li>
-                <li style="margin: 0.4rem 0;"><a href="#section1-3">1.3. Удачная перепрошивка планшета Lenovo Tab 4 8 (TB-8504) на LineageOS 18.1</a>
-                    <ul style="list-style: none; padding-left: 1.5rem; margin: 0.2rem 0;">
-                        <li style="margin: 0.3rem 0;"><a href="#section1-3-1">1.3.1. Описание проблемы (симптомы)</a></li>
-                        <li style="margin: 0.3rem 0;"><a href="#section1-3-2">1.3.2. Принятое решение</a></li>
-                        <li style="margin: 0.3rem 0;"><a href="#section1-3-3">1.3.3. Пошаговый алгоритм выполнения работ</a></li>
-                        <li style="margin: 0.3rem 0;"><a href="#section1-3-4">1.3.4. Выводы и рекомендации на будущее</a></li>
+                <li><a href="#section1-3">1.3. Удачная перепрошивка планшета Lenovo Tab 4 8 (TB-8504) на LineageOS 18.1</a>
+                    <ul>
+                        <li><a href="#section1-3-1">1.3.1. Описание проблемы (симптомы)</a></li>
+                        <li><a href="#section1-3-2">1.3.2. Принятое решение</a></li>
+                        <li><a href="#section1-3-3">1.3.3. Пошаговый алгоритм выполнения работ</a></li>
+                        <li><a href="#section1-3-4">1.3.4. Выводы и рекомендации на будущее</a></li>
                     </ul>
                 </li>
             </ul>
         </li>
-        <li style="margin: 0.5rem 0;">
+        <li>
             <a href="#section2">2. Апгрейд системного блока, собранного на материнской плате BIOSTAR N68S3B</a>
         </li>
     </ul>
 </nav>
+
 <!-- ИНТЕРАКТИВНОЕ ОГЛАВЛЕНИЕ (конец) -->
 
 <hr class="divider--major">

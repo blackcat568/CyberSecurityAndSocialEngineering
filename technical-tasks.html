@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "Practical cases on configuring software and hardware: analyses of complex configuration tasks, non-standard situations, and solutions that fall outside the scope of the site's overview materials.",
     "datePublished": "2026-11-16",
-    "dateModified": "<!-- DATE_START -->2026-11-26<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-11-28<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -68,6 +68,10 @@
 
 <!-- вставка стилей выпадающей панели -->
 <link rel="stylesheet" href="assets/css/panel.css">
+
+<!-- стили оглавления -->
+<link rel="stylesheet" href="assets/css/table-of-contents.css">
+
 
 <!-- Строка 1: Подключение стилей для компонентов Pagefind (кнопка, модальное окно, поле ввода) -->
 <link href="/CyberSecurityAndSocialEngineering/pagefind/pagefind-component-ui.css" rel="stylesheet">
@@ -125,44 +129,45 @@
 
 <!-- INTERACTIVE TABLE OF CONTENTS (start) -->
 
-<nav id="table-of-contents" aria-labelledby="section0" style="margin: 2rem 0; padding: 1.2rem; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 6px;">
-    <h2 id="section0" style="margin-top: 0; color: #333;">Contents</h2>
-    <ul style="list-style: none; padding-left: 1rem; margin: 0;">
-        <li style="margin: 0.5rem 0;">
+<nav id="table-of-contents" aria-labelledby="section0">
+    <h2 id="section0">Contents</h2>
+    <ul>
+        <li>
             <a href="#section1">1. Attempting to install LineageOS 18.1 on a Lenovo Tab 4 8 LTE (TB-8504X): work log, diagnostics and identified problems</a>
-            <ul style="list-style: none; padding-left: 1.5rem; margin: 0.3rem 0;">
-                <li style="margin: 0.4rem 0;"><a href="#section1-1">1.1. Preparation</a>
-                    <ul style="list-style: none; padding-left: 1.5rem; margin: 0.2rem 0;">
-                        <li style="margin: 0.3rem 0;"><a href="#section1-1-1">1.1.1. Project goal</a></li>
-                        <li style="margin: 0.3rem 0;"><a href="#section1-1-2">1.1.2. Device information</a></li>
-                        <li style="margin: 0.3rem 0;"><a href="#section1-1-3">1.1.3. Choosing the firmware</a></li>
-                        <li style="margin: 0.3rem 0;"><a href="#section1-1-4">1.1.4. Preparing TWRP</a></li>
-                        <li style="margin: 0.3rem 0;"><a href="#section1-1-5">1.1.5. Creating a backup</a></li>
-                        <li style="margin: 0.3rem 0;"><a href="#section1-1-6">1.1.6. Internal memory layout</a></li>
+            <ul>
+                <li><a href="#section1-1">1.1. Preparation</a>
+                    <ul>
+                        <li><a href="#section1-1-1">1.1.1. Project goal</a></li>
+                        <li><a href="#section1-1-2">1.1.2. Device information</a></li>
+                        <li><a href="#section1-1-3">1.1.3. Choosing the firmware</a></li>
+                        <li><a href="#section1-1-4">1.1.4. Preparing TWRP</a></li>
+                        <li><a href="#section1-1-5">1.1.5. Creating a backup</a></li>
+                        <li><a href="#section1-1-6">1.1.6. Internal memory layout</a></li>
                     </ul>
                 </li>
-                <li style="margin: 0.4rem 0;"><a href="#section1-2">1.2. Failed flashing attempt</a>
-                    <ul style="list-style: none; padding-left: 1.5rem; margin: 0.2rem 0;">
-                        <li style="margin: 0.3rem 0;"><a href="#section1-2-1">1.2.1. First installation attempts and installer hang</a></li>
-                        <li style="margin: 0.3rem 0;"><a href="#section1-2-2">1.2.2. Checking the updater process</a></li>
-                        <li style="margin: 0.3rem 0;"><a href="#section1-2-3">1.2.3. Attempt to terminate the hung process</a></li>
+                <li><a href="#section1-2">1.2. Failed flashing attempt</a>
+                    <ul>
+                        <li><a href="#section1-2-1">1.2.1. First installation attempts and installer hang</a></li>
+                        <li><a href="#section1-2-2">1.2.2. Checking the updater process</a></li>
+                        <li><a href="#section1-2-3">1.2.3. Attempt to terminate the hung process</a></li>
                     </ul>
                 </li>
-                <li style="margin: 0.4rem 0;"><a href="#section1-3">1.3. Successful reflashing of the Lenovo Tab 4 8 (TB-8504) tablet to LineageOS 18.1</a>
-                    <ul style="list-style: none; padding-left: 1.5rem; margin: 0.2rem 0;">
-                        <li style="margin: 0.3rem 0;"><a href="#section1-3-1">1.3.1. Problem description (symptoms)</a></li>
-                        <li style="margin: 0.3rem 0;"><a href="#section1-3-2">1.3.2. Adopted solution</a></li>
-                        <li style="margin: 0.3rem 0;"><a href="#section1-3-3">1.3.3. Step-by-step procedure</a></li>
-                        <li style="margin: 0.3rem 0;"><a href="#section1-3-4">1.3.4. Conclusions and recommendations for the future</a></li>
+                <li><a href="#section1-3">1.3. Successful reflashing of the Lenovo Tab 4 8 (TB-8504) tablet to LineageOS 18.1</a>
+                    <ul>
+                        <li><a href="#section1-3-1">1.3.1. Problem description (symptoms)</a></li>
+                        <li><a href="#section1-3-2">1.3.2. Adopted solution</a></li>
+                        <li><a href="#section1-3-3">1.3.3. Step-by-step procedure</a></li>
+                        <li><a href="#section1-3-4">1.3.4. Conclusions and recommendations for the future</a></li>
                     </ul>
                 </li>
             </ul>
         </li>
-        <li style="margin: 0.5rem 0;">
+        <li>
             <a href="#section2">2. Upgrade of a system unit built on the BIOSTAR N68S3B motherboard</a>
         </li>
     </ul>
 </nav>
+
 <!-- INTERACTIVE TABLE OF CONTENTS (end) -->
 
 <hr class="divider--major">

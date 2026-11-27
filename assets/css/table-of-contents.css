@@ -59,11 +59,6 @@
 }
 
 /* ---------- Ссылки ---------- */
-#toc a,
-#table-of-contents a {
-    color: inherit;
-    text-decoration: none;
-}
 
 #toc a:hover,
 #toc a:focus,

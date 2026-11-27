@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "Реальная хроника противостояния целевой атаке: документирование уязвимостей, конфигураций, реакций и хардеринга системы. От нулевой защиты к поиску устойчивых конфигураций. Технический отчет с анализом аппаратной части, ОС, AppArmor, nftables, OpenSnitch, Flatpak, USBGuard. Для специалистов по кибербезопасности и ИБ.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-11-21<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-11-27<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -69,7 +69,9 @@
 <!-- вставка стилей выпадающей панели -->
 <link rel="stylesheet" href="assets/css/panel.css">
 
-  
+  <!-- стили оглавления -->
+  <link rel="stylesheet" href="/css/table-of-contents.css">
+
 
 <!-- Строка 1: Подключение стилей для компонентов Pagefind (кнопка, модальное окно, поле ввода) -->
 <link href="/CyberSecurityAndSocialEngineering/pagefind/pagefind-component-ui.css" rel="stylesheet">
@@ -156,104 +158,103 @@
 
 <div class="alert" style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 2rem 0;">
   <strong style="color: #856404;">⚠️ Внимание!</strong>
-  <span style="color: #856404;"> Статья находится в разработке. Уточнения и дополнения вносятся по мере получения новых данных об устойчивости новых конфигураций безопасности и активности хакера.<br>Последнее обновление контента: <!-- DATE_START -->2026-11-21<!-- DATE_END --></span>
+  <span style="color: #856404;"> Статья находится в разработке. Уточнения и дополнения вносятся по мере получения новых данных об устойчивости новых конфигураций безопасности и активности хакера.<br>Последнее обновление контента: <!-- DATE_START -->2026-11-27<!-- DATE_END --></span>
 </div>
 
 <!-- ИНТЕРАКТИВНОЕ ОГЛАВЛЕНИЕ (начало) -->
     
-<nav id="table-of-contents" aria-labelledby="section0" style="margin: 2rem 0; padding: 1.2rem; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 6px;">
-    <h2 id="section0" style="margin-top: 0; color: #333;">Содержание</h2>
-    <ul style="list-style: none; padding-left: 0; margin-bottom: 0;">
+<nav id="table-of-contents" aria-labelledby="section0">
+    <h2 id="section0">Содержание</h2>
+    <ul>
         <!-- H2 1 -->
-        <li style="margin-bottom: 0.3rem;">
-            <a href="#section1" style="text-decoration: none; font-weight: bold;">1. Вводная часть: анализ исходной конфигурации и предпосылки к хардерингу</a>
-            <ul style="list-style: none; padding-left: 1.5rem;">
-                <li style="margin-bottom: 0.1rem;"><a href="#section1-1" style="text-decoration: none;">1.1 Контекст и допущения</a></li>
-                <li style="margin-bottom: 0.1rem;"><a href="#section1-2" style="text-decoration: none;">1.2 Природа атаки (наблюдаемая модель)</a></li>
-                <li style="margin-bottom: 0.1rem;"><a href="#section1-3" style="text-decoration: none;">1.3 Эффективность научного подхода как контрмеры</a></li>
-                <li style="margin-bottom: 0.1rem;"><a href="#section1-4" style="text-decoration: none;">1.4 Текущая стратегия</a></li>
-                <li style="margin-bottom: 0.1rem;"><a href="#section1-5" style="text-decoration: none;">1.5 Резюме (для технического отчета)</a></li>
+        <li>
+            <a href="#section1">1. Вводная часть: анализ исходной конфигурации и предпосылки к хардерингу</a>
+            <ul>
+                <li><a href="#section1-1">1.1 Контекст и допущения</a></li>
+                <li><a href="#section1-2">1.2 Природа атаки (наблюдаемая модель)</a></li>
+                <li><a href="#section1-3">1.3 Эффективность научного подхода как контрмеры</a></li>
+                <li><a href="#section1-4">1.4 Текущая стратегия</a></li>
+                <li><a href="#section1-5">1.5 Резюме (для технического отчета)</a></li>
             </ul>
         </li>
 
         <!-- H2 2 -->
-        <li style="margin-bottom: 0.3rem; margin-top: 0.5rem;">
-            <a href="#section2" style="text-decoration: none; font-weight: bold;">2. Непосредственно хроника хардеринга и атак</a>
-            <ul style="list-style: none; padding-left: 1.5rem;">
+        <li>
+            <a href="#section2">2. Непосредственно хроника хардеринга и атак</a>
+            <ul>
                 <!-- H3 2.1 -->
-                <li style="margin-bottom: 0.1rem;">
-                    <a href="#section2-1" style="text-decoration: none;">2.1 Описание прошлой конфигурации системы: КОНФИГУРАЦИЯ 1</a>
-                    <ul style="list-style: none; padding-left: 1.5rem;">
-                        <li style="margin-bottom: 0.1rem;"><a href="#section2-1-1" style="text-decoration: none;">2.1.1 КОНФИГУРАЦИЯ 1 Hardware</a></li>
-                        <li style="margin-bottom: 0.1rem;"><a href="#section2-1-2" style="text-decoration: none;">2.1.2 КОНФИГУРАЦИЯ 1 Software</a></li>
-                        <li style="margin-bottom: 0.1rem;"><a href="#section2-1-3" style="text-decoration: none;">2.1.3 Факт атаки на конфигурацию 1</a></li>
+                <li>
+                    <a href="#section2-1">2.1 Описание прошлой конфигурации системы: КОНФИГУРАЦИЯ 1</a>
+                    <ul>
+                        <li><a href="#section2-1-1">2.1.1 КОНФИГУРАЦИЯ 1 Hardware</a></li>
+                        <li><a href="#section2-1-2">2.1.2 КОНФИГУРАЦИЯ 1 Software</a></li>
+                        <li><a href="#section2-1-3">2.1.3 Факт атаки на конфигурацию 1</a></li>
                     </ul>
                 </li>
 
                 <!-- H3 2.2 -->
-                <li style="margin-bottom: 0.1rem;">
-                    <a href="#section2-2" style="text-decoration: none;">2.2 Конфигурация системы после атаки с усилением защиты: КОНФИГУРАЦИЯ 2</a>
-                    <ul style="list-style: none; padding-left: 1.5rem;">
-                        <li style="margin-bottom: 0.1rem;"><a href="#section2-2-1" style="text-decoration: none;">2.2.1 КОНФИГУРАЦИЯ 2 Hardware</a></li>
-                        <li style="margin-bottom: 0.1rem;">
-                            <a href="#section2-2-2" style="text-decoration: none;">2.2.2 КОНФИГУРАЦИЯ 2 Software</a>
-                            <ul style="list-style: none; padding-left: 1.5rem;">
-                                <li style="margin-bottom: 0.1rem;"><a href="#config2-software-main-parameters" style="text-decoration: none;">2.2.2-A КОНФИГУРАЦИЯ 2 Software основные параметры</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config2-software-nftables" style="text-decoration: none;">2.2.2-B КОНФИГУРАЦИЯ 2 Software nftables</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config2-software-sysctl" style="text-decoration: none;">2.2.2-C КОНФИГУРАЦИЯ 2 Software sysctl</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config2-software-flatseal" style="text-decoration: none;">2.2.2-D КОНФИГУРАЦИЯ 2 Software Flatseal overrides</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config2-software-opensnitch" style="text-decoration: none;">2.2.2-E КОНФИГУРАЦИЯ 2 Software OpenSnitch</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config2-software-other-programs" style="text-decoration: none;">2.2.2-F КОНФИГУРАЦИЯ 2 Software другие программы</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config2-config1-key-changes" style="text-decoration: none;">2.2.2-G Основные изменения в конфигурации 2 по сравнению с конфигурацией 1</a></li>
+                <li>
+                    <a href="#section2-2">2.2 Конфигурация системы после атаки с усилением защиты: КОНФИГУРАЦИЯ 2</a>
+                    <ul>
+                        <li><a href="#section2-2-1">2.2.1 КОНФИГУРАЦИЯ 2 Hardware</a></li>
+                        <li>
+                            <a href="#section2-2-2">2.2.2 КОНФИГУРАЦИЯ 2 Software</a>
+                            <ul>
+                                <li><a href="#config2-software-main-parameters">2.2.2-A КОНФИГУРАЦИЯ 2 Software основные параметры</a></li>
+                                <li><a href="#config2-software-nftables">2.2.2-B КОНФИГУРАЦИЯ 2 Software nftables</a></li>
+                                <li><a href="#config2-software-sysctl">2.2.2-C КОНФИГУРАЦИЯ 2 Software sysctl</a></li>
+                                <li><a href="#config2-software-flatseal">2.2.2-D КОНФИГУРАЦИЯ 2 Software Flatseal overrides</a></li>
+                                <li><a href="#config2-software-opensnitch">2.2.2-E КОНФИГУРАЦИЯ 2 Software OpenSnitch</a></li>
+                                <li><a href="#config2-software-other-programs">2.2.2-F КОНФИГУРАЦИЯ 2 Software другие программы</a></li>
+                                <li><a href="#config2-config1-key-changes">2.2.2-G Основные изменения в конфигурации 2 по сравнению с конфигурацией 1</a></li>
                             </ul>
                         </li>
-                        <li style="margin-bottom: 0.1rem;"><a href="#config2-experiment-results" style="text-decoration: none;">2.2.3 Текущий статус конфигурации 2 (на 10.04.2026)</a></li>
+                        <li><a href="#config2-experiment-results">2.2.3 Текущий статус конфигурации 2 (на 10.04.2026)</a></li>
                     </ul>
                 </li>
                 <!-- H3 2.3 -->
-                <li style="margin-bottom: 0.1rem;">
-                    <a href="#section2-3" style="text-decoration: none;">2.3 КОНФИГУРАЦИЯ 3</a>
-                    <ul style="list-style: none; padding-left: 1.5rem;">
-                        <li style="margin-bottom: 0.1rem;">
-							<a href="#section2-3-1" style="text-decoration: none;">2.3.1 КОНФИГУРАЦИЯ 3 Hardware</a></li>
-                        <li style="margin-bottom: 0.1rem;">
-                            <a href="#section2-3-2" style="text-decoration: none;">2.3.2 КОНФИГУРАЦИЯ 3 Software</a>
-                            <ul style="list-style: none; padding-left: 1.5rem;">
-								<li style="margin-bottom: 0.1rem;"><a href="#config3-intro" style="text-decoration: none;">2.3.2-A Вступление</a></li>
-								<li style="margin-bottom: 0.1rem;"><a href="#config3-logic" style="text-decoration: none;">2.3.2-B Стратегическая логика Конфигурации 3: перекрытие векторов как метод сдерживания</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config3-software-nftables" style="text-decoration: none;">2.3.2-C Изменения в конфиге nftables</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config3-nftables-fixes" style="text-decoration: none;">2.3.2-D Исправление конфига nftables конфигурации 3</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config3-nftables-enhancements" style="text-decoration: none;">2.3.2-E Усиление конфига nftables конфигурации 3</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config3-software-sysctl" style="text-decoration: none;">2.3.2-F Усиление конфига sysctl конфигурации 3</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config3-automated-whitelist" style="text-decoration: none;">2.3.2-G Автоматизация белого списка IP и прокси-фильтрация для user-sl</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config3-dns-quad9" style="text-decoration: none;">2.3.2-H Переход на DNS-сервер Quad9 (9.9.9.9)</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config3-app-nft-monitoring-script" style="text-decoration: none;">2.3.2-I Пользовательский скрипт мониторинга nftables и AppArmor</a></li>
+                <li>
+                    <a href="#section2-3">2.3 КОНФИГУРАЦИЯ 3</a>
+                    <ul>
+                        <li><a href="#section2-3-1">2.3.1 КОНФИГУРАЦИЯ 3 Hardware</a></li>
+                        <li>
+                            <a href="#section2-3-2">2.3.2 КОНФИГУРАЦИЯ 3 Software</a>
+                            <ul>
+                                <li><a href="#config3-intro">2.3.2-A Вступление</a></li>
+                                <li><a href="#config3-logic">2.3.2-B Стратегическая логика Конфигурации 3: перекрытие векторов как метод сдерживания</a></li>
+                                <li><a href="#config3-software-nftables">2.3.2-C Изменения в конфиге nftables</a></li>
+                                <li><a href="#config3-nftables-fixes">2.3.2-D Исправление конфига nftables конфигурации 3</a></li>
+                                <li><a href="#config3-nftables-enhancements">2.3.2-E Усиление конфига nftables конфигурации 3</a></li>
+                                <li><a href="#config3-software-sysctl">2.3.2-F Усиление конфига sysctl конфигурации 3</a></li>
+                                <li><a href="#config3-automated-whitelist">2.3.2-G Автоматизация белого списка IP и прокси-фильтрация для user-sl</a></li>
+                                <li><a href="#config3-dns-quad9">2.3.2-H Переход на DNS-сервер Quad9 (9.9.9.9)</a></li>
+                                <li><a href="#config3-app-nft-monitoring-script">2.3.2-I Пользовательский скрипт мониторинга nftables и AppArmor</a></li>
                             </ul>
                         </li>
-                        <li style="margin-bottom: 0.1rem;"><a href="#config3-experiment-results" style="text-decoration: none;">2.3.3 Наблюдаем за ходом эксперимента с конфигурацией 3</a></li>
+                        <li><a href="#config3-experiment-results">2.3.3 Наблюдаем за ходом эксперимента с конфигурацией 3</a></li>
                     </ul>
                 </li>
                 <!-- H3 2.4 -->
-                <li style="margin-bottom: 0.1rem;">
-                    <a href="#section2-4" style="text-decoration: none;">2.4 КОНФИГУРАЦИЯ 4</a>
-                    <ul style="list-style: none; padding-left: 1.5rem;">
-                        <li style="margin-bottom: 0.1rem;">
-							<a href="#section2-4-1" style="text-decoration: none;">2.4.1 КОНФИГУРАЦИЯ 4 Hardware</a>
-							<ul style="list-style: none; padding-left: 1.5rem;">
-								<li style="margin-bottom: 0.1rem;"><a href="#config4-hardware-logic" style="text-decoration: none;">2.4.2-A Стратегическая логика Конфигурации 4 Hardware</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config4-hardware-yubikey-5c" style="text-decoration: none;">2.4.2-B Интеграция аппаратного ключа YubiKey 5C в систему</a></li>
+                <li>
+                    <a href="#section2-4">2.4 КОНФИГУРАЦИЯ 4</a>
+                    <ul>
+                        <li>
+                            <a href="#section2-4-1">2.4.1 КОНФИГУРАЦИЯ 4 Hardware</a>
+                            <ul>
+                                <li><a href="#config4-hardware-logic">2.4.2-A Стратегическая логика Конфигурации 4 Hardware</a></li>
+                                <li><a href="#config4-hardware-yubikey-5c">2.4.2-B Интеграция аппаратного ключа YubiKey 5C в систему</a></li>
                             </ul>
                         </li>
-                        <li style="margin-bottom: 0.1rem;">
-                            <a href="#section2-4-2" style="text-decoration: none;">2.4.2 КОНФИГУРАЦИЯ 4 Software</a>
-                            <ul style="list-style: none; padding-left: 1.5rem;">
-								<li style="margin-bottom: 0.1rem;"><a href="#config4-software-logic" style="text-decoration: none;">2.4.2-A Стратегическая логика Конфигурации 4 Software</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config4-software-tools-report" style="text-decoration: none;">2.4.2-B Отчет об установке инструментов</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config4-software-traffic-capture-router-mirroring-usb-modem" style="text-decoration: none;">2.4.2-C Захват трафика всех устройств сети через зеркалирование роутера с маршрутизацией ПК через USB-модем</a></li>
-                                <li style="margin-bottom: 0.1rem;"><a href="#config4-software-google-infrastructure-exclusion" style="text-decoration: none;">2.4.2-D Исключение Google инфраструктуры из трафика</a></li>
+                        <li>
+                            <a href="#section2-4-2">2.4.2 КОНФИГУРАЦИЯ 4 Software</a>
+                            <ul>
+                                <li><a href="#config4-software-logic">2.4.2-A Стратегическая логика Конфигурации 4 Software</a></li>
+                                <li><a href="#config4-software-tools-report">2.4.2-B Отчет об установке инструментов</a></li>
+                                <li><a href="#config4-software-traffic-capture-router-mirroring-usb-modem">2.4.2-C Захват трафика всех устройств сети через зеркалирование роутера с маршрутизацией ПК через USB-модем</a></li>
+                                <li><a href="#config4-software-google-infrastructure-exclusion">2.4.2-D Исключение Google инфраструктуры из трафика</a></li>
                             </ul>
                         </li>
-                        <li style="margin-bottom: 0.1rem;"><a href="#config4-experiment-results" style="text-decoration: none;">2.4.3 Результат испытания конфигурации 4</a></li>
+                        <li><a href="#config4-experiment-results">2.4.3 Результат испытания конфигурации 4</a></li>
                     </ul>
                 </li>
             </ul>

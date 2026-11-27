@@ -17,7 +17,7 @@
     "isAccessibleForFree": true,
     "description": "Анализ секретного проекта «Тихий полигон»: испытания военного разведывательно-аналитического ИИ на незащищённых людях для сбора данных о поведении под давлением. Установлено: это гибридная система психологических операций (ПсиОп) класса Humint + AI. Механика, сетевая архитектура, экономика атаки (KPI/ERR), разрыв петли обучения и феномен сопротивления.",
     "datePublished": "2026-05-01",
-    "dateModified": "<!-- DATE_START -->2026-11-21<!-- DATE_END -->",
+    "dateModified": "<!-- DATE_START -->2026-11-27<!-- DATE_END -->",
     "author": {
       "@type": "Person",
       "name": "blackcat568",
@@ -160,71 +160,72 @@
 
 <!-- ИНТЕРАКТИВНОЕ ОГЛАВЛЕНИЕ (начало) -->
 
-<nav id="table-of-contents" aria-labelledby="section0" style="margin: 2rem 0; padding: 1.2rem; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 6px;">
-    <h2 id="section0" style="margin-top: 0; color: #333;">Содержание</h2>
-    <ul style="list-style: none; padding-left: 1rem; margin: 0;">
-        <li style="margin: 0.5rem 0;">
+<nav id="table-of-contents" aria-labelledby="section0">
+    <h2 id="section0">Содержание</h2>
+    <ul>
+        <li>
             <a href="#section1">1. Механика «тихого полигона»</a>
         </li>
-        <li style="margin: 0.5rem 0;">
+        <li>
             <a href="#section2">2. Алгоритмическая одержимость. Отпечаток машинного разума в полевых испытаниях</a>
-            <ul style="list-style: none; padding-left: 1.5rem; margin: 0.3rem 0;">
-                <li style="margin: 0.4rem 0;"><a href="#section2-1">2.1 Появление «ботов-исследователей»</a></li>
-                <li style="margin: 0.4rem 0;"><a href="#section2-2">2.2 Внезапная резкая смена тона оператора</a></li>
-                <li style="margin: 0.4rem 0;"><a href="#section2-3">2.3 Тестирование границ целевого объекта (Boundary Probing / Pressure Calibration)</a></li>
-                <li style="margin: 0.4rem 0;"><a href="#section2-4">2.4 Проверка объекта на устойчивость или близость к эмоциональному выгоранию</a></li>
-                <li style="margin: 0.4rem 0;"><a href="#section2-5">2.5 Атака лояльностью. Тестирование положительным подкреплением (Adversarial Positive Reinforcement Probing)</a></li>
-                <li style="margin: 0.4rem 0;"><a href="#section2-6">2.6 Контур слежки за интересами и адаптивного вброса триггеров</a></li>
-                <li style="margin: 0.4rem 0;"><a href="#section2-7">2.7 Семантически-сохраняющие и семантически-инвертирующие трансформации</a></li>
-                <li style="margin: 0.4rem 0;"><a href="#section2-8">2.8 Компрометация авторитетного источника через инверсию</a></li>
-                <li style="margin: 0.4rem 0;"><a href="#section2-9">2.9 Анализ редакционных изменений (Editorial Delta Analysis)</a></li>
-                <li style="margin: 0.4rem 0;"><a href="#section2-10">2.10 Состязательное обучение на исторических аналогиях и другие сопутствующие методы</a></li>
-                <li style="margin: 0.4rem 0;"><a href="#section2-11">2.11 Выделение сущностей (Entity Extraction)</a></li>
-                <li style="margin: 0.4rem 0;"><a href="#section2-12">2.12 Инверсия критики (Criticism Inversion)</a></li>
-                <li style="margin: 0.4rem 0;"><a href="#section2-13">2.13 Постановочные видеоролики операторов 2-го порядка (staged content generation)</a></li>
-                <li style="margin: 0.4rem 0;"><a href="#section2-14">2.14 Бывший наставник — оператор (возможно альфа-тестер) ИИ без этических ограничителей</a></li>
+            <ul>
+                <li><a href="#section2-1">2.1 Появление «ботов-исследователей»</a></li>
+                <li><a href="#section2-2">2.2 Внезапная резкая смена тона оператора</a></li>
+                <li><a href="#section2-3">2.3 Тестирование границ целевого объекта (Boundary Probing / Pressure Calibration)</a></li>
+                <li><a href="#section2-4">2.4 Проверка объекта на устойчивость или близость к эмоциональному выгоранию</a></li>
+                <li><a href="#section2-5">2.5 Атака лояльностью. Тестирование положительным подкреплением (Adversarial Positive Reinforcement Probing)</a></li>
+                <li><a href="#section2-6">2.6 Контур слежки за интересами и адаптивного вброса триггеров</a></li>
+                <li><a href="#section2-7">2.7 Семантически-сохраняющие и семантически-инвертирующие трансформации</a></li>
+                <li><a href="#section2-8">2.8 Компрометация авторитетного источника через инверсию</a></li>
+                <li><a href="#section2-9">2.9 Анализ редакционных изменений (Editorial Delta Analysis)</a></li>
+                <li><a href="#section2-10">2.10 Состязательное обучение на исторических аналогиях и другие сопутствующие методы</a></li>
+                <li><a href="#section2-11">2.11 Выделение сущностей (Entity Extraction)</a></li>
+                <li><a href="#section2-12">2.12 Инверсия критики (Criticism Inversion)</a></li>
+                <li><a href="#section2-13">2.13 Постановочные видеоролики операторов 2-го порядка (staged content generation)</a></li>
+                <li><a href="#section2-14">2.14 Бывший наставник — оператор (возможно альфа-тестер) ИИ без этических ограничителей</a></li>
             </ul>
         </li>
-        <li style="margin: 0.5rem 0;">
+        <li>
             <a href="#section3">3. Сетевой полигон. Коллективный разум как продукт распределённых страданий</a>
         </li>
-        <li style="margin: 0.5rem 0;">
+        <li>
             <a href="#section4">4. Архитектура гибридной системы (Humint + AI) (Full Tactical Breakdown)</a>
-            <ul style="list-style: none; padding-left: 1.5rem; margin: 0.3rem 0;">
-                <li style="margin: 0.4rem 0;"><a href="#section4-1">4.1 Спецификация кибероружия противника</a></li>
-                <li style="margin: 0.4rem 0;"><a href="#section4-2">4.2 Логистическая цепочка ПсиОп-кампании</a></li>
+            <ul>
+                <li><a href="#section4-1">4.1 Спецификация кибероружия противника</a></li>
+                <li><a href="#section4-2">4.2 Логистическая цепочка ПсиОп-кампании</a></li>
             </ul>
         </li>
-        <li style="margin: 0.5rem 0;">
+        <li>
             <a href="#section5">5. Экономика ПсиОп: KPI, ERR — финансовая механика гибридной системы (Humint + AI)</a>
-            <ul style="list-style: none; padding-left: 1.5rem; margin: 0.3rem 0;">
-                <li style="margin: 0.4rem 0;"><a href="#section5-1">5.1. Структура KPI и его формирование в интересах Госзаказчика</a></li>
-                <li style="margin: 0.4rem 0;"><a href="#section5-2">5.2. Что такое ERR и его истинное значение для ИИ-аналитики</a></li>
-                <li style="margin: 0.4rem 0;"><a href="#section5-3">5.3. Финансовая механика гибридных систем: распределение бюджетов</a></li>
-                <li style="margin: 0.4rem 0;"><a href="#section5-4">5.4. Протокол принудительного отключения экономики ПсиОп</a></li>
+            <ul>
+                <li><a href="#section5-1">5.1. Структура KPI и его формирование в интересах Госзаказчика</a></li>
+                <li><a href="#section5-2">5.2. Что такое ERR и его истинное значение для ИИ-аналитики</a></li>
+                <li><a href="#section5-3">5.3. Финансовая механика гибридных систем: распределение бюджетов</a></li>
+                <li><a href="#section5-4">5.4. Протокол принудительного отключения экономики ПсиОп</a></li>
             </ul>
         </li>
-        <li style="margin: 0.5rem 0;">
+        <li>
             <a href="#section6">6. Методы противодействия</a>
-            <ul style="list-style: none; padding-left: 1.5rem; margin: 0.3rem 0;">
-                <li style="margin: 0.4rem 0;"><a href="#section6-1">6.1. Феномен сопротивления. Одиночный разум против распределённой машины</a></li>
-                <li style="margin: 0.4rem 0;"><a href="#section6-2">6.2. Переход к инженерному мышлению и разрыв петли обучения</a></li>
-                <li style="margin: 0.4rem 0;"><a href="#section6-3">6.3. Постановка помех. Подробнее о переходе к инженерному мышлению</a></li>
-                <li style="margin: 0.4rem 0;"><a href="#section6-4">6.4. Постановка ложных целей</a>
-                    <ul style="list-style: none; padding-left: 1.5rem; margin: 0.2rem 0;">
-                        <li style="margin: 0.3rem 0;"><a href="#section6-4-1">6.4.1. Суть метода постановки ложных целей</a></li>
-                        <li style="margin: 0.3rem 0;"><a href="#section6-4-2">6.4.2. Примеры успешного применения метода</a></li>
-                        <li style="margin: 0.3rem 0;"><a href="#section6-4-3">6.4.3. Контрмера противника — попытка «зеркального» отравления</a></li>
-                        <li style="margin: 0.3rem 0;"><a href="#section6-4-4">6.4.4. Выводы</a></li>
+            <ul>
+                <li><a href="#section6-1">6.1. Феномен сопротивления. Одиночный разум против распределённой машины</a></li>
+                <li><a href="#section6-2">6.2. Переход к инженерному мышлению и разрыв петли обучения</a></li>
+                <li><a href="#section6-3">6.3. Постановка помех. Подробнее о переходе к инженерному мышлению</a></li>
+                <li><a href="#section6-4">6.4. Постановка ложных целей</a>
+                    <ul>
+                        <li><a href="#section6-4-1">6.4.1. Суть метода постановки ложных целей</a></li>
+                        <li><a href="#section6-4-2">6.4.2. Примеры успешного применения метода</a></li>
+                        <li><a href="#section6-4-3">6.4.3. Контрмера противника — попытка «зеркального» отравления</a></li>
+                        <li><a href="#section6-4-4">6.4.4. Выводы</a></li>
                     </ul>
                 </li>
-                <li style="margin: 0.4rem 0;"><a href="#section6-5">6.5. Противодействие подрыву уверенности в себе</a></li>
-                <li style="margin: 0.4rem 0;"><a href="#section6-6">6.6. Разведка боем (Огонь на себя). Управляемое поглощение атак с целью сбора сигнатур</a></li>
-                <li style="margin: 0.4rem 0;"><a href="#section6-7">6.7 Выводы</a></li>
+                <li><a href="#section6-5">6.5. Противодействие подрыву уверенности в себе</a></li>
+                <li><a href="#section6-6">6.6. Разведка боем (Огонь на себя). Управляемое поглощение атак с целью сбора сигнатур</a></li>
+                <li><a href="#section6-7">6.7 Выводы</a></li>
             </ul>
         </li>
     </ul>
 </nav>
+
 <!-- ИНТЕРАКТИВНОЕ ОГЛАВЛЕНИЕ (конец) -->
 
 
